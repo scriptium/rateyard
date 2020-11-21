@@ -1,0 +1,14 @@
+version: "3.3"
+services:
+  db:
+    image: postgres
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ppassword
+      POSTGRES_DB: rateyard
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
