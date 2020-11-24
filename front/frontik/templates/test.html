@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Log In{% endblock %}</h1>
+{% endblock %}
+
+{% block sosi %}
+<b>SOSI</b>
+{% endblock sosi %}
+
+{% block content %}
+
+<style>
+    body {
+        background-image: url("./static/AirBaloon.png");
+        background-width: 100%;
+    }
+</style>
+
+{% for i in range (10): %}
+<a href="">nice website, check it out!</a>
+{% endfor %}
+
+{% endblock %}

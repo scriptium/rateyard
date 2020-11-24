@@ -1,7 +1,7 @@
 import functools
 
 from flask import (Blueprint, request, jsonify, 
-    abort, send_file, Response,
+    abort, send_file, Response, 
     current_app
 )
 from flask_jwt_extended import (
@@ -13,16 +13,13 @@ from .db import get_db, close_db
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
-@bp.route("/student", methonds = ("GET", "POST"))
-def login():
-
-
-@bp.route("/login_student", methods = ("GET", "POST"))
+@bp.route("/login_student", methods = ("POST", ))
 def login_student():
     if not request.is_json:
         abort(400, "Request is not json")
     login_form = ["username", "password"]
-    if all(key in request.form for key in login_form):
+    print (request.json)
+    if all(key in request.json.keys() for key in login_form):
         db = get_db()
         cursor = db.cursor()
         cursor.execute('''
@@ -30,8 +27,8 @@ def login_student():
             FROM students WHERE username=%s
             AND password_hash=crypt(%s, password_hash);
         ''', ( 
-            request.form["username"],
-            request.form["password"]
+            request.json.get("username"),
+            request.json.get("password")
             )
         )
         student_id = cursor.fetchone()
@@ -55,7 +52,7 @@ def login_teacher():
     if not request.is_json:
         abort(400, "Request is not json")
     login_form = ["username", "password"]
-    if all(key in request.form for key in login_form):
+    if all(key in request.json.keys() for key in login_form):
         db = get_db()
         cursor = db.cursor()
         cursor.execute('''
@@ -63,8 +60,8 @@ def login_teacher():
             FROM teacher WHERE username=%s
             AND password_hash=crypt(%s, password_hash);
         ''', ( 
-            request.form["username"],
-            request.form["password"]
+            request.json.get("username"),
+            request.json.get("password")
             )
         )
         teacher_id = cursor.fetchone()
