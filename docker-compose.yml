@@ -1,14 +1,30 @@
 version: "3.3"
 services:
-  db:
-    image: postgres
-    container_name: db
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: ppassword
-      POSTGRES_DB: rateyard
-    volumes:
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./db/data:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
+    api:
+        build: ./api
+        container_name: api
+        command: gunicorn -b 0.0.0.0:1000 rateyard_api:create_app()
+        ports: 
+            - 1000:1000
+        external_links: 
+            - db:docker-postgresql
+    front:
+        build: ./front
+        container_name: front
+        command: gunicorn -b 0.0.0.0:2000 frontik:create_app()
+        ports: 
+            - 2000:2000
+        external_links: 
+            - api:docker-api
+    db:
+        image: postgres
+        container_name: db
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: ppassword
+            POSTGRES_DB: rateyard
+        volumes:
+            - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - ./db/data:/var/lib/postgresql/data
+        ports:
+            - 5432:5432
