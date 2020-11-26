@@ -19,9 +19,12 @@ def create_app(test_config=None):
     from . import auth
     from . import api
     from . import student
+    from . import teacher
     app.register_blueprint(auth.bp, url_prefix="/auth")
     app.register_blueprint(api.bp, url_prefix="/api")
     app.register_blueprint(student.bp, url_prefix="/student")
+    app.register_blueprint(teacher.bp, url_prefix="/teacher")
+    
     @app.route("/test", methods=["GET"])
     def test():
         return "HEYOO"

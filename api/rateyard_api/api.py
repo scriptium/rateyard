@@ -6,10 +6,12 @@ from flask import (Blueprint, request, jsonify,
 )
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from .db import get_db, close_db, get_student, get_teacher
+from .db import get_db, close_db
 
 
 bp = Blueprint("api", __name__)
-
+'''
 @bp.route("/create_class", methods("POST", ))
-def 
+def
+''' 
+

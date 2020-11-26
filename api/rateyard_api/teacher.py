@@ -7,14 +7,15 @@ from flask import (Blueprint, request, jsonify,
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from .db import (
-    get_db, close_db, get_student
+    get_db, close_db, get_teacher
 )
 
 
-bp = Blueprint("student", __name__)
+bp = Blueprint("teacher", __name__)
+
 
 @bp.route("/get", methods = ("GET", ))
 @jwt_required
 def get():
     identity = get_jwt_identity()
-    return jsonify(get_student(identity["id"])), 200
+    return jsonify(get_teacher(identity["id"])), 200

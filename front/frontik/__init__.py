@@ -6,8 +6,10 @@ from flask import (Flask, Blueprint, request, jsonify,
     current_app, render_template
 )
 from flask_jwt_extended import (
-    create_access_token, get_jwt_identity,
+    JWTManager, jwt_required, create_access_token,
     jwt_refresh_token_required, create_refresh_token,
+    get_jwt_identity, set_access_cookies,
+    set_refresh_cookies, unset_jwt_cookies
 )
 import requests
 
@@ -42,7 +44,6 @@ def create_app(test_config=None):
                     "password": request.form["password"]
                 }
             )
-            print(response.json)
             return request.data
 
 
@@ -58,7 +59,21 @@ def create_app(test_config=None):
                     "password": request.form["password"]
                 }
             )
-            print(response.json)
+            return request.data
+
+
+    @app.route("/admin/login", methods=("GET", "POST"))
+    def admin_login():
+        if(request.method == "GET"):
+            return render_template("./admin/login.html")
+        if(request.method == "POST"):
+            response = requests.post(
+                current_app.config["API_HOST"] + "/auth/login_admin",
+                {
+                    "username": request.form["username"],
+                    "password": request.form["password"]
+                }
+            )
             return request.data
 
 
@@ -71,13 +86,4 @@ def create_app(test_config=None):
                 abort(400, "")
             return request.data
     
-    
-    @app.route("/main_page", methods=("GET", "POST"))
-    def main_page():
-        if request.method == "GET":
-            return render_template("test.html")
-        elif request.method == "POST":
-            if request.data is None:
-                abort(400, "")
-            return request.data
     return app

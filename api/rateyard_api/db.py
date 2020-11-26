@@ -37,7 +37,8 @@ def get_student(student_id: int):
         "username": data[1],
         "full_name": data[2],
         "email": data[3],
-        "class_id": data[4]
+        "class_id": data[4],
+        "type": "student"
     }
 
 
@@ -57,58 +58,10 @@ def get_teacher(teacher_id: int):
         "id": data[0],
         "username": data[1],
         "full_name": data[2],
-        "email": data[3]
+        "email": data[3],
+        "type": "teacher"
     }
 
-
-def create_student(username: str, full_name: str, email: str,
-                   password: str, class_id: int):
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute('''
-        INSERT INTO students (
-            username, 
-            full_name,
-            email, 
-            password_hash, 
-            class_id
-           )
-        VALUES (
-            %s, %s, %s, 
-            crypt(%s, gen_salt("md5")),
-            %s
-        );
-    ''', (
-        username,
-        full_name,
-        email,
-        password,
-        class_id
-    ))
-    db.commit()
-
-def create_teacher(username: str, full_name: str, email: str,
-                   password: str):
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute('''
-        INSERT INTO teachers(
-            username, 
-            full_name, 
-            email,
-            password_hash
-        )
-        VALUES (
-            %s, %s, %s, 
-            crypt(%s, gen_salt("md5"))
-        );
-    ''', (
-        username,
-        full_name,
-        email,
-        password
-    ))
-    db.commit()
 
 def set_class(student_id: int, class_id: int):
     db = get_db()

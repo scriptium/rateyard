@@ -19,7 +19,8 @@ def login_student():
         abort(400, "Request is not json")
     login_form = ["username", "password"]
     print (request.json)
-    if all(key in request.json.keys() for key in login_form):
+    if ("username" in request.json.keys() and
+            "password" in request.json.keys()):
         db = get_db()
         cursor = db.cursor()
         cursor.execute('''
@@ -35,7 +36,7 @@ def login_student():
     else: 
         abort(400, "Wrong json")
     if student_id is None:
-        abort(404, "Wrong login data")
+        abort(403, "Wrong login data")
     else:
         identity = {
             "type": "student",
@@ -47,17 +48,18 @@ def login_student():
         }), 200
 
 
-@bp.route("/login_teacher", methods = ("GET", "POST"))
+@bp.route("/login_teacher", methods = ("POST", ))
 def login_teacher():
     if not request.is_json:
         abort(400, "Request is not json")
-    login_form = ["username", "password"]
-    if all(key in request.json.keys() for key in login_form):
+    if ("username" in request.json.keys() and
+            "password" in request.json.keys()):
+        db = get_db()
         db = get_db()
         cursor = db.cursor()
         cursor.execute('''
             SELECT id
-            FROM teacher WHERE username=%s
+            FROM teachers WHERE username=%s
             AND password_hash=crypt(%s, password_hash);
         ''', ( 
             request.json.get("username"),
@@ -68,7 +70,7 @@ def login_teacher():
     else: 
         abort(400, "Wrong json")
     if teacher_id is None:
-        abort(404, "Wrong login data")
+        abort(403, "Wrong login data")
     else:
         identity = {
             "type": "teacher",
@@ -80,10 +82,32 @@ def login_teacher():
         }), 200
 
 
+@bp.route("/login_admin", methods = ("POST", ))
+def login_admin():
+    if not request.is_json:
+        abort(400, "Request is not json")
+    if ("username" in request.json.keys() and
+            "password" in request.json.keys()):
+        if(request.json.get("username") == current_app.config["ADMIN_USERNAME"] and
+                request.json.get("password") == current_app.config["ADMIN_PASSWORD"]):
+            identity = {
+                "type": "admin",
+            }
+            return jsonify({
+                "access_token": create_access_token(identity=identity),
+                "refresh_token": create_refresh_token(identity=identity)
+            }), 200
+        else:
+            abort(403, "Wrong login data")
+    else:
+        abort(400, "Wrong json")
+
+
 @bp.route("/refresh", methods=("POST",))
 @jwt_refresh_token_required
 def refresh():
     identity = get_jwt_identity()
     return jsonify({
-        "access_token": create_access_token(identity=identity)
+        "access_token": create_access_token(identity=identity),
+        "refresh_token": create_refresh_token(identity=identity)
     }), 200
