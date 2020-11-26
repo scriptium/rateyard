@@ -1,1 +1,1 @@
-API_HOST = "http://docker-api"
+API_HOST = "http://docker-api:8000"

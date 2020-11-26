@@ -22,8 +22,9 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
     
 
-    @app.route("/", methods=("GET", "POST"))
+    @app.route("/", methods=("GET",))
     def login():
+        return render_template("login.html")
         if request.method == "GET":
             return render_template("login.html")
         return 'HELLO THERE!'
@@ -47,8 +48,6 @@ def create_app(test_config=None):
 
     @app.route("/teacher/login", methods=("GET", "POST"))
     def teacher_login():
-        print(request.form["username"])
-        print(request.form["password"])
         if(request.method == "GET"):
             return render_template("./teacher/login.html")
         if(request.method == "POST"):

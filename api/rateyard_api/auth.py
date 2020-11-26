@@ -11,7 +11,7 @@ from flask_jwt_extended import (
 
 from .db import get_db, close_db
 
-bp = Blueprint("auth", __name__, url_prefix="/auth")
+bp = Blueprint("auth", __name__)
 
 @bp.route("/login_student", methods = ("POST", ))
 def login_student():
@@ -80,7 +80,7 @@ def login_teacher():
         }), 200
 
 
-@bp.route("/refresh", methods=["POST"])
+@bp.route("/refresh", methods=("POST",))
 @jwt_refresh_token_required
 def refresh():
     identity = get_jwt_identity()

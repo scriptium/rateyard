@@ -11,3 +11,5 @@ from .db import get_db, close_db, get_student, get_teacher
 
 bp = Blueprint("api", __name__)
 
+@bp.route("/create_class", methods("POST", ))
+def 
