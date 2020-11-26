@@ -9,7 +9,7 @@ CREATE TABLE students (
     id SERIAL PRIMARY KEY NOT NULL, 
     username VARCHAR(15) UNIQUE NOT NULL,
     full_name VARCHAR(100) NOT NULL,
-    email VARCHAR(320),
+    email VARCHAR(320) UNIQUE,
     password_hash TEXT NOT NULL,
     class_id INTEGER REFERENCES classes(id) NOT NULL
 );
@@ -18,7 +18,7 @@ CREATE TABLE teachers (
     id SERIAL PRIMARY KEY NOT NULL, 
     username VARCHAR(15) UNIQUE NOT NULL,
     full_name VARCHAR(100) NOT NULL,
-    email VARCHAR(320),
+    email VARCHAR(320) UNIQUE,
     password_hash TEXT NOT NULL
 );
 
