@@ -19,7 +19,8 @@ def create_student():
     if ("username" in request.json.keys() and
             "full_name" in request.json.keys() and
             "email" in request.json.keys() and
-            "password" in request.json.keys()):
+            "password" in request.json.keys() and
+            "class_id" in request.json.keys()):
         db = get_db()
         cursor = db.cursor()
         try:

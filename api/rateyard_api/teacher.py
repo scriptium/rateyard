@@ -14,8 +14,8 @@ from .db import (
 bp = Blueprint("teacher", __name__)
 
 
-@bp.route("/get", methods = ("GET", ))
+@bp.route("/get_me", methods = ("GET", ))
 @jwt_required
-def get():
+def get_me():
     identity = get_jwt_identity()
-    return jsonify(get_teacher(identity["id"])), 200
+    return jsonify(get_student(identity["id"])), 200

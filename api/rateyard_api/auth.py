@@ -17,8 +17,6 @@ bp = Blueprint("auth", __name__)
 def login_student():
     if not request.is_json:
         abort(400, "Request is not json")
-    login_form = ["username", "password"]
-    print (request.json)
     if ("username" in request.json.keys() and
             "password" in request.json.keys()):
         db = get_db()
