@@ -46,18 +46,30 @@ def unset_jwt_tokens():
     unset_jwt_cookies(response)
     return response
 
-
 @bp.route("/", methods=("GET", ))
-@admin_required
 def home():
-    return render_template("./admin/admin.html")
+    if request.method == "GET":
+        return render_template("./admin/admin.html")
+
+@bp.route("/add_class", methods=("POST", ))
+def add_class():
+    response = requests.post(
+        current_app.config["API_HOST"] + "/admin/create_class",
+        json = {
+            "class_name": request.form["class_name"]
+        }
+    )
+    if response.ok:
+        resp = make_response(redirect(url_for("admin.home")))
+        return resp, 200
+    return render_template("./error.html", error_code=response.raise_for_status)
 
 
 @bp.route("/login/", methods=("GET", "POST"))
 def login():
-    if(request.method == "GET"):
+    if request.method == "GET":
         return render_template("./admin/login.html")
-    if(request.method == "POST"):
+    if request.method == "POST":
         response = requests.post(
             current_app.config["API_HOST"] + "/auth/login_admin",
             json = {

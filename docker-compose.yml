@@ -3,7 +3,7 @@ services:
     api:
         build: ./api
         container_name: api
-        command: gunicorn -b 0.0.0.0:8000 rateyard_api:create_app() --access-logfile /var/log/gunicorn.log
+        command: gunicorn -b 0.0.0.0:8000 rateyard_api:create_app()
         ports: 
             - 8000:8000
         external_links: 
@@ -11,7 +11,7 @@ services:
     front:
         build: ./front
         container_name: front
-        command: gunicorn -b 0.0.0.0:80 frontik:create_app() --access-logfile /var/log/gunicorn.log
+        command: gunicorn -b 0.0.0.0:80 frontik:create_app()
         ports: 
             - 80:80
         external_links: 

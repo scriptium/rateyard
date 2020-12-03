@@ -2,7 +2,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TABLE classes (
     id SERIAL PRIMARY KEY NOT NULL, 
-    class_name VARCHAR(100)
+    class_name VARCHAR(15) UNIQUE NOT NULL
 );
 
 CREATE TABLE students (

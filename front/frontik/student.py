@@ -18,8 +18,15 @@ import requests
 
 bp = Blueprint("student", __name__)
 
-def get_me():
-    pass
+def get_me(cookies):
+    #print(cookies, flush=True)
+    response = requests.get(
+            current_app.config["API_HOST"] + "/student/get_me",
+            headers = {
+                "Authorization": "Bearer {}".format(cookies.get("access_token_cookie"))
+            }
+    )
+    return response.json()
 
 
 def student_required(fn):
@@ -48,11 +55,11 @@ def unset_jwt_tokens():
 
 
 @bp.route("/", methods=("GET", ))
-@student_required
 def home():
-    identity = get_jwt_identity()
+    me = get_me(request.cookies)
+    print(me, flush=True)
     return render_template("./student/student.html",
-                            name=identity["id"])
+                            name=me["username"], student_name = me["full_name"])
 
 
 @bp.route("/login/", methods=("GET", "POST"))
