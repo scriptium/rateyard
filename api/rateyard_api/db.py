@@ -38,7 +38,7 @@ def get_student(student_id: int):
         "full_name": data[2],
         "email": data[3],
         "class_id": data[4],
-        "type": "student"
+        "type": "Student"
     }
 
 
@@ -59,7 +59,7 @@ def get_teacher(teacher_id: int):
         "username": data[1],
         "full_name": data[2],
         "email": data[3],
-        "type": "teacher"
+        "type": "Teacher"
     }
 
 

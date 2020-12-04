@@ -12,7 +12,7 @@ from flask_jwt_extended import (
     jwt_refresh_token_required, create_refresh_token,
     get_jwt_identity, set_access_cookies,
     set_refresh_cookies, unset_jwt_cookies,
-    verify_jwt_in_request
+    verify_jwt_in_request   
 )
 import requests
 
@@ -34,6 +34,7 @@ def admin_required(fn):
             return fn(*args, **kwargs)
     return wrapper
 
+
 def assign_jwt_tokens(access_token: str, refresh_token: str, url: str):
     response = make_response(redirect(url, 302))
     set_access_cookies(response, access_token)
@@ -50,10 +51,15 @@ def unset_jwt_tokens():
 @admin_required
 def home():
     if request.method == "GET":
-        response = requests.get(
+        classes = requests.get(
             current_app.config["API_HOST"] + "/admin/get_classes"
         )
-        return render_template("./admin/admin.html", classes = response.json())    
+        subjects = requests.get(
+            current_app.config["API_HOST"] + "/admin/get_subjects"
+        )
+        return render_template("./admin/admin.html", 
+                                classes = classes.json(),
+                                subjects = subjects.json())    
 
 
 @bp.route("/add_class", methods=("POST", ))
@@ -62,6 +68,20 @@ def add_class():
         current_app.config["API_HOST"] + "/admin/create_class",
         json = {
             "class_name": request.form["class_name"]
+        }
+    )
+    if response.ok:
+        resp = make_response(redirect(url_for("admin.home")))
+        return resp, 200
+    return render_template("./error.html", error_code=response.raise_for_status)
+
+
+@bp.route("/add_subject", methods=("POST", ))
+def add_subject():
+    response = requests.post(
+        current_app.config["API_HOST"] + "/admin/create_subject",
+        json = {
+            "subject_name": request.form["subject_name"]
         }
     )
     if response.ok:
@@ -105,14 +125,11 @@ def add_teacher():
     return render_template("./error.html", error_code=response.raise_for_status)
 
 
+
 @bp.route("/login/", methods=("GET", "POST"))
 def login():
     if request.method == "GET":
-        
-        return render_template(
-            "./admin/login.html"
-        )
-
+        return render_template("./admin/login.html")
     if request.method == "POST":
         response = requests.post(
             current_app.config["API_HOST"] + "/auth/login_admin",

@@ -43,7 +43,7 @@ def create_student():
                 request.json.get("full_name"),
                 request.json.get("email"),
                 request.json.get("password"),
-                get_class_id(request.json.get("class_name"))
+                request.json.get("class_name")
             ))
         except psycopg2.errors.UniqueViolation: 
             abort(409, "Student with same data already exists")
@@ -115,7 +115,8 @@ def set_class():
                 request.json.get("class_id"),
                 request.json.get("student_id")
             ))
-        except Exception:
+        except Exception as e:
+            print(e, flush=True)
             abort(400, "Unkonwn error")
         db.commit()
         return jsonify({
@@ -153,14 +154,103 @@ def create_class():
     else:
         abort(400, "Wrong json")
 
+
 @bp.route("/get_classes", methods = ("GET", ))
 def get_classes():
     db = get_db()
     cursor = db.cursor()
-    cursor.execute('SELECT id, class_name FROM classes;')
+    cursor.execute('''
+        SELECT id, class_name
+        FROM classes;
+        '''
+    )
     exec_result = cursor.fetchall()
     if exec_result is None:
         return None
-    result = [{'id': data[0], 'name': data[1], 'type': 'Class'} for data in exec_result]
-    return jsonify(result)
+    result = [{
+        "id": data[0],
+        "name": data[1],
+        "type": "Class"
+        } for data in exec_result
+    ]
+    return jsonify(result), 200
 
+
+@bp.route("/get_students", methods = ("GET", ))
+def get_students():
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('''
+        SELECT students.id, students.username, students.full_name, 
+               students.email, students.class_id, classes.class_name
+        FROM students 
+        LEFT OUTER JOIN classes ON students.class_id=classes.id;
+    ''')
+    exec_result = cursor.fetchall()
+    print(exec_result, flush=True)
+    if exec_result is None:
+        return None
+    result = [{
+        "id": data[0],
+        "username": data[1],
+        "full_name": data[2],
+        "email": data[3],
+        "class": {
+            "id": data[4],
+            "name": data[5],
+            "type": "Class"
+        },
+        "type": "Student"
+        } for data in exec_result
+    ]
+    return jsonify(result), 200
+
+
+@bp.route("/get_subjects", methods = ("GET", ))
+def get_subjects():
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('''
+        SELECT id, subject_name
+        FROM subjects;
+        '''
+    )
+    exec_result = cursor.fetchall()
+    if exec_result is None:
+        return None
+    result = [{
+        "id": data[0],
+        "name": data[1],
+        "type": "Subject"
+        } for data in exec_result
+    ]
+    return jsonify(result), 200
+
+
+@bp.route("/create_subject", methods = ("POST", ))
+def create_subject():
+    if not request.is_json:
+        abort("400", "Expected json")
+    if "subject_name" in request.json.keys():
+        db = get_db()
+        cursor = db.cursor()
+        try:
+             cursor.execute('''
+                INSERT INTO subjects (
+                    subject_name
+                )
+                VALUES (
+                    %s
+                );
+                ''', (
+                request.json.get("subject_name"),
+            ))
+        except Exception as e:
+            print(e, flush=True)
+            abort(400, "Unknown Error")
+        db.commit()
+        return jsonify({
+            "result": "OK"
+        }), 200
+    else:
+        abort(400, "Wrong json")
