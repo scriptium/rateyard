@@ -7,7 +7,7 @@ from flask import (Blueprint, request, jsonify,
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from .db import (
-    get_db, close_db, get_student, get_teacher
+    get_db, close_db, get_student, get_teacher, get_class_id
 )
 
 bp = Blueprint("admin", __name__)
@@ -21,7 +21,7 @@ def create_student():
             "full_name" in request.json.keys() and
             "email" in request.json.keys() and
             "password" in request.json.keys() and
-            "class_id" in request.json.keys()):
+            "class_name" in request.json.keys()):
         db = get_db()
         cursor = db.cursor()
         try:
@@ -43,11 +43,12 @@ def create_student():
                 request.json.get("full_name"),
                 request.json.get("email"),
                 request.json.get("password"),
-                request.json.get("class_id")
+                get_class_id(request.json.get("class_name"))
             ))
         except psycopg2.errors.UniqueViolation: 
             abort(409, "Student with same data already exists")
-        except Exception:
+        except Exception as e:
+            print(e, flush=True)
             abort(400, "Unkonwn error")
         db.commit()
         return jsonify({

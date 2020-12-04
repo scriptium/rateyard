@@ -49,12 +49,13 @@ def assign_jwt_tokens(access_token: str, refresh_token: str, url: str):
 
 
 def unset_jwt_tokens():
-    response = make_response(redirect(current_app.config["BASE_URL"], 302))
+    response = make_response(redirect(url_for(''), 302))
     unset_jwt_cookies(response)
     return response
 
 
 @bp.route("/", methods=("GET", ))
+@student_required
 def home():
     me = get_me(request.cookies)
     print(me, flush=True)
@@ -75,8 +76,14 @@ def login():
             }
         )
         if response.ok:
-            resp = make_response(redirect(url_for("student.home")))
+            resp = make_response(redirect(url_for(".home"), 302))
             set_access_cookies(resp, response.json()["access_token"])
             set_refresh_cookies(resp, response.json()["refresh_token"])
             return resp, 200
         return render_template("./error.html", error_code=response.raise_for_status)
+
+@bp.route("/logout", methods=("POST", ))
+def logout():
+    response = make_response(redirect(request.url_root, 302))
+    unset_jwt_cookies(response)
+    return response

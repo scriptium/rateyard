@@ -14,9 +14,9 @@
         <input type="text" name="class_name" id="class_name" placeholder="Class name"><br>
         <input type="submit" value="Add class">
     </form>
-    /
-    /
-    /
+    <br>
+    <br>
+    <br>
     Add student
     <form action="add_student" method="POST">
         <label for="username">Student username</label><br>
@@ -27,9 +27,24 @@
         <input type="text" name="password" id="password" placeholder="Student password"><br>
         <label for="username">Student email</label><br>
         <input type="text" name="email" id="email" placeholder="Student email"><br>
-        <label for="username">Student class_id</label><br>
-        <input type="text" name="class_id" id="class_id" placeholder="Student class"><br>
+        <label for="username">Student class_name</label><br>
+        <input type="text" name="class_name" id="class_name" placeholder="Student class"><br>
         <input type="submit" value="Add student">
+    </form>
+    <br>
+    <br>
+    <br>
+    Add teacher
+    <form action="add_teacher" method="POST">
+        <label for="username">Teacher username</label><br>
+        <input type="text" name="username" id="username" placeholder="Teacher username"><br>
+        <label for="username">Teacher full_name</label><br>
+        <input type="text" name="full_name" id="full_name" placeholder="Teacher full_name"><br>
+        <label for="username">Teacher password</label><br>
+        <input type="text" name="password" id="password" placeholder="Teacher password"><br>
+        <label for="username">Teacher email</label><br>
+        <input type="text" name="email" id="email" placeholder="Teacher email"><br>
+        <input type="submit" value="Add teacher">
     </form>
     
 {% endblock %}

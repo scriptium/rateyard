@@ -77,4 +77,17 @@ def set_class(student_id: int, class_id: int):
     db.commit()
 
 
+def get_class_id(class_name: str):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('''
+        SELECT id
+        FROM classes WHERE class_name=%s
+    ''', (
+        class_name,
+    ))
+    data = cursor.fetchone()
+    if data is None:
+        raise ObjectNotExists
+    return data[0]
 

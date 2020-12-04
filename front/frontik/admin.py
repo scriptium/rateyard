@@ -47,9 +47,11 @@ def unset_jwt_tokens():
     return response
 
 @bp.route("/", methods=("GET", ))
+@admin_required
 def home():
     if request.method == "GET":
-        return render_template("./admin/admin.html")
+        return render_template("./admin/admin.html")    
+
 
 @bp.route("/add_class", methods=("POST", ))
 def add_class():
@@ -57,6 +59,41 @@ def add_class():
         current_app.config["API_HOST"] + "/admin/create_class",
         json = {
             "class_name": request.form["class_name"]
+        }
+    )
+    if response.ok:
+        resp = make_response(redirect(url_for("admin.home")))
+        return resp, 200
+    return render_template("./error.html", error_code=response.raise_for_status)
+
+
+@bp.route("/add_student", methods=("POST", ))
+def add_student():
+    response = requests.post(
+        current_app.config["API_HOST"] + "/admin/create_student",
+        json = {
+            "username": request.form["username"],
+            "full_name": request.form["full_name"],
+            "password": request.form["password"],
+            "email": request.form["email"],
+            "class_name": request.form["class_name"],
+        }
+    )
+    if response.ok:
+        resp = make_response(redirect(url_for("admin.home")))
+        return resp, 200
+    return render_template("./error.html", error_code=response.raise_for_status)
+
+
+@bp.route("/add_teacher", methods=("POST", ))
+def add_teacher():
+    response = requests.post(
+        current_app.config["API_HOST"] + "/admin/create_teacher",
+        json = {
+            "username": request.form["username"],
+            "full_name": request.form["full_name"],
+            "password": request.form["password"],
+            "email": request.form["email"],
         }
     )
     if response.ok:

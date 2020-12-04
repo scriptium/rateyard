@@ -35,7 +35,6 @@ def create_app(test_config=None):
 
     @app.route("/", methods=("GET", ))
     def login():
-        return render_template("login.html")
         if request.method == "GET":
             return render_template("login.html")
         return 'HELLO THERE!'
