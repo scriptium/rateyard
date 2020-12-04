@@ -50,7 +50,10 @@ def unset_jwt_tokens():
 @admin_required
 def home():
     if request.method == "GET":
-        return render_template("./admin/admin.html")    
+        response = requests.get(
+            current_app.config["API_HOST"] + "/admin/get_classes"
+        )
+        return render_template("./admin/admin.html", classes = response.json())    
 
 
 @bp.route("/add_class", methods=("POST", ))
@@ -105,7 +108,11 @@ def add_teacher():
 @bp.route("/login/", methods=("GET", "POST"))
 def login():
     if request.method == "GET":
-        return render_template("./admin/login.html")
+        
+        return render_template(
+            "./admin/login.html"
+        )
+
     if request.method == "POST":
         response = requests.post(
             current_app.config["API_HOST"] + "/auth/login_admin",

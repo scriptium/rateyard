@@ -7,7 +7,7 @@ from flask import (Blueprint, request, jsonify,
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from .db import (
-    get_db, close_db, get_student, get_teacher, get_class_id
+    get_db, close_db, get_student, get_teacher
 )
 
 bp = Blueprint("admin", __name__)
@@ -152,3 +152,15 @@ def create_class():
         }), 200
     else:
         abort(400, "Wrong json")
+
+@bp.route("/get_classes", methods = ("GET", ))
+def get_classes():
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('SELECT id, class_name FROM classes;')
+    exec_result = cursor.fetchall()
+    if exec_result is None:
+        return None
+    result = [{'id': data[0], 'name': data[1], 'type': 'Class'} for data in exec_result]
+    return jsonify(result)
+
