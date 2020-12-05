@@ -12,7 +12,7 @@ from flask_jwt_extended import (
     jwt_refresh_token_required, create_refresh_token,
     get_jwt_identity, set_access_cookies,
     set_refresh_cookies, unset_jwt_cookies,
-    verify_jwt_in_request
+    verify_jwt_in_request, verify_jwt_in_request_optional
 )
 import requests
 
@@ -32,10 +32,10 @@ def get_me(cookies):
 def student_required(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        verify_jwt_in_request()
+        verify_jwt_in_request_optional()
         identity = get_jwt_identity()
-        if identity["type"] != "student":
-            return jsonify(message = "Not student"), 403
+        if identity is None or identity["type"] != "student":
+            return redirect(url_for(".login"), 302) #jsonify(message = "Not student"), 403
         else:
             return fn(*args, **kwargs)
     return wrapper

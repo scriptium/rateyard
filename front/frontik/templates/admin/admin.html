@@ -34,6 +34,8 @@
                     <option value={{ class['id'] }}>{{ class['name'] }}</option>
                 {% endfor %}                
             </select>
+            <br>
+            <input type="submit" value="Add Student">
         </fieldset>
     </form>
     <br>
@@ -78,6 +80,17 @@
                     <option value={{ subject["id"] }}>{{ subject["name"] }}</option>
                 {% endfor %}                
             </select>
+            <br>
+            <input type="submit" value="Add Group DONT PUSH">
+        </fieldset>
+    </form>
+    <br>
+    <br>
+    <br>
+    <form action="logout" method="POST">
+        <fieldset>
+            <legend>Logout:</legend>
+            <input type="submit" value="Logout" id="logout">
         </fieldset>
     </form>
 {% endblock %}

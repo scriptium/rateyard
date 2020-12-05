@@ -12,7 +12,7 @@ from flask_jwt_extended import (
     jwt_refresh_token_required, create_refresh_token,
     get_jwt_identity, set_access_cookies,
     set_refresh_cookies, unset_jwt_cookies,
-    verify_jwt_in_request   
+    verify_jwt_in_request, verify_jwt_in_request_optional
 )
 import requests
 
@@ -26,10 +26,10 @@ def get_me():
 def admin_required(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        verify_jwt_in_request()
+        verify_jwt_in_request_optional()
         identity = get_jwt_identity()
-        if identity["type"] != "admin":
-            return jsonify(message = "Not admin"), 403
+        if identity is None or identity["type"] != "admin":
+            return redirect(url_for(".login"), 302) #jsonify(message = "Not admin"), 403
         else:
             return fn(*args, **kwargs)
     return wrapper
@@ -144,3 +144,10 @@ def login():
             set_refresh_cookies(resp, response.json()["refresh_token"])
             return resp, 200
         return render_template("./error.html", error_code=response.raise_for_status)
+
+
+@bp.route("/logout", methods=("POST", ))
+def logout():
+    response = make_response(redirect(request.url_root, 302))
+    unset_jwt_cookies(response)
+    return response
