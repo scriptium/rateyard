@@ -64,6 +64,7 @@ def home():
 
 @bp.route("/add_class", methods=("POST", ))
 def add_class():
+    print(request.form.to_dict(flat=False), flush=True)
     response = requests.post(
         current_app.config["API_HOST"] + "/admin/create_class",
         json = {
