@@ -1,4 +1,4 @@
-API_HOST = "http://docker-api:8000"
+API_HOST = "http://0.0.0.0:8000"
 
 BASE_URL = "http://0.0.0.0:80"
 

@@ -23,7 +23,7 @@
                         <th><input type="button" name="add_student" id="add_student" value="+" onclick="add_student()"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbody">
                     <tr>
                         <td><input type="text" name="username" id="username" placeholder="Student username"></td>
                         <td><input type="text" name="full_name" id="full_name" placeholder="Student full_name"></td>
@@ -31,6 +31,7 @@
                         <td><input type="password" name="password" id="password" placeholder="Student password"></td>
                         <td><input type="button" name="delete_student" id="delete_student" value="-" onclick="delete_student()"></td>
                     </tr>
+                    
                 </tbody>
             </table>
             <input type="submit" value="Add class">
@@ -114,8 +115,9 @@
             <input type="submit" value="Logout" id="logout">
         </fieldset>
     </form>
+    <script type="text/javascript" src="{{ url_for('static', filename='admin.js') }}"></script>
 {% endblock %}
 
 {% block tail_js %}
-    <script src="{{url_for('static',filename='js/admin.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='admin.js') }}"></script>
 {% endblock %}
