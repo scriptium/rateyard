@@ -75,4 +75,3 @@ def set_class(student_id: int, class_id: int):
         student_id
     ))
     db.commit()
-

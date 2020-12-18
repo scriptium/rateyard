@@ -57,24 +57,53 @@ def home():
         subjects = requests.get(
             current_app.config["API_HOST"] + "/admin/get_subjects"
         )
+        students = requests.get(
+            current_app.config["API_HOST"] + "/admin/get_students"
+        )
         return render_template("./admin/admin.html", 
                                 classes = classes.json(),
-                                subjects = subjects.json())    
+                                subjects = subjects.json(),
+                                students = students.json())    
 
 
 @bp.route("/add_class", methods=("POST", ))
 def add_class():
-    print(request.form.to_dict(flat=False), flush=True)
-    response = requests.post(
+    print(request.form, flush=True)
+    form_data = request.form.to_dict(flat=False)
+    print(form_data, flush=True)
+    response_create_class = requests.post(
         current_app.config["API_HOST"] + "/admin/create_class",
         json = {
             "class_name": request.form["class_name"]
         }
     )
-    if response.ok:
-        resp = make_response(redirect(url_for("admin.home")))
-        return resp, 200
-    return render_template("./error.html", error_code=response.raise_for_status)
+    if not response_create_class.ok:
+        return render_template("./error.html", error_code=response_create_class.raise_for_status)
+    try: 
+        students = [
+            {
+                "username": username,
+                "full_name": full_name,
+                "email": email,
+                "password": password,
+                "class_id": response_create_class.json()["class_id"]
+            } for (
+                username, full_name, email,
+                password) in zip(
+                form_data["username"], form_data["full_name"],
+                form_data["email"], form_data["password"])
+        ]
+    except Exception:
+        abort(400, "Oops... Something went wrong")
+    print(students, flush=True)
+    response_create_students = requests.post(
+        current_app.config["API_HOST"] + "/admin/create_students",
+        json = students
+    )
+    if not response_create_students.ok:
+        return render_template("./error.html", error_code=response_create_students.raise_for_status)
+    resp = make_response(redirect(url_for("admin.home")))
+    return resp, 200
 
 
 @bp.route("/add_subject", methods=("POST", ))
@@ -85,32 +114,35 @@ def add_subject():
             "subject_name": request.form["subject_name"]
         }
     )
-    if response.ok:
-        resp = make_response(redirect(url_for("admin.home")))
-        return resp, 200
-    return render_template("./error.html", error_code=response.raise_for_status)
+    if not response.ok:
+        return render_template("./error.html", error_code=response.raise_for_status)
+    resp = make_response(redirect(url_for("admin.home")))
+    return resp, 200
+    
 
 
 @bp.route("/add_student", methods=("POST", ))
 def add_student():
+    print(request.form, flush=True)
     response = requests.post(
-        current_app.config["API_HOST"] + "/admin/create_student",
-        json = {
-            "username": request.form["username"],
-            "full_name": request.form["full_name"],
-            "password": request.form["password"],
-            "email": request.form["email"],
-            "class_name": request.form["class_name"],
-        }
+        current_app.config["API_HOST"] + "/admin/create_students",
+        json = [{
+                "username": request.form["username"],
+                "full_name": request.form["full_name"],
+                "password": request.form["password"],
+                "email": request.form["email"],
+                "class_id": request.form["class_id"]
+            }]
     )
-    if response.ok:
-        resp = make_response(redirect(url_for("admin.home")))
-        return resp, 200
-    return render_template("./error.html", error_code=response.raise_for_status)
+    if not response.ok:
+        return render_template("./error.html", error_code=response.raise_for_status)
+    resp = make_response(redirect(url_for("admin.home")))
+    return resp, 200
+    
 
 
-@bp.route("/add_teacher", methods=("POST", ))
-def add_teacher():
+@bp.route("/add_teachers", methods=("POST", ))
+def add_teachers():
     response = requests.post(
         current_app.config["API_HOST"] + "/admin/create_teacher",
         json = {
@@ -120,10 +152,10 @@ def add_teacher():
             "email": request.form["email"],
         }
     )
-    if response.ok:
-        resp = make_response(redirect(url_for("admin.home")))
-        return resp, 200
-    return render_template("./error.html", error_code=response.raise_for_status)
+    if not response.ok:
+        return render_template("./error.html", error_code=response.raise_for_status)
+    resp = make_response(redirect(url_for("admin.home")))
+    return resp, 200
 
 
 
@@ -139,12 +171,13 @@ def login():
                 "password": request.form["password"]
             }
         )
-        if response.ok:
-            resp = make_response(redirect(url_for("admin.home")))
-            set_access_cookies(resp, response.json()["access_token"])
-            set_refresh_cookies(resp, response.json()["refresh_token"])
-            return resp, 200
-        return render_template("./error.html", error_code=response.raise_for_status)
+        if not response.ok:
+            return render_template("./error.html", error_code=response.raise_for_status)
+        resp = make_response(redirect(url_for("admin.home")))
+        set_access_cookies(resp, response.json()["access_token"])
+        set_refresh_cookies(resp, response.json()["refresh_token"])
+        return resp, 200
+       
 
 
 @bp.route("/logout", methods=("POST", ))

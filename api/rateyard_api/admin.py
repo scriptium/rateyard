@@ -13,89 +13,98 @@ from .db import (
 bp = Blueprint("admin", __name__)
 
 
-@bp.route("/create_student", methods = ("POST", ))
-def create_student():
+@bp.route("/create_students", methods = ("POST", ))
+def create_students():
     if not request.is_json:
-        abort("400", "Expected json")
-    if ("username" in request.json.keys() and
-            "full_name" in request.json.keys() and
-            "email" in request.json.keys() and
-            "password" in request.json.keys() and
-            "class_name" in request.json.keys()):
-        db = get_db()
-        cursor = db.cursor()
-        try:
-            cursor.execute('''
-                INSERT INTO students (
-                    username, 
-                    full_name,
-                    email, 
-                    password_hash, 
-                    class_id
-                )
-                VALUES (
-                    %s, %s, %s, 
-                    crypt(%s, gen_salt('md5')),
-                    %s
-                );
-                ''', (
-                request.json.get("username"),
-                request.json.get("full_name"),
-                request.json.get("email"),
-                request.json.get("password"),
-                request.json.get("class_name")
-            ))
-        except psycopg2.errors.UniqueViolation: 
-            abort(409, "Student with same data already exists")
-        except Exception as e:
-            print(e, flush=True)
-            abort(400, "Unkonwn error")
-        db.commit()
-        return jsonify({
-            "result": "OK"
-        }), 201
-    else:
-        abort(400, "Wrong json")
+        abort(400, "Expected json")
+        print("Expected json", flush=True)
+    if type(request.json) != list:
+        abort(400, "Expected array of students")
+        print("Expected array of students", flush=True)
+    for student in request.json:
+        if ("username" in student.keys() and
+                "full_name" in student.keys() and
+                "email" in student.keys() and
+                "password" in student.keys() and
+                "class_id" in student.keys()):
+            db = get_db()
+            cursor = db.cursor()
+            try:
+                cursor.execute('''
+                    INSERT INTO students (
+                        username, 
+                        full_name,
+                        email, 
+                        password_hash, 
+                        class_id
+                    )
+                    VALUES (
+                        %s, %s, %s, 
+                        crypt(%s, gen_salt('md5')),
+                        %s
+                    );
+                    ''', (
+                    student["username"],
+                    student["full_name"],
+                    student["email"],
+                    student["password"],
+                    student["class_id"]
+                ))
+            except psycopg2.errors.UniqueViolation: 
+                abort(409, "Student with same data already exists")
+                print("Student with same data already exists", flush=True)
+            except Exception as e:
+                print(e, flush=True)
+                abort(400, "Unkonwn error")
+            else:
+                db.commit()
+                print("OK", flush=True)
+        else:
+            print("Wrong json", flush=True)
+            abort(400, "Wrong json")
+    return jsonify({
+        "result": "OK"
+    }), 201
 
 
-@bp.route("/create_teacher", methods = ("POST", ))
+@bp.route("/create_teachers", methods = ("POST", ))
 def create_teacher():
     if not request.is_json:
         abort("400", "Expected json")
-    if ("username" in request.json.keys() and
-            "full_name" in request.json.keys() and
-            "email" in request.json.keys() and
-            "password" in request.json.keys()):
-        db = get_db()
-        cursor = db.cursor()
-        try:
-            cursor.execute('''
-                INSERT INTO teachers (
-                    username, 
-                    full_name,
-                    email, 
-                    password_hash
-                )
-                VALUES (
-                    %s, %s, %s, 
-                    crypt(%s, gen_salt('md5'))
-                );
-                ''', (
-                request.json.get("username"),
-                request.json.get("full_name"),
-                request.json.get("email"),
-                request.json.get("password")
-            ))
-        except psycopg2.errors.UniqueViolation: 
-            abort(409, "Teacher with same data already exists")
-        except Exception:
-            abort(400, "Unkonwn error")
-        db.commit()
-        return jsonify({
-            "result": "OK"
-        }), 201
-    else:
-        abort(400, "Wrong json")
+        if ("username" in request.json.keys() and
+                "full_name" in request.json.keys() and
+                "email" in request.json.keys() and
+                "password" in request.json.keys()):
+            db = get_db()
+            cursor = db.cursor()
+            try:
+                cursor.execute('''
+                    INSERT INTO teachers (
+                        username, 
+                        full_name,
+                        email, 
+                        password_hash
+                    )
+                    VALUES (
+                        %s, %s, %s, 
+                        crypt(%s, gen_salt('md5'))
+                    );
+                    ''', (
+                    request.json["username"],
+                    request.json["full_name"],
+                    request.json["email"],
+                    request.json["password"]
+                ))
+            except psycopg2.errors.UniqueViolation: 
+                abort(409, "Teacher with same data already exists")
+            except Exception:
+                abort(400, "Unkonwn error")
+            db.commit()
+        else:
+            abort(400, "Wrong json")
+    return jsonify({
+                "result": "OK"
+            }), 201
 
 
 @bp.route("/set_class", methods = ("POST", ))
@@ -112,8 +121,8 @@ def set_class():
                 SET class_id=%s
                 WHERE id=%s;
                 ''', (
-                request.json.get("class_id"),
-                request.json.get("student_id")
+                request.json["class_id"],
+                request.json["student_id"]
             ))
         except Exception as e:
             print(e, flush=True)
@@ -134,23 +143,26 @@ def create_class():
         db = get_db()
         cursor = db.cursor()
         try:
-             cursor.execute('''
+            cursor.execute('''
                 INSERT INTO classes (
                     class_name
                 )
                 VALUES (
                     %s
-                );
+                ) RETURNING id;
                 ''', (
-                request.json.get("class_name"),
+                request.json["class_name"],
             ))
+            class_id = cursor.fetchone()
         except Exception as e:
             print(e, flush=True)
             abort(400, "Unknown Error")
-        db.commit()
-        return jsonify({
-            "result": "OK"
-        }), 200
+        else:
+            db.commit()
+            print(class_id, flush=True)
+            return jsonify({
+                "class_id": class_id[0]
+            }), 200
     else:
         abort(400, "Wrong json")
 
@@ -243,7 +255,7 @@ def create_subject():
                     %s
                 );
                 ''', (
-                request.json.get("subject_name"),
+                request.json["subject_name"],
             ))
         except Exception as e:
             print(e, flush=True)
