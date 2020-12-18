@@ -3,8 +3,8 @@ services:
     api:
         build: ./api
         command: gunicorn -b 0.0.0.0:8000 rateyard_api:create_app()
-        ports: 
-            - 8000:8000
+#        ports: 
+#            - 8000:8000
         external_links: 
             - db:docker-postgresql
     front:
@@ -23,5 +23,5 @@ services:
         volumes:
             - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
             - ./db/data:/var/lib/postgresql/data
-        ports:
-            - 5432:5432
+#        ports:
+#            - 5432:5432

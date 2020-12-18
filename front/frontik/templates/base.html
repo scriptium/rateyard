@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>{% block title %} {% endblock title %} - RateYard</title>
+    {% block header %} {% endblock %}
 </head>
 <body>
     {% block content %} {% endblock %}
+    {% block tail_js %} {% endblock %}
 </body>
 </html>
 

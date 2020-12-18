@@ -6,12 +6,10 @@ table, td, th {
 	border-collapse: collapse;
 }
 td {
-	border: 1px solid #a5a5a5;
 	width: 170px;
 	border-top: none;
 }
 th {
-	border: 1px solid #a5a5a5;
 	border-bottom: 1.5px solid #7a7a7a;
 	width: 170px;
 }
@@ -26,16 +24,15 @@ table {
     width: max-content;
     border: 1px;
 }
-#students {
+#class_table_body {
 	margin-bottom: 50px;	
-	overflow: scroll;
-	height: 155px;
+	overflow: auto;
+	max-height: 200px;
 	display: block;
-	overflow-x: hidden;
+    overflow-x: hidden;
 	border-top: none;
 }
-#students > td {
-	border: 1px solid #a5a5a5;
+#class_table_body > td {
 	border-left: none;
 }
 #class_table {
@@ -43,7 +40,7 @@ table {
 	border: none;
 }
 input[type="text"], input[type="password"] {
-	border: none;
+	border: 1px;
 }
 input[type="button"] {
 	width: 12px;

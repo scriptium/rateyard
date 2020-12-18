@@ -1,5 +1,5 @@
 function add_student() {
-    let table = document.getElementById("tbody");
+    let table = document.getElementById("class_table_body");
 
     let tr = document.createElement("tr");
 
@@ -34,20 +34,18 @@ function add_student() {
 
     let delete_button = document.createElement("input");
     delete_button.setAttribute("type", "button");
-    email.setAttribute("id", "del");
     delete_button.setAttribute("value", "-");
-    delete_button.setAttribute("onclick", "delete_student()");
+    delete_button.setAttribute("onclick", "delete_student(this)");
 
     let fields = [username, full_name, email, password, delete_button];
 
     for (i = 0; i < tds.length; i++) {
         tds[i].appendChild(fields[i]);
     }
-
+    table.scrollTop = table.scrollHeight;
 }
 
-function delete_student(id) {
-    alert(id);
-    // let tbody = document.getElementById("tbody");
-    // tbody.removeChild(button.parentNode);
+function delete_student(delete_button) {
+    row = delete_button.parentNode.parentNode;
+    row.remove();
 }

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    <h1>{% block title %}Admin - Main{% endblock %}</h1>
+    <h1>Admin - Main</h1>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 {% endblock %}
 
 
@@ -24,14 +25,7 @@
                         <th><input type="button" value="+" onclick="add_student()"></th>
                     </tr>
                 </thead>
-                <tbody id="tbody">
-                    <tr>
-                        <td><input type="text" name="username"  placeholder="Student username"></td>
-                        <td><input type="text" name="full_name"  placeholder="Student full_name"></td>
-                        <td><input type="text" name="email"  placeholder="Student email"></td>
-                        <td><input type="password" name="password"  placeholder="Student password"></td>
-                        <td><input type="button" value="-" onclick="delete_student(this.id)"></td>
-                    </tr>
+                <tbody id="class_table_body">
                 </tbody>
             </table>
             <input type="submit" value="Add class">
@@ -115,9 +109,8 @@
             <input type="submit" value="Logout" id="logout">
         </fieldset>
     </form>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/admin.js') }}"></script>
 {% endblock %}
 
-<!-- {% block tail_js %}
-    <script type="text/javascript" src="{{ url_for('static', filename='admin.js') }}"></script>
-{% endblock %} -->
+{% block tail_js %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %} 
