@@ -114,6 +114,22 @@ def add_class():
     resp = make_response(redirect(url_for("admin.home")))
     return resp, 200
 
+@bp.route("/delete_class", methods=("POST", ))
+def delete_class():
+    print(request.form, flush=True)
+    response_delete_class = requests.post(
+        current_app.config["API_HOST"] + "/admin/delete_class",
+        json = {
+            "class_id": request.form["class_id"]
+        }
+    )
+    if not response_delete_class.ok:
+        return render_template("./error.html", error_code=response_delete_class.raise_for_status)
+    resp = make_response(redirect(url_for("admin.home")))
+    return resp, 200
+    
+
+
 
 @bp.route("/add_subject", methods=("POST", ))
 def add_subject():
@@ -150,8 +166,8 @@ def add_student():
     
 
 
-@bp.route("/add_teachers", methods=("POST", ))
-def add_teachers():
+@bp.route("/add_teacher", methods=("POST", ))
+def add_teacher():
     response = requests.post(
         current_app.config["API_HOST"] + "/admin/create_teacher",
         json = {

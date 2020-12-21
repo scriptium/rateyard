@@ -55,7 +55,7 @@ def create_students():
                 print("Student with same data already exists", flush=True)
             except Exception as e:
                 print(e, flush=True)
-                abort(400, "Unkonwn error")
+                abort(400, "Unknown error")
             else:
                 db.commit()
                 print("OK", flush=True)
@@ -67,44 +67,114 @@ def create_students():
     }), 201
 
 
-@bp.route("/create_teachers", methods = ("POST", ))
-def create_teacher():
+@bp.route("/delete_students", methods = ("POST", ))
+def delete_students():
+    print(request.json, flush=True)
     if not request.is_json:
-        abort("400", "Expected json")
-        if ("username" in request.json.keys() and
-                "full_name" in request.json.keys() and
-                "email" in request.json.keys() and
-                "password" in request.json.keys()):
+        abort(400, "Expected json")
+        print("Expected json", flush=True)
+    if type(request.json) != list:
+        abort(400, "Expected array of students id")
+        print("Expected array of students id", flush=True)
+    for student in request.json:
+        if "student_id" in student.keys():
             db = get_db()
             cursor = db.cursor()
             try:
                 cursor.execute('''
-                    INSERT INTO teachers (
-                        username, 
-                        full_name,
-                        email, 
-                        password_hash
-                    )
-                    VALUES (
-                        %s, %s, %s, 
-                        crypt(%s, gen_salt('md5'))
-                    );
+                    DELETE FROM students
+                    WHERE id=%s RETURNING True
                     ''', (
-                    request.json["username"],
-                    request.json["full_name"],
-                    request.json["email"],
-                    request.json["password"]
+                    student["student_id"], 
                 ))
-            except psycopg2.errors.UniqueViolation: 
-                abort(409, "Teacher with same data already exists")
-            except Exception:
-                abort(400, "Unkonwn error")
-            db.commit()
+            except Exception as e:
+                print(e, flush=True)
+                abort(400, "Unknown error")
+            else:
+                db.commit()
+                if cursor.fetchone() is None:
+                    abort(400, 'There are not students with on of ids')
+                print("OK", flush=True)
         else:
+            print("Wrong json", flush=True)
             abort(400, "Wrong json")
+    return jsonify({
+        "result": "OK"
+    }), 201
+
+
+@bp.route("/create_teacher", methods = ("POST", ))
+def create_teacher():
+    if not request.is_json:
+        abort("400", "Expected json")
+    if ("username" in request.json.keys() and
+            "full_name" in request.json.keys() and
+            "email" in request.json.keys() and
+            "password" in request.json.keys()):
+        db = get_db()
+        cursor = db.cursor()
+        try:
+            cursor.execute('''
+                INSERT INTO teachers (
+                    username, 
+                    full_name,
+                    email, 
+                    password_hash
+                )
+                VALUES (
+                    %s, %s, %s, 
+                    crypt(%s, gen_salt('md5'))
+                );
+                ''', (
+                request.json["username"],
+                request.json["full_name"],
+                request.json["email"],
+                request.json["password"]
+            ))
+        except psycopg2.errors.UniqueViolation: 
+            abort(409, "Teacher with same data already exists")
+        except Exception:
+            abort(400, "Unkonwn error")
+        else:
+            db.commit()
+    else:
+        abort(400, "Wrong json")
     return jsonify({
                 "result": "OK"
             }), 201
+
+
+@bp.route("/delete_teacher", methods = ("POST", ))
+def delete_teacher():
+    print(request.json, flush=True)
+    if not request.is_json:
+        abort(400, "Expected json")
+        print("Expected json", flush=True)
+    if "teacher_id" in request.json.keys():
+        db = get_db()
+        cursor = db.cursor()
+        try:
+            cursor.execute('''
+                DELETE FROM teachers
+                WHERE id=%s RETURNING True
+                ''', (
+                request.json["teacher_id"], 
+            ))
+        except Exception as e:
+            print(e, flush=True)
+            abort(400, "Unknown error")
+        else:
+            db.commit()
+            if cursor.fetchone() is None:
+                abort(400, 'There are no teachers with on of ids')
+            print("OK", flush=True)
+    else:
+        print("Wrong json", flush=True)
+        abort(400, "Wrong json")
+    return jsonify({
+        "result": "OK"
+    }), 201
+
 
 
 @bp.route("/set_class", methods = ("POST", ))
@@ -165,6 +235,36 @@ def create_class():
             }), 200
     else:
         abort(400, "Wrong json")
+
+
+@bp.route("/delete_class", methods = ("POST", ))
+def delete_class():
+    if not request.is_json:
+        abort("400", "Expected json")
+    if "class_id" in request.json.keys():
+        db = get_db()
+        cursor = db.cursor()
+        try:
+            cursor.execute('''
+                DELETE FROM classes
+                WHERE id=%s RETURNING True
+                ''', (
+                request.json["class_id"], 
+            ))
+        except Exception as e:
+            print(e, flush=True)
+            abort(400, "Unknown error")
+        else:
+            db.commit()
+            if cursor.fetchone() is None:
+                abort(400, 'There is no class with this id')
+            print("OK", flush=True)
+    else:
+        print("Wrong json", flush=True)
+        abort(400, "Wrong json")
+    return jsonify({
+        "result": "OK"
+    }), 201
 
 
 @bp.route("/get_classes", methods = ("GET", ))
