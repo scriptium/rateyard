@@ -60,11 +60,20 @@ def home():
         students = requests.get(
             current_app.config["API_HOST"] + "/admin/get_students"
         )
-        return render_template("./admin/admin.html", 
+        return render_template("./admin/home.html", 
                                 classes = classes.json(),
                                 subjects = subjects.json(),
                                 students = students.json())    
 
+@bp.route("/student", methods=("GET", ))
+@admin_required
+def student():
+    if request.method == "GET":
+        classes = requests.get(
+            current_app.config["API_HOST"] + "/admin/get_classes"
+        )
+        return render_template("./admin/student.html", 
+                                classes = classes.json())    
 
 @bp.route("/add_class", methods=("POST", ))
 def add_class():
@@ -170,6 +179,7 @@ def login():
                 "username": request.form["username"],
                 "password": request.form["password"]
             }
+            
         )
         if not response.ok:
             return render_template("./error.html", error_code=response.raise_for_status)

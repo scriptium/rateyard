@@ -1,0 +1,17 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+#main {
+	background: #E5E5E5;
+	padding: 40px;
+	margin-left: 15%;
+}
+#inputs {
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+	grid-template-columns: 1fr 1fr;
+}
+#inputs > input {
+	display: block;
+}
