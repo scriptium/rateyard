@@ -5,11 +5,9 @@
     padding: 0;
     font-family: 'Roboto', sans-serif;
 }
-
 body {
     min-width: min-content;
 }
-
 #main {
 	margin-left: 200px;
 	background: #E5E5E5;
@@ -19,20 +17,20 @@ body {
 h5 {
 	font-size: 30px;
 }
-#inputs {
+#student_info {
 	display: grid;
 	grid-template-rows: 1fr 1fr;
 	grid-template-columns: 1fr 1fr;
 }
-#inputs > input {
+.input_text {
 	display: block;
 	padding: 5px;
 	margin: 5px;
 	border-radius: 10px;
 	border: 2px solid #666B3A;
 }
-#add_student > form > input[type="submit"] {
-	margin-top: 10px;
+.input_button {
+    margin-top: 10px;
 	width: 150px;
 	height: 50px;
 	font-size: 20px;
@@ -41,43 +39,25 @@ h5 {
 	border: 3px solid #666B3A;
 	border-radius: 15px;
 }
-#students_info {
-	display: grid;
-	grid-template-columns: auto auto;
-	grid-auto-rows: min-content;
-}
-#students_class {
-  	padding: 10px;
-  	text-align: left;
-}
-#sort_by {
-	padding: 10px;
-  	text-align: right;
-}
 #students_table {
-	grid-column-start: 1;
-	grid-column-end: 3;
-	padding: 10px;
-	table-layout: fixed;
-}
-#students_table > table {
+    margin-top: 10px;
 	width: 100%;
 	border-collapse: collapse;
 	border: 3px solid #666B3A;
 }
-#students_table > table > thead {
+#students_table > thead {
 	background: #ADAB76;
 	color: white;
 }
-#students_table > table > thead > tr > th {
+#students_table > thead > tr > th {
 	padding: 5px;
 }
 
-#students_table > table > tbody > tr > td {
+#students_table > tbody > tr > td {
 	background-color: #DCDFE4;
 	padding: 3px 5px;
 }
-#students_table > table > tbody > tr > td:last-child {
+#students_table > tbody > tr > td:last-child {
 	background-color: #DCDFE4;
 	padding: 3px 5px;
 	width: 22px;

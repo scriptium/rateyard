@@ -72,8 +72,18 @@ def student():
         classes = requests.get(
             current_app.config["API_HOST"] + "/admin/get_classes"
         )
+        students = requests.get(
+            current_app.config["API_HOST"] + "/admin/get_students"
+        )
         return render_template("./admin/student.html", 
-                                classes = classes.json())    
+                                classes = classes.json(),
+                                students = students.json())    
+
+@bp.route("/class", methods=("GET", ))
+@admin_required
+def classes():
+    if request.method == "GET":
+        return render_template("./admin/class.html")    
 
 @bp.route("/add_class", methods=("POST", ))
 def add_class():

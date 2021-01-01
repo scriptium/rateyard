@@ -45,7 +45,3 @@ function add_student() {
     table.scrollTop = table.scrollHeight;
 }
 
-function delete_student(delete_button) {
-    row = delete_button.parentNode.parentNode;
-    row.remove();
-}

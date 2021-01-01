@@ -9,22 +9,67 @@
     {% include "admin/nav.html" %}
     <div id="main">
         <div id="add_student">
-            <form action="pen1s.org" method="post">
-                <p>Додати учня до 
+            <form action="add_student" method="POST">
+                <h5>Додати учня дo 
                     <select name="class_id">
                         {% for class in classes %}
                             <option value={{ class['id'] }}>{{ class['name'] }}</option>
                         {% endfor %}                
                     </select> 
                     класу
-                </p>
+                </h5>
                 <div id="inputs">
-                    <input type="text" name="" placeholder="ПІБ">
-                    <input type="text" name="" placeholder="Логін">
-                    <input type="email" name="" placeholder="Електронна пошта">
-                    <input type="password" name="" placeholder="Пароль">
+                    <input type="text" name="full_name" placeholder="ПІБ">
+                    <input type="text" name="username" placeholder="Логін">
+                    <input type="email" name="email" placeholder="Електронна пошта">
+                    <input type="password" name="password" placeholder="Пароль">
                 </div>
+                <input type="submit" value="Додати">
             </form>
+        </div>
+        <div id="all_students">
+            <h5>Наявні учні</h5>
+            <div id="students_info">
+                <div id="students_class">
+                    Клас:
+                    <select name="class_id">
+                        {% for class in classes %}
+                            <option value={{ class['id'] }}>{{ class['name'] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div id="sort_by">
+                    Сортування:
+                    <select name="sort_by">
+                        <option value="1">Zhopa</option>
+                        <option value="2">Apohz</option>
+                    </select>
+                </div>
+                <div id="students_table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Full_name</th>
+                                <th>Email</th>
+                                <th>Class</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                                <tr>
+                                    <td>{{ student["username"] }}</td>
+                                    <td>{{ student["full_name"] }}</td>
+                                    <td>{{ student["email"] }}</td>
+                                    <td>{{ student["class"]["name"] }}</td>
+                                    <td><button type="button" class="delete_button" onclick="delete_student(this)"></button></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
