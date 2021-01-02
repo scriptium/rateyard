@@ -77,13 +77,15 @@ def student():
         )
         return render_template("./admin/student.html", 
                                 classes = classes.json(),
-                                students = students.json())    
+                                students = students.json(),
+                                section = "student")    
 
 @bp.route("/class", methods=("GET", ))
 @admin_required
 def classes():
     if request.method == "GET":
-        return render_template("./admin/class.html")    
+        return render_template("./admin/class.html", 
+                                section = "class")    
 
 @bp.route("/add_class", methods=("POST", ))
 def add_class():

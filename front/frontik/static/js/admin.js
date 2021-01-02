@@ -6,8 +6,7 @@ function add_student() {
     table.appendChild(tr);
 
     let tds = new Array(5);
-    for (i = 0; i < tds.length; i++) 
-    {
+    for (i = 0; i < tds.length; i++) {
         tds[i] = document.createElement("td");
         tr.appendChild(tds[i]);
     }

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/base.css') }}">
+    {% block header %} {% endblock %}
+</head>
+<body>
+    <nav id="sidebar">
+        <div id="title">
+            Rateyard
+            <div id="subtitle">Admin</div>
+        </div>
+        <a id="nav_student" href="student" {% if section=="student" %}class="active"{% endif %}>Учні</a>
+        <a id="nav_class" href="class" {% if section=="class" %}class="active"{% endif %}>Класи</a>
+        <a id="nav_group" href="group" {% if section=="group" %}class="active"{% endif %}>Групи</a>
+        <a id="nav_teacher" href="teacher" {% if section=="teacher" %}class="active"{% endif %}>Вчителі</a>
+        <a id="nav_subject" href="subject" {% if section=="subject" %}class="active"{% endif %}>Предмети</a>
+    </nav>
+    <div id="main">
+        {% block main %} {% endblock main%}
+    </div>
+    {% block tail_js %} {% endblock %}
+</body>
+</html>
+

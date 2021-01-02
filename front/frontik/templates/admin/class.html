@@ -1,44 +1,34 @@
-{% extends 'base.html' %}
+{% extends 'admin/base.html' %}
 
 {% block header %}
     <title>Admin - Main</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/class.css') }}">
 {% endblock header %}
 
-{% block content %}
-    {% include "admin/nav.html" %}
-    <div id="main">
-        <div id="add_class">
-            <form action="add_class" method="POST">
-                <h5>Додати клас</h5>
-                <input class="input_text" type="text" name="class_name" placeholder="Назва класу">
-                <p>Учні класу</p>
-                <div id="student_info">
-                    <input class="input_text" type="text" name="full_name" placeholder="ПІБ">
-                    <input class="input_text" type="text" name="username" placeholder="Логін">
-                    <input class="input_text" type="email" name="email" placeholder="Електронна пошта">
-                    <input class="input_text" type="password" name="password" placeholder="Пароль">
-                </div>
-                <input class="input_button" type="button" value="Додати учня" onclick="add_student_to_table(this)">
-                <table id="students_table">
-                    <thead>
-                        <tr>
-                            <th>Логін</th>
-                            <th>ПІБ</th>
-                            <th>Електронна пошта</th>
-                            <th>Клас</th>
-                            <th>Пароль</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-                <input class="input_button" type="submit" value="Додати клас">
-            </form>
-        </div>
+{% block main %}
+    <div class="block">
+        <form action="add_class" method="POST">
+            <p class="block_header">Додати клас</p>
+            <input class="input_text" type="text" name="class_name" placeholder="Назва класу" autocomplete="off">
+            <p>Учні класу</p>
+            <table id="students_table">
+                <thead>
+                    <tr>
+                        <th>Логін</th>
+                        <th>ПІБ</th>
+                        <th>Електронна пошта</th>
+                        <th>Пароль</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <button class="submit_button bottom_table_button" type="button" onclick="add_student_to_table(this)">Додати учня</button>
+            <input class="submit_button" type="submit" value="Додати клас">
+        </form>
     </div>
-{% endblock content %}
+{% endblock main %}
 
 {% block tail_js %}
     <script type="text/javascript" src="{{ url_for('static', filename='js/admin/class.js') }}"></script>

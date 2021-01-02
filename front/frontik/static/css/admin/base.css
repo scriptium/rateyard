@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+		font-family: 'Roboto', sans-serif;
+		outline: none;
+}
+body {
+    min-width: min-content;
+    background: #E5E5E5;
+}
+#main {
+	margin-left: 230px;
+	padding: 40px;
+}
+#main > .block {
+	margin-bottom: 20px;
+}
+.block_header {
+	font-size: 30px;
+	margin-bottom: 10px;
+}
+.block_input {
+	display: grid;
+	grid-template-columns: auto auto;
+	grid-template-columns: auto auto;
+}
+.input_text {
+	display: block;
+	padding: 5px;
+	margin: 5px 5px 5px 0px;
+	border-radius: 10px;
+	border: 2px solid #666B3A;
+}
+.submit_button {
+	display: block;
+	margin-top: 10px;
+	font-size: 15px;
+	padding: 5px 30px;
+	color: white;
+	background-color: #ADAB76;
+	border: 3px solid #666B3A;
+	border-radius: 15px;
+}
+#sidebar {
+	background: #666B3A;
+	width: 200px;
+	height: 100%;
+	font-size: 30px;
+	font-family: 'Noto Sans', sans-serif;
+	position: fixed;
+	display: grid;
+	grid-auto-rows: min-content;
+	padding: 15px;
+}
+#sidebar > * {
+	display: block;
+}
+#title {
+	color: white;
+	font-family: 'Kalam', cursive;
+	font-size: 28px;
+	height: min-content;
+	margin-left: 8px;
+	margin-bottom: 10px;
+}
+#subtitle {
+	font-size: 22px;
+	display: inline-block;
+}
+
+#sidebar > a {
+	border: 3px solid #0F211A;
+	border-radius: 15px;
+	color: black;
+	padding: 8px 17px;
+	margin-bottom: 10px;
+	text-decoration: none;
+	background-color: white;
+	font-size: 20px;
+}
+#sidebar > a:hover {
+	background:#dcdfe4;
+}
+#sidebar > a.active {
+	background: #ADAB76;
+	border-color: white;
+	color: white;
+}
+table {
+	width: 100%;
+	border-collapse: collapse;
+	border: 3px solid #666B3A;
+	background-color: white;
+}
+table > thead {
+	background: #ADAB76;
+	color: white;
+}
+th {
+	padding: 5px;
+}
+td {
+	padding: 3px 5px;
+}
+tbody tr:nth-child(odd) {
+  background-color:rgba(220, 223, 228, 0.5);
+}
+tbody tr:nth-child(even) {
+	background-color:#DCDFE4;
+}
+.delete_button {
+	background: none;
+	border: none;
+}
+.delete_button:after {
+	content: "\274c";
+	font-size: 20px;
+}
+	
+	
