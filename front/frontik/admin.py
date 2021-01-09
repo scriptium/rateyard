@@ -72,8 +72,7 @@ def students():
 @bp.route("/save_changes", methods=("POST", ))
 @admin_required
 def save_changes():
-    print(request.form, flush=True)
-    return "hello"
+    pass
 
 @bp.route("/classes", methods=("GET", ))
 @admin_required

@@ -51,6 +51,7 @@
                         <tbody>
                             {% for student in students %}
                                 <tr>
+                                    <td class="invisible"><input class="input_text_table" type="text" name="id" value="{{ student["id"] }}" readonly="readonly"></td>
                                     <td><input class="input_text_table" type="text" name="username" value="{{ student["username"] }}" readonly="readonly"></td>
                                     <td><input class="input_text_table" type="text" name="full_name" value="{{ student["full_name"] }}" readonly="readonly"></td>
                                     <td><input class="input_text_table" type="text" name="email" value="{{ student["email"] }}" readonly="readonly"></td>
@@ -60,7 +61,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                    <input type="submit" value="save_changes" class="save_changes_button">
+                    <input type="submit" value="Save changes" class="save_changes_button">
                 </form>
             </div>
         </div>

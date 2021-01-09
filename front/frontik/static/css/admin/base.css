@@ -48,7 +48,6 @@ body {
 .input_text_table:read-write:focus {
 	border-bottom: 4px solid #666B3A;
 }
-
 .submit_button {
 	display: block;
 	margin-top: 10px;
@@ -141,6 +140,17 @@ tbody tr:nth-child(even) {
 	overflow: auto;
 	overflow-x: hidden;
 }
-button:hover {
+button:hover, input[type="submit"] {
 	cursor: pointer;
+}
+.save_changes_button {
+	position: fixed;
+	font-size: 24px;
+	border-radius: 10px;
+	padding: 10px 30px;
+	right: 1%;
+	bottom: 1%;
+	background-color: #aca69f;
+	border-color: #696560;
+	color: white;
 }
