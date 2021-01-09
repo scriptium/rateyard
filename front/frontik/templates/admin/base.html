@@ -12,16 +12,18 @@
             Rateyard
             <div id="subtitle">Admin</div>
         </div>
-        <a id="nav_student" href="student" {% if section=="student" %}class="active"{% endif %}>Учні</a>
-        <a id="nav_class" href="class" {% if section=="class" %}class="active"{% endif %}>Класи</a>
-        <a id="nav_group" href="group" {% if section=="group" %}class="active"{% endif %}>Групи</a>
-        <a id="nav_teacher" href="teacher" {% if section=="teacher" %}class="active"{% endif %}>Вчителі</a>
-        <a id="nav_subject" href="subject" {% if section=="subject" %}class="active"{% endif %}>Предмети</a>
+        <a id="nav_students" href="students" {% if section=="students" %}class="active"{% endif %}>Учні</a>
+        <a id="nav_classs" href="classes" {% if section=="classes" %}class="active"{% endif %}>Класи</a>
+        <a id="nav_groups" href="groups" {% if section=="groups" %}class="active"{% endif %}>Групи</a>
+        <a id="nav_teachers" href="teachers" {% if section=="teachers" %}class="active"{% endif %}>Вчителі</a>
+        <a id="nav_subjects" href="subjects" {% if section=="subjects" %}class="active"{% endif %}>Предмети</a>
     </nav>
     <div id="main">
         {% block main %} {% endblock main%}
     </div>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/admin/base.js') }}"></script>
     {% block tail_js %} {% endblock %}
+
 </body>
 </html>
 

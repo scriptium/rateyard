@@ -1,0 +1,13 @@
+{% extends 'admin/base.html' %}
+
+{% block header %}
+    <title>Admin - Main</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/groups.css') }}">
+{% endblock header %}
+
+{% block main %}
+{% endblock main %}
+
+{% block tail_js %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/admin/groups.js') }}"></script>
+{% endblock tail_js %}

@@ -51,23 +51,11 @@ def unset_jwt_tokens():
 @admin_required
 def home():
     if request.method == "GET":
-        classes = requests.get(
-            current_app.config["API_HOST"] + "/admin/get_classes"
-        )
-        subjects = requests.get(
-            current_app.config["API_HOST"] + "/admin/get_subjects"
-        )
-        students = requests.get(
-            current_app.config["API_HOST"] + "/admin/get_students"
-        )
-        return render_template("./admin/home.html", 
-                                classes = classes.json(),
-                                subjects = subjects.json(),
-                                students = students.json())    
+        return render_template("./admin/base.html")  
 
-@bp.route("/student", methods=("GET", ))
+@bp.route("/students", methods=("GET", ))
 @admin_required
-def student():
+def students():
     if request.method == "GET":
         classes = requests.get(
             current_app.config["API_HOST"] + "/admin/get_classes"
@@ -75,17 +63,29 @@ def student():
         students = requests.get(
             current_app.config["API_HOST"] + "/admin/get_students"
         )
-        return render_template("./admin/student.html", 
+        return render_template("./admin/students.html", 
                                 classes = classes.json(),
                                 students = students.json(),
-                                section = "student")    
+                                section = "students")    
 
-@bp.route("/class", methods=("GET", ))
+
+@bp.route("/save_changes", methods=("POST", ))
+@admin_required
+def save_changes():
+    print(request.form, flush=True)
+    return "hello"
+
+@bp.route("/classes", methods=("GET", ))
 @admin_required
 def classes():
+    classes = requests.get(
+        current_app.config["API_HOST"] + "/admin/get_classes"
+    )
     if request.method == "GET":
-        return render_template("./admin/class.html", 
-                                section = "class")    
+        return render_template("./admin/classes.html",
+                                classes = classes.json(), 
+                                section = "classes")    
+
 
 @bp.route("/add_class", methods=("POST", ))
 def add_class():
@@ -123,8 +123,9 @@ def add_class():
     )
     if not response_create_students.ok:
         return render_template("./error.html", error_code=response_create_students.raise_for_status)
-    resp = make_response(redirect(url_for("admin.home")))
+    resp = make_response(redirect(url_for("admin.classes")))
     return resp, 200
+
 
 @bp.route("/delete_class", methods=("POST", ))
 def delete_class():
@@ -137,7 +138,7 @@ def delete_class():
     )
     if not response_delete_class.ok:
         return render_template("./error.html", error_code=response_delete_class.raise_for_status)
-    resp = make_response(redirect(url_for("admin.home")))
+    resp = make_response(redirect(url_for("admin.classes")))
     return resp, 200
     
 
@@ -153,7 +154,7 @@ def add_subject():
     )
     if not response.ok:
         return render_template("./error.html", error_code=response.raise_for_status)
-    resp = make_response(redirect(url_for("admin.home")))
+    resp = make_response(redirect(url_for("admin.subjects")))
     return resp, 200
     
 
@@ -173,7 +174,7 @@ def add_student():
     )
     if not response.ok:
         return render_template("./error.html", error_code=response.raise_for_status)
-    resp = make_response(redirect(url_for("admin.home")))
+    resp = make_response(redirect(url_for("admin.students")))
     return resp, 200
     
 
@@ -191,7 +192,7 @@ def add_teacher():
     )
     if not response.ok:
         return render_template("./error.html", error_code=response.raise_for_status)
-    resp = make_response(redirect(url_for("admin.home")))
+    resp = make_response(redirect(url_for("admin.teachers")))
     return resp, 200
 
 

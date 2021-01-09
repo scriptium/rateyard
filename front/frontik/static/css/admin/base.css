@@ -11,6 +11,9 @@ body {
     min-width: min-content;
     background: #E5E5E5;
 }
+.invisible {
+	display: none;
+}
 #main {
 	margin-left: 230px;
 	padding: 40px;
@@ -25,7 +28,6 @@ body {
 .block_input {
 	display: grid;
 	grid-template-columns: auto auto;
-	grid-template-columns: auto auto;
 }
 .input_text {
 	display: block;
@@ -34,6 +36,20 @@ body {
 	border-radius: 10px;
 	border: 2px solid #666B3A;
 }
+.input_text_table {
+	width: 100%;
+	background: none;
+	border: none;
+	color: black;
+	font-size: 15px;
+}
+.input_text_table:read-write {
+	border-bottom: 2px solid #666B3A;
+}
+.input_text_table:read-write:focus {
+	border-bottom: 4px solid #666B3A;
+}
+
 .submit_button {
 	display: block;
 	margin-top: 10px;
@@ -119,5 +135,26 @@ tbody tr:nth-child(even) {
 	content: "\274c";
 	font-size: 20px;
 }
-	
-	
+.table_sortable .th_sortable {
+	cursor: pointer;
+}
+.table_sortable .th_sort_ascending::after {
+	content: "\25b4";
+	margin-left: 5px;
+}
+.table_sortable .th_sort_descending::after {
+	content: "\25be";
+	margin-left: 5px;
+}
+.table_expandable tbody, 
+.table_expandable thead {
+	display: block;
+}
+.table_expandable tbody {
+	max-height: 300px;
+	overflow: auto;
+	overflow-x: hidden;
+}
+button:hover {
+	cursor: pointer;
+}

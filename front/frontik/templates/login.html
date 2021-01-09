@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    <h1>{% block title %}Login{% endblock %}</h1>
+    <title>Login - Main</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 {% endblock %}
 
-{% block content %}
-    ЖУРНАЛ ОЦЕНОК
-    <br>
-    <b>ВЫБЕРИТЕ КТО ВЫ</b><br>
-    <a href="teacher/login">Login as teacher</a><br>
-    <a href="student/login">Login as student</a><br>
-    
-{% endblock %}
+{% block main %}
+    <div class="login_block">
+        <p class="header">Rateyard</p>
+        <a href="teacher/login">Login as teacher</a>
+        <a href="student/login">Login as student</a>
+    </div>
+{% endblock main %}
+
+

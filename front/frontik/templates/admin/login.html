@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Admin login{% endblock %}</h1>
-{% endblock %}
+  {% block title %}Admin login{% endblock %}
+{% endblock header %}
 
-{% block content %}
+{% block main %}
     ADMIN LOGIN
     <form action="" method="POST">
        <label for="username">Admin username:</label><br>
@@ -13,5 +13,5 @@
        <input type="password" name="password" id="password" placeholder="password"><br>
        <input type="submit" value="Login">
     </form>  
-{% endblock %}
+{% endblock main %}
 

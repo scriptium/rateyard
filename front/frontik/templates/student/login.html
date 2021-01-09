@@ -2,9 +2,9 @@
 
 {% block header %}
   <h1>{% block title %}Student login{% endblock %}</h1>
-{% endblock %}
+{% endblock header%}
 
-{% block content %}
+{% block main %}
     STUDENT LOGIN
     <form action="" method="POST">
        <label for="username">Username:</label><br>
@@ -13,6 +13,6 @@
        <input type="password" name="password" id="password" placeholder="password"><br>
        <input type="submit" value="Login">
     </form>  
-{% endblock %}
+{% endblock main %}
 
 

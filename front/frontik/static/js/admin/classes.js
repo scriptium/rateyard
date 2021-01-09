@@ -1,10 +1,16 @@
 function add_student_to_table(add_button) {
-    let students_table = document.getElementById("students_table");
+    let tbody = document.getElementById("students_table").tBodies[0];
+    for(let row_index = 0; row_index < tbody.rows.length; row_index++) {
+        for(let col_index = 0; col_index < tbody.rows[row_index].cells.length; col_index++) {
+            let cell = tbody.rows[row_index].cells[col_index];
+            if(cell.firstChild.tagName != "INPUT") continue;
+            let input = cell.firstChild;
+            input.setAttribute("readonly", "readonly")
+        }
+    }
 
     let tr = document.createElement("tr");
-
-    students_table.children[1].appendChild(tr);
-
+    tbody.appendChild(tr);
     let tds = new Array(5);
     for (i = 0; i < tds.length; i++) {
         tds[i] = document.createElement("td");
@@ -16,7 +22,7 @@ function add_student_to_table(add_button) {
     username.setAttribute("class", "input_text_table");
     username.setAttribute("placeholder", "Student username");
     username.setAttribute("autocomplete", "off");
-
+ 
     let full_name = document.createElement("input");
     full_name.setAttribute("name", "full_name");
     full_name.setAttribute("class", "input_text_table");
@@ -40,12 +46,14 @@ function add_student_to_table(add_button) {
     delete_button.setAttribute("class", "delete_button");
     delete_button.setAttribute("onclick", "delete_student(this)");
 
+    
+
     let fields = [username, full_name, email, password, delete_button];
 
     for (i = 0; i < tds.length; i++) {
         tds[i].appendChild(fields[i]);
     }
-    students_table.scrollTop = students_table.scrollHeight;
+    tbody.scrollTop = tbody.scrollHeight;
 }
 
 function delete_student(delete_button) {
