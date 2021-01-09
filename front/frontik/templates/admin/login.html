@@ -1,17 +1,23 @@
-{% extends 'base.html' %}
-
-{% block header %}
-  {% block title %}Admin login{% endblock %}
-{% endblock header %}
-
-{% block main %}
-    ADMIN LOGIN
-    <form action="" method="POST">
-       <label for="username">Admin username:</label><br>
-       <input type="text" name="username" id="username" placeholder="username"><br>
-       <label for="password">Admin password:</label><br>
-       <input type="password" name="password" id="password" placeholder="password"><br>
-       <input type="submit" value="Login">
-    </form>  
-{% endblock main %}
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/login.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/logo.css') }}">
+</head>
+<body>
+  <div id="content">
+    <div id="title">
+      Rateyard
+      <div id="subtitle">Admin</div>
+    </div>
+    <form id="main_form" action="" method="POST">
+      <input autocomplete="off" class="input_text" type="text" name="username" id="username" placeholder="Логін"><br>
+      <input autocomplete="off" class="input_text" type="password" name="password" id="password" placeholder="Пароль"><br>
+      <input class="input_submit" type="submit" value="Увійти">
+    </form>
+  </div>
+</body>
+</html>

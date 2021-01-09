@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@700&display=swap');
+#title {
+	color: white;
+	font-family: 'Kalam', cursive;
+	font-size: 28px;
+	height: min-content;
+	margin-left: 8px;
+	margin-bottom: 10px;
+}
+#subtitle {
+	font-size: 22px;
+	display: inline-block;
+}

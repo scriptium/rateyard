@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@700&display=swap');
 
 * {
     margin: 0;
@@ -74,19 +73,6 @@ body {
 #sidebar > * {
 	display: block;
 }
-#title {
-	color: white;
-	font-family: 'Kalam', cursive;
-	font-size: 28px;
-	height: min-content;
-	margin-left: 8px;
-	margin-bottom: 10px;
-}
-#subtitle {
-	font-size: 22px;
-	display: inline-block;
-}
-
 #sidebar > a {
 	border: 3px solid #0F211A;
 	border-radius: 15px;
