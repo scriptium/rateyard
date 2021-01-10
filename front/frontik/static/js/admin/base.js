@@ -32,6 +32,8 @@ function make_readable_row(tbody, selected_row) {
     }
 }
 
+
+
 document.querySelectorAll(".table_sortable .th_sortable").forEach(header => {
     header.addEventListener("click", () => {
         let table = header.parentElement.parentElement.parentElement;
@@ -40,6 +42,7 @@ document.querySelectorAll(".table_sortable .th_sortable").forEach(header => {
         sort_table_by_column(table, column_header, !ascending);
     });
 });
+
 
 document.addEventListener("dblclick", function(event)  {
     if(event.target && event.target.classList.contains("input_text_table")) {

@@ -72,7 +72,7 @@ def students():
 @bp.route("/save_changes", methods=("POST", ))
 @admin_required
 def save_changes():
-    pass
+    return 200
 
 @bp.route("/classes", methods=("GET", ))
 @admin_required

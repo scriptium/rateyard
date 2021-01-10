@@ -47,7 +47,6 @@ function add_student_to_table(add_button) {
     delete_button.setAttribute("onclick", "delete_student(this)");
 
     
-
     let fields = [username, full_name, email, password, delete_button];
 
     for (i = 0; i < tds.length; i++) {
