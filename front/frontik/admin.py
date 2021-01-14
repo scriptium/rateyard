@@ -19,8 +19,8 @@ import requests
 bp = Blueprint("admin", __name__)
 
 
-def get_me():
-    pass
+#def get_me():
+#    pass
 
 
 def admin_required(fn):
@@ -84,6 +84,43 @@ def classes():
         return render_template("./admin/classes.html",
                                 classes = classes.json(), 
                                 section = "classes")    
+
+
+@bp.route("/teachers", methods=("GET", ))
+@admin_required
+def teachers():
+    teachers = requests.get(
+        current_app.config["API_HOST"] + "/admin/get_teachers"
+    )
+    print(teachers)
+    if request.method == "GET":
+        return render_template("./admin/teachers.html",
+                                teachers = teachers.json(), 
+                                section = "teachers")
+
+
+@bp.route("/groups", methods=("GET", ))
+@admin_required
+def groups():
+    groups = requests.get(
+        current_app.config["API_HOST"] + "/admin/get_groups"
+    )
+    if request.method == "GET":
+        return render_template("./admin/groups.html",
+                                groups = groups.json(), 
+                                section = "groups")
+
+
+@bp.route("/subjects", methods=("GET", ))
+@admin_required
+def subjects():
+    subjects = requests.get(
+        current_app.config["API_HOST"] + "/admin/get_subjects"
+    )
+    if request.method == "GET":
+        return render_template("./admin/subjects.html",
+                                subjects = subjects.json(), 
+                                section = "subjects")
 
 
 @bp.route("/add_class", methods=("POST", ))

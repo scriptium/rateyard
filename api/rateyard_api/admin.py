@@ -318,6 +318,29 @@ def get_students():
     return jsonify(result), 200
 
 
+@bp.route("/get_teachers", methods = ("GET", ))
+def get_teachers():
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('''
+        SELECT teachers.id, teachers.username, teachers.full_name, teachers.email
+        FROM teachers;
+    ''')
+    exec_result = cursor.fetchall()
+    print(exec_result, flush=True)
+    if exec_result is None:
+        return None
+    result = [{
+        "id": data[0],
+        "username": data[1],
+        "full_name": data[2],
+        "email": data[3],
+        "type": "Teacher"
+        } for data in exec_result
+    ]
+    return jsonify(result), 200
+
+
 @bp.route("/get_subjects", methods = ("GET", ))
 def get_subjects():
     db = get_db()
@@ -366,3 +389,5 @@ def create_subject():
         }), 200
     else:
         abort(400, "Wrong json")
+
+

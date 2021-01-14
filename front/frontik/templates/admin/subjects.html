@@ -1,0 +1,50 @@
+{% extends 'admin/base.html' %}
+
+{% block header %}
+    <title>Admin - Main</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/subjects.css') }}">
+{% endblock header %}
+
+{% block main %}
+    <div class="block">
+        <form action="add_subject" method="POST">
+            Додати предмет
+            <div class="block_input">
+                <input class="input_text" type="text" name="subject_name" placeholder="Назва предмету" autocomplete="off">
+            </div>
+            <input class="submit_button" type="submit" value="Додати">
+        </form>
+    </div>
+    <div class="block">
+        <p class="block_header">Наявні предмети</p>
+        <div id="subjects_info">
+            <div id="subjects_table">
+                <form action="save_changes" method="POST">
+                    <table class="table_sortable">
+                        <thead>
+                            <tr>
+                                <th class="th_sortable">Назва предмету</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="subjects_table">
+                            {% for subject in subjects %}
+                                <tr>
+                                    <td><input class="input_text_table" type="text" name="subject_name" value="{{ subject["name"] }}" readonly="readonly"></td>
+                                    <td><button type="button" class="edit_button" onclick="toggle_edit_row(this)" ></button></td>
+                                    <td><button type="button" class="delete_button" onclick="delete_student(this)"></button></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                     <input type="submit" value="Save changes" class="save_changes_button" onclick="save_changes()"> 
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock main %}
+
+{% block tail_js %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/admin/students.js') }}"></script>
+{% endblock tail_js %}

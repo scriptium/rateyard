@@ -41,7 +41,7 @@ function toggle_edit_row(button){
         let cell = row.cells[col_index];
         if(cell.firstChild.tagName != "INPUT") continue;
         let input = cell.firstChild;
-        input.setAttribute("data-previous", input.getAttribute("value"));
+        input.setAttribute("data-previous", input.value);
     }
 
     let editButton = row.getElementsByClassName("edit_button")[0];
@@ -63,11 +63,12 @@ function confirm_edit_row(button){
         if(cell.firstChild.tagName != "INPUT") continue;
         let input = cell.firstChild;
 
-        if ( input.getAttribute("data-previous") != input.getAttribute("value") ) 
+        if ( input.getAttribute("data-previous") != input.value ) 
         {
             difference = true;
-            break;
         }
+        input.removeAttribute("data-previous");
+        
     }
 
     if ( difference ) row.style.backgroundColor = 'lightgreen';
@@ -98,7 +99,7 @@ function cancel_edit_row(button){
         let cell = row.cells[col_index];
         if(cell.firstChild.tagName != "INPUT") continue;
         let input = cell.firstChild;
-        input.setAttribute("value", input.getAttribute("data-previous"));
+        input.value = input.getAttribute("data-previous");
         input.removeAttribute("data-previous");
     }
 

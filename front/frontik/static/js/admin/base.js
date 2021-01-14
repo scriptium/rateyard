@@ -44,10 +44,10 @@ document.querySelectorAll(".table_sortable .th_sortable").forEach(header => {
 });
 
 
-document.addEventListener("dblclick", function(event)  {
-    if(event.target && event.target.classList.contains("input_text_table")) {
-        let tbody = event.target.parentElement.parentElement.parentElement;
-        let selected_row = Array.prototype.indexOf.call(tbody.children, event.target.parentElement.parentElement);
-        make_readable_row(tbody, selected_row);
-    }
-});
+// document.addEventListener("dblclick", function(event)  {
+//     if(event.target && event.target.classList.contains("input_text_table")) {
+//         let tbody = event.target.parentElement.parentElement.parentElement;
+//         let selected_row = Array.prototype.indexOf.call(tbody.children, event.target.parentElement.parentElement);
+//         make_readable_row(tbody, selected_row);
+//     }
+// });
