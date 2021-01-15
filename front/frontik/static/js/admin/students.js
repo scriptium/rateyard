@@ -137,11 +137,25 @@ function make_readwrite_row(button){
 }
 
 function save_changes() {
-    deletedStudents = document.querySelectorAll('[data-changed-delete]');
+    let deletedStudents = document.querySelectorAll('[data-changed-delete]');
 
     for(let i = 0; i < deletedStudents.length; i++)
     {
         console.log(deletedStudents[i]);
+
+        let client = new XMLHttpRequest();
+        client.open("POST", "http://localhost:5000/admin/delete_students", false);
+        client.setRequestHeader("Content-Type", "application/json");
     }
+
+    let changedStudents = document.querySelectorAll('[data-changed]');
+
+    for(let i = 0; i < changedStudents.length; i++)
+    {
+        console.log(changedStudents[i]);
+
+    }
+
+
     return;
 }

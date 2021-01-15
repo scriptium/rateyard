@@ -3,7 +3,8 @@ import json
 
 from flask import (Flask, Blueprint, request, jsonify,
     abort, send_file, Response, redirect,
-    current_app, render_template, make_response, url_for
+    current_app, render_template, make_response, url_for,
+    redirect
 )
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
@@ -24,6 +25,17 @@ def create_app(test_config=None):
                 os.path.join(os.path.dirname( __file__ ), 'config.py'), silent=False)
     else:
         app.config.from_mapping(test_config)
+
+        
+@app.after_request
+def remove_redirect_body(response):
+    print(response.status_code, end='')
+    if response.status_code in range(300, 400):
+        print(' data removed', end='')
+        response.data = ''
+    print()
+    return response
+
     
     from . import student
     from . import teacher

@@ -69,11 +69,6 @@ def students():
                                 section = "students")    
 
 
-@bp.route("/save_changes", methods=("POST", ))
-@admin_required
-def save_changes():
-    return 200
-
 @bp.route("/classes", methods=("GET", ))
 @admin_required
 def classes():
@@ -123,6 +118,31 @@ def subjects():
                                 section = "subjects")
 
 
+@bp.route("/save_changes", methods=("POST", ))
+@admin_required
+def save_changes():
+    form_data = request.form.to_dict(flat=False)
+    print(form_data, flush=True)
+    try: 
+        students = [
+            {
+                "username": username,
+                "full_name": full_name,
+                "email": email
+                #"class_id": 
+            
+            } for (
+                username, full_name, email,
+                password) in zip(
+                form_data["username"], form_data["full_name"],
+                form_data["email"])
+        ]
+    except Exception:
+        abort(400, "Oops... Something went wrong")
+
+    return 'OK'
+
+
 @bp.route("/add_class", methods=("POST", ))
 def add_class():
     print(request.form, flush=True)
@@ -160,7 +180,7 @@ def add_class():
     if not response_create_students.ok:
         return render_template("./error.html", error_code=response_create_students.raise_for_status)
     resp = make_response(redirect(url_for("admin.classes")))
-    return resp, 200
+    return resp
 
 
 @bp.route("/delete_class", methods=("POST", ))
@@ -175,7 +195,7 @@ def delete_class():
     if not response_delete_class.ok:
         return render_template("./error.html", error_code=response_delete_class.raise_for_status)
     resp = make_response(redirect(url_for("admin.classes")))
-    return resp, 200
+    return resp
     
 
 
@@ -191,7 +211,7 @@ def add_subject():
     if not response.ok:
         return render_template("./error.html", error_code=response.raise_for_status)
     resp = make_response(redirect(url_for("admin.subjects")))
-    return resp, 200
+    return resp
     
 
 
@@ -211,7 +231,7 @@ def add_student():
     if not response.ok:
         return render_template("./error.html", error_code=response.raise_for_status)
     resp = make_response(redirect(url_for("admin.students")))
-    return resp, 200
+    return resp
     
 
 
@@ -229,7 +249,7 @@ def add_teacher():
     if not response.ok:
         return render_template("./error.html", error_code=response.raise_for_status)
     resp = make_response(redirect(url_for("admin.teachers")))
-    return resp, 200
+    return resp
 
 
 
@@ -251,7 +271,7 @@ def login():
         resp = make_response(redirect(url_for("admin.home")))
         set_access_cookies(resp, response.json()["access_token"])
         set_refresh_cookies(resp, response.json()["refresh_token"])
-        return resp, 200
+        return resp
        
 
 

@@ -103,6 +103,47 @@ def delete_students():
     }), 201
 
 
+@bp.route("/change_students", methods = ("POST", ))
+def change_students():
+    print(request.json, flush=True)
+    if not request.is_json:
+        abort(400, "Expected json")
+        print("Expected json", flush=True)
+    if type(request.json) != list:
+        abort(400, "Expected array of students id")
+        print("Expected array of students id", flush=True)
+    for student in request.json:
+        if "student_id" in student.keys():
+            db = get_db()
+            cursor = db.cursor()
+            try:
+                cursor.execute('''
+                    UPDATE students
+                    SET username=%s, full_name=%s, email=%s, class_id=%s
+                    WHERE id=%s;
+                    ''', (
+                    student["username"],
+                    student["full_name"],
+                    student["email"],
+                    student["class_id"],
+                    student["student_id"], 
+                ))
+            except Exception as e:
+                print(e, flush=True)
+                abort(400, "Unknown error")
+            else:
+                db.commit()
+                if cursor.fetchone() is None:
+                    abort(400, 'There are not students with on of ids')
+                print("OK", flush=True)
+        else:
+            print("Wrong json", flush=True)
+            abort(400, "Wrong json")
+    return jsonify({
+        "result": "OK"
+    }), 201
+
+
 @bp.route("/create_teacher", methods = ("POST", ))
 def create_teacher():
     if not request.is_json:
