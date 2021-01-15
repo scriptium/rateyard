@@ -27,14 +27,14 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
 
         
-@app.after_request
-def remove_redirect_body(response):
-    print(response.status_code, end='')
-    if response.status_code in range(300, 400):
-        print(' data removed', end='')
-        response.data = ''
-    print()
-    return response
+    @app.after_request
+    def remove_redirect_body(response):
+        print(response.status_code, end='')
+        if response.status_code in range(300, 400):
+            print(' data removed', end='')
+            response.data = ''
+        print()
+        return response
 
     
     from . import student
