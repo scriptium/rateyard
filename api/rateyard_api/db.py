@@ -42,6 +42,28 @@ def get_student(student_id: int):
     }
 
 
+def get_student_by_username(student_username: int):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('''
+        SELECT id, username, full_name, email, class_id
+        FROM students WHERE username=%s;
+    ''', (
+        student_username
+    ))
+    data = cursor.fetchone()
+    if data is None:
+        raise ObjectNotExists
+    return {
+        "id": data[0],
+        "username": data[1],
+        "full_name": data[2],
+        "email": data[3],
+        "class_id": data[4],
+        "type": "Student"
+    }
+
+
 def get_teacher(teacher_id: int):
     db = get_db()
     cursor = db.cursor()

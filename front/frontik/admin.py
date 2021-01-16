@@ -118,30 +118,18 @@ def subjects():
                                 section = "subjects")
 
 
-@bp.route("/save_changes", methods=("POST", ))
+@bp.route("/students/save_changes", methods=("POST", ))
 @admin_required
 def save_changes():
-    form_data = request.form.to_dict(flat=False)
-    print(form_data, flush=True)
-    try: 
-        students = [
-            {
-                "username": username,
-                "full_name": full_name,
-                "email": email
-                #"class_id": 
-            
-            } for (
-                username, full_name, email,
-                password) in zip(
-                form_data["username"], form_data["full_name"],
-                form_data["email"])
-        ]
-    except Exception:
-        abort(400, "Oops... Something went wrong")
-
-    return 'OK'
-
+    print("Students to delete:", request.json['studentsToDeleteIds'])
+    if request.json['studentsToDeleteIds']!=[]:
+        response = requests.post(
+            current_app.config["API_HOST"] + "/admin/delete_students",
+            json=request.json['studentsToDeleteIds']
+        )
+    resp = make_response(redirect(url_for("admin.students")))
+    print('Delete response', response.status_code)
+    return '', 200
 
 @bp.route("/add_class", methods=("POST", ))
 def add_class():
@@ -253,7 +241,7 @@ def add_teacher():
 
 
 
-@bp.route("/login/", methods=("GET", "POST"))
+@bp.route("/login", methods=("GET", "POST"))
 def login():
     if request.method == "GET":
         return render_template("./admin/login.html")

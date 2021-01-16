@@ -137,25 +137,39 @@ function make_readwrite_row(button){
 }
 
 function save_changes() {
-    let deletedStudents = document.querySelectorAll('[data-changed-delete]');
+    let studentsToDelete = document.querySelectorAll('[data-changed-delete]');
 
-    for(let i = 0; i < deletedStudents.length; i++)
+    
+    let studentsToDeleteIds = [];
+    for(let i = 0; i < studentsToDelete.length; i++)
     {
-        console.log(deletedStudents[i]);
+        studentsToDeleteIds.push(studentsToDelete[i].getAttribute("value"));
 
-        let client = new XMLHttpRequest();
-        client.open("POST", "http://localhost:5000/admin/delete_students", false);
-        client.setRequestHeader("Content-Type", "application/json");
+        // studentsToDeleteIds[ deletedStudents[i].getAttribute("value") ] = ({"username" : deletedStudents[i].children[0].firstChild.value, "full_name" : deletedStudents[i].children[1].firstChild.value,
+        // "email" : deletedStudents[i].children[2].firstChild.value, "class" : deletedStudents[i].children[3].firstChild.value});
     }
 
-    let changedStudents = document.querySelectorAll('[data-changed]');
+    console.log(studentsToDeleteIds);
+    requestJSON = { studentsToDeleteIds: studentsToDeleteIds};
 
-    for(let i = 0; i < changedStudents.length; i++)
-    {
-        console.log(changedStudents[i]);
-
+    let client = new XMLHttpRequest();
+    client.open("POST", "http://localhost:5000/admin/students/save_changes");
+    client.setRequestHeader("Content-Type", "application/json");
+    client.onreadystatechange = function() {
+        if (this.status==200)
+        {
+            document.location.reload();
+        }
+        else {
+            document.body.innerHTML = "Something wents wrong...";
+        }
     }
+    client.send(JSON.stringify(requestJSON));
 
+    // let changedStudents = document.querySelectorAll('[data-changed]');
 
-    return;
+    // for(let i = 0; i < changedStudents.length; i++)
+    // {
+
+    // }
 }

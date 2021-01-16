@@ -69,38 +69,41 @@ def create_students():
 
 @bp.route("/delete_students", methods = ("POST", ))
 def delete_students():
-    print(request.json, flush=True)
     if not request.is_json:
         abort(400, "Expected json")
-        print("Expected json", flush=True)
     if type(request.json) != list:
         abort(400, "Expected array of students id")
-        print("Expected array of students id", flush=True)
-    for student in request.json:
-        if "student_id" in student.keys():
-            db = get_db()
-            cursor = db.cursor()
-            try:
-                cursor.execute('''
-                    DELETE FROM students
-                    WHERE id=%s RETURNING True
-                    ''', (
-                    student["student_id"], 
-                ))
-            except Exception as e:
-                print(e, flush=True)
-                abort(400, "Unknown error")
-            else:
-                db.commit()
-                if cursor.fetchone() is None:
-                    abort(400, 'There are not students with on of ids')
-                print("OK", flush=True)
-        else:
-            print("Wrong json", flush=True)
-            abort(400, "Wrong json")
+    exec_str = '''
+            DELETE FROM students
+            WHERE False
+            '''
+    exec_args = []
+    for student_id in request.json:
+        exec_str += (" OR  id=%s")
+        exec_args.append(student_id)
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute(exec_str, exec_args)
+    db.commit()
+    return jsonify({
+        "result": "OK"
+    }), 200
+    '''
+    except Exception as e:
+        print(e, flush=True)
+        abort(400, "Unknown error")
+    else:
+        db.commit()
+        if cursor.fetchone() is None:
+            abort(400, 'There are not students with on of ids')
+        print("OK", flush=True)
+    else:
+        print("Wrong json", flush=True)
+        abort(400, "Wrong json")
     return jsonify({
         "result": "OK"
     }), 201
+    '''
 
 
 @bp.route("/change_students", methods = ("POST", ))

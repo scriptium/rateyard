@@ -51,7 +51,7 @@
                         </thead>
                         <tbody id="students_table">
                             {% for student in students %}
-                                <tr>
+                                <tr value="{{ student["id"] }}">
                                     <td><input class="input_text_table" type="text" name="username" value="{{ student["username"] }}" readonly="readonly"></td>
                                     <td><input class="input_text_table" type="text" name="full_name" value="{{ student["full_name"] }}" readonly="readonly"></td>
                                     <td><input class="input_text_table" type="text" name="email" value="{{ student["email"] }}" readonly="readonly"></td>
@@ -62,7 +62,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                     <input type="button" value="Save changes" class="save_changes_button" onclick="save_changes()"> 
+                    <input type="button" value="Save changes" class="save_changes_button" onclick="save_changes()"> 
                 </form>
             </div>
         </div>
