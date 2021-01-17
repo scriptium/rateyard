@@ -53,9 +53,6 @@ def create_students():
             except psycopg2.errors.UniqueViolation: 
                 abort(409, "Student with same data already exists")
                 print("Student with same data already exists", flush=True)
-            except Exception as e:
-                print(e, flush=True)
-                abort(400, "Unknown error")
             else:
                 db.commit()
                 print("OK", flush=True)
@@ -79,6 +76,7 @@ def delete_students():
             '''
     exec_args = []
     for student_id in request.json:
+        print(student_id)
         exec_str += (" OR  id=%s")
         exec_args.append(student_id)
     db = get_db()
@@ -106,8 +104,8 @@ def delete_students():
     '''
 
 
-@bp.route("/change_students", methods = ("POST", ))
-def change_students():
+@bp.route("/edit_students", methods = ("POST", ))
+def edit_students():
     print(request.json, flush=True)
     if not request.is_json:
         abort(400, "Expected json")
@@ -116,29 +114,28 @@ def change_students():
         abort(400, "Expected array of students id")
         print("Expected array of students id", flush=True)
     for student in request.json:
-        if "student_id" in student.keys():
+        if ("id" in student.keys() and
+                "username" in student.keys() and
+                "full_name" in student.keys() and
+                "email" in student.keys() and
+                "class_id" in student.keys()):
             db = get_db()
             cursor = db.cursor()
-            try:
-                cursor.execute('''
-                    UPDATE students
-                    SET username=%s, full_name=%s, email=%s, class_id=%s
-                    WHERE id=%s;
-                    ''', (
-                    student["username"],
-                    student["full_name"],
-                    student["email"],
-                    student["class_id"],
-                    student["student_id"], 
-                ))
-            except Exception as e:
-                print(e, flush=True)
-                abort(400, "Unknown error")
-            else:
-                db.commit()
-                if cursor.fetchone() is None:
-                    abort(400, 'There are not students with on of ids')
-                print("OK", flush=True)
+            cursor.execute('''
+                UPDATE students
+                SET username=%s, full_name=%s, email=%s, class_id=%s
+                WHERE id=%s RETURNING True;
+                ''', (
+                student["username"],
+                student["full_name"],
+                student["email"],
+                student["class_id"],
+                student["id"],
+            ))
+            if cursor.fetchone() is None:
+                abort(400, 'There are not students with on of ids')
+            db.commit()
+            print("OK", flush=True)
         else:
             print("Wrong json", flush=True)
             abort(400, "Wrong json")
@@ -177,8 +174,6 @@ def create_teacher():
             ))
         except psycopg2.errors.UniqueViolation: 
             abort(409, "Teacher with same data already exists")
-        except Exception:
-            abort(400, "Unkonwn error")
         else:
             db.commit()
     else:
@@ -197,21 +192,16 @@ def delete_teacher():
     if "teacher_id" in request.json.keys():
         db = get_db()
         cursor = db.cursor()
-        try:
-            cursor.execute('''
-                DELETE FROM teachers
-                WHERE id=%s RETURNING True
-                ''', (
-                request.json["teacher_id"], 
-            ))
-        except Exception as e:
-            print(e, flush=True)
-            abort(400, "Unknown error")
-        else:
-            db.commit()
-            if cursor.fetchone() is None:
-                abort(400, 'There are no teachers with on of ids')
-            print("OK", flush=True)
+        cursor.execute('''
+            DELETE FROM teachers
+            WHERE id=%s RETURNING True
+            ''', (
+            request.json["teacher_id"], 
+        ))
+        if cursor.fetchone() is None:
+            abort(400, 'There are no teachers with on of ids')
+        db.commit()
+        print("OK", flush=True)
     else:
         print("Wrong json", flush=True)
         abort(400, "Wrong json")
@@ -229,18 +219,14 @@ def set_class():
             "class_id" in request.json.keys()):
         db = get_db()
         cursor = db.cursor()
-        try:
-            cursor.execute('''
-                UPDATE students
-                SET class_id=%s
-                WHERE id=%s;
-                ''', (
-                request.json["class_id"],
-                request.json["student_id"]
-            ))
-        except Exception as e:
-            print(e, flush=True)
-            abort(400, "Unkonwn error")
+        cursor.execute('''
+            UPDATE students
+            SET class_id=%s
+            WHERE id=%s;
+            ''', (
+            request.json["class_id"],
+            request.json["student_id"]
+        ))
         db.commit()
         return jsonify({
             "result": "OK"
@@ -256,27 +242,22 @@ def create_class():
     if "class_name" in request.json.keys():
         db = get_db()
         cursor = db.cursor()
-        try:
-            cursor.execute('''
-                INSERT INTO classes (
-                    class_name
-                )
-                VALUES (
-                    %s
-                ) RETURNING id;
-                ''', (
-                request.json["class_name"],
-            ))
-            class_id = cursor.fetchone()
-        except Exception as e:
-            print(e, flush=True)
-            abort(400, "Unknown Error")
-        else:
-            db.commit()
-            print(class_id, flush=True)
-            return jsonify({
-                "class_id": class_id[0]
-            }), 200
+        cursor.execute('''
+            INSERT INTO classes (
+                class_name
+            )
+            VALUES (
+                %s
+            ) RETURNING id;
+            ''', (
+            request.json["class_name"],
+        ))
+        class_id = cursor.fetchone()
+        db.commit()
+        print(class_id, flush=True)
+        return jsonify({
+            "class_id": class_id[0]
+        }), 200
     else:
         abort(400, "Wrong json")
 
@@ -288,21 +269,16 @@ def delete_class():
     if "class_id" in request.json.keys():
         db = get_db()
         cursor = db.cursor()
-        try:
-            cursor.execute('''
-                DELETE FROM classes
-                WHERE id=%s RETURNING True
-                ''', (
-                request.json["class_id"], 
-            ))
-        except Exception as e:
-            print(e, flush=True)
-            abort(400, "Unknown error")
-        else:
-            db.commit()
-            if cursor.fetchone() is None:
-                abort(400, 'There is no class with this id')
-            print("OK", flush=True)
+        cursor.execute('''
+            DELETE FROM classes
+            WHERE id=%s RETURNING True
+            ''', (
+            request.json["class_id"], 
+        ))
+        db.commit()
+        if cursor.fetchone() is None:
+            abort(400, 'There is no class with this id')
+        print("OK", flush=True)
     else:
         print("Wrong json", flush=True)
         abort(400, "Wrong json")
@@ -413,20 +389,16 @@ def create_subject():
     if "subject_name" in request.json.keys():
         db = get_db()
         cursor = db.cursor()
-        try:
-             cursor.execute('''
-                INSERT INTO subjects (
-                    subject_name
-                )
-                VALUES (
-                    %s
-                );
-                ''', (
-                request.json["subject_name"],
-            ))
-        except Exception as e:
-            print(e, flush=True)
-            abort(400, "Unknown Error")
+        cursor.execute('''
+            INSERT INTO subjects (
+                subject_name
+            )
+            VALUES (
+                %s
+            );
+            ''', (
+            request.json["subject_name"],
+        ))
         db.commit()
         return jsonify({
             "result": "OK"

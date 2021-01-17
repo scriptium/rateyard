@@ -1,8 +1,8 @@
-{% extends 'admin/base.html' %}
+{% extends "admin/base.html" %}
 
 {% block header %}
     <title>Admin - Main</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/students.css') }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/admin/students.css") }}">
 {% endblock header %}
 
 {% block main %}
@@ -11,7 +11,7 @@
             <p class="block_header">Додати учня дo
                 <select name="class_id" onchange="">
                     {% for class in classes %}
-                        <option value={{ class['id'] }}>{{ class['name'] }}</option>
+                        <option value={{ class["id"] }}>{{ class["name"] }}</option>
                     {% endfor %}                
                 </select> 
                 класу
@@ -32,7 +32,7 @@
                 Клас:
                 <select name="class_id" onchange="change_class(this)">
                     {% for class in classes %}
-                        <option value={{ class['id'] }}>{{ class['name'] }}</option>
+                        <option value={{ class["id"] }}>{{ class["name"] }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -49,13 +49,18 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody id="students_table">
+                        <tbody>
                             {% for student in students %}
                                 <tr value="{{ student["id"] }}">
                                     <td><input class="input_text_table" type="text" name="username" value="{{ student["username"] }}" readonly="readonly"></td>
                                     <td><input class="input_text_table" type="text" name="full_name" value="{{ student["full_name"] }}" readonly="readonly"></td>
                                     <td><input class="input_text_table" type="text" name="email" value="{{ student["email"] }}" readonly="readonly"></td>
-                                    <td><input class="input_text_table" type="text" name="class" value="{{ student["class"]["name"] }}" readonly="readonly"></td>
+                                    <td><select name="class_id" onchange="">
+                                        {% for class in classes %}
+                                            <option value={{ class["id"] }} {% if class["id"]==student["class"]["id"] %}selected{% else %}disabled{% endif %}  >{{ class["name"] }}</option>
+                                        {% endfor %}                
+                                    </select>
+                                    </td>
                                     <td><button type="button" class="edit_button" onclick="toggle_edit_row(this)" ></button></td>
                                     <td><button type="button" class="delete_button" onclick="delete_student(this)"></button></td>
                                 </tr>
@@ -70,5 +75,5 @@
 {% endblock main %}
 
 {% block tail_js %}
-    <script type="text/javascript" src="{{ url_for('static', filename='js/admin/students.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for("static", filename="js/admin/students.js") }}"></script>
 {% endblock tail_js %}

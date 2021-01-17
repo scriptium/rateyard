@@ -3,8 +3,16 @@ function sort_table_by_column(table, column, ascending = true) {
     let tbody = table.tBodies[0];
     let rows = Array.from(tbody.querySelectorAll("tr"));
     const sorted = rows.sort((a, b) => {
-        const a_data = a.querySelector(`td:nth-child(${ column + 1 }) > input`).value.trim();
-        const b_data = b.querySelector(`td:nth-child(${ column + 1 }) > input`).value.trim();
+        let a_data = a.querySelector(`td:nth-child(${ column + 1 })`).firstChild;
+        let b_data = b.querySelector(`td:nth-child(${ column + 1 })`).firstChild;
+        if(a_data.tagName=="INPUT") {
+            a_data = a_data.value.trim();
+            b_data = b_data.value.trim();
+        }
+        if(a_data.tagName=="SELECT") {
+            a_data = a_data.options[a_data.selectedIndex].text.trim();
+            b_data = b_data.options[b_data.selectedIndex].text.trim();
+        }
         return a_data > b_data ? direction : -direction;
     });
     while (tbody.firstChild) {
@@ -22,7 +30,7 @@ function make_readable_row(tbody, selected_row) {
     for(let row_index = 0; row_index < rows.length; row_index++) {
         for(let col_index = 0; col_index < rows[row_index].cells.length; col_index++) {
             let cell = rows[row_index].cells[col_index];
-            if(cell.firstChild.tagName != "INPUT") continue;
+            if(cell.firstChild.tagName == "INPUT") continue;
             let input = cell.firstChild;
             if(row_index != selected_row)
                 input.setAttribute("readonly", "readonly")
