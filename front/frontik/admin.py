@@ -121,15 +121,33 @@ def subjects():
 @bp.route("/students/save_changes", methods=("POST", ))
 @admin_required
 def save_changes():
-    print("Students to delete:", request.json['studentsToDeleteIds'])
-    if request.json['studentsToDeleteIds']!=[]:
-        response = requests.post(
+    print(request.json["students_to_edit"])
+    print(request.json["students_to_delete"])
+    if request.json["students_to_delete"]:
+        response_delete_students = requests.post(
             current_app.config["API_HOST"] + "/admin/delete_students",
-            json=request.json['studentsToDeleteIds']
+            json = request.json["students_to_delete"]
         )
-    resp = make_response(redirect(url_for("admin.students")))
-    print('Delete response', response.status_code)
+        if not response_delete_students.ok:
+            abort(response_delete_students.status_code,
+            f'''Api error while deleting.
+                Response body:
+                {response_delete_students.text}
+            ''')
+    if request.json["students_to_edit"]:
+        response_edit_students = requests.post(
+            current_app.config["API_HOST"] + "/admin/edit_students",
+            json = request.json["students_to_edit"]
+        )
+        if not response_edit_students.ok:
+            abort(response_edit_students.status_code, 
+            f'''
+                Api error while editing.
+                Response body:
+                {response_edit_students.text}
+            ''')
     return '', 200
+
 
 @bp.route("/add_class", methods=("POST", ))
 def add_class():
