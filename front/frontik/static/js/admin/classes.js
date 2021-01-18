@@ -1,13 +1,13 @@
 function add_student_to_table(add_button) {
     let tbody = document.getElementById("students_table").tBodies[0];
-    for(let row_index = 0; row_index < tbody.rows.length; row_index++) {
-        for(let col_index = 0; col_index < tbody.rows[row_index].cells.length; col_index++) {
-            let cell = tbody.rows[row_index].cells[col_index];
-            if(cell.firstChild.tagName != "INPUT") continue;
-            let input = cell.firstChild;
-            input.setAttribute("readonly", "readonly")
-        }
-    }
+    // for(let row_index = 0; row_index < tbody.rows.length; row_index++) {
+    //     for(let col_index = 0; col_index < tbody.rows[row_index].cells.length; col_index++) {
+    //         let cell = tbody.rows[row_index].cells[col_index];
+    //         if(cell.firstChild.tagName != "INPUT") continue;
+    //         let input = cell.firstChild;
+    //         input.setAttribute("readonly", "readonly")
+    //     }
+    // }
 
     let tr = document.createElement("tr");
     tbody.appendChild(tr);
@@ -59,3 +59,38 @@ function delete_student(delete_button) {
     row = delete_button.parentNode.parentNode;
     row.remove();
 } 
+
+function save_changes() {
+    let classes_to_delete = document.querySelectorAll('[data-delete="true"]');
+    let classes_to_edit = document.querySelectorAll('[data-edit="true"]');
+    let classes_to_delete_json = [];
+    let classes_to_edit_json = [];
+    for(let class_index = 0; class_index < classes_to_delete.length; class_index++) {
+        classes_to_delete_json.push(classes_to_delete[class_index].getAttribute("value"));
+    }
+    for(let class_index = 0; class_index < classes_to_edit.length; class_index++) {
+        classes_to_edit_json.push({
+            "id": classes_to_edit[class_index].getAttribute("value"),
+            "name": classes_to_edit[class_index].cells[0].firstChild.value
+        });
+    }
+    request_json = {
+        "classes_to_delete": classes_to_delete_json,
+        "classes_to_edit": classes_to_edit_json
+    };
+    let client = new XMLHttpRequest();
+    client.open("POST", "http://127.0.0.1:5000/admin/classes/save_changes");
+    client.setRequestHeader("Content-Type", "application/json");
+    client.onreadystatechange = function() {
+        if (this.status==200)
+        {
+            location.reload(true);
+        }
+        else {
+            
+            document.body.innerHTML = "Something went wrong...\n" + this.responseText;
+        }
+    }
+    client.send(JSON.stringify(request_json));
+}
+
