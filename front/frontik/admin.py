@@ -120,7 +120,7 @@ def subjects():
 
 @bp.route("/students/save_changes", methods=("POST", ))
 @admin_required
-def save_changes():
+def students_save_changes():
     print(request.json["students_to_edit"])
     print(request.json["students_to_delete"])
     if request.json["students_to_delete"]:
@@ -145,6 +145,36 @@ def save_changes():
                 Api error while editing.
                 Response body:
                 {response_edit_students.text}
+            ''')
+    return '', 200
+
+@bp.route("/classes/save_changes", methods=("POST", ))
+@admin_required
+def classes_save_changes():
+    print(request.json["classes_to_edit"])
+    print(request.json["classes_to_delete"])
+    if request.json["classes_to_delete"]:
+        response_delete_classes = requests.post(
+            current_app.config["API_HOST"] + "/admin/delete_classes",
+            json = request.json["classes_to_delete"]
+        )
+        if not response_delete_classes.ok:
+            abort(response_delete_classes.status_code,
+            f'''Api error while deleting.
+                Response body:
+                {response_delete_classes.text}
+            ''')
+    if request.json["classes_to_edit"]:
+        response_edit_classes = requests.post(
+            current_app.config["API_HOST"] + "/admin/edit_classes",
+            json = request.json["classes_to_edit"]
+        )
+        if not response_edit_classes.ok:
+            abort(response_edit_classes.status_code, 
+            f'''
+                Api error while editing.
+                Response body:
+                {response_edit_classes.text}
             ''')
     return '', 200
 

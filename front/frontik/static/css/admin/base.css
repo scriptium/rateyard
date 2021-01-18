@@ -154,3 +154,35 @@ button:hover, input[type="submit"] {
 	border-color: #696560;
 	color: white;
 }
+.delete_button {
+	background: none;
+	border: none;
+}
+.delete_button:after {
+	content: "\274c";
+	font-size: 20px;
+}
+.edit_button {
+	background: none;
+	border: none;
+}
+.edit_button:after {
+	content: "\270E";
+	font-size: 20px;
+}
+.confirm_button {
+	background: none;
+	border: none;
+}
+.confirm_button:after {
+	content: "\2713";
+	font-size: 20px;
+}
+.cancel_button {
+	background: none;
+	border: none;
+}
+.cancel_button:after {
+	content: "\1F519";
+	font-size: 20px;
+}

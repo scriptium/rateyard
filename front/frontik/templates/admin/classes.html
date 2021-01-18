@@ -31,20 +31,25 @@
     <div class="block">
         <p class="block_header">Наявні класи</p>
         <div id="class_table">
-            <table class="table_sortable">
-                <thead>
-                    <th class="th_sortable">Назва</th>
-                    <th></th>
-                </thead>
-                <tbody>
-                    {% for class in classes %}
-                        <tr>
-                            <td><input class="input_text_table" type="text" value="{{ class["name"] }}" readonly="readonly"></td>
-                            <td><button type="button" class="delete_button" onclick="delete_student(this)"></button></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <form action="save_changes()">
+                <table class="table_sortable">
+                    <thead>
+                        <th class="th_sortable">Назва</th>
+                        <th></th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        {% for class in classes %}
+                            <tr value = {{ class["id"] }}>
+                                <td><input class="input_text_table" type="text" value="{{ class["name"] }}" readonly="readonly"></td>
+                                <td><button type="button" class="edit_button" onclick="toggle_edit_row(this)" ></button></td>
+                                <td><button type="button" class="delete_button" onclick="delete_row(this)"></button></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+            <input type="button" value="Save changes" class="save_changes_button" onclick="save_changes()"> 
         </div>
     </div>
 {% endblock main %}

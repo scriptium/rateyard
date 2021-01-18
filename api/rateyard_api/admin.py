@@ -262,29 +262,62 @@ def create_class():
         abort(400, "Wrong json")
 
 
-@bp.route("/delete_class", methods = ("POST", ))
-def delete_class():
+@bp.route("/delete_classes", methods = ("POST", ))
+def delete_classes():
     if not request.is_json:
-        abort("400", "Expected json")
-    if "class_id" in request.json.keys():
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute('''
+        abort(400, "Expected json")
+    if type(request.json) != list:
+        abort(400, "Expected array of classes id")
+    exec_str = '''
             DELETE FROM classes
-            WHERE id=%s RETURNING True
-            ''', (
-            request.json["class_id"], 
-        ))
-        db.commit()
-        if cursor.fetchone() is None:
-            abort(400, 'There is no class with this id')
-        print("OK", flush=True)
-    else:
-        print("Wrong json", flush=True)
-        abort(400, "Wrong json")
+            WHERE False
+            '''
+    exec_args = []
+    for class_id in request.json:
+        print(class_id)
+        exec_str += (" OR  id=%s")
+        exec_args.append(class_id)
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute(exec_str, exec_args)
+    db.commit()
+    return jsonify({
+        "result": "OK"
+    }), 200
+
+@bp.route("/edit_classes", methods = ("POST", ))
+def edit_classes():
+    print(request.json, flush=True)
+    if not request.is_json:
+        abort(400, "Expected json")
+        print("Expected json", flush=True)
+    if type(request.json) != list:
+        abort(400, "Expected array of classes id")
+        print("Expected array of classes id", flush=True)
+    for class_ in request.json:
+        if ("id" in class_.keys() and
+                "name" in class_.keys()):
+            db = get_db()
+            cursor = db.cursor()
+            cursor.execute('''
+                UPDATE classes
+                SET class_name=%s
+                WHERE id=%s RETURNING True;
+                ''', (
+                class_["name"],
+                class_["id"],
+            ))
+            if cursor.fetchone() is None:
+                abort(400, 'There are not classes with on of ids')
+            db.commit()
+            print("OK", flush=True)
+        else:
+            print("Wrong json", flush=True)
+            abort(400, "Wrong json")
     return jsonify({
         "result": "OK"
     }), 201
+
 
 
 @bp.route("/get_classes", methods = ("GET", ))
