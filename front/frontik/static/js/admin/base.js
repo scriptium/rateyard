@@ -9,8 +9,9 @@ function delete_row(delete_button) {
     delete_button.setAttribute("onclick", "undo_delete_row(this);");
 
     let editButton = row.getElementsByClassName("edit_button")[0];
+    let defaultButton = row.getElementsByClassName("default_button")[0];
     editButton.style.visibility = 'hidden';
-    
+    defaultButton.style.visibility = 'hidden';
 }
 
 function undo_delete_row(delete_button){
@@ -25,12 +26,16 @@ function undo_delete_row(delete_button){
 
     let editButton = row.getElementsByClassName("edit_button")[0];
     editButton.style.visibility = 'visible';
+    let defaultButton = row.getElementsByClassName("default_button")[0];
+    defaultButton.style.visibility = 'visible';
 }
 
 function toggle_edit_row(button){
     let row = button.parentElement.parentElement;
     
     make_readwrite_row(button);
+
+    //if (row.getAttribute("data-default-color") == "") row.setAttribute("data-default-color", row.style.backgroundColor);
 
     row.setAttribute("data-previous-color", row.style.backgroundColor);
     row.style.backgroundColor = 'LightSteelBlue';
@@ -44,7 +49,9 @@ function toggle_edit_row(button){
         }
         else if(cell.firstChild.tagName == "SELECT") {
             let select = cell.firstChild;
-            select.setAttribute("data-previous", select.selectedIndex)
+            select.setAttribute("data-previous", select.selectedIndex);
+            if (select.hasAttribute("data-default") == false)
+                select.setAttribute("data-default", select.selectedIndex);
         }
     }
 
@@ -103,7 +110,6 @@ function cancel_edit_row(button){
     let row = button.parentElement.parentElement;
 
     row.style.backgroundColor = row.getAttribute("data-previous-color");
-    //row.removeAttribute("data-previous-color");
 
     for (let col_index = 0; col_index < row.children.length; col_index++ )
     {
@@ -182,6 +188,61 @@ function make_readwrite_row(button){
     }
 }
 
+function make_readable_row(tbody, selected_row) {
+    let rows = tbody.rows;
+    for(let row_index = 0; row_index < rows.length; row_index++) {
+        for(let col_index = 0; col_index < rows[row_index].cells.length; col_index++) {
+            let cell = rows[row_index].cells[col_index];
+            if(cell.firstChild.tagName == "INPUT") continue;
+            let input = cell.firstChild;
+            if(row_index != selected_row)
+                input.setAttribute("readonly", "readonly")
+            else
+                input.removeAttribute("readonly");
+        }
+    }
+}
+
+function reset_to_default(button){
+    let row = button.parentElement.parentElement;
+
+    for (let col_index = 0; col_index < row.children.length; col_index++ )
+    {
+        let cell = row.cells[col_index];
+        if(cell.firstChild.tagName == "INPUT") {
+            let input = cell.firstChild;
+            input.value = input.getAttribute("data-default");
+            input.removeAttribute("data-previous");
+        }
+        else if(cell.firstChild.tagName == "SELECT") {
+            let select = cell.firstChild;
+            select[select.selectedIndex].selected = false;
+            select[select.selectedIndex].disabled = true;
+            select[select.selectedIndex].disabled = false;
+            if(select.hasAttribute("data-default"))
+                select[select.getAttribute("data-default")].selected = true;
+                make_select_disabled(select);
+            select.removeAttribute("data-previous");
+        }
+    }
+
+    
+    if ( row.style.backgroundColor == "lightsteelblue")
+    {
+        make_readonly_row(button);
+        let confirmButton = row.getElementsByClassName("confirm_button")[0];
+        let cancelButton = row.getElementsByClassName("cancel_button")[0];
+        confirmButton.setAttribute("class", "edit_button");
+        confirmButton.setAttribute("onclick", "toggle_edit_row(this);");
+    
+        cancelButton.setAttribute("class","delete_button");
+        cancelButton.setAttribute("onclick", "delete_row(this);");
+    }
+
+    row.removeAttribute("data-previous-color");
+    row.removeAttribute("style");
+
+}
 
 function sort_table_by_column(table, column, ascending = true) {
     let direction = ascending ? 1 : -1;
@@ -209,23 +270,6 @@ function sort_table_by_column(table, column, ascending = true) {
     table.querySelector(`th:nth-child(${ column + 1})`).classList.toggle("th_sort_ascending", ascending);
     table.querySelector(`th:nth-child(${ column + 1})`).classList.toggle("th_sort_descending", !ascending);
 }
-
-function make_readable_row(tbody, selected_row) {
-    let rows = tbody.rows;
-    for(let row_index = 0; row_index < rows.length; row_index++) {
-        for(let col_index = 0; col_index < rows[row_index].cells.length; col_index++) {
-            let cell = rows[row_index].cells[col_index];
-            if(cell.firstChild.tagName == "INPUT") continue;
-            let input = cell.firstChild;
-            if(row_index != selected_row)
-                input.setAttribute("readonly", "readonly")
-            else
-                input.removeAttribute("readonly");
-        }
-    }
-}
-
-
 
 document.querySelectorAll(".table_sortable .th_sortable").forEach(header => {
     header.addEventListener("click", () => {

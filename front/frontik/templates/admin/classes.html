@@ -37,13 +37,15 @@
                         <th class="th_sortable">Назва</th>
                         <th></th>
                         <th></th>
+                        <th></th>
                     </thead>
                     <tbody>
                         {% for class in classes %}
                             <tr value = {{ class["id"] }}>
-                                <td><input class="input_text_table" type="text" value="{{ class["name"] }}" readonly="readonly"></td>
+                                <td><input class="input_text_table" type="text" value="{{ class["name"] }}" readonly="readonly" data-default="{{ class["name"] }}"></td>
                                 <td><button type="button" class="edit_button" onclick="toggle_edit_row(this)" ></button></td>
                                 <td><button type="button" class="delete_button" onclick="delete_row(this)"></button></td>
+                                <td><button type="button" class="default_button" onclick="reset_to_default(this)"></button></td>
                             </tr>
                         {% endfor %}
                     </tbody>

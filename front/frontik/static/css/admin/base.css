@@ -186,3 +186,20 @@ button:hover, input[type="submit"] {
 	content: "\1F519";
 	font-size: 20px;
 }
+.default_button {
+	background: none;
+	border: none;
+}
+.default_button:after {
+	content: "\21BB";
+	font-size: 20px;
+}
+.edit_row {
+	background-color: lightsteelblue;
+}
+.edited_row {
+	background-color: lightgreen;
+}
+.delete_row {
+	background-color: lightcoral;
+}

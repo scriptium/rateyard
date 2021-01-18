@@ -8,7 +8,7 @@
 {% block main %}
     <div class="block">
         <form action="add_subject" method="POST">
-            Додати предмет
+            <p class="block_header">Додати предмет</p>
             <div class="block_input">
                 <input class="input_text" type="text" name="subject_name" placeholder="Назва предмету" autocomplete="off">
             </div>
@@ -26,19 +26,21 @@
                                 <th class="th_sortable">Назва предмету</th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody id="subjects_table">
                             {% for subject in subjects %}
-                                <tr>
-                                    <td><input class="input_text_table" type="text" name="subject_name" value="{{ subject["name"] }}" readonly="readonly"></td>
-                                    <td><button type="button" class="edit_button" onclick="toggle_edit_row(this)" ></button></td>
-                                    <td><button type="button" class="delete_button" onclick="delete_student(this)"></button></td>
+                                <tr value="{{ subject["id"] }}">
+                                    <td><input class="input_text_table" type="text" name="subject_name" value="{{ subject["name"] }}" readonly="readonly" data-default="{{ subject["name"] }}"></td>
+                                    <td><button type="button" class="edit_button" onclick="toggle_edit_row(this)"></button></td>
+                                    <td><button type="button" class="delete_button" onclick="delete_row(this)"></button></td>
+                                    <td><button type="button" class="default_button" onclick="reset_to_default(this)"></button></td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                     <input type="submit" value="Save changes" class="save_changes_button" onclick="save_changes()"> 
+                    <input type="button" value="Save changes" class="save_changes_button" onclick="save_changes()">
                 </form>
             </div>
         </div>
@@ -46,5 +48,5 @@
 {% endblock main %}
 
 {% block tail_js %}
-    <script type="text/javascript" src="{{ url_for('static', filename='js/admin/students.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/admin/subjects.js') }}"></script>
 {% endblock tail_js %}

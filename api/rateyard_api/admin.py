@@ -183,33 +183,121 @@ def create_teacher():
             }), 201
 
 
-@bp.route("/delete_teacher", methods = ("POST", ))
-def delete_teacher():
+@bp.route("/delete_teachers", methods = ("POST", ))
+def delete_teachers():
+    if not request.is_json:
+        abort(400, "Expected json")
+    if type(request.json) != list:
+        abort(400, "Expected array of teachers id")
+    exec_str = '''
+            DELETE FROM teachers
+            WHERE False
+            '''
+    exec_args = []
+    for teacher_id in request.json:
+        print(teacher_id)
+        exec_str += (" OR  id=%s")
+        exec_args.append(teacher_id)
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute(exec_str, exec_args)
+    db.commit()
+    return jsonify({
+        "result": "OK"
+    }), 200
+
+@bp.route("/edit_teachers", methods = ("POST", ))
+def edit_teachers():
     print(request.json, flush=True)
     if not request.is_json:
         abort(400, "Expected json")
         print("Expected json", flush=True)
-    if "teacher_id" in request.json.keys():
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute('''
-            DELETE FROM teachers
-            WHERE id=%s RETURNING True
-            ''', (
-            request.json["teacher_id"], 
-        ))
-        if cursor.fetchone() is None:
-            abort(400, 'There are no teachers with on of ids')
-        db.commit()
-        print("OK", flush=True)
-    else:
-        print("Wrong json", flush=True)
-        abort(400, "Wrong json")
+    if type(request.json) != list:
+        abort(400, "Expected array of teachers id")
+        print("Expected array of teachers id", flush=True)
+    for teacher in request.json:
+        if ("id" in teacher.keys() and
+                "username" in teacher.keys() and
+                "full_name" in teacher.keys() and
+                "email" in teacher.keys()):
+            db = get_db()
+            cursor = db.cursor()
+            cursor.execute('''
+                UPDATE teachers
+                SET username=%s, full_name=%s, email=%s
+                WHERE id=%s RETURNING True;
+                ''', (
+                teacher["username"],
+                teacher["full_name"],
+                teacher["email"],
+                teacher["id"],
+            ))
+            if cursor.fetchone() is None:
+                abort(400, 'There are not teachers with on of ids')
+            db.commit()
+            print("OK", flush=True)
+        else:
+            print("Wrong json", flush=True)
+            abort(400, "Wrong json")
     return jsonify({
         "result": "OK"
     }), 201
 
+@bp.route("/delete_subjects", methods = ("POST", ))
+def delete_subjects():
+    if not request.is_json:
+        abort(400, "Expected json")
+    if type(request.json) != list:
+        abort(400, "Expected array of subjects id")
+    exec_str = '''
+            DELETE FROM subjects
+            WHERE False
+            '''
+    exec_args = []
+    for subject_id in request.json:
+        print(subject_id)
+        exec_str += (" OR  id=%s")
+        exec_args.append(subject_id)
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute(exec_str, exec_args)
+    db.commit()
+    return jsonify({
+        "result": "OK"
+    }), 200
 
+@bp.route("/edit_subjects", methods = ("POST", ))
+def edit_subjects():
+    print(request.json, flush=True)
+    if not request.is_json:
+        abort(400, "Expected json")
+        print("Expected json", flush=True)
+    if type(request.json) != list:
+        abort(400, "Expected array of subjects id")
+        print("Expected array of subjects id", flush=True)
+    for subject in request.json:
+        if ("id" in subject.keys() and
+                "name" in subject.keys()):
+            db = get_db()
+            cursor = db.cursor()
+            cursor.execute('''
+                UPDATE subjects
+                SET subject_name=%s
+                WHERE id=%s RETURNING True;
+                ''', (
+                subject["name"],
+                subject["id"],
+            ))
+            if cursor.fetchone() is None:
+                abort(400, 'There are not subjects with on of ids')
+            db.commit()
+            print("OK", flush=True)
+        else:
+            print("Wrong json", flush=True)
+            abort(400, "Wrong json")
+    return jsonify({
+        "result": "OK"
+    }), 201
 
 @bp.route("/set_class", methods = ("POST", ))
 def set_class():
@@ -284,6 +372,7 @@ def delete_classes():
     return jsonify({
         "result": "OK"
     }), 200
+
 
 @bp.route("/edit_classes", methods = ("POST", ))
 def edit_classes():

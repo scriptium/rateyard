@@ -30,7 +30,7 @@
         <div id="students_info">
             <div id="students_class">
                 Клас:
-                <select name="class_id" onchange="change_class(this)">
+                <select name="class_id" onchange="change_class(this);">
                     {% for class in classes %}
                         <option value={{ class["id"] }}>{{ class["name"] }}</option>
                     {% endfor %}
@@ -47,22 +47,24 @@
                                 <th class="th_sortable">Class</th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for student in students %}
                                 <tr value="{{ student["id"] }}">
-                                    <td><input class="input_text_table" type="text" name="username" value="{{ student["username"] }}" readonly="readonly"></td>
-                                    <td><input class="input_text_table" type="text" name="full_name" value="{{ student["full_name"] }}" readonly="readonly"></td>
-                                    <td><input class="input_text_table" type="text" name="email" value="{{ student["email"] }}" readonly="readonly"></td>
+                                    <td><input class="input_text_table" type="text" name="username" value="{{ student["username"] }}" readonly="readonly" data-default="{{ student["username"] }}"></td>
+                                    <td><input class="input_text_table" type="text" name="full_name" value="{{ student["full_name"] }}" readonly="readonly" data-default="{{ student["full_name"] }}"></td>
+                                    <td><input class="input_text_table" type="text" name="email" value="{{ student["email"] }}" readonly="readonly" data-default="{{ student["email"] }}"></td>
                                     <td><select name="class_id" onchange="">
-                                        {% for class in classes %}
-                                            <option value={{ class["id"] }} {% if class["id"]==student["class"]["id"] %}selected{% else %}disabled{% endif %}  >{{ class["name"] }}</option>
-                                        {% endfor %}                
-                                    </select>
+                                            {% for class in classes %}
+                                                <option value={{ class["id"] }} {% if class["id"]==student["class"]["id"] %}selected{% else %}disabled{% endif %}  >{{ class["name"] }}</option>
+                                            {% endfor %}
+                                        </select>
                                     </td>
                                     <td><button type="button" class="edit_button" onclick="toggle_edit_row(this)" ></button></td>
                                     <td><button type="button" class="delete_button" onclick="delete_row(this)"></button></td>
+                                    <td><button type="button" class="default_button" onclick="reset_to_default(this)"></button></td>
                                 </tr>
                             {% endfor %}
                         </tbody>

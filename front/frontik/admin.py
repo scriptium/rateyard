@@ -179,6 +179,67 @@ def classes_save_changes():
     return '', 200
 
 
+@bp.route("/teachers/save_changes", methods=("POST", ))
+@admin_required
+def teachers_save_changes():
+    print(request.json["teachers_to_edit"])
+    print(request.json["teachers_to_delete"])
+    if request.json["teachers_to_delete"]:
+        response_delete_teachers = requests.post(
+            current_app.config["API_HOST"] + "/admin/delete_teachers",
+            json = request.json["teachers_to_delete"]
+        )
+        if not response_delete_teachers.ok:
+            abort(response_delete_teachers.status_code,
+            f'''Api error while deleting.
+                Response body:
+                {response_delete_teachers.text}
+            ''')
+    if request.json["teachers_to_edit"]:
+        response_edit_teachers = requests.post(
+            current_app.config["API_HOST"] + "/admin/edit_teachers",
+            json = request.json["teachers_to_edit"]
+        )
+        if not response_edit_teachers.ok:
+            abort(response_edit_teachers.status_code, 
+            f'''
+                Api error while editing.
+                Response body:
+                {response_edit_teachers.text}
+            ''')
+    return '', 200
+
+@bp.route("/subjects/save_changes", methods=("POST", ))
+@admin_required
+def subjects_save_changes():
+    print(request.json["subjects_to_edit"])
+    print(request.json["subjects_to_delete"])
+    if request.json["subjects_to_delete"]:
+        response_delete_subjects = requests.post(
+            current_app.config["API_HOST"] + "/admin/delete_subjects",
+            json = request.json["subjects_to_delete"]
+        )
+        if not response_delete_subjects.ok:
+            abort(response_delete_subjects.status_code,
+            f'''Api error while deleting.
+                Response body:
+                {response_delete_subjects.text}
+            ''')
+    if request.json["subjects_to_edit"]:
+        response_edit_subjects = requests.post(
+            current_app.config["API_HOST"] + "/admin/edit_subjects",
+            json = request.json["subjects_to_edit"]
+        )
+        if not response_edit_subjects.ok:
+            abort(response_edit_subjects.status_code, 
+            f'''
+                Api error while editing.
+                Response body:
+                {response_edit_subjects.text}
+            ''')
+    return '', 200
+
+
 @bp.route("/add_class", methods=("POST", ))
 def add_class():
     print(request.form, flush=True)
@@ -286,7 +347,6 @@ def add_teacher():
         return render_template("./error.html", error_code=response.raise_for_status)
     resp = make_response(redirect(url_for("admin.teachers")))
     return resp
-
 
 
 @bp.route("/login", methods=("GET", "POST"))

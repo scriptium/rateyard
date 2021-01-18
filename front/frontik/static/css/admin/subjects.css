@@ -7,60 +7,18 @@
   margin-bottom: 5px;
 	text-align: left;
 }
-#sort_by {
-	margin-bottom: 5px;
-  text-align: right;
-}
 #subjects_table {
 	grid-column-start: 1;
 	grid-column-end: 3;
 	table-layout: fixed;
 }
 #subjects_table th:nth-child(1) {
-	width: 30%;
+	width: 99%;
 }
 #subjects_table th:nth-child(2) {
-	width: 30%;
+	width: 1%;
 }
 #subjects_table th:nth-child(3) {
-	width: 30%;
-}
-#subjects_table th:nth-child(4) {
 	width: 1%;
-}
-#subjects_table th:nth-child(5) {
-	width: 1%;
-}
-.delete_button {
-	background: none;
-	border: none;
-}
-.delete_button:after {
-	content: "\274c";
-	font-size: 20px;
-}
-.edit_button {
-	background: none;
-	border: none;
-}
-.edit_button:after {
-	content: "\270E";
-	font-size: 20px;
-}
-.confirm_button {
-	background: none;
-	border: none;
-}
-.confirm_button:after {
-	content: "\2713";
-	font-size: 20px;
-}
-.cancel_button {
-	background: none;
-	border: none;
-}
-.cancel_button:after {
-	content: "\1F519";
-	font-size: 20px;
 }
 
