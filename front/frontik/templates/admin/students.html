@@ -58,18 +58,18 @@
                                     <td><input class="input_text_table" type="text" name="email" value="{{ student["email"] }}" readonly="readonly" data-default="{{ student["email"] }}"></td>
                                     <td><select name="class_id" onchange="">
                                             {% for class in classes %}
-                                                <option value={{ class["id"] }} {% if class["id"]==student["class"]["id"] %}selected{% else %}disabled{% endif %}  >{{ class["name"] }}</option>
+                                                <option value={{ class["id"] }} {% if class["id"]==student["class"]["id"] %}selected{% else %}disabled{% endif %}>{{ class["name"] }}</option>
                                             {% endfor %}
                                         </select>
                                     </td>
-                                    <td><button type="button" class="edit_button" onclick="toggle_edit_row(this)" ></button></td>
+                                    <td><button type="button" class="edit_button" onclick="toggle_edit_row(this)"></button></td>
                                     <td><button type="button" class="delete_button" onclick="delete_row(this)"></button></td>
                                     <td><button type="button" class="default_button" onclick="reset_to_default(this)"></button></td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                    <input type="button" value="Save changes" class="save_changes_button" onclick="save_changes()"> 
+                    <input type="button" value="Save changes" class="save_changes_button" onclick="save_changes()">
                 </form>
             </div>
         </div>

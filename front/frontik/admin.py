@@ -47,22 +47,55 @@ def unset_jwt_tokens():
     unset_jwt_cookies(response)
     return response
 
+
+def get_students():
+    students = requests.get(
+        current_app.config["API_HOST"] + "/admin/get_students"
+    )
+    return students
+
+
+def get_teachers():
+    teachers = requests.get(
+        current_app.config["API_HOST"] + "/admin/get_teachers"
+    )
+    return teachers
+
+
+def get_classes():
+    classes = requests.get(
+        current_app.config["API_HOST"] + "/admin/get_classes"
+    )
+    return classes
+
+
+def get_subjects():
+    subjects = requests.get(
+        current_app.config["API_HOST"] + "/admin/get_subjects"
+    )
+    return subjects
+
+
+def get_groups():
+    groups = requests.get(
+        current_app.config["API_HOST"] + "/admin/get_groups"
+    )
+    return groups
+
+
 @bp.route("/", methods=("GET", ))
 @admin_required
 def home():
     if request.method == "GET":
         return render_template("./admin/base.html")  
 
+
 @bp.route("/students", methods=("GET", ))
 @admin_required
 def students():
     if request.method == "GET":
-        classes = requests.get(
-            current_app.config["API_HOST"] + "/admin/get_classes"
-        )
-        students = requests.get(
-            current_app.config["API_HOST"] + "/admin/get_students"
-        )
+        classes = get_classes();
+        students = get_students();
         return render_template("./admin/students.html", 
                                 classes = classes.json(),
                                 students = students.json(),
@@ -72,9 +105,7 @@ def students():
 @bp.route("/classes", methods=("GET", ))
 @admin_required
 def classes():
-    classes = requests.get(
-        current_app.config["API_HOST"] + "/admin/get_classes"
-    )
+    classes = get_classes();
     if request.method == "GET":
         return render_template("./admin/classes.html",
                                 classes = classes.json(), 
@@ -84,9 +115,7 @@ def classes():
 @bp.route("/teachers", methods=("GET", ))
 @admin_required
 def teachers():
-    teachers = requests.get(
-        current_app.config["API_HOST"] + "/admin/get_teachers"
-    )
+    teachers = get_teachers();
     print(teachers)
     if request.method == "GET":
         return render_template("./admin/teachers.html",
@@ -97,21 +126,24 @@ def teachers():
 @bp.route("/groups", methods=("GET", ))
 @admin_required
 def groups():
-    groups = requests.get(
-        current_app.config["API_HOST"] + "/admin/get_groups"
-    )
+    # groups = requests.get(
+    #     current_app.config["API_HOST"] + "/admin/get_groups"
+    # )
+    subjects = get_subjects();
+    students = get_students();
+    teachers = get_teachers();
     if request.method == "GET":
         return render_template("./admin/groups.html",
-                                groups = groups.json(), 
+                                subjects = subjects.json(), 
+                                students = students.json(), 
+                                teachers = teachers.json(), 
                                 section = "groups")
 
 
 @bp.route("/subjects", methods=("GET", ))
 @admin_required
 def subjects():
-    subjects = requests.get(
-        current_app.config["API_HOST"] + "/admin/get_subjects"
-    )
+    subjects = get_subjects();
     if request.method == "GET":
         return render_template("./admin/subjects.html",
                                 subjects = subjects.json(), 
@@ -280,6 +312,13 @@ def add_class():
     return resp
 
 
+@bp.route("/add_group", methods=("POST", ))
+def add_group():
+    form_data = request.form.to_dict(flat=False)
+    print(form_data)
+    return '', 200
+
+
 @bp.route("/delete_class", methods=("POST", ))
 def delete_class():
     print(request.form, flush=True)
@@ -347,6 +386,8 @@ def add_teacher():
         return render_template("./error.html", error_code=response.raise_for_status)
     resp = make_response(redirect(url_for("admin.teachers")))
     return resp
+
+
 
 
 @bp.route("/login", methods=("GET", "POST"))

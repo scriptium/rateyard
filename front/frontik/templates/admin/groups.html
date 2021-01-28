@@ -6,7 +6,52 @@
 {% endblock header %}
 
 {% block main %}
-GROUPS
+	<div class="block">
+		<form action="add_group" method="POST">
+			<p class="block_header">Додати групу</p>
+			<input class="input_text" type="text" name="group_name" placeholder="Назва групи" autocomplete="off">
+			<select name="subject_id">
+				{% for subject in subjects %}
+                    <option value={{ subject["id"] }}>{{ subject["name"] }}</option>
+                {% endfor %}    
+			</select>
+			<div id="group_info">
+				<table id="group_students_table" class="table_sortable">
+					<caption>Students</caption>
+					<thead>
+						<th class="th_sortable">Full name</th>
+						<th class="th_sortable">Class</th>
+						<th></th>
+					</thead>
+					<tbody>
+						{% for student in students %}
+							<tr>
+								<td>{{ student["full_name"] }}</td>
+								<td>{{ student["class"]["name"] }}</td>
+								<td><input type="checkbox" name="student_id" value="{{ student['id'] }}"></td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<table id="group_teachers_table" class="table_sortable">
+					<caption>Teachers</caption>
+					<thead>
+						<th class="th_sortable">Full name</th>
+						<th></th>
+					</thead>
+					<tbody>
+						{% for teacher in teachers %}
+							<tr>
+								<td>{{ teacher["full_name"] }}</td>
+								<td><input type="checkbox" name="teacher_id" value="{{ teacher['id']}}"></td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			<input class="submit_button" type="submit" value="Додати">
+		</form>
+	</div>
 {% endblock main %}
 
 {% block tail_js %}
