@@ -52,6 +52,32 @@
 			<input class="submit_button" type="submit" value="Додати">
 		</form>
 	</div>
+	<div class="block">
+        <p class="block_header">Наявні групи</p>
+        <div id="group_table">
+            <form action="save_changes()">
+                <table class="table_sortable">
+                    <thead>
+                        <th class="th_sortable">Назва</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        {% for group in groups %}
+                            <tr value = {{ group["id"] }}>
+                                <td><input class="input_text_table" type="text" value="{{ group["name"] }}" readonly="readonly" data-default="{{ group["name"] }}"></td>
+                                <td><button type="button" class="edit_button" onclick="toggle_edit_row(this)" ></button></td>
+                                <td><button type="button" class="delete_button" onclick="delete_row(this)"></button></td>
+                                <td><button type="button" class="default_button" onclick="reset_to_default(this)"></button></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+            <input type="button" value="Save changes" class="save_changes_button" onclick="save_changes()"> 
+        </div>
+    </div>
 {% endblock main %}
 
 {% block tail_js %}

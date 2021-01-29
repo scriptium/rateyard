@@ -29,18 +29,18 @@ CREATE TABLE subjects (
 
 CREATE TABLE groups (
     id SERIAL PRIMARY KEY NOT NULL, 
-    group_name VARCHAR(100) NOT NULL,
-    subject_id INTEGER REFERENCES subjects(id) NOT NULL
+    group_name VARCHAR(100) UNIQUE NOT NULL,
+    subject_id INTEGER REFERENCES subjects(id) ON DELETE CASCADE NOT NULL
 );
 
 CREATE TABLE students_groups (
-    student_id INTEGER REFERENCES students(id) NOT NULL, 
-    group_id INTEGER REFERENCES groups(id) NOT NULL
+    student_id INTEGER REFERENCES students(id) ON DELETE CASCADE NOT NULL, 
+    group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE NOT NULL
 );
 
 CREATE TABLE teachers_groups (
-    teacher_id INTEGER REFERENCES teachers(id) NOT NULL, 
-    group_id INTEGER REFERENCES groups(id) NOT NULL
+    teacher_id INTEGER REFERENCES teachers(id) ON DELETE CASCADE NOT NULL, 
+    group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE NOT NULL
 );
 
 CREATE TABLE grades (

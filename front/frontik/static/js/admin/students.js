@@ -35,7 +35,7 @@ function save_changes() {
         "students_to_edit": students_to_edit_json
     };
     let client = new XMLHttpRequest();
-    client.open("POST", "http://localhost:5000/admin/students/save_changes");
+    client.open("POST", "http://127.0.0.1:5000/admin/students/save_changes");
     client.setRequestHeader("Content-Type", "application/json");
     client.onreadystatechange = function() {
         if (this.status==200)

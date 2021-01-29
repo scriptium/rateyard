@@ -18,7 +18,7 @@ function save_changes() {
   };
   console.log(request_json);
   let client = new XMLHttpRequest();
-  client.open("POST", "http://localhost:5000/admin/subjects/save_changes");
+  client.open("POST", "http://127.0.0.1:5000/admin/subjects/save_changes");
   client.setRequestHeader("Content-Type", "application/json");
   client.onreadystatechange = function() {
       if (this.status==200)

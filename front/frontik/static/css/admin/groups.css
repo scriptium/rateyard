@@ -8,8 +8,6 @@
 	margin: 5px 5px;
 }
 
-
-
 #group_students_table th:nth-child(1),
 #group_students_table td:nth-child(1) {
 	width: 70%;
@@ -45,3 +43,15 @@
 	width: 1%;
 }
 
+#group_table th:nth-child(1) {
+	width: 99%;
+}
+#group_table th:nth-child(2) {
+	width: 1%;
+}
+#group_table th:nth-child(3) {
+	width: 1%;
+}
+#group_table th:nth-child(4) {
+	width: 1%;
+}

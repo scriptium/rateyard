@@ -126,17 +126,16 @@ def teachers():
 @bp.route("/groups", methods=("GET", ))
 @admin_required
 def groups():
-    # groups = requests.get(
-    #     current_app.config["API_HOST"] + "/admin/get_groups"
-    # )
     subjects = get_subjects();
     students = get_students();
     teachers = get_teachers();
+    groups = get_groups();
     if request.method == "GET":
         return render_template("./admin/groups.html",
                                 subjects = subjects.json(), 
                                 students = students.json(), 
                                 teachers = teachers.json(), 
+                                groups = groups.json(),
                                 section = "groups")
 
 
@@ -316,7 +315,50 @@ def add_class():
 def add_group():
     form_data = request.form.to_dict(flat=False)
     print(form_data)
-    return '', 200
+    response_create_group = requests.post(
+        current_app.config["API_HOST"] + "/admin/create_group",
+        json = {
+            "group_name": form_data["group_name"][0],
+            "subject_id": form_data["subject_id"][0]
+        }
+    )
+    if not response_create_group.ok:
+        abort(response_create_group.status_code,
+            f'''Api error while deleting.
+                Response body:
+                {response_create_group.text}
+            ''')
+    print(response_create_group.json()["group_id"])
+    print(form_data["student_id"])
+    response_add_students_to_group = requests.post(
+        current_app.config["API_HOST"] + "/admin/add_students_to_group",
+        json = {
+            "group_id": response_create_group.json()["group_id"],
+            "students_ids": form_data["student_id"]
+        }
+    )
+    if not response_add_students_to_group.ok:
+        abort(response_add_students_to_group.status_code,
+            f'''Api error while deleting.
+                Response body:
+                {response_add_students_to_group.text}
+            ''')
+
+    response_add_teachers_to_group = requests.post(
+        current_app.config["API_HOST"] + "/admin/add_teachers_to_group",
+        json = {
+            "group_id": response_create_group.json()["group_id"],
+            "teachers_ids": form_data["teacher_id"]
+        }
+    )
+    if not response_add_teachers_to_group.ok:
+        abort(response_add_students_to_group.status_code,
+            f'''Api error while deleting.
+                Response body:
+                {response_add_students_to_group.text}
+            ''')
+    resp = make_response(redirect(url_for("admin.groups")))
+    return resp
 
 
 @bp.route("/delete_class", methods=("POST", ))
