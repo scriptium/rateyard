@@ -1,8 +1,6 @@
 function delete_row(delete_button) {
     let row = delete_button.parentNode.parentNode;
-
-    row.setAttribute("data-previous-color", row.style.backgroundColor);
-    row.style.backgroundColor = 'Red';
+    row.classList.add('delete_row')
 
     row.setAttribute("data-delete", "true");
     row.setAttribute("data-edit", "false");
@@ -19,7 +17,7 @@ function undo_delete_row(delete_button){
     row.removeAttribute("data-delete", "false");
     if(row.hasAttribute("data-edit"))
         row.setAttribute("data-edit", "true");
-    row.style.backgroundColor = row.getAttribute("data-previous-color");
+    row.classList.remove('delete_row');
     //row.removeAttribute("data-previous-color");
 
     delete_button.setAttribute("onclick", "delete_row(this);");
@@ -32,14 +30,8 @@ function undo_delete_row(delete_button){
 
 function toggle_edit_row(button){
     let row = button.parentElement.parentElement;
-    
     make_readwrite_row(button);
-
-    //if (row.getAttribute("data-default-color") == "") row.setAttribute("data-default-color", row.style.backgroundColor);
-
-    row.setAttribute("data-previous-color", row.style.backgroundColor);
-    row.style.backgroundColor = 'LightSteelBlue';
-
+    row.classList.add('edit_row')
     for (let col_index = 0; col_index < row.children.length; col_index++ )
     {
         let cell = row.cells[col_index];
@@ -90,10 +82,9 @@ function confirm_edit_row(button){
     }
 
     if (difference) {
-        row.style.backgroundColor = 'lightgreen';
-        row.setAttribute("data-edit", "true");
+        row.classList.add('changed_row')
     }
-    else row.style.backgroundColor = row.getAttribute("data-previous-color");
+    else row.classList.remove('edit_row')
 
     make_readonly_row(button);
 
@@ -108,8 +99,7 @@ function confirm_edit_row(button){
 
 function cancel_edit_row(button){
     let row = button.parentElement.parentElement;
-
-    row.style.backgroundColor = row.getAttribute("data-previous-color");
+    row.classList.remove('edited_row')
 
     for (let col_index = 0; col_index < row.children.length; col_index++ )
     {

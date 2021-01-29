@@ -3,11 +3,10 @@
 * {
     margin: 0;
     padding: 0;
-		font-family: 'Roboto', sans-serif;
-		outline: none;
+	font-family: 'Roboto', sans-serif;
+	outline: none;
 }
 body {
-    min-width: min-content;
     background: #E5E5E5;
 }
 .invisible {
@@ -43,10 +42,10 @@ body {
 	font-size: 15px;
 }
 .input_text_table:read-write {
-	border-bottom: 2px solid #666B3A;
+	border-bottom: 2px solid #B5AEA5;
 }
 .input_text_table:read-write:focus {
-	border-bottom: 4px solid #666B3A;
+	border-color: #696560;
 }
 .submit_button {
 	display: block;
@@ -90,6 +89,8 @@ body {
 	border-color: white;
 	color: white;
 }
+
+
 table {
 	width: 100%;
 	border-collapse: collapse;
@@ -107,11 +108,22 @@ td {
 	padding: 3px 5px;
 }
 tbody tr:nth-child(odd) {
-  background-color:rgba(220, 223, 228, 0.5);
+	background-color: #F4F6FF;
 }
 tbody tr:nth-child(even) {
-	background-color:#DCDFE4;
+	background-color: #DCDDE8;
 }
+tr.edit_row.edit_row {
+	background-color: #A3A9E8;
+}
+tr.changed_row.changed_row {
+	background-color: #B0B580;
+}
+tr.delete_row.delete_row {
+	background-color:  #C15252;
+}
+
+
 .delete_button {
 	background: none;
 	border: none;
@@ -193,13 +205,4 @@ button:hover, input[type="submit"] {
 .default_button:after {
 	content: "\21BB";
 	font-size: 20px;
-}
-.edit_row {
-	background-color: lightsteelblue;
-}
-.edited_row {
-	background-color: lightgreen;
-}
-.delete_row {
-	background-color: lightcoral;
 }

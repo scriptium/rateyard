@@ -37,9 +37,9 @@ def create_app(test_config=None):
         return response
 
     
-    from . import student
-    from . import teacher
-    from . import admin
+    import student
+    import teacher
+    import admin
 
     app.register_blueprint(student.bp, url_prefix="/student")
     app.register_blueprint(teacher.bp, url_prefix="/teacher")
