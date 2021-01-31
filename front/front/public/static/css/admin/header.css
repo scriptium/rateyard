@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@700&display=swap');
+
+#header {
+    background: #FFFFFF;
+    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1001;
+    display: flex;
+    flex-direction: row;
+}
+
+#header>div:nth-child(1) {
+    padding-left: 20px;
+    flex-grow: 0;
+}
+#header>div:nth-child(1)>div:nth-child(1) {
+    color: var(--light-blue-color);
+    font-family: 'Kalam', cursive;
+    font-size: var(--huge-font-size);
+    display: inline-block;
+}
+#header>div:nth-child(1)>div:nth-child(2) {
+    color: var(--light-blue-color);
+    font-size: var(--big-font-size);
+    font-weight: bold;
+    display: inline-block;
+}
+
+#header>div:nth-child(2) {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+#header>div:nth-child(2)>a {
+    color: var(--light-black-color);
+    display: flex;
+    justify-content: center;
+    align-self: stretch;
+    padding: 0 10px;
+    text-decoration: none;
+}
+#header>div:nth-child(2)>a:hover, #header>div:nth-child(2)>a.current {
+    background-color: var(--light-blue-color);
+    color: white;
+    transition: 300ms;
+}
+#header>div:nth-child(2)>a>div {
+    font-size: var(--big-font-size);
+    font-weight: bold;
+    height: min-content;
+    margin: auto;
+}
