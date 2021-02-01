@@ -1,7 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
 
 * {
     font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
     margin: 0;
     padding: 0;
 }
@@ -12,9 +13,54 @@
 
     --light-blue-color: #5AADDD;
     --light-black-color: #34373E;
-
+    --excel-color: #1A7343;
+    --red-color: #C33420;
+    --table-gray-color: rgba(90, 173, 221, 0.15);
+    --hover-link-color: #2D576F;
 }
 
 #content {
     margin: 20px;
+}
+
+#content > * {
+    margin: 20px;
+}
+
+#content > div {
+    display: flex;
+}
+
+input[type='search'] {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 2px 2px 9px 3px #000000 25%;
+    height: 35px;
+    padding: 10px 5px;
+    border: none;
+}
+
+.title {
+    color: var(--light-black-color);
+    font-size: var(--huge-font-size);
+    font-weight: bold;
+}
+
+.blue-button {
+    display: flex;
+    flex-direction: row;
+    background: var(--light-blue-color);
+    color: white;
+    font-size: var(--normal-font-size);
+    font-weight: bold;
+    padding: 12px 20px;
+    margin: 0px 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.blue-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 11px 5px rgba(0, 0, 0, 0.25);
 }

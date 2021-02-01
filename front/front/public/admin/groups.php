@@ -7,25 +7,22 @@
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/admin/base.css">
     <link rel="stylesheet" href="/static/css/admin/header.css">
-    <title>Наявні учні</title>
+    <title>Наявні групи</title>
 </head>
 
 <body>
-    <?php 
-    $current = 'users';
+<?php 
+    $current = 'groups';
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/header.php';
     ?>
     <div id="content">
-        <div class="title">Наявні учні</div>
-        <table>
-            <tr>
-                <th>№</th>
-                <th>ПІБ</th>
-                <th>Клас</th>
-                <th>Логін</th>
-                <th>Адреса електронної пошти</th>
-            </tr>
-        </table>
+        <div>
+            <div class="title">Наявні групи</div>
+            <div class="blue-button">Додати групу</div>
+        </div>
+        <div class="search-block">
+            <input type="search" placeholder="Пошук груп">
+        </div>
     </div>
 </body>
 

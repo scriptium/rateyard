@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@700&display=swap');
 
 #header {
-    background: #FFFFFF;
+    background: white;
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
     position: sticky;
     top: 0;
@@ -47,7 +47,7 @@
     text-decoration: none;
     transition: 300ms;
 }
-#header>div:nth-child(2)>a:hover, #header>div:nth-child(2)>a.current {
+#header>div:nth-child(2)>a:hover, #header>div:nth-child(2)>a#current {
     background-color: var(--light-blue-color);
     color: white;
     transition: 300ms;
@@ -55,6 +55,7 @@
 #header>div:nth-child(2)>a>div {
     font-size: var(--big-font-size);
     font-weight: bold;
+    font-style: normal;
     height: min-content;
     margin: auto;
 }
