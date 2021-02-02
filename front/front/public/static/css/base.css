@@ -13,22 +13,19 @@
 
     --light-blue-color: #5AADDD;
     --light-black-color: #34373E;
-    --excel-color: #1A7343;
     --red-color: #C33420;
-    --table-gray-color: rgba(90, 173, 221, 0.15);
     --hover-link-color: #2D576F;
+    --table-gray-color: rgba(90, 173, 221, 0.15);
 }
 
 #content {
-    margin: 20px;
+    margin: 30px;
+    display: flex;
+    flex-direction: column;
 }
 
 #content > * {
     margin: 20px;
-}
-
-#content > div {
-    display: flex;
 }
 
 input[type='search'] {
@@ -46,7 +43,7 @@ input[type='search'] {
     font-weight: bold;
 }
 
-.blue-button {
+.blue_button {
     display: flex;
     flex-direction: row;
     background: var(--light-blue-color);
@@ -54,13 +51,59 @@ input[type='search'] {
     font-size: var(--normal-font-size);
     font-weight: bold;
     padding: 12px 20px;
-    margin: 0px 20px;
-    border-radius: 10px;
+    border-radius: 15px;
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.3s, box-shadow 0.3s;
+    width: max-content;
 }
-.blue-button:hover {
+.blue_button * {
+    font-weight: bold;
+}
+.blue_button:hover {
     transform: translateY(-2px);
-    box-shadow: 3px 3px 11px 5px rgba(0, 0, 0, 0.25);
+    box-shadow: 2px 3px 11px 4px rgba(0, 0, 0, 0.25);
 }
+
+.add_icon {
+    background-image: url(/static/images/add.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.button_icon {
+    width: 20px;
+    height: 20px;
+    align-self: center;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.excel_button {
+    display: flex;
+    flex-direction: row;
+    background:  #1A7343;
+    color: white;
+    font-size: var(--normal-font-size);
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    width: max-content;
+}
+.excel_button * {
+    font-weight: bold;
+}
+.excel_button:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 3px 11px 4px rgba(0, 0, 0, 0.25);
+}
+
+.excel_icon {
+    background-image: url(/static/images/excel.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+

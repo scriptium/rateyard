@@ -45,12 +45,11 @@
     align-self: stretch;
     padding: 0 10px;
     text-decoration: none;
-    transition: 300ms;
+    transition: background 0.3s, color 0.3s;
 }
 #header>div:nth-child(2)>a:hover, #header>div:nth-child(2)>a#current {
     background-color: var(--light-blue-color);
     color: white;
-    transition: 300ms;
 }
 #header>div:nth-child(2)>a>div {
     font-size: var(--big-font-size);

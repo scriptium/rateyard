@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ua">
 
 <head>
     <meta charset="UTF-8">
@@ -16,9 +16,12 @@
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/header.php';
     ?>
     <div id="content">
-        <div>
+        <div id="title_block">
             <div class="title">Наявні групи</div>
-            <div class="blue-button">Додати групу</div>
+            <div class="blue_button">
+                <div class="button_icon add_icon"></div>
+                <div>Додати групу</div>
+            </div>
         </div>
         <div class="search-block">
             <input type="search" placeholder="Пошук груп">
