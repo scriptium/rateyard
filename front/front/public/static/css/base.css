@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@700&display=swap');
 
 * {
     font-family: 'Open Sans', sans-serif;
@@ -105,5 +106,40 @@ input[type='search'] {
     background-image: url(/static/images/excel.svg);
     background-repeat: no-repeat;
     background-size: contain;
+}
+
+.logo_main {
+    color: var(--light-blue-color);
+    font-family: 'Kalam', cursive;
+    font-size: var(--huge-font-size);
+    display: inline-block;
+}
+.logo_caption {
+    color: var(--light-blue-color);
+    font-size: var(--big-font-size);
+    font-weight: bold;
+    display: inline-block;
+}
+
+.default_input_text {
+    border:none;
+    background-image:none;
+    background-color: white;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: 2px 2px 9px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    padding: 10px 10px;
+    transition: box-shadow 0.3s
+}
+
+.default_input_text:focus {
+    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+    outline: none;
+}
+
+.default_input_text::placeholder {
+    font-weight: bold;
+    color: #B9B9B9;
 }
 

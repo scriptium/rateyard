@@ -1,0 +1,22 @@
+#content {
+    height: 100%;
+}
+
+#login_block {
+    width: 300px;
+    align-self: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+}
+
+#login_block > * {
+    margin-bottom: 15px;
+}
+
+#login_block .default_input_text {
+    justify-self: stretch;
+}

@@ -12,7 +12,7 @@
 
 <body>
     <?php 
-    $current = 'users';
+    $current = 'students';
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/header.php';
     ?>
     <div id="content">

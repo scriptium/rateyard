@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@700&display=swap');
-
 #header {
     background: white;
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
@@ -17,18 +15,6 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-}
-#header>div:nth-child(1)>div:nth-child(1) {
-    color: var(--light-blue-color);
-    font-family: 'Kalam', cursive;
-    font-size: var(--huge-font-size);
-    display: inline-block;
-}
-#header>div:nth-child(1)>div:nth-child(2) {
-    color: var(--light-blue-color);
-    font-size: var(--big-font-size);
-    font-weight: bold;
-    display: inline-block;
 }
 
 #header>div:nth-child(2) {

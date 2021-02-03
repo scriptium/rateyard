@@ -1,12 +1,12 @@
 <div id="header">
     <div>
-        <div>Rateyard</div>
-        <div>Admin</div>
+        <div class="logo_main">Rateyard</div>
+        <div class="logo_caption">Admin</div>
     </div>
     <div>
         <a <?php 
-        if($current == 'users'){echo 'id="current"';}
-        ?> href="users.php"><div>УЧНІ</div></a>
+        if($current == 'students'){echo 'id="current"';}
+        ?> href="students.php"><div>УЧНІ</div></a>
         <a <?php 
         if($current == 'groups'){echo 'id="current"';}
         ?> href="groups.php"><div>ГРУПИ</div></a>
