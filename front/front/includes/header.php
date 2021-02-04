@@ -6,18 +6,32 @@
     <div>
         <a <?php 
         if($current == 'students'){echo 'id="current"';}
-        ?> href="students.php"><div>УЧНІ</div></a>
+        ?> href="students.php">
+            <div>Учні</div>
+        </a>
         <a <?php 
         if($current == 'groups'){echo 'id="current"';}
-        ?> href="groups.php"><div>ГРУПИ</div></a>
+        ?> href="groups.php">
+            <div>Групи</div>
+        </a>
         <a <?php 
         if($current == 'teachers'){echo 'id="current"';}
-        ?> href="teachers.php"><div>ВЧИТЕЛІ</div></a>
+        ?> href="teachers.php">
+            <div>Вчителі</div>
+        </a>
         <a <?php 
         if($current == 'classes'){echo 'id="current"';}
-        ?> href="classes.php"><div>КЛАСИ</div></a>
+        ?> href="classes.php">
+            <div>Класи</div>
+        </a>
         <a <?php 
         if($current == 'subjects'){echo 'id="current"';}
-        ?> href="subjects.php"><div>ПРЕДМЕТИ</div></a>
+        ?> href="subjects.php">
+            <div>Предмети</div>
+        </a>
+        <div id="exit_button">
+            <div class="exit_icon"></div>
+            <div>Вихід</div>
+        </div>
     </div>
 </div>

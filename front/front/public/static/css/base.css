@@ -70,6 +70,7 @@ input[type='search'] {
     background-image: url(/static/images/add.svg);
     background-repeat: no-repeat;
     background-size: contain;
+    background-position: center;
 }
 
 .button_icon {
@@ -106,6 +107,14 @@ input[type='search'] {
     background-image: url(/static/images/excel.svg);
     background-repeat: no-repeat;
     background-size: contain;
+    background-position: center;
+}
+
+.exit_icon {
+    background-image: url(/static/images/exit.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 }
 
 .logo_main {
