@@ -11,9 +11,9 @@
 </head>
 
 <body>
-    <?php 
+    <?php
     $current = 'students';
-    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/header.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/header.php';
     ?>
     <div id="content">
         <div id="title_block">
@@ -78,6 +78,9 @@
 
         </table>
     </div>
+    <?php
+    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/main_js.php';
+    ?>
 </body>
 
 </html>

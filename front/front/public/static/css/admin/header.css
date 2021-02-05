@@ -49,23 +49,28 @@
     display: flex;
     align-self: center;
     margin: 10px;
-    padding: 5px 20px;
+    padding: 10px 20px;
     border-radius: 15px;
     align-items: center;
     background: var(--light-blue-color);
     color: white;
-    font-size: var(--big-font-size);
-    font-weight: bold;
     transition: transform 0.3s, box-shadow 0.3s;
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
     cursor: pointer;
 }
-#exit_button:hover {
+#exit_button.disabled {
+    background: var(--light-blue-transparent-color);
+}
+#exit_button:hover:not(.disabled) {
     transform: translateY(-1px);
     box-shadow: 2px 3px 11px 4px rgba(0, 0, 0, 0.25);
 }
 #exit_button>div:nth-child(1) {
-    width: 37px;
-    height: 24px;
+    width: 23px;
+    height: 26px;
     margin-right: 10px;
+}
+#exit_button>div:nth-child(2) {
+    font-weight: bold;
+    font-size: var(--normal-font-size);
 }

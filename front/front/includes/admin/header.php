@@ -29,7 +29,7 @@
         ?> href="subjects.php">
             <div>Предмети</div>
         </a>
-        <div id="exit_button">
+        <div id="exit_button" onclick="logoutButton(this)">
             <div class="exit_icon"></div>
             <div>Вихід</div>
         </div>

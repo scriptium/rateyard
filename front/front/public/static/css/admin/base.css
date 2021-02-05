@@ -34,6 +34,7 @@ a:hover {
 #title_block {
     display: flex;
     flex-direction: row;
+    min-width: max-content;
 }
 
 #title_block > * {

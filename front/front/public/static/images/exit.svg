@@ -1,5 +1,14 @@
-<svg width="35" height="24" viewBox="0 0 35 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="3" y="3" width="14" height="18" stroke="white" stroke-width="5" stroke-miterlimit="10" stroke-linecap="round"/>
-<path d="M25 3.99997L31.4234 11.954L25 19.9081" stroke="white" stroke-width="5" stroke-miterlimit="10" stroke-linecap="round"/>
-<path d="M10 12L29.6847 12" stroke="white" stroke-width="5" stroke-miterlimit="10" stroke-linecap="round"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 23.3 25.5" style="enable-background:new 0 0 23.3 25.5;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;}
+</style>
+<path class="st0" d="M15.8,15.9v4.5c0,0.4-0.3,0.7-0.7,0.7H8.6v3.7c0,0.5-0.6,0.9-1.1,0.6l-7.2-4.1C0.1,21.2,0,21,0,20.7v-20
+	C0,0.3,0.3,0,0.7,0h14.4c0.4,0,0.7,0.3,0.7,0.7v8.9c0,0.4-0.3,0.7-0.7,0.7h0c-0.4,0-0.7-0.3-0.7-0.7V2.3c0-0.4-0.3-0.7-0.7-0.7H2.9
+	l5.4,3C8.5,4.8,8.6,5,8.6,5.3v14.2h5c0.4,0,0.7-0.3,0.7-0.7v-2.8c0-0.4,0.3-0.7,0.7-0.7h0C15.5,15.2,15.8,15.5,15.8,15.9z"/>
+<line class="st1" x1="11.1" y1="12.7" x2="20.6" y2="12.7"/>
+<polyline class="st1" points="18.4,9.2 21.9,12.7 18.3,16.3 "/>
 </svg>

@@ -1,10 +1,11 @@
-import psycopg2
+from functools import wraps
 
+import psycopg2
 from flask import (Blueprint, request, jsonify, 
     abort, send_file, Response,
     current_app
 )
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 
 from .db import (
     get_db, close_db, get_student, get_teacher
@@ -12,8 +13,24 @@ from .db import (
 
 bp = Blueprint("admin", __name__)
 
+def admin_token_required(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        verify_jwt_in_request()
+        identity = get_jwt_identity()
+        if identity['type']!='admin':
+            return jsonify(msg='Admins only!'), 403
+        else:
+            return fn(*args, **kwargs)
+    return wrapper
+
+@bp.route("check_token", methods=("POST",))
+@admin_token_required
+def check_token():
+    return jsonify(msg='ok')
 
 @bp.route("/create_students", methods = ("POST", ))
+@admin_token_required
 def create_students():
     if not request.is_json:
         abort(400, "Expected json")
@@ -65,6 +82,7 @@ def create_students():
 
 
 @bp.route("/delete_students", methods = ("POST", ))
+@admin_token_required
 def delete_students():
     if not request.is_json:
         abort(400, "Expected json")
@@ -105,6 +123,7 @@ def delete_students():
 
 
 @bp.route("/edit_students", methods = ("POST", ))
+@admin_token_required
 def edit_students():
     print(request.json, flush=True)
     if not request.is_json:
@@ -145,6 +164,7 @@ def edit_students():
 
 
 @bp.route("/create_teacher", methods = ("POST", ))
+@admin_token_required
 def create_teacher():
     if not request.is_json:
         abort("400", "Expected json")
@@ -184,6 +204,7 @@ def create_teacher():
 
 
 @bp.route("/delete_teachers", methods = ("POST", ))
+@admin_token_required
 def delete_teachers():
     if not request.is_json:
         abort(400, "Expected json")
@@ -207,6 +228,7 @@ def delete_teachers():
     }), 200
 
 @bp.route("/edit_teachers", methods = ("POST", ))
+@admin_token_required
 def edit_teachers():
     print(request.json, flush=True)
     if not request.is_json:
@@ -244,6 +266,7 @@ def edit_teachers():
     }), 201
 
 @bp.route("/delete_subjects", methods = ("POST", ))
+@admin_token_required
 def delete_subjects():
     if not request.is_json:
         abort(400, "Expected json")
@@ -267,6 +290,7 @@ def delete_subjects():
     }), 200
 
 @bp.route("/edit_subjects", methods = ("POST", ))
+@admin_token_required
 def edit_subjects():
     print(request.json, flush=True)
     if not request.is_json:
@@ -300,6 +324,7 @@ def edit_subjects():
     }), 201
 
 @bp.route("/set_class", methods = ("POST", ))
+@admin_token_required
 def set_class():
     if not request.is_json:
         abort("400", "Expected json")
@@ -324,6 +349,7 @@ def set_class():
 
 
 @bp.route("/create_class", methods = ("POST", ))
+@admin_token_required
 def create_class():
     if not request.is_json:
         abort("400", "Expected json")
@@ -351,6 +377,7 @@ def create_class():
 
 
 @bp.route("/delete_classes", methods = ("POST", ))
+@admin_token_required
 def delete_classes():
     if not request.is_json:
         abort(400, "Expected json")
@@ -375,6 +402,7 @@ def delete_classes():
 
 
 @bp.route("/edit_classes", methods = ("POST", ))
+@admin_token_required
 def edit_classes():
     print(request.json, flush=True)
     if not request.is_json:
@@ -410,6 +438,7 @@ def edit_classes():
 
 
 @bp.route("/get_classes", methods = ("GET", ))
+@admin_token_required
 def get_classes():
     db = get_db()
     cursor = db.cursor()
@@ -431,6 +460,7 @@ def get_classes():
 
 
 @bp.route("/get_groups", methods = ("GET", ))
+@admin_token_required
 def get_groups():
     db = get_db()
     cursor = db.cursor()
@@ -453,6 +483,7 @@ def get_groups():
 
 
 @bp.route("/get_students", methods = ("GET", ))
+@admin_token_required
 def get_students():
     db = get_db()
     cursor = db.cursor()
@@ -483,6 +514,7 @@ def get_students():
 
 
 @bp.route("/get_teachers", methods = ("GET", ))
+@admin_token_required
 def get_teachers():
     db = get_db()
     cursor = db.cursor()
@@ -506,6 +538,7 @@ def get_teachers():
 
 
 @bp.route("/get_subjects", methods = ("GET", ))
+@admin_token_required
 def get_subjects():
     db = get_db()
     cursor = db.cursor()
@@ -527,6 +560,7 @@ def get_subjects():
 
 
 @bp.route("/create_subject", methods = ("POST", ))
+@admin_token_required
 def create_subject():
     if not request.is_json:
         abort("400", "Expected json")
@@ -552,6 +586,7 @@ def create_subject():
 
 
 @bp.route("/create_group", methods = ("POST", ))
+@admin_token_required
 def create_group():
     if not request.is_json:
         abort("400", "Expected json")
@@ -580,6 +615,7 @@ def create_group():
         abort(400, "Wrong json")
 
 @bp.route("/add_students_to_group", methods = ("POST", ))
+@admin_token_required
 def add_students_to_group():
     if not request.is_json:
         abort("400", "Expected json")
@@ -609,6 +645,7 @@ def add_students_to_group():
 
 
 @bp.route("/add_teachers_to_group", methods = ("POST", ))
+@admin_token_required
 def add_teachers_to_group():
     if not request.is_json:
         abort("400", "Expected json")

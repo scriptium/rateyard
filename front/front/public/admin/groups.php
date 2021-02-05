@@ -13,7 +13,7 @@
 <body>
 <?php 
     $current = 'groups';
-    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/header.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/header.php';
     ?>
     <div id="content">
         <div id="title_block">
@@ -27,6 +27,9 @@
             <input type="search" placeholder="Пошук груп">
         </div>
     </div>
+    <?php
+    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/main_js.php';
+    ?>
 </body>
 
 </html>
