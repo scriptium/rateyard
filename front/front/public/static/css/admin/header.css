@@ -59,7 +59,9 @@
     cursor: pointer;
 }
 #exit_button.disabled {
-    background: var(--light-blue-transparent-color);
+    box-shadow: none;
+    background: var(--blue-color);
+    cursor: default;
 }
 #exit_button:hover:not(.disabled) {
     transform: translateY(-1px);

@@ -28,7 +28,7 @@ async function checkUserData(passURL, failURL) {
     else if (passURL !== undefined) document.location.replace(passURL);
 }
 
-async function login(username, password) {
+function login(username, password) {
     return new Promise(function (resolve, reject) {
         xhr = new XMLHttpRequest();
         xhr.open('POST', PATH + '/auth/login_admin')
@@ -45,3 +45,20 @@ async function login(username, password) {
         }))
     })
 }
+
+function getStudents(){
+    accessToken = localStorage.getItem('api_access_token');
+    return new Promise(function (resolve, reject) {
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', PATH + '/admin/get_students')
+        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+        xhr.onload = () => {
+            resolve({
+                text: xhr.responseText,
+                code: xhr.status
+            })
+        }
+        xhr.send()
+    })
+}
+

@@ -13,10 +13,9 @@
     --normal-font-size: 18px;
 
     --light-blue-color: #5AADDD;
-    --light-blue-transparent-color: rgba(90, 173, 221, 0.65);
     --light-black-color: #34373E;
     --red-color: #C33420;
-    --hover-link-color: #2D576F;
+    --blue-color: #7298AE;
     --table-gray-color: rgba(90, 173, 221, 0.15);
 }
 
@@ -67,8 +66,9 @@ input[type='search'] {
     box-shadow: 2px 3px 11px 4px rgba(0, 0, 0, 0.25);
 }
 .blue_button.disabled {
-    background: var(--light-blue-transparent-color);
+    background: var(--blue-color);
     cursor: default;
+    box-shadow: none;
 }
 
 .add_icon {
@@ -143,8 +143,9 @@ input[type='search'] {
     -moz-box-shadow: none;
     box-shadow: 2px 2px 9px 1px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
-    padding: 10px 10px;
-    transition: box-shadow 0.3s
+    padding: 10px 20px;
+    transition: box-shadow 0.3s;
+    font-size: var(--normal-font-size);
 }
 
 .default_input_text:focus {

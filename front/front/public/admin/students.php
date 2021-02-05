@@ -27,7 +27,8 @@
                 <div>Імпорт з файлу Microsoft Excel</div>
             </div>
         </div>
-        <table class="default_table">
+        <input type="text" class="default_input_text" placeholder="Пошук учнів">
+        <table class="default_table" id="students_table">
             <tbody>
                 <tr>
                     <th>№</th>
@@ -38,42 +39,6 @@
                 </tr>
             </tbody>
             <tbody>
-                <tr>
-                    <td>101</td>
-                    <td><a href="#">Sosdsdasdsadsi</a></td>
-                    <td>Sosdsdasdsadsi</td>
-                    <td>Sosdsdasdsadsi</td>
-                    <td>Sosdsdasdsadsi</td>
-                </tr>
-                <tr>
-                    <td>101</td>
-                    <td><a href="#">Sosdsdasdsadsi</a></td>
-                    <td>Sosdsdasdsadsi</td>
-                    <td>Sosdsdasdsadsi</td>
-                    <td>Sosdsdasdsadsi</td>
-                </tr>
-                <tr>
-                    <td>101</td>
-                    <td><a href="#">Sosdsdasdsadsi</a></td>
-                    <td>Sosdsdasdsadsi</td>
-                    <td>Sosdsdasdsadsi</td>
-                    <td>Sosdsdasdsadsi</td>
-                </tr>
-                <tr>
-                    <td>101</td>
-                    <td><a href="#">Sosdsdasdsadsi</a></td>
-                    <td>Sosdsdasdsadsi</td>
-                    <td>Sosdsdasdsadsi</td>
-                    <td>Sosdsdasdsadsi</td>
-                </tr>
-                <tr>
-                    <td>101</td>
-                    <td><a href="#">Sosdsdasdsadsi</a></td>
-                    <td>Sosdsdasdsadsi</td>
-                    <td>Sosdsdasdsadsi</td>
-                    <td>Sosdsdasdsadsi</td>
-                </tr>
-
             </tbody>
 
         </table>
@@ -81,6 +46,7 @@
     <?php
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/main_js.php';
     ?>
+    <script type="text/javascript" src="/static/js/admin/students.js"></script>
 </body>
 
 </html>

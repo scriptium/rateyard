@@ -23,13 +23,24 @@
                 <div>Додати групу</div>
             </div>
         </div>
-        <div class="search-block">
-            <input type="search" placeholder="Пошук груп">
-        </div>
+        <input type="text" class="default_input_text" placeholder="Пошук груп">
+        <table class="default_table" id="groups_table">
+            <tbody>
+                <tr>
+                    <th>№</th>
+                    <th>Назва</th>
+                    <th>Клас</th>
+                </tr>
+            </tbody>
+            <tbody>
+            </tbody>
+
+        </table>
     </div>
     <?php
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/main_js.php';
     ?>
+    <script type="text/javascript" src="/static/js/admin/students.js"></script>
 </body>
 
 </html>
