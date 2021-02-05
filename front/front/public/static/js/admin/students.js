@@ -27,8 +27,9 @@ function fillStudentsTable(responseText) {
 
 }
 
-window.onload = () => {
-    getStudents().then((responseData) => {
+window.onload = async () => {
+    await checkUserData(undefined, 'login.php');
+    await getStudents().then((responseData) => {
         fillStudentsTable(responseData.text)
     });
 }

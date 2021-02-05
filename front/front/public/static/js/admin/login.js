@@ -16,3 +16,7 @@ async function loginButton(button) {
         }
     })
 }
+
+window.onload = async () => {
+    await checkUserData('students.php', undefined);
+}

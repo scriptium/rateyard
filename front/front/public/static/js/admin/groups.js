@@ -20,8 +20,9 @@ function fillGroupsTable(responseText) {
 
 }
 
-window.onload = () => {
-    getGroups().then((responseData) => {
+window.onload = async () => {   
+    await checkUserData(undefined, 'login.php');
+    await getGroups().then((responseData) => {
         fillGroupsTable(responseData.text)
     });
 }

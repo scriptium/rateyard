@@ -37,9 +37,8 @@
 
         </table>
     </div>
-    <?php
-    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/main_js.php';
-    ?>
+    <script type="text/javascript" src="/static/js/admin/base.js"></script>
+    <script type="text/javascript" src="/static/js/admin/api.js"></script>
     <script type="text/javascript" src="/static/js/admin/groups.js"></script>
 </body>
 
