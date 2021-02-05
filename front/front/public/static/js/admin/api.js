@@ -34,7 +34,12 @@ function login(username, password) {
         xhr.open('POST', PATH + '/auth/login_admin')
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => {
-            resolve({
+            if (xhr.status == 200)
+                resolve({
+                    text: xhr.responseText,
+                    code: xhr.status
+                })
+            else reject({
                 text: xhr.responseText,
                 code: xhr.status
             })
@@ -53,7 +58,33 @@ function getStudents(){
         xhr.open('GET', PATH + '/admin/get_students')
         xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
         xhr.onload = () => {
-            resolve({
+            if (xhr.status == 200)
+                resolve({
+                    text: xhr.responseText,
+                    code: xhr.status
+                })
+            else reject({
+                text: xhr.responseText,
+                code: xhr.status
+            })
+        }
+        xhr.send()
+    })
+}
+
+function getGroups(){
+    accessToken = localStorage.getItem('api_access_token');
+    return new Promise(function (resolve, reject) {
+        xhr = new XMLHttpRequest();
+        xhr.open('GET', PATH + '/admin/get_groups')
+        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+        xhr.onload = () => {
+            if (xhr.status == 200)
+                resolve({
+                    text: xhr.responseText,
+                    code: xhr.status
+                })
+            else reject({
                 text: xhr.responseText,
                 code: xhr.status
             })

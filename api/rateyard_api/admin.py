@@ -465,8 +465,9 @@ def get_groups():
     db = get_db()
     cursor = db.cursor()
     cursor.execute('''
-        SELECT id, group_name, subject_id
-        FROM groups;
+        SELECT gr.id, gr.group_name, cl.id, cl.class_name
+        FROM groups as gr
+        LEFT JOIN classes as cl ON gr.class_id = cl.id
         '''
     )
     exec_result = cursor.fetchall()
@@ -475,7 +476,11 @@ def get_groups():
     result = [{
         "id": data[0],
         "name": data[1],
-        "subject_id": data[2],
+        "class": {
+            "type": "Class",
+            "id": data[2],
+            "name": data[3]
+        },
         "type": "Group"
         } for data in exec_result
     ]
