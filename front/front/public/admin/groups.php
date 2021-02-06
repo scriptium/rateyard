@@ -24,7 +24,7 @@
             </div>
         </div>
         <input type="text" class="default_input_text" placeholder="Пошук груп">
-        <table class="default_table" id="groups_table">
+        <table class="default_table hidden" id="groups_table">
             <tbody>
                 <tr>
                     <th>№</th>

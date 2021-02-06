@@ -1,3 +1,8 @@
+let studentsResponseData = new Promise(async (resolve, reject) => {
+    await checkUserData(undefined, 'login.php');
+    getStudents().then(resolve, reject)
+})
+
 function fillStudentsTable(responseText) {
     parsedResponse = JSON.parse(responseText);
     console.log(parsedResponse)
@@ -25,11 +30,11 @@ function fillStudentsTable(responseText) {
         mainTbodyEleemnt.appendChild(newRowElement);
     });
 
+    studentsTableElement.classList.remove('hidden');
 }
 
 window.onload = async () => {
-    await checkUserData(undefined, 'login.php');
-    await getStudents().then((responseData) => {
+    studentsResponseData.then((responseData) => {
         fillStudentsTable(responseData.text)
     });
 }

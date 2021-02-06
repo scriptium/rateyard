@@ -1,3 +1,8 @@
+let groupseResponseData = new Promise(async (resolve, reject) => {
+    await checkUserData(undefined, 'login.php');
+    getGroups().then(resolve, reject)
+})
+
 function fillGroupsTable(responseText) {
     parsedResponse = JSON.parse(responseText);
     groupsTableElement = document.getElementById('groups_table');
@@ -18,11 +23,11 @@ function fillGroupsTable(responseText) {
         mainTbodyEleemnt.appendChild(newRowElement);
     });
 
+    groupsTableElement.classList.remove('hidden');
 }
 
 window.onload = async () => {   
-    await checkUserData(undefined, 'login.php');
-    await getGroups().then((responseData) => {
+    groupseResponseData.then((responseData) => {
         fillGroupsTable(responseData.text)
     });
 }

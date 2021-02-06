@@ -10,6 +10,10 @@ a:hover {
 .default_table {
     justify-self: stretch;
     border-collapse: collapse;
+    transition: opacity 0.3s;
+}
+.default_table.hidden {
+    opacity: 0;
 }
 .default_table th, .default_table td{
     padding: 10px;
@@ -18,9 +22,6 @@ a:hover {
 }
 .default_table td a {
     font-weight: bold;
-}
-.default_table tbody:nth-child(2) tr {
-    transition: background 0.3s, color 0.3s;
 }
 .default_table tbody:nth-child(2) tr:nth-child(2n+1)
 {
