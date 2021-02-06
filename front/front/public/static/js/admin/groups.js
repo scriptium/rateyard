@@ -15,10 +15,10 @@ function fillGroupsTable(responseText) {
         idElement.innerHTML = group.id;
 
         let nameElement = newRowElement.appendChild(document.createElement('td'));
-        nameElement.innerHTML = `<a href=\"/group.php?id=${group.id}\">${group.name}</a>`;
+        nameElement.innerHTML = `<a class=\"text\" href=\"/group.php?id=${group.id}\">${group.name}</a>`;
 
         let classElement = newRowElement.appendChild(document.createElement('td'));
-        classElement.innerHTML = `<a href=\"/class.php?id=${group.class.id}\">${group.class.name}</a>`;
+        classElement.innerHTML = `<a class=\"text\" href=\"/class.php?id=${group.class.id}\">${group.class.name}</a>`;
 
         mainTbodyEleemnt.appendChild(newRowElement);
     });

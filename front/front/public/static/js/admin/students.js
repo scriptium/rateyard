@@ -16,10 +16,10 @@ function fillStudentsTable(responseText) {
         idElement.innerHTML = student.id;
 
         let fullNameElement = newRowElement.appendChild(document.createElement('td'));
-        fullNameElement.innerHTML = `<a href=\"/student.php?id=${student.id}\">${student.full_name}</a>`;
+        fullNameElement.innerHTML = `<a class=\"text\" href=\"/student.php?id=${student.id}\">${student.full_name}</a>`;
 
         let classElement = newRowElement.appendChild(document.createElement('td'));
-        classElement.innerHTML = `<a href=\"/class.php?id=${student.class.id}\">${student.class.name}</a>`;
+        classElement.innerHTML = `<a class=\"text\" href=\"/class.php?id=${student.class.id}\">${student.class.name}</a>`;
 
         let usernameElement = newRowElement.appendChild(document.createElement('td'));
         usernameElement.innerHTML = student.username;

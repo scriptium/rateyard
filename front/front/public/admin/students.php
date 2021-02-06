@@ -18,10 +18,12 @@
     <div id="content">
         <div id="title_block">
             <div class="title">Наявні учні</div>
-            <div class="blue_button">
-                <div class="button_icon add_icon"></div>
-                <div>Додати учня</div>
-            </div>
+            <a href="new_student.php">
+                <div class="blue_button">
+                    <div class="button_icon add_icon"></div>
+                    <div>Додати учня</div>
+                </div>
+            </a>
             <div class="excel_button">
                 <div class="button_icon excel_icon"></div>
                 <div>Імпорт з файлу Microsoft Excel</div>

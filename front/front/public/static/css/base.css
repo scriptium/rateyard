@@ -1,12 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@700&display=swap');
 
-* {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: normal;
-    margin: 0;
-    padding: 0;
-}
 :root {
     --huge-font-size: 36px;
     --big-font-size: 24px;
@@ -18,15 +12,26 @@
     --blue-color: #7298AE;
     --table-gray-color: rgba(90, 173, 221, 0.15);
 }
+* {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    color: var(--light-black-color);
+}
+
+a {
+    text-decoration: none;
+}
 
 #content {
     margin: 30px;
     display: grid;
     grid-template-columns: 1fr;
-}
-
-#content > * {
-    margin-bottom: 20px;
+    row-gap: 20px;
 }
 
 input[type='search'] {
@@ -77,7 +82,12 @@ input[type='search'] {
     background-size: contain;
     background-position: center;
 }
-
+.save_icon {
+    background-image: url(/static/images/save.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
 .button_icon {
     width: 20px;
     height: 20px;
@@ -142,10 +152,12 @@ input[type='search'] {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: 2px 2px 9px 1px rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
+    border-radius: 30px;
     padding: 10px 20px;
     transition: box-shadow 0.3s;
     font-size: var(--normal-font-size);
+    max-height: min-content;
+    align-self: center;
 }
 
 .default_input_text:focus {

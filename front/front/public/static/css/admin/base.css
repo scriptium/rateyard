@@ -1,9 +1,9 @@
-a, a:visited, a:active{
+a.text, a.text:visited, a.text:active{
     color: var(--light-black-color);
     text-decoration: underline;
     transition: color 0.2s;
 }
-a:hover {
+a.text:hover {
     color: var(--light-blue-color)
 }
 
@@ -40,4 +40,15 @@ a:hover {
 
 #title_block > * {
     margin-right: 20px;
+}
+
+.input_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.input_grid>div:nth-child(odd) {
+    font-size: var(--big-font-size);
+    font-weight: bold;
 }
