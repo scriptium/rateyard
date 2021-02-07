@@ -1,8 +1,9 @@
-FROM python:3
+FROM ubuntu:20.04
 
-WORKDIR /usr/src/app
+RUN apt-get update && apt-get -y upgrade
+RUN apt-get -y install nginx php-fpm=2:7.4+75
+RUN unlink /etc/nginx/sites-enabled/default
+COPY nginx_conf /etc/nginx/sites-available/rateyard
+RUN ln -s /etc/nginx/sites-available/rateyard /etc/nginx/sites-enabled/
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
+COPY front /usr/share/rateyard

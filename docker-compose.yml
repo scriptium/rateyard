@@ -11,11 +11,14 @@ services:
             - db
     front:
         build: ./front
-        command: gunicorn -b 0.0.0.0:80 frontik:create_app()
-        ports: 
-            - 80:80
-        external_links: 
+        command: bash -c "service nginx start && /usr/sbin/php-fpm7.4 --nodaemonize --fpm-config /etc/php/7.4/fpm/php-fpm.conf"
+        depends_on:
+            - api
+        external_links:
             - api:docker-api
+        ports:
+            - 80:80
+
     db:
         image: postgres
         restart: always

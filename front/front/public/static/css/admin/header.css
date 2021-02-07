@@ -4,9 +4,11 @@
     position: sticky;
     top: 0;
     width: 100%;
+    min-width: max-content;
     z-index: 1001;
     display: flex;
     flex-direction: row;
+    column-gap: 20px;
 }
 
 #header>div:nth-child(1) {
