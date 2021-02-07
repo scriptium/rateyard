@@ -157,7 +157,7 @@ input[type='search'] {
     transition: box-shadow 0.3s;
     font-size: var(--normal-font-size);
     max-height: min-content;
-    align-self: center;
+    align-self: stretch;
 }
 
 .default_input_text:focus {

@@ -16,7 +16,3 @@
 #login_block > * {
     margin-bottom: 15px;
 }
-
-#login_block .default_input_text {
-    justify-self: stretch;
-}
