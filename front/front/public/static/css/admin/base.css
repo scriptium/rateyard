@@ -7,13 +7,18 @@ a.text:hover {
     color: var(--light-blue-color)
 }
 
+.appear_transition {
+    transition: opacity 0.3s;
+    opacity: 0;
+}
+.appear_transition.visible {
+    opacity: 1;
+}
+
 .default_table {
     justify-self: stretch;
     border-collapse: collapse;
-    transition: opacity 0.3s;
-}
-.default_table.hidden {
-    opacity: 0;
+
 }
 .default_table th, .default_table td{
     padding: 10px;

@@ -23,9 +23,9 @@
                 <div>Зберегти</div>
             </div>
         </div>
-        <div class="input_grid">
+        <div class="input_grid appear_transition">
             <div>ПІБ:</div><input type="text" class="default_input_text" placeholder="Введіть ПІБ учня">
-            <div>Клас:</div><input type="text" class="default_input_text">
+            <div>Клас:</div><select id="classes_select" class="default_select"></select>
             <div>Логін:</div><input type="text" class="default_input_text" placeholder="Введіть логін">
             <div>Адреса електронної пошти:</div><input type="text" class="default_input_text"
                 placeholder="Введіть адресу електронної пошти учня">
@@ -34,6 +34,7 @@
         </div>
         <script type="text/javascript" src="/static/js/admin/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/api.js"></script>
+        <script type="text/javascript" src="/static/js/admin/new_student.js"></script>
 </body>
 
 </html>

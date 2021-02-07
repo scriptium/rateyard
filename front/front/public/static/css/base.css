@@ -149,7 +149,7 @@ input[type='search'] {
     display: inline-block;
 }
 
-.default_input_text {
+.default_input_text, .default_select {
     border:none;
     background-image:none;
     background-color: white;
@@ -164,13 +164,22 @@ input[type='search'] {
     align-self: stretch;
 }
 
-.default_input_text:focus {
+.default_input_text:focus, .default_select:focus {
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
     outline: none;
 }
 
 .default_input_text::placeholder {
-    font-weight: bold;
     color: #B9B9B9;
 }
 
+.default_select {
+    -webkit-appearance: none;
+	-moz-appearance: none;
+	-o-appearance: none;
+	appearance: none;
+	background-image: url('/static/images/dropdown_arrow.svg');
+    background-size: 10px;
+    background-repeat: no-repeat;
+	background-position: right 15px center;
+}

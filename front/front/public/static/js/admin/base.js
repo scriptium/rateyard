@@ -1,12 +1,10 @@
-function disableButton(button)
-{
+function disableButton(button) {
     button.setAttribute('_onclick', button.getAttribute('onclick'))
     button.removeAttribute('onclick')
     button.classList.add('disabled')
 }
 
-function enableButton (button)
-{
+function enableButton(button) {
     button.setAttribute('onclick', button.getAttribute('_onclick'))
     button.classList.remove('disabled')
 }
@@ -16,4 +14,13 @@ function logoutButton(button) {
     localStorage.removeItem('api_access_token');
     localStorage.removeItem('api_refresh_token');
     document.location.replace('login.php')
+}
+
+function fillClassesSelect(dropdowmElement, classes) {
+    classes.forEach(_class => {
+        let newOptionElement = document.createElement('option');
+        newOptionElement.value = _class.id;
+        newOptionElement.innerHTML = _class.name;
+        dropdowmElement.appendChild(newOptionElement);
+    });
 }

@@ -23,7 +23,7 @@ function fillGroupsTable(responseText) {
         mainTbodyEleemnt.appendChild(newRowElement);
     });
 
-    groupsTableElement.classList.remove('hidden');
+    groupsTableElement.classList.add('visible');
 }
 
 window.onload = async () => {   

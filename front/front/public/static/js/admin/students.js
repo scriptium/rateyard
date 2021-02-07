@@ -30,7 +30,7 @@ function fillStudentsTable(responseText) {
         mainTbodyEleemnt.appendChild(newRowElement);
     });
 
-    studentsTableElement.classList.remove('hidden');
+    studentsTableElement.classList.add('visible');
 }
 
 window.onload = async () => {

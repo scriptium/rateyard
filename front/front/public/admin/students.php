@@ -30,7 +30,7 @@
             </div>
         </div>
         <input type="text" class="default_input_text" placeholder="Пошук учнів">
-        <table class="default_table hidden" id="students_table">
+        <table class="default_table appear_transition" id="students_table">
             <tbody>
                 <tr>
                     <th>№</th>
