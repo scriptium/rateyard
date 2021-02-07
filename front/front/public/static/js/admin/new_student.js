@@ -15,7 +15,7 @@ function saveNewStudentButton(buttonElement) {
     let passwordElement = document.getElementById('password');
     let emailElement = document.getElementById('email');
 
-    requestJSON = [{
+    let requestJSON = [{
         full_name: fullNameElement.value,
         class_id: classElement.value,
         username: usernameElement.value,
@@ -29,7 +29,7 @@ function saveNewStudentButton(buttonElement) {
     (responseData) => {
         if (responseData.code == 400) {
             let parsedResponseJSON = JSON.parse(responseData.text);
-            
+
             if (parsedResponseJSON[0].includes(0)) makeInputTextWrong(usernameElement);
             if (parsedResponseJSON[0].includes(1)) makeInputTextWrong(fullNameElement);
             if (parsedResponseJSON[0].includes(2)) makeInputTextWrong(classElement);
