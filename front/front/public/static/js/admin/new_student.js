@@ -24,7 +24,7 @@ function saveNewStudentButton(buttonElement) {
     }]
 
     createStudents(JSON.stringify(requestJSON)).then((responseData) => {
-        document.location.replace('students.php')
+        window.history.back();
     },
     (responseData) => {
         if (responseData.code == 400) {
