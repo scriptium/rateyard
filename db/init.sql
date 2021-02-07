@@ -83,3 +83,18 @@ INSERT INTO groups (group_name, class_id) VALUES ('Група Б', 2);
 
 INSERT INTO groups (group_name, class_id) VALUES ('Група А', 3);
 INSERT INTO groups (group_name, class_id) VALUES ('Група Б', 3);
+
+INSERT INTO students (username, full_name, email, password_hash, class_id)
+VALUES ('zhmisenko1', 'Жмишенко Валерій Альбертович', 'zmyshenko1@mail.com', 'a', 1);
+
+INSERT INTO students (username, full_name, email, password_hash, class_id)
+VALUES ('zhmisenko2', 'Жмишенко Валерій Альбертович', 'zmyshenko2@mail.com', 'a', 1);
+
+INSERT INTO students (username, full_name, email, password_hash, class_id)
+VALUES ('zhmisenko3', 'Жмишенко Валерій Альбертович', 'zmyshenko3@mail.com', 'a', 1);
+
+INSERT INTO students (username, full_name, email, password_hash, class_id)
+VALUES ('zhmisenko4', 'Жмишенко Валерій Альбертович', 'zmyshenk4@mail.com', 'a', 1);
+
+INSERT INTO students (username, full_name, email, password_hash, class_id)
+VALUES ('zhmisenko5', 'Жмишенко Валерій Альбертович', 'zmyshenk5@mail.com', 'a', 1);

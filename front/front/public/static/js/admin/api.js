@@ -121,3 +121,25 @@ function getClasses(){
     })
 }
 
+function createStudents(studentsJSONString){
+    accessToken = localStorage.getItem('api_access_token');
+    return new Promise(function (resolve, reject) {
+        xhr = new XMLHttpRequest();
+        xhr.open('POST', PATH + '/admin/create_students')
+        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.onload = () => {
+            if (xhr.status == 200)
+                resolve({
+                    text: xhr.responseText,
+                    code: xhr.status
+                })
+            else reject({
+                text: xhr.responseText,
+                code: xhr.status
+            })
+        }
+        xhr.send(studentsJSONString)
+    })
+}
+

@@ -19,6 +19,7 @@
             <input class="default_input_text" placeholder="Пароль" autocomplete="off" id="password_input" type="password">
         <div class="blue_button" onclick="loginButton(this)">Увійти</div>
     </div>
+    <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/api.js"></script>
     <script type="text/javascript" src="/static/js/admin/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/login.js"></script>
