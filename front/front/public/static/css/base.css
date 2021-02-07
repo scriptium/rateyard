@@ -81,16 +81,18 @@ input[type='search'] {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+    width: 20px;
+    height: 20px;
 }
 .save_icon {
     background-image: url(/static/images/save.svg);
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+    width: 17px;
+    height: 20px;
 }
 .button_icon {
-    width: 20px;
-    height: 20px;
     align-self: center;
     margin-right: 10px;
     font-weight: bold;
@@ -123,6 +125,8 @@ input[type='search'] {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+    width: 24px;
+    height: 20px;
 }
 
 .exit_icon {

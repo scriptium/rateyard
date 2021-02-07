@@ -1,4 +1,10 @@
-<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M21.5 12.6115L3 12.6115" stroke="white" stroke-width="5" stroke-linecap="round"/>
-<path d="M12.1385 3.25V21.75" stroke="white" stroke-width="5" stroke-linecap="round"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+</style>
+<path class="st0" d="M17.5,12.6h-15c-1.4,0-2.5-1.1-2.5-2.5s1.1-2.5,2.5-2.5h15c1.4,0,2.5,1.1,2.5,2.5S18.9,12.6,17.5,12.6z"/>
+<path class="st0" d="M10.1,20c-1.4,0-2.5-1.1-2.5-2.5v-15C7.6,1.1,8.8,0,10.1,0s2.5,1.1,2.5,2.5v15C12.6,18.9,11.5,20,10.1,20z"/>
 </svg>
