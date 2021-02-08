@@ -160,8 +160,8 @@ def create_students():
         return jsonify(student_data_errors), 400
 
 
-@ bp.route("/delete_students", methods=("POST", ))
-@ admin_token_required
+@bp.route("/delete_students", methods=("POST", ))
+@admin_token_required
 def delete_students():
     if not request.is_json:
         abort(400, "Expected json")
@@ -201,8 +201,8 @@ def delete_students():
     '''
 
 
-@ bp.route("/edit_students", methods=("POST", ))
-@ admin_token_required
+@bp.route("/edit_students", methods=("POST", ))
+@admin_token_required
 def edit_students():
     print(request.json, flush=True)
     if not request.is_json:
@@ -242,8 +242,8 @@ def edit_students():
     }), 201
 
 
-@ bp.route("/create_teacher", methods=("POST", ))
-@ admin_token_required
+@bp.route("/create_teacher", methods=("POST", ))
+@admin_token_required
 def create_teacher():
     if not request.is_json:
         abort("400", "Expected json")
@@ -271,7 +271,7 @@ def create_teacher():
                 request.json["email"],
                 request.json["password"]
             ))
-        except psycopg2.errors.UniqueViolation:
+        except Exception:
             abort(409, "Teacher with same data already exists")
         else:
             db.commit()
@@ -282,8 +282,8 @@ def create_teacher():
     }), 201
 
 
-@ bp.route("/delete_teachers", methods=("POST", ))
-@ admin_token_required
+@bp.route("/delete_teachers", methods=("POST", ))
+@admin_token_required
 def delete_teachers():
     if not request.is_json:
         abort(400, "Expected json")
@@ -307,8 +307,8 @@ def delete_teachers():
     }), 200
 
 
-@ bp.route("/edit_teachers", methods=("POST", ))
-@ admin_token_required
+@bp.route("/edit_teachers", methods=("POST", ))
+@admin_token_required
 def edit_teachers():
     print(request.json, flush=True)
     if not request.is_json:
@@ -346,8 +346,8 @@ def edit_teachers():
     }), 201
 
 
-@ bp.route("/delete_subjects", methods=("POST", ))
-@ admin_token_required
+@bp.route("/delete_subjects", methods=("POST", ))
+@admin_token_required
 def delete_subjects():
     if not request.is_json:
         abort(400, "Expected json")
@@ -371,8 +371,8 @@ def delete_subjects():
     }), 200
 
 
-@ bp.route("/edit_subjects", methods=("POST", ))
-@ admin_token_required
+@bp.route("/edit_subjects", methods=("POST", ))
+@admin_token_required
 def edit_subjects():
     print(request.json, flush=True)
     if not request.is_json:
@@ -406,8 +406,8 @@ def edit_subjects():
     }), 201
 
 
-@ bp.route("/set_class", methods=("POST", ))
-@ admin_token_required
+@bp.route("/set_class", methods=("POST", ))
+@admin_token_required
 def set_class():
     if not request.is_json:
         abort("400", "Expected json")
@@ -431,8 +431,8 @@ def set_class():
         abort(400, "Wrong json")
 
 
-@ bp.route("/create_class", methods=("POST", ))
-@ admin_token_required
+@bp.route("/create_class", methods=("POST", ))
+@admin_token_required
 def create_class():
     if not request.is_json:
         abort("400", "Expected json")
@@ -459,8 +459,8 @@ def create_class():
         abort(400, "Wrong json")
 
 
-@ bp.route("/delete_classes", methods=("POST", ))
-@ admin_token_required
+@bp.route("/delete_classes", methods=("POST", ))
+@admin_token_required
 def delete_classes():
     if not request.is_json:
         abort(400, "Expected json")
@@ -484,8 +484,8 @@ def delete_classes():
     }), 200
 
 
-@ bp.route("/edit_classes", methods=("POST", ))
-@ admin_token_required
+@bp.route("/edit_classes", methods=("POST", ))
+@admin_token_required
 def edit_classes():
     print(request.json, flush=True)
     if not request.is_json:
@@ -519,8 +519,8 @@ def edit_classes():
     }), 201
 
 
-@ bp.route("/get_classes", methods=("GET", ))
-@ admin_token_required
+@bp.route("/get_classes", methods=("GET", ))
+@admin_token_required
 def get_classes():
     db = get_db()
     cursor = db.cursor()
@@ -541,8 +541,8 @@ def get_classes():
     return jsonify(result), 200
 
 
-@ bp.route("/get_groups", methods=("GET", ))
-@ admin_token_required
+@bp.route("/get_groups", methods=("GET", ))
+@admin_token_required
 def get_groups():
     db = get_db()
     cursor = db.cursor()
@@ -569,21 +569,35 @@ def get_groups():
     return jsonify(result), 200
 
 
-@ bp.route("/get_students", methods=("GET", ))
-@ admin_token_required
+@bp.route("/get_students", methods=("POST", ))
+@admin_token_required
 def get_students():
+    exec_str = '''
+    SELECT students.id, students.username, students.full_name,
+    students.email, students.class_id, classes.class_name
+    FROM students
+    LEFT OUTER JOIN classes ON students.class_id=classes.id
+    '''
+    exec_args = []
+
+    if request.is_json:
+        exec_str += " WHERE False"
+        for student_id in request.json:
+            print('id', student_id, flush=True)
+            if type(student_id) != int:
+                abort(400)
+            exec_args.append(student_id)
+            exec_str += " OR students.id=%s"
+
     db = get_db()
     cursor = db.cursor()
-    cursor.execute('''
-        SELECT students.id, students.username, students.full_name,
-               students.email, students.class_id, classes.class_name
-        FROM students
-        LEFT OUTER JOIN classes ON students.class_id=classes.id;
-    ''')
+    cursor.execute(exec_str, exec_args)
     exec_result = cursor.fetchall()
     print(exec_result, flush=True)
+
     if exec_result is None:
-        return None
+        return jsonify([])
+
     result = [{
         "id": data[0],
         "username": data[1],
@@ -597,11 +611,11 @@ def get_students():
         "type": "Student"
     } for data in exec_result
     ]
-    return jsonify(result), 200
+    return jsonify(result)
 
 
-@ bp.route("/get_teachers", methods=("GET", ))
-@ admin_token_required
+@bp.route("/get_teachers", methods=("GET", ))
+@admin_token_required
 def get_teachers():
     db = get_db()
     cursor = db.cursor()
@@ -624,8 +638,8 @@ def get_teachers():
     return jsonify(result), 200
 
 
-@ bp.route("/get_subjects", methods=("GET", ))
-@ admin_token_required
+@bp.route("/get_subjects", methods=("GET", ))
+@admin_token_required
 def get_subjects():
     db = get_db()
     cursor = db.cursor()
@@ -646,8 +660,8 @@ def get_subjects():
     return jsonify(result), 200
 
 
-@ bp.route("/create_subject", methods=("POST", ))
-@ admin_token_required
+@bp.route("/create_subject", methods=("POST", ))
+@admin_token_required
 def create_subject():
     if not request.is_json:
         abort("400", "Expected json")
@@ -672,8 +686,8 @@ def create_subject():
         abort(400, "Wrong json")
 
 
-@ bp.route("/create_group", methods=("POST", ))
-@ admin_token_required
+@bp.route("/create_group", methods=("POST", ))
+@admin_token_required
 def create_group():
     if not request.is_json:
         abort("400", "Expected json")
@@ -702,8 +716,8 @@ def create_group():
         abort(400, "Wrong json")
 
 
-@ bp.route("/add_students_to_group", methods=("POST", ))
-@ admin_token_required
+@bp.route("/add_students_to_group", methods=("POST", ))
+@admin_token_required
 def add_students_to_group():
     if not request.is_json:
         abort("400", "Expected json")
@@ -732,8 +746,8 @@ def add_students_to_group():
     }), 200
 
 
-@ bp.route("/add_teachers_to_group", methods=("POST", ))
-@ admin_token_required
+@bp.route("/add_teachers_to_group", methods=("POST", ))
+@admin_token_required
 def add_teachers_to_group():
     if not request.is_json:
         abort("400", "Expected json")

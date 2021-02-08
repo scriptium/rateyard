@@ -1,10 +1,13 @@
-checkingData = checkUserData(undefined, 'login.php');
+let dataHasChecked = checkUserData(undefined, 'login.php');
 
-let classesResponseData;
-
-checkingData.then(() => {
-    classesResponseData = getClasses()
-});
+let classesHasFilled = new Promise (async (resolve, reject) => {
+    await dataHasChecked;
+    getClasses().then((responseData) => {
+        let classesSelectElement = document.getElementById('classes_select');
+        fillClassesSelect(classesSelectElement, JSON.parse(responseData.text));
+        resolve();
+    }, reject);
+})
 
 function saveNewStudentButton(buttonElement) {
     disableButton(buttonElement);
@@ -42,10 +45,6 @@ function saveNewStudentButton(buttonElement) {
 }
 
 window.onload = async () => {
-    await checkingData;
-    classesResponseData.then((responseData) => {
-        let classesSelectElement = document.getElementById('classes_select');
-        fillClassesSelect(classesSelectElement, JSON.parse(responseData.text));
-        classesSelectElement.parentElement.classList.add('visible');
-    });
+    await classesHasFilled;
+    document.getElementById('load_data').classList.add('visible');
 }

@@ -7,12 +7,11 @@ async function checkUserData(passURL, failURL) {
 
     if (accessToken != null) {
         let tokenIsValid = await new Promise(function (resolve, reject) {
-            xhr = new XMLHttpRequest();
+            let xhr = new XMLHttpRequest();
             xhr.open('POST', PATH + '/admin/check_token')
             xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
             xhr.onreadystatechange = () => {
-                if (xhr.readyState === XMLHttpRequest.DONE)
-                {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status == 200) {
                         resolve(true)
                     }
@@ -25,7 +24,7 @@ async function checkUserData(passURL, failURL) {
         })
         if (tokenIsValid) fail = false;
     }
-    if (fail){
+    if (fail) {
         if (failURL !== undefined)
             document.location.replace(failURL);
     }
@@ -36,7 +35,7 @@ async function checkUserData(passURL, failURL) {
 
 function login(username, password) {
     return new Promise(function (resolve, reject) {
-        xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.open('POST', PATH + '/auth/login_admin')
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => {
@@ -57,11 +56,11 @@ function login(username, password) {
     })
 }
 
-function getStudents(){
+function getStudents(ids) {
     accessToken = localStorage.getItem('api_access_token');
     return new Promise(function (resolve, reject) {
-        xhr = new XMLHttpRequest();
-        xhr.open('GET', PATH + '/admin/get_students')
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', PATH + '/admin/get_students')
         xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
         xhr.onload = () => {
             if (xhr.status == 200)
@@ -74,14 +73,18 @@ function getStudents(){
                 code: xhr.status
             })
         }
-        xhr.send()
+        if (ids != undefined) {
+            xhr.setRequestHeader('Content-type', 'application/json');
+            xhr.send(JSON.stringify(ids))
+        }
+        else xhr.send()
     })
 }
 
-function getGroups(){
+function getGroups() {
     accessToken = localStorage.getItem('api_access_token');
     return new Promise(function (resolve, reject) {
-        xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.open('GET', PATH + '/admin/get_groups')
         xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
         xhr.onload = () => {
@@ -99,32 +102,34 @@ function getGroups(){
     })
 }
 
-
-function getClasses(){
+function getClasses() {
     accessToken = localStorage.getItem('api_access_token');
     return new Promise(function (resolve, reject) {
-        xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.open('GET', PATH + '/admin/get_classes')
         xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.onload = () => {
-            if (xhr.status == 200)
-                resolve({
-                    text: xhr.responseText,
-                    code: xhr.status
-                })
-            else reject({
-                text: xhr.responseText,
-                code: xhr.status
-            })
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status == 200)
+                    resolve({
+                        text: xhr.responseText,
+                        code: xhr.status
+                    })
+                else
+                    reject({
+                        text: xhr.responseText,
+                        code: xhr.status
+                    })
+            }
         }
         xhr.send()
     })
 }
 
-function createStudents(studentsJSONString){
+function createStudents(studentsJSONString) {
     accessToken = localStorage.getItem('api_access_token');
     return new Promise(function (resolve, reject) {
-        xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.open('POST', PATH + '/admin/create_students')
         xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
         xhr.setRequestHeader('Content-type', 'application/json');
