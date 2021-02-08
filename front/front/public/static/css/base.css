@@ -22,11 +22,12 @@
 
 body {
     color: var(--light-black-color);
-    min-width: max-content;
+    min-width: min-content;
 }
 
 a {
     text-decoration: none;
+    white-space: nowrap;
 }
 
 #content {
