@@ -1,20 +1,3 @@
-a.text, a.text:visited, a.text:active{
-    color: var(--light-black-color);
-    text-decoration: underline;
-    transition: color 0.2s;
-}
-a.text:hover {
-    color: var(--light-blue-color)
-}
-
-.appear_transition {
-    transition: opacity 0.3s;
-    opacity: 0;
-}
-.appear_transition.visible {
-    opacity: 1;
-}
-
 .default_table {
     justify-self: stretch;
     border-collapse: collapse;

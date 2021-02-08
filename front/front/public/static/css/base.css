@@ -15,6 +15,7 @@
 * {
     font-family: 'Open Sans', sans-serif;
     font-weight: normal;
+    font-size: var(--normal-font-size);
     margin: 0;
     padding: 0;
 }
@@ -48,6 +49,10 @@ input[type='search'] {
     color: var(--light-black-color);
     font-size: var(--huge-font-size);
     font-weight: bold;
+}
+.title * {
+    font-weight: bold;
+    font-size: var(--huge-font-size);
 }
 
 .blue_button {
@@ -195,3 +200,23 @@ input[type='search'] {
     background-repeat: no-repeat;
 	background-position: right 15px center;
 }
+
+a.text, a.text:visited, a.text:active{
+    color: var(--light-black-color);
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+a.text:hover {
+    color: var(--light-blue-color)
+}
+
+.appear_transition {
+    visibility: hidden;
+    transition: opacity 0.3s;
+    opacity: 0;
+}
+.appear_transition.visible {
+    opacity: 1;
+    visibility: visible;
+}
+

@@ -1,0 +1,14 @@
+#content {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0px;
+    align-items: center;
+
+}
+.logo_main {
+    font-size: 48px;
+}
+#error_title {
+    font-size: var(--big-font-size);
+    font-weight: bold;
+}
