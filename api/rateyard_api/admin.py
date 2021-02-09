@@ -32,20 +32,7 @@ def check_token():
     return jsonify(msg='ok')
 
 
-@bp.route("/create_students", methods=("POST", ))
-@admin_token_required
-def create_students():
-    if not request.is_json:
-        abort(400, "Expected json")
-        print("Expected json", flush=True)
-    if type(request.json) != list:
-        abort(400, "Expected array of students")
-        print("Expected array of students", flush=True)
-
-    db = get_db()
-    cursor = db.cursor()
-    student_data_errors = {}
-
+def check_student_data(cursor, all_required=False):
     for student_index in range(len(request.json)):
         '''
         Error codes for students:
@@ -66,69 +53,117 @@ def create_students():
         '''
 
         student = request.json[student_index]
+        student_data_errors = {}
 
-        if ("username" not in student.keys() or student["username"] == ""
-                or type(student["username"]) != str):
-            student_data_errors[student_index] = []
-            student_data_errors[student_index].append(0)
+        was_error = False
+
+        if "username" not in student.keys():
+            if all_required:
+                was_error = True
+        elif student["username"] == "" or type(student["username"]) != str:
+            was_error = True
         else:
             cursor.execute(
                 "SELECT 1 FROM students WHERE username=%s;",
                 (student['username'], )
             )
             if not cursor.fetchone() is None:
-                student_data_errors[student_index] = []
-                student_data_errors[student_index].append(0)
+                was_error = True
+        
+        if was_error:
+            student_data_errors[student_index] = [0]
 
-        if ("full_name" not in student.keys() or student["full_name"] == ""
-                or type(student["full_name"]) != str):
-            if type(student_data_errors.get(student_index)) != list:
-                student_data_errors[student_index] = []
-            student_data_errors[student_index].append(1)
+
+        was_error = False
+
+        if "full_name" not in student.keys():
+            if all_required:
+                was_error = True
+        elif type(student["full_name"]) != str or student["full_name"] == "":
+            was_error = True
         else:
             cursor.execute(
                 "SELECT 1 FROM students WHERE full_name=%s;",
                 (student['full_name'], )
             )
             if not cursor.fetchone() is None:
-                if type(student_data_errors.get(student_index)) != list:
-                    student_data_errors[student_index] = []
-                student_data_errors[student_index].append(1)
+                was_error = True
 
-        if "class_id" not in student.keys():
+        if was_error:
             if type(student_data_errors.get(student_index)) != list:
                 student_data_errors[student_index] = []
-            student_data_errors[student_index].append(2)
+            student_data_errors[student_index].append(1)
+
+
+        was_error = False
+
+        if "class_id" not in student.keys():
+            if all_required:
+                was_error = True
         else:
             cursor.execute(
                 "SELECT 1 FROM classes WHERE id=%s;",
                 (student["class_id"], )
             )
             if cursor.fetchone() is None:
-                if type(student_data_errors.get(student_index)) != list:
-                    student_data_errors[student_index] = []
-                student_data_errors[student_index].append(2)
+                was_error = True
 
-        if ("password" not in student.keys() or student["password"] == ""
-                or type(student["password"]) != str):
+        if was_error:
+            if type(student_data_errors.get(student_index)) != list:
+                student_data_errors[student_index] = []
+            student_data_errors[student_index].append(2)
+
+
+        was_error = False
+
+        if ("password" not in student.keys()):
+            if all_required:
+                was_error = True
+        elif student["password"] == "" or type(student["password"]) != str:
+            was_error = True
+
+        if was_error:
             if type(student_data_errors.get(student_index)) != list:
                 student_data_errors[student_index] = []
             student_data_errors[student_index].append(3)
 
-        if ("email" not in student.keys() or student["email"] == ""
-                or type(student["email"]) != str):
-            if type(student_data_errors.get(student_index)) != list:
-                student_data_errors[student_index] = []
-            student_data_errors[student_index].append(4)
+
+        was_error = False
+
+        if "email" not in student.keys():
+            if all_required:
+                was_error = True
+        elif student["email"] == "" or type(student["email"]) != str:
+            was_error = True
         else:
             cursor.execute(
                 "SELECT 1 FROM students WHERE email=%s;",
                 (student['email'], )
             )
             if not cursor.fetchone() is None:
-                if type(student_data_errors.get(student_index)) != list:
-                    student_data_errors[student_index] = []
-                student_data_errors[student_index].append(4)
+                was_error = True
+
+        if was_error:
+            if type(student_data_errors.get(student_index)) != list:
+                student_data_errors[student_index] = []
+            student_data_errors[student_index].append(4)
+
+    return student_data_errors
+
+
+@bp.route("/create_students", methods=("POST", ))
+@admin_token_required
+def create_students():
+    if not request.is_json:
+        abort(400, "Expected json")
+        print("Expected json", flush=True)
+    if type(request.json) != list:
+        abort(400, "Expected array of students")
+        print("Expected array of students", flush=True)
+
+    db = get_db()
+    cursor = db.cursor()
+    student_data_errors = check_student_data(cursor, True)
 
     if student_data_errors == {}:
         for student in request.json:
@@ -183,22 +218,6 @@ def delete_students():
     return jsonify({
         "result": "OK"
     }), 200
-    '''
-    except Exception as e:
-        print(e, flush=True)
-        abort(400, "Unknown error")
-    else:
-        db.commit()
-        if cursor.fetchone() is None:
-            abort(400, 'There are not students with on of ids')
-        print("OK", flush=True)
-    else:
-        print("Wrong json", flush=True)
-        abort(400, "Wrong json")
-    return jsonify({
-        "result": "OK"
-    }), 201
-    '''
 
 
 @bp.route("/edit_students", methods=("POST", ))
