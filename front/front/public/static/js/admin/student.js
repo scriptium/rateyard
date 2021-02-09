@@ -62,6 +62,18 @@ let studentHasFilled = new Promise(async (resolve, reject) => {
 //     })
 // }
 
+async function deleteStudentButton(buttonElement) {
+    buttonElement.classList.add('disabled');
+    isConfirmed = confirm(`Видалити учня №${studentId}?`)
+    if (isConfirmed) {
+        deleteStudents(JSON.stringify([studentId])).then(
+            () => {window.history.back()},
+            () => {buttonElement.classList.remove('disabled')}
+        )
+    }
+    else buttonElement.classList.remove('disabled');
+}
+
 window.onload = async () => {
     await studentHasFilled;
     document.getElementById('load_data').classList.add('visible');

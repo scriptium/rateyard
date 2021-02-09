@@ -148,3 +148,28 @@ function createStudents(studentsJSONString) {
     })
 }
 
+function deleteStudents(studentIdsJSONString) {
+    accessToken = localStorage.getItem('api_access_token');
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', PATH + '/admin/delete_students')
+        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status == 200)
+                    resolve({
+                        text: xhr.responseText,
+                        code: xhr.status
+                    })
+                else
+                    reject({
+                        text: xhr.responseText,
+                        code: xhr.status
+                    })
+            }
+        }
+        xhr.send(studentIdsJSONString)
+    })
+}
+

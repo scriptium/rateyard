@@ -81,6 +81,35 @@ input[type='search'] {
     background: var(--blue-color);
     cursor: default;
     box-shadow: none;
+    pointer-events: none;
+}
+
+.delete_button {
+    display: flex;
+    flex-direction: row;
+    background: var(--red-color);
+    color: white;
+    font-size: var(--normal-font-size);
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    width: max-content;
+}
+.delete_button * {
+    font-weight: bold;
+}
+.delte_button:hover:not(.disabled) {
+    transform: translateY(-2px);
+    box-shadow: 2px 3px 11px 4px rgba(0, 0, 0, 0.25);
+}
+.delete_button.disabled {
+    background: var(--blue-color);
+    cursor: default;
+    box-shadow: none;
+    pointer-events: none;
 }
 
 .add_icon {
@@ -97,6 +126,14 @@ input[type='search'] {
     background-size: contain;
     background-position: center;
     width: 17px;
+    height: 20px;
+}
+.delete_icon {
+    background-image: url(/static/images/delete.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 20px;
     height: 20px;
 }
 .button_icon {

@@ -25,7 +25,11 @@
     <div id="content">
         <div id="title_block">
             <div class="title">Налаштування учня №<span id="student_id"><?php echo $_GET['id'];?></span></div>
-            <div class="blue_button" onclick="saveNewStudentButton(this)">
+            <div class="delete_button" onclick="deleteStudentButton(this)">
+                <div class="button_icon delete_icon"></div>
+                <div>Видалити</div>
+            </div>
+            <div class="blue_button appear_transition" onclick="saveNewStudentButton(this)">
                 <div class="button_icon save_icon"></div>
                 <div>Зберегти</div>
             </div>
