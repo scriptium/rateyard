@@ -23,10 +23,14 @@ let studentHasFilled = new Promise(async (resolve, reject) => {
     getStudents([studentId]).then(async (responseData) => {
         let student = JSON.parse(responseData.text)[0]
         usernameElement.value = student.username;
+        usernameElement.setAttribute('initial_value', student.username);
         fullNameElement.value = student.full_name;
+        fullNameElement.setAttribute('initial_value', student.full_name);
         emailElement.value = student.email;
+        emailElement.setAttribute('initial_value', student.email);
         await classesHasFilled;
         classElement.value = student.class.id;
+        classElement.setAttribute('initial_value', student.class.id);
         resolve();  
     }, reject)
 });
@@ -72,6 +76,41 @@ async function deleteStudentButton(buttonElement) {
         )
     }
     else buttonElement.classList.remove('disabled');
+}
+
+const changedElements = new Set();
+
+function updateChangedElemnts(elementWithValue) {
+    if (elementWithValue.value != elementWithValue.getAttribute('initial_value'))
+        changedElements.add(elementWithValue);
+    else
+        changedElements.delete(elementWithValue);
+    if (changedElements.size > 0)
+        document.querySelectorAll('.appear_on_change').forEach(
+            element => {
+                element.classList.add('visible');
+            } 
+        );
+    else
+        document.querySelectorAll('.appear_on_change').forEach(
+            element => {
+                element.classList.remove('visible');
+            } 
+        );
+}
+
+function discardStudentChangesButton() {
+    changedElements.forEach(
+        (element) => {
+            element.value = element.getAttribute('initial_value');
+        }
+    );
+    changedElements.clear();
+    document.querySelectorAll('.appear_on_change').forEach(
+        element => {
+            element.classList.remove('visible');
+        } 
+    );
 }
 
 window.onload = async () => {

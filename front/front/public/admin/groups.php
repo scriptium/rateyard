@@ -16,7 +16,7 @@
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/header.php';
     ?>
     <div id="content">
-        <div id="title_block">
+        <div class="title_block">
             <div class="title">Наявні групи</div>
             <div class="blue_button">
                 <div class="button_icon add_icon"></div>

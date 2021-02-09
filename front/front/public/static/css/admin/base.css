@@ -20,13 +20,13 @@
     background: rgba(90, 173, 221, 0.05);
 }
 
-#title_block {
+.title_block {
     display: flex;
     flex-direction: row;
     min-width: max-content;
 }
 
-#title_block > * {
+.title_block > * {
     margin-right: 20px;
 }
 

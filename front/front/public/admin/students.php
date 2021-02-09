@@ -16,7 +16,7 @@
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/header.php';
     ?>
     <div id="content">
-        <div id="title_block">
+        <div class="title_block">
             <div class="title">Наявні учні</div>
             <a href="new_student.php">
                 <div class="blue_button">
