@@ -60,7 +60,11 @@ def check_student_data(cursor, all_required=False):
         if "username" not in student.keys():
             if all_required:
                 was_error = True
-        elif student["username"] == "" or type(student["username"]) != str:
+        elif (
+            student["username"] == "" or
+            type(student["username"]) != str or
+            len(student["username"]) > 256
+        ):
             was_error = True
         else:
             cursor.execute(
@@ -69,17 +73,20 @@ def check_student_data(cursor, all_required=False):
             )
             if not cursor.fetchone() is None:
                 was_error = True
-        
+
         if was_error:
             student_data_errors[student_index] = [0]
-
 
         was_error = False
 
         if "full_name" not in student.keys():
             if all_required:
                 was_error = True
-        elif type(student["full_name"]) != str or student["full_name"] == "":
+        elif (
+            type(student["full_name"]) != str or
+            student["full_name"] == "" or
+            len(student["full_name"]) > 256
+        ):
             was_error = True
         else:
             cursor.execute(
@@ -93,7 +100,6 @@ def check_student_data(cursor, all_required=False):
             if type(student_data_errors.get(student_index)) != list:
                 student_data_errors[student_index] = []
             student_data_errors[student_index].append(1)
-
 
         was_error = False
 
@@ -113,13 +119,16 @@ def check_student_data(cursor, all_required=False):
                 student_data_errors[student_index] = []
             student_data_errors[student_index].append(2)
 
-
         was_error = False
 
         if ("password" not in student.keys()):
             if all_required:
                 was_error = True
-        elif student["password"] == "" or type(student["password"]) != str:
+        elif (
+            student["password"] == "" or
+            type(student["password"]) != str or
+            len(student["password"]) > 256
+        ):
             was_error = True
 
         if was_error:
@@ -127,13 +136,16 @@ def check_student_data(cursor, all_required=False):
                 student_data_errors[student_index] = []
             student_data_errors[student_index].append(3)
 
-
         was_error = False
 
         if "email" not in student.keys():
             if all_required:
                 was_error = True
-        elif student["email"] == "" or type(student["email"]) != str:
+        elif (
+            student["email"] == "" or
+            type(student["email"]) != str or
+            len(student["email"]) > 320
+        ):
             was_error = True
         else:
             cursor.execute(
@@ -230,35 +242,79 @@ def edit_students():
     if type(request.json) != list:
         abort(400, "Expected array of students id")
         print("Expected array of students id", flush=True)
-    for student in request.json:
-        if ("id" in student.keys() and
-                "username" in student.keys() and
-                "full_name" in student.keys() and
-                "email" in student.keys() and
-                "class_id" in student.keys()):
-            db = get_db()
-            cursor = db.cursor()
-            cursor.execute('''
-                UPDATE students
-                SET username=%s, full_name=%s, email=%s, class_id=%s
-                WHERE id=%s RETURNING True;
-                ''', (
-                student["username"],
-                student["full_name"],
-                student["email"],
-                student["class_id"],
-                student["id"],
-            ))
-            if cursor.fetchone() is None:
-                abort(400, 'There are not students with on of ids')
+
+    db = get_db()
+    cursor = db.cursor()
+    student_data_errors = check_student_data(cursor, False)
+
+    for student_index in range(len(request.json)):
+        '''
+        Additional error code for students:
+        5: wrong student id
+        '''
+        if not "id" in request.json[student_index].keys():
+            student_data_errors[student_index].append(6)
+
+    if student_data_errors == {}:
+        for student in request.json:
+            student_mutable_attributes = (
+                "username", "full_name", "email", "class_id")
+            exec_args = []
+            exec_sets = []
+
+            for attribute_name in student_mutable_attributes:
+                if attribute_name in student.keys():
+                    exec_sets.append(f"{attribute_name}=%s")
+                    exec_args.append(student[attribute_name])
+
+            if "password" in student.keys():
+                exec_sets.append("password_hash=crypt(%s, gen_salt('md5'))")
+                exec_args.append(student["password"])
+
+            if len(exec_sets) == 0:
+                continue
+
+            exec_sets_joined = ', '.join(exec_sets)
+
+            print(exec_sets_joined, exec_args)
+            cursor.execute(
+                f"UPDATE students SET {exec_sets_joined} WHERE id=%s",
+                exec_args + [student["id"]]
+            )
             db.commit()
-            print("OK", flush=True)
-        else:
-            print("Wrong json", flush=True)
-            abort(400, "Wrong json")
-    return jsonify({
-        "result": "OK"
-    }), 201
+            return jsonify(result="ok")
+
+    else:
+        return jsonify(student_data_errors), 400
+
+    # for student in request.json:
+    #     if ("id" in student.keys() and
+    #             "username" in student.keys() and
+    #             "full_name" in student.keys() and
+    #             "email" in student.keys() and
+    #             "class_id" in student.keys()):
+
+    #         cursor.execute('''
+    #             UPDATE students
+    #             SET username=%s, full_name=%s, email=%s, class_id=%s
+    #             WHERE id=%s RETURNING True;
+    #             ''', (
+    #             student["username"],
+    #             student["full_name"],
+    #             student["email"],
+    #             student["class_id"],
+    #             student["id"],
+    #         ))
+    #         if cursor.fetchone() is None:
+    #             abort(400, 'There are not students with on of ids')
+    #         db.commit()
+    #         print("OK", flush=True)
+    #     else:
+    #         print("Wrong json", flush=True)
+    #         abort(400, "Wrong json")
+    # return jsonify({
+    #     "result": "OK"
+    # }), 201
 
 
 @bp.route("/create_teacher", methods=("POST", ))

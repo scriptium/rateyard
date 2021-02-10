@@ -42,7 +42,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
         </div>
         <div id="load_data" class="input_grid appear_transition">
             <div>ПІБ:</div><input id="full_name" type="text" class="default_input_text" placeholder="Введіть ПІБ учня" oninput="updateChangedElemnts(this)">
-            <div>Клас:</div><select id="classes_select" class="default_select" onchange="updateChangedElemnts(this)"></select>
+            <div>Клас:</div><select id="class_id" class="default_select" onchange="updateChangedElemnts(this)"></select>
             <div>Логін:</div><input id="username" type="text" class="default_input_text" placeholder="Введіть логін" oninput="updateChangedElemnts(this)">
             <div>Адреса електронної пошти:</div><input id="email" type="text" class="default_input_text" placeholder="Введіть адресу електронної пошти учня" oninput="updateChangedElemnts(this)">
             <div>Новий пароль:</div><input id="password" type="text" class="default_input_text" placeholder="Введіть новий пароль учня" oninput="updateChangedElemnts(this)" initial_value="">

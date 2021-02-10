@@ -7,8 +7,8 @@ CREATE TABLE classes (
 
 CREATE TABLE students (
     id SERIAL PRIMARY KEY NOT NULL, 
-    username VARCHAR(15) UNIQUE NOT NULL,
-    full_name VARCHAR(100) NOT NULL,
+    username VARCHAR(256) UNIQUE NOT NULL,
+    full_name VARCHAR(256) NOT NULL,
     email VARCHAR(320) UNIQUE,
     password_hash TEXT NOT NULL,
     class_id INTEGER REFERENCES classes(id) ON DELETE CASCADE NOT NULL
@@ -16,8 +16,8 @@ CREATE TABLE students (
 
 CREATE TABLE teachers (
     id SERIAL PRIMARY KEY NOT NULL, 
-    username VARCHAR(15) UNIQUE NOT NULL,
-    full_name VARCHAR(100) NOT NULL,
+    username VARCHAR(256) UNIQUE NOT NULL,
+    full_name VARCHAR(256) NOT NULL,
     email VARCHAR(320) UNIQUE,
     password_hash TEXT NOT NULL
 );
@@ -30,7 +30,7 @@ CREATE TABLE subjects (
 CREATE TABLE groups (
     id SERIAL PRIMARY KEY NOT NULL, 
     class_id INTEGER REFERENCES classes(id) ON DELETE CASCADE NOT NULL,
-    group_name VARCHAR(100) NOT NULL
+    group_name VARCHAR(256) NOT NULL
 );
 
 CREATE TABLE students_groups (
@@ -47,7 +47,7 @@ CREATE TABLE teachers_groups (
 CREATE TABLE grades (
     id SERIAL PRIMARY KEY NOT NULL,
     grade_date TIMESTAMPTZ DEFAULT NOW() NOT NULL,
-    type_of_work VARCHAR(100) NOT NULL,
+    type_of_work VARCHAR(256) NOT NULL,
     description_text TEXT,
     student_id INTEGER NOT NULL,
     teacher_id INTEGER NOT NULL,

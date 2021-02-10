@@ -173,11 +173,11 @@ function deleteStudents(studentIdsJSONString) {
     })
 }
 
-function editStudents(studentIdsJSONString) {
+function editStudents(studentsChangesJSONString) {
     accessToken = localStorage.getItem('api_access_token');
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/delete_students')
+        xhr.open('POST', PATH + '/admin/edit_students')
         xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onreadystatechange = () => {
@@ -194,7 +194,7 @@ function editStudents(studentIdsJSONString) {
                     })
             }
         }
-        xhr.send(studentIdsJSONString)
+        xhr.send(studentsChangesJSONString)
     })
 }
 
