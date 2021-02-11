@@ -2,7 +2,7 @@ version: "3.3"
 services:
     api:
         build: ./api
-        command: gunicorn -b 0.0.0.0:8000 rateyard_api:create_app()
+        command: gunicorn -b 0.0.0.0:8000 wsgi:create_app()
         ports: 
             - 8000:8000
         external_links: 

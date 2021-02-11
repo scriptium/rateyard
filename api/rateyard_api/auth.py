@@ -9,7 +9,7 @@ from flask_jwt_extended import (
     jwt_refresh_token_required, create_refresh_token,
 )
 
-from .db import get_db, close_db
+from db import get_db, close_db
 
 bp = Blueprint("auth", __name__)
 

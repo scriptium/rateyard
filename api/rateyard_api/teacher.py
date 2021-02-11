@@ -6,7 +6,7 @@ from flask import (Blueprint, request, jsonify,
 )
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from .db import (
+from db import (
     get_db, close_db, get_teacher
 )
 

@@ -8,7 +8,7 @@ from flask_cors import CORS
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
 
-    jwt = JWTManager(app)
+    JWTManager(app)
     CORS(app)
 
     if test_config is None:
@@ -18,13 +18,12 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
     
-    from . import auth
-    from . import api
-    from . import student
-    from . import teacher
-    from . import admin
+    import auth
+    import student
+    import teacher
+    import admin
+
     app.register_blueprint(auth.bp, url_prefix="/auth")
-    app.register_blueprint(api.bp, url_prefix="/api")
     app.register_blueprint(student.bp, url_prefix="/student")
     app.register_blueprint(teacher.bp, url_prefix="/teacher")
     app.register_blueprint(admin.bp, url_prefix="/admin")

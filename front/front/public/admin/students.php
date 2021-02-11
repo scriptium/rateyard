@@ -42,7 +42,6 @@
             </tbody>
             <tbody>
             </tbody>
-
         </table>
     </div>
     <script type="text/javascript" src="/static/js/base.js"></script>
