@@ -2,7 +2,7 @@ let dataHasChecked = checkUserData(undefined, 'login.php');
 
 let classesHasFilled = new Promise (async (resolve, reject) => {
     await dataHasChecked;
-    getClasses().then((responseData) => {
+    getClassesShort().then((responseData) => {
         let classesSelectElement = document.getElementById('classes_select');
         fillClassesSelect(classesSelectElement, JSON.parse(responseData.text));
         resolve();

@@ -111,11 +111,11 @@ function getGroups(editable, student_id) {
     })
 }
 
-function getClasses() {
+function getClassesShort() {
     let accessToken = localStorage.getItem('api_access_token');
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
-        xhr.open('GET', PATH + '/admin/get_classes')
+        xhr.open('GET', PATH + '/admin/get_classes_short')
         xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
         xhr.onreadystatechange = () => {
             if (xhr.readyState === XMLHttpRequest.DONE) {

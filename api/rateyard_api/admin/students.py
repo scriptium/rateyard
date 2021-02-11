@@ -288,7 +288,7 @@ def get_students():
         "class": {
             "id": data[4],
             "name": data[5],
-            "type": "Class"
+            "type": "ClassShort"
         },
         "type": "Student"
     } for data in exec_result

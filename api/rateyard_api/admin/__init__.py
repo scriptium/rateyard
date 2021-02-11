@@ -34,6 +34,7 @@ bp.add_url_rule("/delete_students", methods=("POST", ), view_func=students.delet
 bp.add_url_rule("/edit_students", methods=("POST", ), view_func=students.edit_students)
 bp.add_url_rule("/get_students", methods=("POST", ), view_func=students.get_students)
 
-bp.add_url_rule("/get_classes", methods=("GET", ), view_func=classes.get_classes)
+bp.add_url_rule("/get_classes_short", methods=("GET", ), view_func=classes.get_classes_short)
+bp.add_url_rule("/get_class_full", methods=("POST", ), view_func=classes.get_class_full)
 
 bp.add_url_rule("/get_groups", methods=("POST", "GET"), view_func=groups.get_groups)

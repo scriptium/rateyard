@@ -4,7 +4,7 @@ let studentId = parseInt(document.getElementById("student_id").innerHTML);
 
 let classesHasFilled = new Promise(async (resolve, reject) => {
     await dataHasChecked;
-    getClasses().then((responseData) => {
+    getClassesShort().then((responseData) => {
         let classesSelectElement = document.getElementById('class_id');
         fillClassesSelect(classesSelectElement, JSON.parse(responseData.text));
         resolve();
