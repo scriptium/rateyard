@@ -18,10 +18,12 @@
     <div id="content">
         <div class="title_block">
             <div class="title">Наявні групи</div>
-            <div class="blue_button">
-                <div class="button_icon add_icon"></div>
-                <div>Додати групу</div>
-            </div>
+            <a href="new_group.php">
+                <div class="blue_button">
+                    <div class="button_icon add_icon"></div>
+                    <div>Додати групу</div>
+                </div>
+            </a>
         </div>
         <input type="text" class="default_input_text" placeholder="Пошук груп">
         <table class="default_table appear_transition" id="groups_table">
