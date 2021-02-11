@@ -35,3 +35,5 @@ bp.add_url_rule("/edit_students", methods=("POST", ), view_func=students.edit_st
 bp.add_url_rule("/get_students", methods=("POST", ), view_func=students.get_students)
 
 bp.add_url_rule("/get_classes", methods=("GET", ), view_func=classes.get_classes)
+
+bp.add_url_rule("/get_groups", methods=("POST", "GET"), view_func=groups.get_groups)

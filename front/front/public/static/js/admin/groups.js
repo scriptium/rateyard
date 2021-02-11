@@ -1,6 +1,6 @@
 let groupseResponseData = new Promise(async (resolve, reject) => {
     await checkUserData(undefined, 'login.php');
-    getGroups().then(resolve, reject)
+    getGroups(true).then(resolve, reject)
 })
 
 function fillGroupsTable(responseText) {

@@ -1,3 +1,7 @@
+from flask import Blueprint, request, abort, jsonify
+
+from . import admin_token_required, get_db
+
 # @bp.route("/create_group", methods=("POST", ))
 # @admin_token_required
 # def create_group():
@@ -27,32 +31,55 @@
 #     else:
 #         abort(400, "Wrong json")
 
-# @bp.route("/get_groups", methods=("GET", ))
-# @admin_token_required
-# def get_groups():
-#     db = get_db()
-#     cursor = db.cursor()
-#     cursor.execute('''
-#         SELECT gr.id, gr.group_name, cl.id, cl.class_name
-#         FROM groups as gr
-#         LEFT JOIN classes as cl ON gr.class_id = cl.id
-#         '''
-#                    )
-#     exec_result = cursor.fetchall()
-#     if exec_result is None:
-#         return None
-#     result = [{
-#         "id": data[0],
-#         "name": data[1],
-#         "class": {
-#             "type": "Class",
-#             "id": data[2],
-#             "name": data[3]
-#         },
-#         "type": "Group"
-#     } for data in exec_result
-#     ]
-#     return jsonify(result), 200
+@admin_token_required
+def get_groups():
+    exec_main_str = '''
+    SELECT gr.id, gr.group_name, cl.id, cl.class_name
+    FROM groups as gr
+    LEFT JOIN classes as cl ON gr.class_id = cl.id
+    '''
+    exec_args = []
+    exec_where_str = ""
+
+    if request.is_json:
+        if "student_id" in request.json.keys():
+            if type(request.json["student_id"]) == int:
+                exec_main_str += '''
+                INNER JOIN students_groups as stgr ON stgr.group_id=gr.id
+                '''
+                exec_args.append(request.json["student_id"])
+                exec_where_str = " WHERE stgr.student_id=%s"
+            else:
+                abort(400)
+
+        if "editable" in request.json.keys():
+            if type(request.json["editable"]) == bool:
+                if exec_where_str == "":
+                    exec_where_str = " WHERE"
+                if request.json["editable"]:
+                    exec_where_str += " is_editable=True"
+                else:
+                    exec_where_str += " is_editable=False"
+            else:
+                abort(400)
+
+    cursor = get_db().cursor()
+    cursor.execute(exec_main_str + exec_where_str, exec_args)
+    exec_result = cursor.fetchall()
+
+    result = [{
+        "id": data[0],
+        "name": data[1],
+        "class": {
+            "type": "Class",
+            "id": data[2],
+            "name": data[3]
+        },
+        "type": "Group"
+    } for data in exec_result
+    ]
+    return jsonify(result)
+
 
 #     @bp.route("/add_students_to_group", methods=("POST", ))
 # @admin_token_required

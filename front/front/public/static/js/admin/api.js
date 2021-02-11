@@ -57,7 +57,7 @@ function login(username, password) {
 }
 
 function getStudents(ids) {
-    accessToken = localStorage.getItem('api_access_token');
+    let accessToken = localStorage.getItem('api_access_token');
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', PATH + '/admin/get_students')
@@ -74,18 +74,18 @@ function getStudents(ids) {
             })
         }
         if (ids != undefined) {
-            xhr.setRequestHeader('Content-type', 'application/json');
+            
             xhr.send(JSON.stringify(ids))
         }
         else xhr.send()
     })
 }
 
-function getGroups() {
-    accessToken = localStorage.getItem('api_access_token');
+function getGroups(editable, student_id) {
+    let accessToken = localStorage.getItem('api_access_token');
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
-        xhr.open('GET', PATH + '/admin/get_groups')
+        xhr.open('POST', PATH + '/admin/get_groups')
         xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
         xhr.onload = () => {
             if (xhr.status == 200)
@@ -98,12 +98,21 @@ function getGroups() {
                 code: xhr.status
             })
         }
-        xhr.send()
+
+        if (typeof editable != 'udefined' || typeof student_id != undefined) {
+            xhr.setRequestHeader('Content-type', 'application/json');
+            let requestJSON = {};
+            if (typeof editable != 'udefined') requestJSON.editable = editable;
+            if (typeof student_id != 'udefined') requestJSON.student_id = student_id;
+
+            xhr.send(JSON.stringify(requestJSON))
+        }
+        else xhr.send()
     })
 }
 
 function getClasses() {
-    accessToken = localStorage.getItem('api_access_token');
+    let accessToken = localStorage.getItem('api_access_token');
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
         xhr.open('GET', PATH + '/admin/get_classes')
@@ -127,7 +136,7 @@ function getClasses() {
 }
 
 function createStudents(studentsJSONString) {
-    accessToken = localStorage.getItem('api_access_token');
+    let accessToken = localStorage.getItem('api_access_token');
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', PATH + '/admin/create_students')
@@ -149,7 +158,7 @@ function createStudents(studentsJSONString) {
 }
 
 function deleteStudents(studentIdsJSONString) {
-    accessToken = localStorage.getItem('api_access_token');
+    let accessToken = localStorage.getItem('api_access_token');
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', PATH + '/admin/delete_students')
@@ -174,7 +183,7 @@ function deleteStudents(studentIdsJSONString) {
 }
 
 function editStudents(studentsChangesJSONString) {
-    accessToken = localStorage.getItem('api_access_token');
+    let accessToken = localStorage.getItem('api_access_token');
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', PATH + '/admin/edit_students')

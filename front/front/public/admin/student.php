@@ -47,8 +47,8 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
             <div>Адреса електронної пошти:</div><input id="email" type="text" class="default_input_text" placeholder="Введіть адресу електронної пошти учня" oninput="updateChangedElemnts(this)">
             <div>Новий пароль:</div><input id="password" type="text" class="default_input_text" placeholder="Введіть новий пароль учня" oninput="updateChangedElemnts(this)" initial_value="">
         </div>
-        <div id="students_groups">
-            <div>Групи учня:</div>
+        <div class="title">Групи учня:</div>
+        <div id="student_groups">
             <table class="default_table appear_transition">
                 <thead>
                     <tr>
