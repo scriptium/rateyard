@@ -1,7 +1,6 @@
 .default_table {
-    justify-self: stretch;
     border-collapse: collapse;
-
+    height: min-content;
 }
 .default_table th, .default_table td{
     padding: 10px;

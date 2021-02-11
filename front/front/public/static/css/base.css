@@ -56,6 +56,16 @@ input[type='search'] {
     font-size: var(--huge-font-size);
 }
 
+.subtitle {
+    color: var(--light-black-color);
+    font-size: var(--big-font-size);
+    font-weight: bold;
+}
+.subtitle * {
+    font-weight: bold;
+    font-size: var(--big-font-size);
+}
+
 .blue_button {
     display: flex;
     flex-direction: row;
@@ -258,10 +268,22 @@ a.text:hover {
 }
 
 .appear_transition {
+    -webkit-transition: opacity 0.3s;
+    -moz-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
     transition: opacity 0.3s;
     opacity: 0;
 }
 .appear_transition.visible {
     opacity: 1;
+}
+
+.checkbox {
+    background-image: url(/static/images/checkbox.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 25px;
+    height: 25px;
 }
 

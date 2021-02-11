@@ -9,15 +9,15 @@ let classesHasFilled = new Promise (async (resolve, reject) => {
     }, reject);
 })
 
+let usernameElement = document.getElementById('username');
+let fullNameElement = document.getElementById('full_name');
+let classElement = document.getElementById('classes_select');
+let passwordElement = document.getElementById('password');
+let emailElement = document.getElementById('email');
+
 function saveNewStudentButton(buttonElement) {
     disableButton(buttonElement);
-
-    let usernameElement = document.getElementById('username');
-    let fullNameElement = document.getElementById('full_name');
-    let classElement = document.getElementById('classes_select');
-    let passwordElement = document.getElementById('password');
-    let emailElement = document.getElementById('email');
-
+    
     let requestJSON = [{
         full_name: fullNameElement.value,
         class_id: classElement.value,

@@ -12,7 +12,7 @@
 
 <body>
     <?php
-    $current = 'students';
+    $current = 'groups';
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/header.php';
     ?>
     <div id="content">
@@ -23,10 +23,24 @@
                 <div>Зберегти</div>
             </div>
         </div>
-        <div id="load_data" class="input_grid appear_transition">
+        <div class="appear_after_classes input_grid appear_transition">
             <div>Назва:</div><input id="name" type="text" class="default_input_text" placeholder="Введіть назву групи">
-            <div>Клас:</div><select id="classes_id" class="default_select"></select>
+            <div>Клас:</div><select id="class_id" class="default_select" onchange="updateGroupStudentData()"></select>
         </div>
+        <div class="subtitle appear_transition appear_after_group_students">Склад групи:</div>
+        <table class="default_table appear_transition appear_after_group_students" id="group_students">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>ПІБ</th>
+                    <th>Логін</th>
+                    <th>Адреса електронної пошти</th>
+                    <th><div class="checkbox"></div></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table> 
         <script type="text/javascript" src="/static/js/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/api.js"></script>
