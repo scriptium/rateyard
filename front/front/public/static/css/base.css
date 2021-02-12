@@ -287,3 +287,12 @@ a.text:hover {
     height: 25px;
 }
 
+.checkbox.checked {
+    background-image: url(/static/images/checkbox_checked.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+}
+

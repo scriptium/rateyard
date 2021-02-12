@@ -15,3 +15,15 @@ function makeInputTextWrong(inputTextElement) {
     inputTextElement.setAttribute('oninput', 'makeInputTextNotWrong(this)');
     inputTextElement.classList.add('wrong');
 }
+
+function createCheckboxElement() {
+    let checkboxElement = document.createElement('div');
+    checkboxElement.classList.add('checkbox');
+    checkboxElement.setAttribute('onclick', 'toggleCheckbox(this)');
+    return checkboxElement;
+}
+
+function toggleCheckbox(checkboxElement, onclick) {
+    if (typeof onclick != 'undefined') onclick(checkboxElement);
+    checkboxElement.classList.toggle('checked');
+}

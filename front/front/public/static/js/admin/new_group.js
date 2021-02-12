@@ -17,7 +17,7 @@ let classesHasFilled = new Promise (async (resolve, reject) => {
 })
 
 let groupNameElement = document.getElementById('name');
-let groupclassElement = document.getElementById('class_id');
+let groupClassElement = document.getElementById('class_id');
 let groupStudentsTbodyElement = document.querySelector('#group_students tbody')
 
 let afterGroupStudentsElements = document.querySelectorAll('.appear_after_group_students');
@@ -31,7 +31,7 @@ function updateGroupStudentData() {
         )
         await dataHasChecked;
         await classesHasFilled;
-        getClassFull(parseInt(groupclassElement.value)).then(async (responseData) => {
+        getClassFull(parseInt(groupClassElement.value)).then(async (responseData) => {
             let parsedResponse = JSON.parse(responseData.text);
             groupStudentsTbodyElement.innerHTML = '';
             parsedResponse.students.forEach(student => {
@@ -51,7 +51,7 @@ function updateGroupStudentData() {
 
                 let checkboxElement = newRowElement.appendChild(document.createElement('td'));
 
-                checkboxElement.innerHTML = '<div class=\"checkbox\"></div>'
+                checkboxElement.appendChild(createCheckboxElement());
         
                 groupStudentsTbodyElement.appendChild(newRowElement);
             });

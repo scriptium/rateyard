@@ -35,7 +35,7 @@
                     <th>ПІБ</th>
                     <th>Логін</th>
                     <th>Адреса електронної пошти</th>
-                    <th><div class="checkbox"></div></th>
+                    <th style="width: 25px;"></th>
                 </tr>
             </thead>
             <tbody>
