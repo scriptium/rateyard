@@ -74,7 +74,7 @@ function getStudents(ids) {
             })
         }
         if (ids != undefined) {
-            
+            xhr.setRequestHeader('Content-type', 'application/json');
             xhr.send(JSON.stringify(ids))
         }
         else xhr.send()
