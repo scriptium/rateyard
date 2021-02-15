@@ -1,35 +1,107 @@
-from flask import Blueprint, request, abort, jsonify
+from flask import request, abort, jsonify
 
 from . import admin_token_required, get_db
 
-# @bp.route("/create_group", methods=("POST", ))
-# @admin_token_required
-# def create_group():
-#     if not request.is_json:
-#         abort("400", "Expected json")
-#     if ("group_name" in request.json.keys() and
-#             "subject_id" in request.json.keys()):
-#         db = get_db()
-#         cursor = db.cursor()
-#         cursor.execute('''
-#             INSERT INTO groups (
-#                 group_name, subject_id
-#             )
-#             VALUES (
-#                 %s, %s
-#             ) RETURNING id;
-#             ''', (
-#             request.json["group_name"],
-#             request.json["subject_id"],
-#         ))
-#         group_id = cursor.fetchone()
-#         db.commit()
-#         print(group_id, flush=True)
-#         return jsonify({
-#             "group_id": group_id[0]
-#         }), 200
-#     else:
-#         abort(400, "Wrong json")
+
+def check_group_data(cursor):
+    '''
+    Error codes for groups:
+    0: class_id not found or is wrong
+    1: name not found or has already taken
+    2: found wrong student id
+    '''
+
+    group_data_errors = []
+
+    was_error = False
+
+    if (
+        not "class_id" in request.json.keys() or
+        type(request.json["class_id"]) != int
+    ):
+        was_error = True
+    else:
+        cursor.execute('''
+        SELECT 1 FROM classes WHERE id=%s;
+        ''', (request.json["class_id"], ))
+
+        if cursor.fetchone() is None:
+            was_error = True
+
+    if was_error: group_data_errors.append(0)
+
+    was_error = False
+
+    if (
+        not "name" in request.json.keys() or
+        request.json["name"] == "" or
+        type(request.json["name"]) != str or
+        len(request.json["name"]) > 256
+    ):
+        was_error = True
+    elif not 0 in group_data_errors: 
+        cursor.execute('''
+        SELECT 1 FROM groups WHERE name=%s AND class_id=%s
+        ''', (request.json["name"], request.json["class_id"]))
+
+        if not cursor.fetchone() is None:
+            was_error = True 
+    else: was_error = True
+
+    if was_error: group_data_errors.append(1)
+
+
+    if (
+        not "students_ids" in request.json.keys() or
+        type(request.json["students_ids"]) != list
+    ):
+        was_error = True
+    else:
+        for student_id in request.json["students_ids"]:
+            if type(student_id) != int:
+                group_data_errors.append(2)
+                break
+            
+            cursor.execute('''
+            SELECT 1 FROM students WHERE id=%s
+            ''' (student_id, ))
+
+            if cursor.fetchone() is None:
+                group_data_errors.append(2)
+                break
+
+
+    return group_data_errors
+
+
+@admin_token_required
+def create_group():
+    if not request.is_json:
+        abort("400", "Expected json")
+
+    db = get_db()
+    cursor = db.cursor()
+
+    group_data_errors = check_group_data(cursor)
+
+    if check_group_data != []:
+        return jsonify(group_data_errors), 400
+
+    cursor.execute('''
+    INSERT INTO TABLE groups (class_id, group_name, is_editable)
+    VALUES (%s, %s, False) RETURNING id;
+    ''', (request.json["class_id"], request.json["name"]))
+
+    group_id = cursor.fetchone()[0]
+
+    for student_id in request.json["students_ids"]:
+        cursor.execute('''
+        INSERT INTO students_groups (group_id, student_id)
+        VALUES (%s, %s);
+        ''', (group_id, student_id))
+
+    return jsonify(result="ok")
+
 
 @admin_token_required
 def get_groups():
