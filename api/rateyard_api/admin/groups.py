@@ -41,7 +41,7 @@ def check_group_data(cursor):
         was_error = True
     elif not 0 in group_data_errors: 
         cursor.execute('''
-        SELECT 1 FROM groups WHERE name=%s AND class_id=%s
+        SELECT 1 FROM groups WHERE group_name=%s AND class_id=%s
         ''', (request.json["name"], request.json["class_id"]))
 
         if not cursor.fetchone() is None:
@@ -64,7 +64,7 @@ def check_group_data(cursor):
             
             cursor.execute('''
             SELECT 1 FROM students WHERE id=%s
-            ''' (student_id, ))
+            ''', (student_id, ))
 
             if cursor.fetchone() is None:
                 group_data_errors.append(2)
@@ -84,12 +84,12 @@ def create_group():
 
     group_data_errors = check_group_data(cursor)
 
-    if check_group_data != []:
+    if group_data_errors != []:
         return jsonify(group_data_errors), 400
 
     cursor.execute('''
-    INSERT INTO TABLE groups (class_id, group_name, is_editable)
-    VALUES (%s, %s, False) RETURNING id;
+    INSERT INTO groups (class_id, group_name, is_editable)
+    VALUES (%s, %s, True) RETURNING id;
     ''', (request.json["class_id"], request.json["name"]))
 
     group_id = cursor.fetchone()[0]
@@ -99,6 +99,8 @@ def create_group():
         INSERT INTO students_groups (group_id, student_id)
         VALUES (%s, %s);
         ''', (group_id, student_id))
+
+    db.commit()
 
     return jsonify(result="ok")
 

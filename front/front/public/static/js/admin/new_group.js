@@ -67,4 +67,31 @@ function updateGroupStudentData() {
 
 }
 
+function saveNewGroupButton(buttonElement)
+{
+    buttonElement.classList.add('disabled');
+
+    let name = groupNameElement.value;
+    let classId = parseInt(groupClassElement.value);
+    let studentsIds = []
+
+    for (let childIndex = 0; childIndex < groupStudentsTbodyElement.children.length; childIndex++)
+    {
+        let trowElement = groupStudentsTbodyElement.children[childIndex];
+
+        if (trowElement.children[4].children[0].classList.contains('checked'))
+            studentsIds.push(parseInt(trowElement.children[0].innerHTML));
+    }
+
+    console.log(name);
+    console.log(classId);
+    console.log(studentsIds);
+
+    createGroup(name, classId, studentsIds).then(
+        () => {
+            window.history.back();
+        }
+    );
+}
+
 let groupStudentsHasFilled = updateGroupStudentData();

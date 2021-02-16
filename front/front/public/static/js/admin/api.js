@@ -232,4 +232,33 @@ function editStudents(studentsChangesJSONString) {
     })
 }
 
+function createGroup(name, classId, studentsIds) {
+    let accessToken = localStorage.getItem('api_access_token');
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', PATH + '/admin/create_group')
+        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status == 200)
+                    resolve({
+                        text: xhr.responseText,
+                        code: xhr.status
+                    })
+                else
+                    reject({
+                        text: xhr.responseText,
+                        code: xhr.status
+                    })
+            }
+        }
+        xhr.send(JSON.stringify({
+            name,
+            class_id: classId,
+            students_ids: studentsIds
+        }))
+    })
+}
+
 
