@@ -83,13 +83,17 @@ function saveNewGroupButton(buttonElement)
             studentsIds.push(parseInt(trowElement.children[0].innerHTML));
     }
 
-    console.log(name);
-    console.log(classId);
-    console.log(studentsIds);
-
     createGroup(name, classId, studentsIds).then(
         () => {
             window.history.back();
+        },
+        (requestData) => {
+            if (requestData.code === 400) {
+                let parsedErrors = JSON.parse(requestData.text);
+
+                if (parsedErrors.includes(1)) makeInputTextWrong(groupNameElement);
+                buttonElement.classList.remove('disabled');
+            }
         }
     );
 }
