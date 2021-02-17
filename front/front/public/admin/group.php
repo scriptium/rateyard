@@ -19,12 +19,12 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
 
 <body>
     <?php
-    $current = 'students';
+    $current = 'groups';
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/header.php';
     ?>
     <div id="content">
         <div class="title_block">
-            <div class="title">Налаштування групи №<span id="student_id"><?php echo $_GET['id']; ?></span></div>
+            <div class="title">Налаштування групи №<span id="group_id"><?php echo $_GET['id']; ?></span></div>
             <div class="delete_button" onclick="deleteStudentButton(this)">
                 <div class="button_icon delete_icon"></div>
                 <div>Видалити</div>
@@ -61,7 +61,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
         <script type="text/javascript" src="/static/js/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/api.js"></script>
-        <script type="text/javascript" src="/static/js/admin/student.js"></script>
+        <script type="text/javascript" src="/static/js/admin/group.js"></script>
 </body>
 
 </html>

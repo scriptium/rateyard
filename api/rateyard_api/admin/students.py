@@ -275,10 +275,6 @@ def get_students():
     cursor = db.cursor()
     cursor.execute(exec_str, exec_args)
     exec_result = cursor.fetchall()
-    print(exec_result, flush=True)
-
-    if exec_result is None:
-        return jsonify([])
 
     result = [{
         "id": data[0],

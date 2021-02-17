@@ -81,11 +81,11 @@ function getStudents(ids) {
     })
 }
 
-function getGroups(editable, student_id) {
+function getGroupsShort(editable, student_id) {
     let accessToken = localStorage.getItem('api_access_token');
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/get_groups')
+        xhr.open('POST', PATH + '/admin/get_groups_short')
         xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
         xhr.onload = () => {
             if (xhr.status == 200)
@@ -257,6 +257,33 @@ function createGroup(name, classId, studentsIds) {
             name,
             class_id: classId,
             students_ids: studentsIds
+        }))
+    })
+}
+
+function getGroupFull(groupId) {
+    let accessToken = localStorage.getItem('api_access_token');
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', PATH + '/admin/get_group_full')
+        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status == 200)
+                    resolve({
+                        text: xhr.responseText,
+                        code: xhr.status
+                    })
+                else
+                    reject({
+                        text: xhr.responseText,
+                        code: xhr.status
+                    })
+            }
+        }
+        xhr.send(JSON.stringify({
+            id: groupId
         }))
     })
 }

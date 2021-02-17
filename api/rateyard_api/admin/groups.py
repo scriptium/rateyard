@@ -1,4 +1,4 @@
-from flask import request, abort, jsonify
+from flask import json, request, abort, jsonify
 
 from . import admin_token_required, get_db
 
@@ -106,12 +106,12 @@ def create_group():
 
 
 @admin_token_required
-def get_groups():
+def get_groups_short():
     exec_main_str = '''
     SELECT gr.id, gr.group_name, cl.id, cl.class_name
     FROM groups as gr
     LEFT JOIN classes as cl ON gr.class_id = cl.id
-    '''
+    ''' 
     exec_args = []
     exec_where_str = ""
 
@@ -145,14 +145,77 @@ def get_groups():
         "id": data[0],
         "name": data[1],
         "class": {
-            "type": "Class",
+            "type": "ClassShort",
             "id": data[2],
             "name": data[3]
         },
-        "type": "Group"
+        "type": "GroupShort"
     } for data in exec_result
     ]
     return jsonify(result)
+
+
+@admin_token_required
+def get_group_full():
+    if (
+        not request.is_json or
+        not "id" in request.json.keys() or
+        type(request.json["id"]) != int
+    ):
+        abort(400)
+
+    cursor = get_db().cursor()
+
+    print(request.json)
+
+    cursor.execute('''
+    SELECT gr.id, gr.group_name, cl.id, cl.class_name
+    FROM groups as gr
+    LEFT JOIN classes as cl ON gr.class_id = cl.id
+    WHERE gr.id = %s;
+    ''', (request.json["id"], ))
+
+    exec_result = cursor.fetchone()
+
+    if exec_result is None:
+        abort(400)
+
+    result = {
+        "id": exec_result[0],
+        "name": exec_result[1],
+        "class": {
+            "type": "ClassShort",
+            "id": exec_result[2],
+            "name": exec_result[3]
+        },
+        "type": "GroupFull"
+    }
+
+    cursor.execute('''
+    SELECT students.id, students.username, students.full_name, students.email,
+    EXISTS(
+        SELECT 1 FROM students_groups
+        WHERE students.id=students_groups.student_id AND
+        students_groups.group_id=%s
+    )
+    FROM students
+    INNER JOIN classes ON students.class_id=classes.id
+    WHERE classes.id = %s;
+    ''', (request.json["id"], exec_result[2]))
+
+    result["group_class_students"] = [
+        {
+            "id": data[0],
+            "username": data[1],
+            "full_name": data[2],
+            "email": data[3],
+            "is_group_member": data[4],
+            "type": "GroupClassStudent"
+        } for data in cursor.fetchall()
+    ]
+
+    return jsonify(result)
+
 
 
 #     @bp.route("/add_students_to_group", methods=("POST", ))

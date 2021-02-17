@@ -37,5 +37,6 @@ bp.add_url_rule("/get_students", methods=("POST", ), view_func=students.get_stud
 bp.add_url_rule("/get_classes_short", methods=("GET", ), view_func=classes.get_classes_short)
 bp.add_url_rule("/get_class_full", methods=("POST", ), view_func=classes.get_class_full)
 
-bp.add_url_rule("/get_groups", methods=("POST", "GET"), view_func=groups.get_groups)
+bp.add_url_rule("/get_groups_short", methods=("POST", "GET"), view_func=groups.get_groups_short)
+bp.add_url_rule("/get_group_full", methods=("POST", ), view_func=groups.get_group_full)
 bp.add_url_rule("/create_group", methods=("POST", ), view_func=groups.create_group)
