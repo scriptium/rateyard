@@ -41,20 +41,22 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
             </div>
         </div>
         <div id="load_data" class="input_grid appear_transition">
-            <div>ПІБ:</div><input id="full_name" type="text" class="default_input_text" placeholder="Введіть ПІБ учня" oninput="updateChangedElemnts(this)">
-            <div>Клас:</div><select id="class_id" class="default_select" onchange="updateChangedElemnts(this)"></select>
-            <div>Логін:</div><input id="username" type="text" class="default_input_text" placeholder="Введіть логін" oninput="updateChangedElemnts(this)">
-            <div>Адреса електронної пошти:</div><input id="email" type="text" class="default_input_text" placeholder="Введіть адресу електронної пошти учня" oninput="updateChangedElemnts(this)">
-            <div>Новий пароль:</div><input id="password" type="text" class="default_input_text" placeholder="Введіть новий пароль учня" oninput="updateChangedElemnts(this)" initial_value="">
+            <div>ПІБ:</div><input id="full_name" type="text" class="default_input_text" placeholder="Введіть ПІБ учня" oninput="updateChangedElements(this)">
+            <div>Клас:</div><select id="class_id" class="default_select" onchange="updateChangedElements(this)"></select>
+            <div>Логін:</div><input id="username" type="text" class="default_input_text" placeholder="Введіть логін" oninput="updateChangedElements(this)">
+            <div>Адреса електронної пошти:</div><input id="email" type="text" class="default_input_text" placeholder="Введіть адресу електронної пошти учня" oninput="updateChangedElements(this)">
+            <div>Новий пароль:</div><input id="password" type="text" class="default_input_text" placeholder="Введіть новий пароль учня" oninput="updateChangedElements(this)" initial_value="">
         </div>
-        <div class="subtitle appear_transition">Групи учня:</div>
-        <table class="default_table appear_transition">
+        <div class="subtitle appear_transition appear_after_student_groups">Групи учня:</div>
+        <table class="default_table appear_transition appear_after_student_groups">
             <thead>
                 <tr>
                     <th>№</th>
                     <th>Назва</th>
                 </tr>
             </thead>
+            <tbody>
+            </tbody>
         </table>
         <script type="text/javascript" src="/static/js/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/base.js"></script>

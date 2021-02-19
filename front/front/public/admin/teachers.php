@@ -23,6 +23,19 @@
                 <div>Додати вчителя</div>
             </div>
         </div>
+        <input type="text" class="default_input_text" placeholder="Пошук учнів">
+        <table class="default_table appear_transition" id="teachers_table">
+            <tbody>
+                <tr>
+                    <th>№</th>
+                    <th>ПІБ</th> 
+                    <th>Логін</th>
+                    <th>Адреса електронної пошти</th>
+                </tr>
+            </tbody>
+            <tbody>
+            </tbody>
+        </table>
     </div>
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/base.js"></script>

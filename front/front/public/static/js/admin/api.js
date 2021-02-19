@@ -99,11 +99,11 @@ function getGroupsShort(editable, student_id) {
             })
         }
 
-        if (typeof editable != 'udefined' || typeof student_id != undefined) {
+        if (typeof editable != 'undefined' || typeof student_id != undefined) {
             xhr.setRequestHeader('Content-type', 'application/json');
             let requestJSON = {};
-            if (typeof editable != 'udefined') requestJSON.editable = editable;
-            if (typeof student_id != 'udefined') requestJSON.student_id = student_id;
+            if (typeof editable != 'undefined') requestJSON.editable = editable;
+            if (typeof student_id != 'undefined') requestJSON.student_id = student_id;
 
             xhr.send(JSON.stringify(requestJSON))
         }
@@ -285,6 +285,81 @@ function getGroupFull(groupId) {
         xhr.send(JSON.stringify({
             id: groupId
         }))
+    })
+}
+
+
+function createTeachers(teachersJSONString) {
+    let accessToken = localStorage.getItem('api_access_token');
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', PATH + '/admin/create_teachers')
+        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.onload = () => {
+            if (xhr.status == 200)
+                resolve({
+                    text: xhr.responseText,
+                    code: xhr.status
+                })
+            else reject({
+                text: xhr.responseText,
+                code: xhr.status
+            })
+        }
+        xhr.send(teachersJSONString)
+    })
+}
+
+
+
+function deleteTeachers(teacherIdsJSONString) {
+    let accessToken = localStorage.getItem('api_access_token');
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', PATH + '/admin/delete_teachers')
+        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status == 200)
+                    resolve({
+                        text: xhr.responseText,
+                        code: xhr.status
+                    })
+                else
+                    reject({
+                        text: xhr.responseText,
+                        code: xhr.status
+                    })
+            }
+        }
+        xhr.send(teacherIdsJSONString)
+    })
+}
+
+function editTeachers(teachersChangesJSONString) {
+    let accessToken = localStorage.getItem('api_access_token');
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', PATH + '/admin/edit_teachers')
+        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status == 200)
+                    resolve({
+                        text: xhr.responseText,
+                        code: xhr.status
+                    })
+                else
+                    reject({
+                        text: xhr.responseText,
+                        code: xhr.status
+                    })
+            }
+        }
+        xhr.send(teachersChangesJSONString)
     })
 }
 

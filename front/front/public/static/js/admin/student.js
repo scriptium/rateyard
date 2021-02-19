@@ -11,6 +11,13 @@ let classesHasFilled = new Promise(async (resolve, reject) => {
     }, reject)
 });
 
+let afterStudentGroupsElements = document.querySelectorAll('.appear_after_student_groups');
+
+let studentGroupsHasFilled = new Promise(async (resolve, reject) => {
+    await dataHasChecked;
+    getGroupsShort(undefined, )
+});
+
 let usernameElement = document.getElementById('username');
 let fullNameElement = document.getElementById('full_name');
 let classElement = document.getElementById('class_id');
@@ -37,6 +44,8 @@ function updateStudentData() {
 }
 
 let studentHasFilled = updateStudentData();
+
+
 
 // function saveNewStudentButton(buttonElement) {
 //     disableButton(buttonElement);
@@ -127,7 +136,7 @@ async function deleteStudentButton(buttonElement) {
 
 const changedElements = new Set();
 
-function updateChangedElemnts(elementWithValue) {
+function updateChangedElements(elementWithValue) {
     if (elementWithValue.value != elementWithValue.getAttribute('initial_value'))
         changedElements.add(elementWithValue);
     else
