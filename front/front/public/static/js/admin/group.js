@@ -35,23 +35,34 @@ async function updateGroupData() {
             
             let studentIdTd = document.createElement('td');
             studentIdTd.innerHTML = student.id;
+            studentIdTd.setAttribute('initial_value', student.id);
             newTr.appendChild(studentIdTd);
 
             let studentFullNameTd = document.createElement('td');
             studentFullNameTd.innerHTML = student.full_name;
+            studentFullNameTd.setAttribute('initial_value', student.full_name);
             newTr.appendChild(studentFullNameTd);
 
             let studentUsernameTd = document.createElement('td');
             studentUsernameTd.innerHTML = student.username;
+            studentUsernameTd.setAttribute('initial_value', student.username);
             newTr.appendChild(studentUsernameTd);
 
             let studentEmailTd = document.createElement('td');
             studentEmailTd.innerHTML = student.email;
+            studentEmailTd.setAttribute('initial_value', student.email);
             newTr.appendChild(studentEmailTd);
 
             let studentCheckboxTd = document.createElement('td');
             studentCheckboxTd.appendChild(createCheckboxElement());
-            if (student.is_group_member) studentCheckboxTd.children[0].classList.add('checked');
+            if (student.is_group_member)
+            {
+                studentCheckboxTd.children[0].classList.add('checked');
+                studentCheckboxTd.setAttribute('initial_value', true);
+            }
+            else {
+                studentCheckboxTd.setAttribute('initial_value', false);
+            }
             newTr.appendChild(studentCheckboxTd);
 
 
