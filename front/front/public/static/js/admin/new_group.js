@@ -6,13 +6,13 @@ let classesHasFilled = new Promise (async (resolve, reject) => {
     getClassesShort().then(async (responseData) => {
         let classesSelectElement = document.getElementById('class_id');
         fillClassesSelect(classesSelectElement, JSON.parse(responseData.text));
-        resolve();
         await windowHasLoaded;
         document.querySelectorAll('.appear_after_classes').forEach(
             (element) => {
                 element.classList.add('visible')
             }
         )
+        resolve();
     }, reject);
 })
 

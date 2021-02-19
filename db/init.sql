@@ -112,3 +112,15 @@ VALUES ('zhmisenko4', 'Жмишенко Валерій Альбертович', 
 
 INSERT INTO students (username, full_name, email, password_hash, class_id)
 VALUES ('zhmisenko5', 'Жмишенко Валерій Альбертович', 'zmyshenk5@mail.com', 'a', 1);
+
+INSERT INTO teachers (username, full_name, email, password_hash)
+VALUES ('nagibator1', 'Кислородницкий Влад Афанасьевич', 'mamayakrutoy1@mail.com', 'a');
+
+INSERT INTO teachers (username, full_name, email, password_hash)
+VALUES ('nagibator2', 'Кислородницкий Влад Афанасьевич', 'mamayakrutoy2@mail.com', 'a');
+
+INSERT INTO teachers (username, full_name, email, password_hash)
+VALUES ('nagibator3', 'Кислородницкий Влад Афанасьевич', 'mamayakrutoy3@mail.com', 'a');
+
+INSERT INTO teachers (username, full_name, email, password_hash)
+VALUES ('nagibator4', 'Кислородницкий Влад Афанасьевич', 'mamayakrutoy4@mail.com', 'a');

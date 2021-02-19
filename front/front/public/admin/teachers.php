@@ -18,12 +18,14 @@
     <div id="content">
         <div class="title_block">
             <div class="title">Наявні вчителі</div>
-            <div class="blue_button">
-                <div class="button_icon add_icon"></div>
-                <div>Додати вчителя</div>
-            </div>
+            <a href="new_teacher.php">
+                <div class="blue_button">
+                    <div class="button_icon add_icon"></div>
+                    <div>Додати вчителя</div>
+                </div>
+            </a>
         </div>
-        <input type="text" class="default_input_text" placeholder="Пошук учнів">
+        <input type="text" class="default_input_text" placeholder="Пошук вчителів">
         <table class="default_table appear_transition" id="teachers_table">
             <tbody>
                 <tr>
@@ -40,6 +42,7 @@
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/api.js"></script>
+    <script type="text/javascript" src="/static/js/admin/teachers.js"></script>
 </body>
 
 </html>

@@ -125,6 +125,15 @@ def get_groups_short():
                 exec_where_str = " WHERE stgr.student_id=%s"
             else:
                 abort(400)
+        if "teacher_id" in request.json.keys():
+            if type(request.json["teacher_id"]) == int:
+                exec_main_str += '''
+                INNER JOIN teachers_groups as tcgr ON tcgr.group_id=gr.id
+                '''
+                exec_args.append(request.json["teacher_id"])
+                exec_where_str = " WHERE tcgr.teacher_id=%s"
+            else:
+                abort(400)
 
         if "editable" in request.json.keys():
             if type(request.json["editable"]) == bool:
@@ -165,8 +174,6 @@ def get_group_full():
         abort(400)
 
     cursor = get_db().cursor()
-
-    print(request.json)
 
     cursor.execute('''
     SELECT gr.id, gr.group_name, cl.id, cl.class_name

@@ -42,7 +42,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
         </div>
         <div class="appear_after_group input_grid appear_transition">
             <div>Назва:</div><input id="name" type="text" class="default_input_text" placeholder="Введіть назву групи">
-            <div>Клас:</div><select id="class_id" class="default_select" onchange="updateGroupStudentData()"></select>
+            <div>Клас:</div><div id="class_id"></div>
         </div>
         <div class="subtitle appear_transition appear_after_group">Склад групи:</div>
         <table class="default_table appear_transition appear_after_group" id="group_students">

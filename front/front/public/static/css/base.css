@@ -246,6 +246,13 @@ input[type='search'] {
 .default_input_text.wrong:focus {
     box-shadow: 2px 2px 9px 3px rgba(195, 52, 32, 0.65);
 }
+.fake_readonly_input {
+    margin: 10px 20px;
+    font-weight: bold;
+}
+.fake_readonly_input * {
+    font-weight: bold;
+}
 
 .default_select {
     -webkit-appearance: none;

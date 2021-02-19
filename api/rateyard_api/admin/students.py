@@ -3,7 +3,7 @@ from flask import Blueprint, request, abort, jsonify
 from . import admin_token_required, get_db
 
 
-def check_student_data(cursor, all_required=False):
+def check_students_data(cursor, all_required=False):
     for student_index in range(len(request.json)):
         '''
         Error codes for students:
@@ -144,7 +144,7 @@ def create_students():
 
     db = get_db()
     cursor = db.cursor()
-    student_data_errors = check_student_data(cursor, True)
+    student_data_errors = check_students_data(cursor, True)
 
     if student_data_errors == {}:
         for student in request.json:
@@ -210,7 +210,7 @@ def edit_students():
 
     db = get_db()
     cursor = db.cursor()
-    student_data_errors = check_student_data(cursor, False)
+    student_data_errors = check_students_data(cursor, False)
 
     for student_index in range(len(request.json)):
         '''
