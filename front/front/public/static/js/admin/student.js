@@ -12,10 +12,33 @@ let classesHasFilled = new Promise(async (resolve, reject) => {
 });
 
 let afterStudentGroupsElements = document.querySelectorAll('.appear_after_student_groups');
+let studentGroupsTbodyElement = document.querySelector('#student_groups tbody')
 
 let studentGroupsHasFilled = new Promise(async (resolve, reject) => {
     await dataHasChecked;
-    getGroupsShort(undefined, )
+    getGroupsShort(undefined, studentId).then((responseData) => {
+        let groupsShort = JSON.parse(responseData.text);
+
+        afterStudentGroupsElements.forEach(
+            (element) => {
+                element.classList.add('visible');
+            }
+        )
+        
+        groupsShort.forEach(group => {
+            let newRowElement = document.createElement('tr');
+
+            let groupIdElement = newRowElement.appendChild(document.createElement('td'));
+            groupIdElement.innerHTML = group.id;
+
+            let groupNameElement = newRowElement.appendChild(document.createElement('td'));
+            groupNameElement.innerHTML = group.name;
+
+            studentGroupsTbodyElement.appendChild(newRowElement);
+        });
+        resolve();
+        console.log(groupsShort);
+    }, reject);
 });
 
 let usernameElement = document.getElementById('username');
