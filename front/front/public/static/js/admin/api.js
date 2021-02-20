@@ -40,14 +40,8 @@ function login(username, password) {
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => {
             if (xhr.status == 200)
-                resolve({
-                    text: xhr.responseText,
-                    code: xhr.status
-                })
-            else reject({
-                text: xhr.responseText,
-                code: xhr.status
-            })
+                resolve(xhr);
+            else reject(xhr);
         }
         xhr.send(JSON.stringify({
             username,

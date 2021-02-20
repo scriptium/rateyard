@@ -1,8 +1,5 @@
-import functools
-
 from flask import (Blueprint, request, jsonify, 
-    abort, send_file, Response, 
-    current_app
+    abort, Response, current_app
 )
 from flask_jwt_extended import (
     create_access_token, get_jwt_identity,
@@ -40,10 +37,10 @@ def login_student():
             "type": "student",
             "id": student_id 
         }
-        return jsonify({
-            "access_token": create_access_token(identity=identity),
-            "refresh_token": create_refresh_token(identity=identity)
-        }), 200
+        response = jsonify(result="ok")
+        response.headers["Access-Token"] = create_access_token(identity=identity)
+        response.headers["Refresh-Token"] = create_refresh_token(identity=identity)
+        return response
 
 
 @bp.route("/login_teacher", methods = ("POST", ))
@@ -74,10 +71,10 @@ def login_teacher():
             "type": "teacher",
             "id": teacher_id
         }
-        return jsonify({
-            "access_token": create_access_token(identity=identity),
-            "refresh_token": create_refresh_token(identity=identity)
-        }), 200
+        response = jsonify(result="ok")
+        response.headers["Access-Token"] = create_access_token(identity=identity)
+        response.headers["Refresh-Token"] = create_refresh_token(identity=identity)
+        return response
 
 
 @bp.route("/login_admin", methods = ("POST", ))
@@ -91,10 +88,10 @@ def login_admin():
             identity = {
                 "type": "admin",
             }
-            return jsonify({
-                "access_token": create_access_token(identity=identity),
-                "refresh_token": create_refresh_token(identity=identity)
-            }), 200
+            response = jsonify(result="ok")
+            response.headers["Access-Token"] = create_access_token(identity=identity)
+            response.headers["Refresh-Token"] = create_refresh_token(identity=identity)
+            return response
         else:
             abort(403, "Wrong login data")
     else:
@@ -105,7 +102,7 @@ def login_admin():
 @jwt_refresh_token_required
 def refresh():
     identity = get_jwt_identity()
-    return jsonify({
-        "access_token": create_access_token(identity=identity),
-        "refresh_token": create_refresh_token(identity=identity)
-    }), 200
+    response = jsonify(result="ok")
+    response.headers["Access-Token"] = create_access_token(identity=identity)
+    response.headers["Refresh-Token"] = create_refresh_token(identity=identity)
+    return response
