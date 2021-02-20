@@ -1,12 +1,13 @@
+from types import WrapperDescriptorType
 from flask import json, request, abort, jsonify
 
 from . import admin_token_required, get_db
 
 
-def check_group_data(cursor):
+def check_group_data(cursor, edit=False):
     '''
     Error codes for groups:
-    0: class_id not found or is wrong
+    0: class_id not found or is wrong (If edit is True class_id will be ignored)
     1: name not found or has already taken
     2: found wrong student id
     '''
@@ -15,7 +16,9 @@ def check_group_data(cursor):
 
     was_error = False
 
-    if (
+    if edit:
+        pass
+    elif (
         not "class_id" in request.json.keys() or
         type(request.json["class_id"]) != int
     ):
@@ -32,8 +35,9 @@ def check_group_data(cursor):
 
     was_error = False
 
-    if (
-        not "name" in request.json.keys() or
+    if not "name" in request.json.keys():
+        if not edit: was_error = True
+    elif (
         request.json["name"] == "" or
         type(request.json["name"]) != str or
         len(request.json["name"]) > 256
@@ -50,11 +54,12 @@ def check_group_data(cursor):
 
     if was_error: group_data_errors.append(1)
 
+    was_error = False
 
-    if (
-        not "students_ids" in request.json.keys() or
-        type(request.json["students_ids"]) != list
-    ):
+    if not "students_ids" in request.json.keys():
+        if not edit:
+            was_error = True
+    elif type(request.json["students_ids"]) != list:
         was_error = True
     else:
         for student_id in request.json["students_ids"]:
@@ -72,6 +77,14 @@ def check_group_data(cursor):
 
 
     return group_data_errors
+
+
+def set_group_students(cursor, group_id):
+    for student_id in request.json["students_ids"]:
+        cursor.execute('''
+        INSERT INTO students_groups (group_id, student_id)
+        VALUES (%s, %s);
+        ''', (group_id, student_id))
 
 
 @admin_token_required
@@ -93,13 +106,7 @@ def create_group():
     ''', (request.json["class_id"], request.json["name"]))
 
     group_id = cursor.fetchone()[0]
-
-    for student_id in request.json["students_ids"]:
-        cursor.execute('''
-        INSERT INTO students_groups (group_id, student_id)
-        VALUES (%s, %s);
-        ''', (group_id, student_id))
-
+    set_group_students(cursor, group_id)
     db.commit()
 
     return jsonify(result="ok")
@@ -223,6 +230,36 @@ def get_group_full():
 
     return jsonify(result)
 
+
+@admin_token_required
+def edit_group():
+    db = get_db()
+    cursor = db.cursor()
+
+    group_data_errors = check_group_data(cursor, True)
+
+    wrong_id = False
+
+    if (
+        not request.is_json or
+        not "id" in request.json.keys() or 
+        type(request.json["id"]) != int
+    ):
+        wrong_id = True
+    else:
+        cursor.execute("SELECT 1 FROM groups WHERE id=%s", (request.json["id"], ))
+        if cursor.fetchone() is None:
+            wrong_id = True
+
+    if wrong_id:
+        '''
+        Additional error code from groups
+        3: wrong group id
+        '''
+        group_data_errors.append(3)
+
+    if group_data_errors != []:
+        return jsonify(group_data_errors), 400
 
 
 #     @bp.route("/add_students_to_group", methods=("POST", ))
