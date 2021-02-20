@@ -19,7 +19,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
 
 <body>
     <?php
-    $current = 'students';
+    $current = 'teachers';
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/header.php';
     ?>
     <div id="content">
@@ -34,7 +34,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                     <div class="button_icon save_icon"></div>
                     <div>Зберегти зміни</div>
                 </div>
-                <div class="blue_button" onclick="discardTeacherChangesButton()">
+                <div class="blue_button" onclick="discardChangesButton()">
                     <div class="button_icon back_icon"></div>
                     <div>Прибрати зміни</div>
                 </div>
@@ -60,7 +60,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
         <script type="text/javascript" src="/static/js/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/api.js"></script>
-        <script type="text/javascript" src="/static/js/admin/student.js"></script>
+        <script type="text/javascript" src="/static/js/admin/teacher.js"></script>
 </body>
 
 </html>

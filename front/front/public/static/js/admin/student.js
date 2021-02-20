@@ -157,40 +157,40 @@ async function deleteStudentButton(buttonElement) {
     else buttonElement.classList.remove('disabled');
 }
 
-const changedElements = new Set();
+// const changedElements = new Set();
 
-function updateChangedElements(elementWithValue) {
-    if (elementWithValue.value != elementWithValue.getAttribute('initial_value'))
-        changedElements.add(elementWithValue);
-    else
-        changedElements.delete(elementWithValue);
-    if (changedElements.size > 0)
-        document.querySelectorAll('.appear_on_change').forEach(
-            element => {
-                element.classList.add('visible');
-            } 
-        );
-    else
-        document.querySelectorAll('.appear_on_change').forEach(
-            element => {
-                element.classList.remove('visible');
-            } 
-        );
-}
+// function updateChangedElements(elementWithValue) {
+//     if (elementWithValue.value != elementWithValue.getAttribute('initial_value'))
+//         changedElements.add(elementWithValue);
+//     else
+//         changedElements.delete(elementWithValue);
+//     if (changedElements.size > 0)
+//         document.querySelectorAll('.appear_on_change').forEach(
+//             element => {
+//                 element.classList.add('visible');
+//             } 
+//         );
+//     else
+//         document.querySelectorAll('.appear_on_change').forEach(
+//             element => {
+//                 element.classList.remove('visible');
+//             } 
+//         );
+// }
 
-function discardStudentChangesButton() {
-    changedElements.forEach(
-        (element) => {
-            element.value = element.getAttribute('initial_value');
-        }
-    );
-    changedElements.clear();
-    document.querySelectorAll('.appear_on_change').forEach(
-        element => {
-            element.classList.remove('visible');
-        } 
-    );
-}
+// function discardStudentChangesButton() {
+//     changedElements.forEach(
+//         (element) => {
+//             element.value = element.getAttribute('initial_value');
+//         }
+//     );
+//     changedElements.clear();
+//     document.querySelectorAll('.appear_on_change').forEach(
+//         element => {
+//             element.classList.remove('visible');
+//         } 
+//     );
+// }
 
 window.onload = async () => {
     await studentHasFilled;

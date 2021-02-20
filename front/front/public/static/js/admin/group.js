@@ -8,35 +8,35 @@ let groupStudentsTbodyElement = document.querySelector('#group_students tbody')
 
 let afterGroupElements = document.querySelectorAll('.appear_after_group');
 
-let changedElements = new Set();
-let appearOnChangeElements = document.querySelectorAll('.appear_on_change');
+// let changedElements = new Set();
+// let appearOnChangeElements = document.querySelectorAll('.appear_on_change');
 
-function updateChangedElements(element){
-    let elementHasInitialValue = false;
-    let elementInitialValue = element.getAttribute('initial_value');
-    if (element.classList.contains('checkbox'))
-    {
-        element.classList.toggle('checked');
-        if (element.classList.contains('checked') === (elementInitialValue === 'true'))
-            elementHasInitialValue = true;
-    }
-    else if (element.value === elementInitialValue)
-        elementHasInitialValue = true;
+// function updateChangedElements(element){
+//     let elementHasInitialValue = false;
+//     let elementInitialValue = element.getAttribute('initial_value');
+//     if (element.classList.contains('checkbox'))
+//     {
+//         element.classList.toggle('checked');
+//         if (element.classList.contains('checked') === (elementInitialValue === 'true'))
+//             elementHasInitialValue = true;
+//     }
+//     else if (element.value === elementInitialValue)
+//         elementHasInitialValue = true;
 
-    if (elementHasInitialValue) changedElements.delete(element)
-    else changedElements.add(element);
+//     if (elementHasInitialValue) changedElements.delete(element)
+//     else changedElements.add(element);
 
-    console.log(elementHasInitialValue);
+//     console.log(elementHasInitialValue);
 
-    if (changedElements.size > 0)
-        appearOnChangeElements.forEach((element) => {
-            element.classList.add('visible');
-        });
-    else
-        appearOnChangeElements.forEach((element) => {
-            element.classList.remove('visible');
-        });
-}
+//     if (changedElements.size > 0)
+//         appearOnChangeElements.forEach((element) => {
+//             element.classList.add('visible');
+//         });
+//     else
+//         appearOnChangeElements.forEach((element) => {
+//             element.classList.remove('visible');
+//         });
+// }
 
 function updateGroupStudents(){
 

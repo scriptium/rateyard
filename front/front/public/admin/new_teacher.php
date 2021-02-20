@@ -25,9 +25,9 @@
         </div>
         <div id="load_data" class="input_grid appear_transition">
             <div>ПІБ:</div><input id="full_name" type="text" class="default_input_text" placeholder="Введіть ПІБ вчителя">
-            <div>Логін:</div><input id="username" type="text" class="default_input_text" placeholder="Введіть логін">
+            <div>Логін:</div><input id="username" type="text" class="default_input_text" placeholder="Введіть логін вчителя">
             <div>Адреса електронної пошти:</div><input id="email" type="text" class="default_input_text"
-                placeholder="Введіть адресу електронної пошти учня">
+                placeholder="Введіть адресу електронної пошти вчителя">
             <div>Новий пароль:</div><input id="password" type="text" class="default_input_text"
                 placeholder="Введіть новий пароль вчителя">
         </div>

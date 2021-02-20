@@ -34,7 +34,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                     <div class="button_icon save_icon"></div>
                     <div>Зберегти зміни</div>
                 </div>
-                <div class="blue_button" onclick="discardGroupChangesButton()">
+                <div class="blue_button" onclick="discardChangesButton()">
                     <div class="button_icon back_icon"></div>
                     <div>Прибрати зміни</div>
                 </div>

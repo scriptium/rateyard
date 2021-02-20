@@ -127,7 +127,7 @@ def get_teachers():
     if request.is_json:
         exec_str += " WHERE False"
         for teacher_id in request.json:
-            print('id', teaher_id, flush=True)
+            print('id', teacher_id, flush=True)
             if type(teacher_id) != int:
                 abort(400)
             exec_args.append(teacher_id)
