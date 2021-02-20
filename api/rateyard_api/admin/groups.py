@@ -80,6 +80,7 @@ def check_group_data(cursor, edit=False):
 
 
 def set_group_students(cursor, group_id):
+    cursor.execute("DELETE FROM students_groups WHERE group_id=%s;", (group_id, ))
     for student_id in request.json["students_ids"]:
         cursor.execute('''
         INSERT INTO students_groups (group_id, student_id)
@@ -261,6 +262,23 @@ def edit_group():
     if group_data_errors != []:
         return jsonify(group_data_errors), 400
 
+    was_edit = False
+
+    if "name" in request.json.keys():
+        was_edit = True
+        cursor.execute('''
+        UPDATE groups SET name=%s WHERE id=%s;
+        ''', (request.json["name"], request.json["id"]))
+
+    if "student_ids" in request.json.keys():
+        was_edit = True
+        set_group_students(cursor, request.json["id"])
+
+    if was_edit:
+        db.commit()
+        return jsonify(result="ok")
+    else:
+        abort(400, "No changes provided")
 
 #     @bp.route("/add_students_to_group", methods=("POST", ))
 # @admin_token_required
