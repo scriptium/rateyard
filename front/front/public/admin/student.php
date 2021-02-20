@@ -34,18 +34,18 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                     <div class="button_icon save_icon"></div>
                     <div>Зберегти зміни</div>
                 </div>
-                <div class="blue_button" onclick="discardChangesButton()">
+                <div class="blue_button" onclick="changesSet.discardChanges()">
                     <div class="button_icon back_icon"></div>
                     <div>Прибрати зміни</div>
                 </div>
             </div>
         </div>
         <div id="load_data" class="input_grid appear_transition">
-            <div>ПІБ:</div><input id="full_name" type="text" class="default_input_text" placeholder="Введіть ПІБ учня" oninput="updateChangedElements(this)">
-            <div>Клас:</div><select id="class_id" class="default_select" onchange="updateChangedElements(this)"></select>
-            <div>Логін:</div><input id="username" type="text" class="default_input_text" placeholder="Введіть логін учня" oninput="updateChangedElements(this)">
-            <div>Адреса електронної пошти:</div><input id="email" type="text" class="default_input_text" placeholder="Введіть адресу електронної пошти учня" oninput="updateChangedElements(this)">
-            <div>Новий пароль:</div><input id="password" type="text" class="default_input_text" placeholder="Введіть новий пароль учня" oninput="updateChangedElements(this)" initial_value="">
+            <div>ПІБ:</div><input id="full_name" type="text" class="default_input_text" placeholder="Введіть ПІБ учня" oninput="changesSet.updateChangedElements(this)">
+            <div>Клас:</div><select id="class_id" class="default_select" onchange="changesSet.updateChangedElements(this)"></select>
+            <div>Логін:</div><input id="username" type="text" class="default_input_text" placeholder="Введіть логін учня" oninput="changesSet.updateChangedElements(this)">
+            <div>Адреса електронної пошти:</div><input id="email" type="text" class="default_input_text" placeholder="Введіть адресу електронної пошти учня" oninput="changesSet.updateChangedElements(this)">
+            <div>Новий пароль:</div><input id="password" type="text" class="default_input_text" placeholder="Введіть новий пароль учня" oninput="changesSet.updateChangedElements(this)" initial_value="">
         </div>
         <div class="subtitle appear_transition appear_after_student_groups">Групи учня:</div>
         <table class="default_table appear_transition appear_after_student_groups" id="student_groups">
@@ -61,6 +61,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
         <script type="text/javascript" src="/static/js/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/api.js"></script>
+        <script type="text/javascript" src="/static/js/admin/changes_set.js"></script>
         <script type="text/javascript" src="/static/js/admin/student.js"></script>
 </body>
 

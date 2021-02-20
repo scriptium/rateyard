@@ -38,6 +38,8 @@ let afterGroupElements = document.querySelectorAll('.appear_after_group');
 //         });
 // }
 
+let changesSet = new ChangesSet(document.querySelectorAll('.appear_on_change'));
+
 function updateGroupStudents(){
 
 }
@@ -49,7 +51,7 @@ async function updateGroupData() {
         console.log(parsedGroup)
         groupNameElement.value = parsedGroup.name;
         groupNameElement.setAttribute('initial_value', parsedGroup.name);
-        groupNameElement.setAttribute('oninput', 'updateChangedElements(this)');
+        groupNameElement.setAttribute('oninput', 'changesSet.updateChangedElements(this)');
         groupClassIdElement.innerHTML =
         `<div class=\"fake_readonly_input\"><a
         class=\"text\" 
@@ -90,7 +92,7 @@ async function updateGroupData() {
             else {
                 checkboxElement.setAttribute('initial_value', false);
             }
-            checkboxElement.setAttribute('onclick', 'updateChangedElements(this)');
+            checkboxElement.setAttribute('onclick', 'changesSet.updateChangedElements(this)');
             studentCheckboxTd.appendChild(checkboxElement);
 
             newTr.appendChild(studentCheckboxTd);

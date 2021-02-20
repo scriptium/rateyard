@@ -2,6 +2,8 @@ let dataHasChecked = checkUserData(undefined, 'login.php');
 
 let studentId = parseInt(document.getElementById("student_id").innerHTML);
 
+let changesSet = new ChangesSet(document.querySelectorAll(".appear_on_change"));
+
 let classesHasFilled = new Promise(async (resolve, reject) => {
     await dataHasChecked;
     getClassesShort().then((responseData) => {
@@ -107,7 +109,7 @@ function saveStudentChangesButton(buttonElement) {
     let requestJSON = [];
     requestJSON.push({id: studentId})
 
-    changedElements.forEach(
+    changesSet.changedElements.forEach(
         (element) => {
             if (element.id == "class_id") requestJSON[0][element.id] = parseInt(element.value);
             else requestJSON[0][element.id] = element.value;
@@ -117,7 +119,7 @@ function saveStudentChangesButton(buttonElement) {
     editStudents(JSON.stringify(requestJSON)).then(
         () => {
             updateStudentData()
-            .then(discardStudentChangesButton)
+            .then(() => {changesSet.discardChanges()})
             .then(
                 () => {
                     buttonElements = document.querySelectorAll('.appear_on_change .blue_button');
@@ -191,6 +193,8 @@ async function deleteStudentButton(buttonElement) {
 //         } 
 //     );
 // }
+
+
 
 window.onload = async () => {
     await studentHasFilled;

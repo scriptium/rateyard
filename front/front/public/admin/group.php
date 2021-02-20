@@ -34,15 +34,16 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                     <div class="button_icon save_icon"></div>
                     <div>Зберегти зміни</div>
                 </div>
-                <div class="blue_button" onclick="discardChangesButton()">
+                <div class="blue_button" onclick="changesSet.discardChanges()">
                     <div class="button_icon back_icon"></div>
                     <div>Прибрати зміни</div>
                 </div>
             </div>
         </div>
         <div class="appear_after_group input_grid appear_transition">
-            <div>Назва:</div><input id="name" type="text" class="default_input_text" placeholder="Введіть назву групи">
-            <div>Клас:</div><div id="class_id"></div>
+            <div>Назва:</div><input id="name" type="text" class="default_input_text" placeholder="Введіть назву групи" oninput="changesSet.updateChangedElements(this)">
+            <div>Клас:</div>
+            <div id="class_id"></div>
         </div>
         <div class="subtitle appear_transition appear_after_group">Склад групи:</div>
         <table class="default_table appear_transition appear_after_group" id="group_students">
@@ -57,11 +58,12 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
             </thead>
             <tbody>
             </tbody>
-        </table> 
+        </table>
     </div>
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/api.js"></script>
+    <script type="text/javascript" src="/static/js/admin/changes_set.js"></script>
     <script type="text/javascript" src="/static/js/admin/group.js"></script>
 </body>
 
