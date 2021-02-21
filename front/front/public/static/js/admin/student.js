@@ -22,7 +22,7 @@ let studentGroupsHasFilled = new Promise(async (resolve, reject) => {
                 element.classList.add('visible');
             }
         )
-        
+
         groupsShort.forEach(group => {
             let newRowElement = document.createElement('tr');
 
@@ -58,7 +58,7 @@ function updateStudentData() {
             await classesHasFilled;
             classElement.value = student.class.id;
             classElement.setAttribute('initial_value', student.class.id);
-            resolve();  
+            resolve();
         }, reject)
     });
 }
@@ -69,7 +69,7 @@ function saveStudentChangesButton(buttonElement) {
     buttonElement.classList.add('disabled');
 
     let requestJSON = [];
-    requestJSON.push({id: studentId})
+    requestJSON.push({ id: studentId })
 
     changesSet.changedElements.forEach(
         (element) => {
@@ -78,33 +78,30 @@ function saveStudentChangesButton(buttonElement) {
         }
     );
 
-    editStudents(requestJSON).then(
-        () => {
+    editStudents(requestJSON).then((responseData) => {
+        if (responseData.status === 200) {
             updateStudentData()
-            .then(() => {changesSet.discardChanges()})
-            .then(
-                () => {
-                    buttonElements = document.querySelectorAll('.appear_on_change .blue_button');
+                .then(() => { changesSet.discardChanges() })
+                .then(
+                    () => {
+                        buttonElements = document.querySelectorAll('.appear_on_change .blue_button');
 
-                    buttonElements.forEach(
-                        (element) => {
-                            element.classList.remove('disabled');
-                        }
-                    )
-                }
-            )
-        },
-        (responseData) => {
-            if (responseData.code == 400) {
-                let parsedResponseJSON = JSON.parse(responseData.text);
+                        buttonElements.forEach(
+                            (element) => {
+                                element.classList.remove('disabled');
+                            }
+                        )
+                    }
+                )
+        }
+        else if (responseData.status == 400) {
+            if (responseData.json[0].includes(0)) makeInputTextWrong(usernameElement);
+            if (responseData.json[0].includes(1)) makeInputTextWrong(fullNameElement);
+            if (responseData.json[0].includes(2)) makeInputTextWrong(classElement);
+            if (responseData.json[0].includes(3)) makeInputTextWrong(passwordElement);
+            if (responseData.json[0].includes(4)) makeInputTextWrong(emailElement);
 
-                if (parsedResponseJSON[0].includes(0)) makeInputTextWrong(usernameElement);
-                if (parsedResponseJSON[0].includes(1)) makeInputTextWrong(fullNameElement);
-                if (parsedResponseJSON[0].includes(2)) makeInputTextWrong(classElement);
-                if (parsedResponseJSON[0].includes(3)) makeInputTextWrong(passwordElement);
-                if (parsedResponseJSON[0].includes(4)) makeInputTextWrong(emailElement);
-                
-                buttonElement.classList.remove('disabled');
+            buttonElement.classList.remove('disabled');
         }
     });
 }
@@ -114,8 +111,8 @@ async function deleteStudentButton(buttonElement) {
     isConfirmed = confirm(`Видалити учня №${studentId}?`)
     if (isConfirmed) {
         deleteStudents([studentId]).then(
-            () => {window.history.back()},
-            () => {buttonElement.classList.remove('disabled')}
+            () => { window.history.back() },
+            () => { buttonElement.classList.remove('disabled') }
         )
     }
     else buttonElement.classList.remove('disabled');

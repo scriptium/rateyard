@@ -1,10 +1,15 @@
 let studentsResponseData = getStudents();
+let searchIndex = FlexSearch.create({
+    encode: false,
+    split: /\s+/,
+    tokenize: "forward"
+});
+
+let studentsTableElement = document.getElementById('students_table');
+let mainTbodyElement = studentsTableElement.getElementsByTagName('tbody')[1];
 
 function fillStudentsTable(parsedResponse) {
-    console.log(parsedResponse)
-    let studentsTableElement = document.getElementById('students_table');
-    let mainTbodyElement = studentsTableElement.getElementsByTagName('tbody')[1];
-    
+    console.log(parsedResponse)    
     parsedResponse.forEach(student => {
         let newRowElement = document.createElement('tr');
 
@@ -23,10 +28,24 @@ function fillStudentsTable(parsedResponse) {
         let emailElement = newRowElement.appendChild(document.createElement('td'));
         emailElement.innerHTML = student.email;
 
+        searchIndex.add(
+            student.id,
+            `${student.id} ${student.username} ${student.full_name} ${student.email} ${student.class.name}`
+        )
+
         mainTbodyElement.appendChild(newRowElement);
     });
 
     studentsTableElement.classList.add('visible');
+}
+
+function searchStudents(text) {
+    let searchedStudents = searchIndex.search(text);
+    for (let element of mainTbodyElement.children){
+        if (!searchedStudents.includes(parseInt(element.children[0].innerHTML)) && text!=='')
+            element.style = "display: none";
+        else element.style = "";
+    }
 }
 
 window.onload = async () => {

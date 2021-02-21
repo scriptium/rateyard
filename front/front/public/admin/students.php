@@ -29,7 +29,7 @@
                 <div>Імпорт з файлу Microsoft Excel</div>
             </div>
         </div>
-        <input type="text" class="default_input_text" placeholder="Пошук учнів">
+        <input type="text" class="default_input_text" placeholder="Пошук учнів" oninput="searchStudents(this.value)">
         <table class="default_table appear_transition" id="students_table">
             <tbody>
                 <tr>
@@ -48,6 +48,7 @@
     <script type="text/javascript" src="/static/js/admin/base.js"></script>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
     <script type="text/javascript" src="/static/js/admin/api.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/nextapps-de/flexsearch@master/dist/flexsearch.light.js"></script>
     <script type="text/javascript" src="/static/js/admin/students.js"></script>
 </body>
 
