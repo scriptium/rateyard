@@ -1,408 +1,189 @@
-const PATH = `http://${window.location.hostname}:8000`
-
-async function checkUserData(passURL, failURL) {
-    let accessToken = localStorage.getItem('api_access_token');
-
-    let fail = true;
-
-    if (accessToken != null) {
-        let tokenIsValid = await new Promise(function (resolve, reject) {
-            let xhr = new XMLHttpRequest();
-            xhr.open('POST', PATH + '/admin/check_token')
-            xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status == 200) {
-                        resolve(true)
-                    }
-                    else {
-                        resolve(false)
-                    }
-                }
-            }
-            xhr.send()
-        })
-        if (tokenIsValid) fail = false;
+let adminRateyardApiClient = new RateyardApiClient(
+    localStorage.getItem('admin_access_token'),
+    localStorage.getItem('admin_refresh_token'),
+    '/admin/',
+    (accessToken, refreshToken) => {
+        localStorage.setItem('admin_access_token', accessToken),
+            localStorage.setItem('admin_refresh_token', refreshToken)
+    },
+    () => {
+        console.log('Wrong token')
+        document.location.replace('/admin/login.php');
     }
-    if (fail) {
-        if (failURL !== undefined)
-            document.location.replace(failURL);
+)
+
+
+async function createStudents(students) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'create_students', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(students), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
     }
-    else if (passURL !== undefined)
-        document.location.replace(passURL);
-    return true
 }
 
-function login(username, password) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/auth/login_admin')
-        xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.onload = () => {
-            if (xhr.status == 200)
-                resolve(xhr);
-            else reject(xhr);
-        }
-        xhr.send(JSON.stringify({
-            username,
-            password
-        }))
-    })
+async function getStudents(ids) {
+    let headers;
+    let body;
+    if (ids != undefined) {
+        headers = { 'Content-type': 'application/json' }
+        body = JSON.stringify(ids);
+    }
+    let xhr = await adminRateyardApiClient.sendRequest('get_students', 'POST', headers, body, true);
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
 }
 
-function getStudents(ids) {
-    let accessToken = localStorage.getItem('api_access_token');
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/get_students')
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.onload = () => {
-            if (xhr.status == 200)
-                resolve({
-                    text: xhr.responseText,
-                    code: xhr.status
-                })
-            else reject({
-                text: xhr.responseText,
-                code: xhr.status
-            })
-        }
-        if (ids != undefined) {
-            xhr.setRequestHeader('Content-type', 'application/json');
-            xhr.send(JSON.stringify(ids))
-        }
-        else xhr.send()
-    })
+async function editStudents(studentsChanges) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'edit_students', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(studentsChanges), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
 }
 
-function getTeachers(ids) {
-    let accessToken = localStorage.getItem('api_access_token');
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/get_teachers');
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.onload = () => {
-            if (xhr.status == 200)
-                resolve({
-                    text: xhr.responseText,
-                    code: xhr.status
-                });
-            else reject({
-                text: xhr.responseText,
-                code: xhr.status
-            });
-        }
-        if (ids != undefined) {
-            xhr.setRequestHeader('Content-type', 'application/json');
-            xhr.send(JSON.stringify(ids));
-        }
-        else xhr.send();
-    })
-}
-
-function getGroupsShort(editable, student_id) {
-    let accessToken = localStorage.getItem('api_access_token');
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/get_groups_short')
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.onload = () => {
-            if (xhr.status == 200)
-                resolve({
-                    text: xhr.responseText,
-                    code: xhr.status
-                })
-            else reject({
-                text: xhr.responseText,
-                code: xhr.status
-            })
-        }
-
-        if (typeof editable != 'undefined' || typeof student_id != undefined) {
-            xhr.setRequestHeader('Content-type', 'application/json');
-            let requestJSON = {};
-            if (typeof editable != 'undefined') requestJSON.editable = editable;
-            if (typeof student_id != 'undefined') requestJSON.student_id = student_id;
-
-            xhr.send(JSON.stringify(requestJSON))
-        }
-        else xhr.send()
-    })
-}
-
-function getClassesShort() {
-    let accessToken = localStorage.getItem('api_access_token');
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', PATH + '/admin/get_classes_short')
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status == 200)
-                    resolve({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-                else
-                    reject({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-            }
-        }
-        xhr.send()
-    })
-}
-
-function getClassFull(id) {
-    let accessToken = localStorage.getItem('api_access_token');
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/get_class_full')
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status == 200)
-                    resolve({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-                else
-                    reject({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-            }
-        }
-        xhr.send(JSON.stringify({id}))
-    })
-}
-
-function createStudents(studentsJSONString) {
-    let accessToken = localStorage.getItem('api_access_token');
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/create_students')
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.onload = () => {
-            if (xhr.status == 200)
-                resolve({
-                    text: xhr.responseText,
-                    code: xhr.status
-                })
-            else reject({
-                text: xhr.responseText,
-                code: xhr.status
-            })
-        }
-        xhr.send(studentsJSONString)
-    })
-}
-
-function deleteStudents(studentIdsJSONString) {
-    let accessToken = localStorage.getItem('api_access_token');
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/delete_students')
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status == 200)
-                    resolve({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-                else
-                    reject({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-            }
-        }
-        xhr.send(studentIdsJSONString)
-    })
-}
-
-function editStudents(studentsChangesJSONString) {
-    let accessToken = localStorage.getItem('api_access_token');
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/edit_students')
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status == 200)
-                    resolve({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-                else
-                    reject({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-            }
-        }
-        xhr.send(studentsChangesJSONString)
-    })
-}
-
-function createTeachers(teachersJSONString) {
-    let accessToken = localStorage.getItem('api_access_token');
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/create_teachers')
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.onload = () => {
-            if (xhr.status == 200)
-                resolve({
-                    text: xhr.responseText,
-                    code: xhr.status
-                })
-            else reject({
-                text: xhr.responseText,
-                code: xhr.status
-            })
-        }
-        xhr.send(teachersJSONString);
-    })
+async function deleteStudents(ids) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'delete_students', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(ids), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
 }
 
 
-function createGroup(name, classId, studentsIds) {
-    let accessToken = localStorage.getItem('api_access_token');
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/create_group')
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status == 200)
-                    resolve({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-                else
-                    reject({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-            }
-        }
-        xhr.send(JSON.stringify({
+async function createTeachers(teachers) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'create_teachers', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(teachers), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}
+
+async function getTeachers(ids) {
+    let headers;
+    let body;
+    if (ids != undefined) {
+        headers = { 'Content-type': 'application/json' }
+        body = JSON.stringify(ids);
+    }
+    let xhr = await adminRateyardApiClient.sendRequest('get_teachers', 'POST', headers, body, true);
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}
+
+async function editTeachers(teachersChanges) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'edit_teachers', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(teachersChanges), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}
+
+async function deleteTeachers(ids) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'delete_teachers', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(ids), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}
+
+
+async function createGroup(name, classId, studentsIds) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'create_group', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify({
             name,
             class_id: classId,
             students_ids: studentsIds
-        }))
-    })
+        }), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
 }
 
-function getGroupFull(groupId) {
-    let accessToken = localStorage.getItem('api_access_token');
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/get_group_full')
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status == 200)
-                    resolve({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-                else
-                    reject({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-            }
-        }
-        xhr.send(JSON.stringify({
-            id: groupId
-        }))
-    })
+async function getGroupsShort(editable, student_id) {
+    let body = null;
+    let headers = {};
+    if (typeof editable != 'undefined' || typeof student_id != undefined) {
+        headers = { 'Content-type': 'application/json' };
+        let requestJSON = {};
+        if (typeof editable != 'undefined') requestJSON.editable = editable;
+        if (typeof student_id != 'undefined') requestJSON.student_id = student_id;
+
+        body = JSON.stringify(requestJSON);
+    }
+    let xhr = await adminRateyardApiClient.sendRequest('get_groups_short', 'POST', headers, body, true);
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
 }
 
-
-function createTeachers(teachersJSONString) {
-    let accessToken = localStorage.getItem('api_access_token');
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/create_teachers')
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.onload = () => {
-            if (xhr.status == 200)
-                resolve({
-                    text: xhr.responseText,
-                    code: xhr.status
-                })
-            else reject({
-                text: xhr.responseText,
-                code: xhr.status
-            })
-        }
-        xhr.send(teachersJSONString)
-    })
+async function getGroupFull(id) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'get_group_full', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify({ id }), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
 }
 
 
-
-function deleteTeachers(teacherIdsJSONString) {
-    let accessToken = localStorage.getItem('api_access_token');
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/delete_teachers')
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status == 200)
-                    resolve({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-                else
-                    reject({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-            }
-        }
-        xhr.send(teacherIdsJSONString)
-    })
+async function getClassesShort() {
+    let xhr = await adminRateyardApiClient.sendRequest('get_classes_short', 'GET', {}, null, true);
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
 }
 
-function editTeachers(teachersChangesJSONString) {
-    let accessToken = localStorage.getItem('api_access_token');
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', PATH + '/admin/edit_teachers')
-        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
-        xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status == 200)
-                    resolve({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-                else
-                    reject({
-                        text: xhr.responseText,
-                        code: xhr.status
-                    })
-            }
-        }
-        xhr.send(teachersChangesJSONString)
-    })
+async function getClassFull(id) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'get_class_full', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify({ id }), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

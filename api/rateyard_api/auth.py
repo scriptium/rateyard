@@ -98,7 +98,7 @@ def login_admin():
         abort(400, "Wrong json")
 
 
-@bp.route("/refresh", methods=("POST",))
+@bp.route("/refresh", methods=("POST", "GET"))
 @jwt_refresh_token_required
 def refresh():
     identity = get_jwt_identity()

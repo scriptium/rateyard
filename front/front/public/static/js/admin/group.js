@@ -1,5 +1,3 @@
-let dataHasChecked = checkUserData(undefined, 'login.php');
-
 let groupId = parseInt(document.getElementById("group_id").innerHTML);
 
 let groupNameElement = document.getElementById('name');
@@ -8,36 +6,6 @@ let groupStudentsTbodyElement = document.querySelector('#group_students tbody')
 
 let afterGroupElements = document.querySelectorAll('.appear_after_group');
 
-// let changedElements = new Set();
-// let appearOnChangeElements = document.querySelectorAll('.appear_on_change');
-
-// function updateChangedElements(element){
-//     let elementHasInitialValue = false;
-//     let elementInitialValue = element.getAttribute('initial_value');
-//     if (element.classList.contains('checkbox'))
-//     {
-//         element.classList.toggle('checked');
-//         if (element.classList.contains('checked') === (elementInitialValue === 'true'))
-//             elementHasInitialValue = true;
-//     }
-//     else if (element.value === elementInitialValue)
-//         elementHasInitialValue = true;
-
-//     if (elementHasInitialValue) changedElements.delete(element)
-//     else changedElements.add(element);
-
-//     console.log(elementHasInitialValue);
-
-//     if (changedElements.size > 0)
-//         appearOnChangeElements.forEach((element) => {
-//             element.classList.add('visible');
-//         });
-//     else
-//         appearOnChangeElements.forEach((element) => {
-//             element.classList.remove('visible');
-//         });
-// }
-
 let changesSet = new ChangesSet(document.querySelectorAll('.appear_on_change'));
 
 function updateGroupStudents(){
@@ -45,9 +13,8 @@ function updateGroupStudents(){
 }
 
 async function updateGroupData() {
-    await dataHasChecked;
     getGroupFull(groupId).then((responseData) => {
-        let parsedGroup = JSON.parse(responseData.text);
+        let parsedGroup = responseData.json;
         console.log(parsedGroup)
         groupNameElement.value = parsedGroup.name;
         groupNameElement.setAttribute('initial_value', parsedGroup.name);

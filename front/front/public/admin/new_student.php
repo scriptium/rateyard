@@ -34,6 +34,7 @@
         </div>
         <script type="text/javascript" src="/static/js/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/base.js"></script>
+        <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
         <script type="text/javascript" src="/static/js/admin/api.js"></script>
         <script type="text/javascript" src="/static/js/admin/new_student.js"></script>
 </body>

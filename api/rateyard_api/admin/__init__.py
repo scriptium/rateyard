@@ -19,7 +19,7 @@ def admin_token_required(fn):
 
 bp = Blueprint("admin", __name__)
 
-@bp.route("check_token", methods=("POST",))
+@bp.route("check_token", methods=("GET",))
 @admin_token_required
 def check_token():
     return jsonify(msg='ok')

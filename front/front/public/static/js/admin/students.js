@@ -1,10 +1,6 @@
-let studentsResponseData = new Promise(async (resolve, reject) => {
-    await checkUserData(undefined, 'login.php');
-    getStudents().then(resolve, reject);
-})
+let studentsResponseData = getStudents();
 
-function fillStudentsTable(responseText) {
-    parsedResponse = JSON.parse(responseText);
+function fillStudentsTable(parsedResponse) {
     console.log(parsedResponse)
     let studentsTableElement = document.getElementById('students_table');
     let mainTbodyElement = studentsTableElement.getElementsByTagName('tbody')[1];
@@ -35,6 +31,6 @@ function fillStudentsTable(responseText) {
 
 window.onload = async () => {
     studentsResponseData.then((responseData) => {
-        fillStudentsTable(responseData.text);
+        fillStudentsTable(responseData.json);
     });
 }

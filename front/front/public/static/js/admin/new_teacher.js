@@ -1,5 +1,3 @@
-let dataHasChecked = checkUserData(undefined, 'login.php');
-
 let usernameElement = document.getElementById('username');
 let fullNameElement = document.getElementById('full_name');
 let passwordElement = document.getElementById('password');
@@ -19,8 +17,8 @@ function saveNewTeacherButton(buttonElement) {
         window.history.back();
     },
     (responseData) => {
-        if (responseData.code == 400) {
-            let parsedResponseJSON = JSON.parse(responseData.text);
+        if (responseData.status == 400) {
+            let parsedResponseJSON = responseData.json;
 
             console.log(parsedResponseJSON);
             if (parsedResponseJSON[0].includes(0)) makeInputTextWrong(usernameElement);

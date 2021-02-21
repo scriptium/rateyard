@@ -1,11 +1,9 @@
-let dataHasChecked = checkUserData(undefined, 'login.php');
 let windowHasLoaded = new Promise((resolve) => {window.onload = resolve})
 
 let classesHasFilled = new Promise (async (resolve, reject) => {
-    await dataHasChecked;
     getClassesShort().then(async (responseData) => {
         let classesSelectElement = document.getElementById('class_id');
-        fillClassesSelect(classesSelectElement, JSON.parse(responseData.text));
+        fillClassesSelect(classesSelectElement, responseData.json);
         await windowHasLoaded;
         document.querySelectorAll('.appear_after_classes').forEach(
             (element) => {
@@ -29,10 +27,9 @@ function updateGroupStudentData() {
                 element.classList.remove('visible')
             }
         )
-        await dataHasChecked;
         await classesHasFilled;
         getClassFull(parseInt(groupClassElement.value)).then(async (responseData) => {
-            let parsedResponse = JSON.parse(responseData.text);
+            let parsedResponse = responseData.json;
             groupStudentsTbodyElement.innerHTML = '';
             parsedResponse.students.forEach(student => {
                 let newRowElement = document.createElement('tr');

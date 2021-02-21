@@ -1,13 +1,8 @@
-let teachersResponseData = new Promise(async (resolve, reject) => {
-    await checkUserData(undefined, 'login.php');
-    getTeachers().then(resolve, reject);
-})
+let teachersResponseData = getTeachers();
 
-function fillTeachersTable(responseText) {
-    parsedResponse = JSON.parse(responseText);
-    console.log(parsedResponse)
-    teachersTableElement = document.getElementById('teachers_table');
-    mainTbodyElement = teachersTableElement.getElementsByTagName('tbody')[1];
+function fillTeachersTable(parsedResponse) {
+    let teachersTableElement = document.getElementById('teachers_table');
+    let mainTbodyElement = teachersTableElement.getElementsByTagName('tbody')[1];
     
     parsedResponse.forEach(teacher => {
         let newRowElement = document.createElement('tr');
@@ -32,6 +27,6 @@ function fillTeachersTable(responseText) {
 
 window.onload = async () => {
     teachersResponseData.then((responseData) => {
-        fillTeachersTable(responseData.text);
+        fillTeachersTable(responseData.json);
     });
 }

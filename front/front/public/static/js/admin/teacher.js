@@ -1,5 +1,3 @@
-let dataHasChecked = checkUserData(undefined, 'login.php');
-
 let teacherId = parseInt(document.getElementById("teacher_id").innerHTML);
 
 let usernameElement = document.getElementById('username');
@@ -9,9 +7,8 @@ let emailElement = document.getElementById('email');
 
 function updateTeacherData() {
     return new Promise(async (resolve, reject) => {
-        await dataHasChecked;
         getTeachers([teacherId]).then(async (responseData) => {
-            let teacher = JSON.parse(responseData.text)[0]
+            let teacher = responseData.json[0]
             usernameElement.value = teacher.username;
             usernameElement.setAttribute('initial_value', teacher.username);
             fullNameElement.value = teacher.full_name;

@@ -1,14 +1,10 @@
-let groupseResponseData = new Promise(async (resolve, reject) => {
-    await checkUserData(undefined, 'login.php');
-    getGroupsShort(true).then(resolve, reject)
-})
+let groupseResponseData = getGroupsShort(true)
 
-function fillGroupsTable(responseText) {
-    parsedResponse = JSON.parse(responseText);
+function fillGroupsTable(groups) {
     groupsTableElement = document.getElementById('groups_table');
     mainTbodyEleemnt = groupsTableElement.getElementsByTagName('tbody')[1];
     
-    parsedResponse.forEach(group => {
+    groups.forEach(group => {
         newRowElement = document.createElement('tr');
 
         let idElement = newRowElement.appendChild(document.createElement('td'));
@@ -28,6 +24,6 @@ function fillGroupsTable(responseText) {
 
 window.onload = async () => {   
     groupseResponseData.then((responseData) => {
-        fillGroupsTable(responseData.text)
+        fillGroupsTable(responseData.json)
     });
 }

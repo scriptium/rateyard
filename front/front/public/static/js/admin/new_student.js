@@ -1,10 +1,7 @@
-let dataHasChecked = checkUserData(undefined, 'login.php');
-
 let classesHasFilled = new Promise (async (resolve, reject) => {
-    await dataHasChecked;
     getClassesShort().then((responseData) => {
         let classesSelectElement = document.getElementById('classes_select');
-        fillClassesSelect(classesSelectElement, JSON.parse(responseData.text));
+        fillClassesSelect(classesSelectElement, responseData.json);
         resolve();
     }, reject);
 })
@@ -26,22 +23,21 @@ function saveNewStudentButton(buttonElement) {
         email: emailElement.value
     }]
 
-    createStudents(JSON.stringify(requestJSON)).then((responseData) => {
-        window.history.back();
-    },
-    (responseData) => {
-        if (responseData.code == 400) {
-            let parsedResponseJSON = JSON.parse(responseData.text);
+    createStudents(requestJSON).then((responseData) => {
+        if (responseData.status == 400) {
+            let parsedResponseJSON = responseData.json;
 
             if (parsedResponseJSON[0].includes(0)) makeInputTextWrong(usernameElement);
             if (parsedResponseJSON[0].includes(1)) makeInputTextWrong(fullNameElement);
             if (parsedResponseJSON[0].includes(2)) makeInputTextWrong(classElement);
             if (parsedResponseJSON[0].includes(3)) makeInputTextWrong(passwordElement);
             if (parsedResponseJSON[0].includes(4)) makeInputTextWrong(emailElement);
-
             enableButton(buttonElement);
         }
-    })
+        else if (responseData.status === 200) {
+            window.history.back();
+        }
+    });
 }
 
 window.onload = async () => {

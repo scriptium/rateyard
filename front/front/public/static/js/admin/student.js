@@ -1,14 +1,11 @@
-let dataHasChecked = checkUserData(undefined, 'login.php');
-
 let studentId = parseInt(document.getElementById("student_id").innerHTML);
 
 let changesSet = new ChangesSet(document.querySelectorAll(".appear_on_change"));
 
 let classesHasFilled = new Promise(async (resolve, reject) => {
-    await dataHasChecked;
     getClassesShort().then((responseData) => {
         let classesSelectElement = document.getElementById('class_id');
-        fillClassesSelect(classesSelectElement, JSON.parse(responseData.text));
+        fillClassesSelect(classesSelectElement, responseData.json);
         resolve();
     }, reject)
 });
@@ -17,9 +14,8 @@ let afterStudentGroupsElements = document.querySelectorAll('.appear_after_studen
 let studentGroupsTbodyElement = document.querySelector('#student_groups tbody')
 
 let studentGroupsHasFilled = new Promise(async (resolve, reject) => {
-    await dataHasChecked;
     getGroupsShort(undefined, studentId).then((responseData) => {
-        let groupsShort = JSON.parse(responseData.text);
+        let groupsShort = responseData.json;
 
         afterStudentGroupsElements.forEach(
             (element) => {
@@ -51,9 +47,8 @@ let emailElement = document.getElementById('email');
 
 function updateStudentData() {
     return new Promise(async (resolve, reject) => {
-        await dataHasChecked;
         getStudents([studentId]).then(async (responseData) => {
-            let student = JSON.parse(responseData.text)[0]
+            let student = responseData.json[0];
             usernameElement.value = student.username;
             usernameElement.setAttribute('initial_value', student.username);
             fullNameElement.value = student.full_name;
@@ -70,39 +65,6 @@ function updateStudentData() {
 
 let studentHasFilled = updateStudentData();
 
-
-
-// function saveNewStudentButton(buttonElement) {
-//     disableButton(buttonElement);
-
-
-
-//     let requestJSON = [{
-//         full_name: fullNameElement.value,
-//         class_id: classElement.value,
-//         username: usernameElement.value,
-//         password: passwordElement.value,
-//         email: emailElement.value
-//     }]
-
-//     createStudents(JSON.stringify(requestJSON)).then((responseData) => {
-//         window.history.back();
-//     },
-//     (responseData) => {
-//         if (responseData.code == 400) {
-//             let parsedResponseJSON = JSON.parse(responseData.text);
-
-//             if (parsedResponseJSON[0].includes(0)) makeInputTextWrong(usernameElement);
-//             if (parsedResponseJSON[0].includes(1)) makeInputTextWrong(fullNameElement);
-//             if (parsedResponseJSON[0].includes(2)) makeInputTextWrong(classElement);
-//             if (parsedResponseJSON[0].includes(3)) makeInputTextWrong(passwordElement);
-//             if (parsedResponseJSON[0].includes(4)) makeInputTextWrong(emailElement);
-
-//             enableButton(buttonElement);
-//         }
-//     })
-// }
-
 function saveStudentChangesButton(buttonElement) {
     buttonElement.classList.add('disabled');
 
@@ -116,7 +78,7 @@ function saveStudentChangesButton(buttonElement) {
         }
     );
 
-    editStudents(JSON.stringify(requestJSON)).then(
+    editStudents(requestJSON).then(
         () => {
             updateStudentData()
             .then(() => {changesSet.discardChanges()})
@@ -151,50 +113,13 @@ async function deleteStudentButton(buttonElement) {
     buttonElement.classList.add('disabled');
     isConfirmed = confirm(`Видалити учня №${studentId}?`)
     if (isConfirmed) {
-        deleteStudents(JSON.stringify([studentId])).then(
+        deleteStudents([studentId]).then(
             () => {window.history.back()},
             () => {buttonElement.classList.remove('disabled')}
         )
     }
     else buttonElement.classList.remove('disabled');
 }
-
-// const changedElements = new Set();
-
-// function updateChangedElements(elementWithValue) {
-//     if (elementWithValue.value != elementWithValue.getAttribute('initial_value'))
-//         changedElements.add(elementWithValue);
-//     else
-//         changedElements.delete(elementWithValue);
-//     if (changedElements.size > 0)
-//         document.querySelectorAll('.appear_on_change').forEach(
-//             element => {
-//                 element.classList.add('visible');
-//             } 
-//         );
-//     else
-//         document.querySelectorAll('.appear_on_change').forEach(
-//             element => {
-//                 element.classList.remove('visible');
-//             } 
-//         );
-// }
-
-// function discardStudentChangesButton() {
-//     changedElements.forEach(
-//         (element) => {
-//             element.value = element.getAttribute('initial_value');
-//         }
-//     );
-//     changedElements.clear();
-//     document.querySelectorAll('.appear_on_change').forEach(
-//         element => {
-//             element.classList.remove('visible');
-//         } 
-//     );
-// }
-
-
 
 window.onload = async () => {
     await studentHasFilled;

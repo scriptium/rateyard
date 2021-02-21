@@ -5,20 +5,13 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
 
-def create_app(test_config=None):
+def create_app():
     app = Flask(__name__, instance_relative_config=True)
-
-    app.config['CORS_EXPOSE_HEADERS'] = ['Access-Token', 'Refresh-Token']
+    
+    app.config.from_pyfile(os.path.join(os.path.dirname( __file__ ), 'config.py'), silent=False)
 
     JWTManager(app)
     CORS(app)
-
-    if test_config is None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_pyfile(
-                os.path.join(os.path.dirname( __file__ ), 'config.py'), silent=False)
-    else:
-        app.config.from_mapping(test_config)
     
     import auth
     import student

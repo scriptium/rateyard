@@ -9,9 +9,8 @@
 </head>
 
 <body>
-    <script type="text/javascript" src="/static/js/admin/api.js"></script>
+    <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
     <script>
-    checkUserData('students.php', '/admin/login.php')
     </script>   
 </body>
 
