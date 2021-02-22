@@ -1,7 +1,7 @@
 function logoutButton(button) {
     disableButton(button)
-    localStorage.removeItem('api_access_token');
-    localStorage.removeItem('api_refresh_token');
+    localStorage.removeItem('admin_access_token');
+    localStorage.removeItem('admin_refresh_token');
     document.location.replace('login.php')
 }
 

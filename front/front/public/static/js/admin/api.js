@@ -12,7 +12,6 @@ let adminRateyardApiClient = new RateyardApiClient(
     }
 )
 
-
 async function createStudents(students) {
     let xhr = await adminRateyardApiClient.sendRequest(
         'create_students', 'POST', { 'Content-Type': 'application/json' },

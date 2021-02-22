@@ -151,17 +151,18 @@ def get_teachers():
 
 @admin_token_required
 def create_teachers():
+    print(1)
     if not request.is_json:
-        abort(400, "Expected json")
         print("Expected json", flush=True)
+        abort(400, "Expected json")
     if type(request.json) != list:
-        abort(400, "Expected array of teachers")
         print("Expected array of teachers", flush=True)
+        abort(400, "Expected array of teachers")
 
     db = get_db()
     cursor = db.cursor()
     teacher_data_errors = check_teacher_data(cursor, True)
-
+    print ( teacher_data_errors)
     if teacher_data_errors == {}:
         for teacher in request.json:
             cursor.execute('''

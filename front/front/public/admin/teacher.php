@@ -41,10 +41,10 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
             </div>
         </div>
         <div id="load_data" class="input_grid appear_transition">
-            <div>ПІБ:</div><input id="full_name" type="text" class="default_input_text" placeholder="Введіть ПІБ вчителя" oninput="updateChangedElements(this)">
-            <div>Логін:</div><input id="username" type="text" class="default_input_text" placeholder="Введіть логін вчителя" oninput="updateChangedElements(this)">
-            <div>Адреса електронної пошти:</div><input id="email" type="text" class="default_input_text" placeholder="Введіть адресу електронної пошти вчителя" oninput="updateChangedElements(this)">
-            <div>Новий пароль:</div><input id="password" type="text" class="default_input_text" placeholder="Введіть новий пароль вчителя" oninput="updateChangedElements(this)" initial_value="">
+            <div>ПІБ:</div><input id="full_name" type="text" class="default_input_text" placeholder="Введіть ПІБ вчителя" oninput="changesSet.updateChangedElements(this)">
+            <div>Логін:</div><input id="username" type="text" class="default_input_text" placeholder="Введіть логін вчителя" oninput="changesSet.updateChangedElements(this)">
+            <div>Адреса електронної пошти:</div><input id="email" type="text" class="default_input_text" placeholder="Введіть адресу електронної пошти вчителя" oninput="changesSet.updateChangedElements(this)">
+            <div>Новий пароль:</div><input id="password" type="text" class="default_input_text" placeholder="Введіть новий пароль вчителя" oninput="changesSet.updateChangedElements(this)" initial_value="">
         </div>
         <div class="subtitle appear_transition appear_after_teacher_groups">Групи, у яких викладає вчитель:</div>
         <table class="default_table appear_transition appear_after_teacher_groups" id="teacher_groups">
@@ -61,6 +61,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
         <script type="text/javascript" src="/static/js/admin/base.js"></script>
         <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
         <script type="text/javascript" src="/static/js/admin/api.js"></script>
+        <script type="text/javascript" src="/static/js/admin/changes_set.js"></script>
         <script type="text/javascript" src="/static/js/admin/teacher.js"></script>
 </body>
 

@@ -43,8 +43,8 @@ function searchStudents(text) {
     let searchedStudents = searchIndex.search(text);
     for (let element of mainTbodyElement.children){
         if (!searchedStudents.includes(parseInt(element.children[0].innerHTML)) && text!=='')
-            element.style = "display: none";
-        else element.style = "";
+            element.hidden = true;
+        else element.hidden = false;
     }
 }
 

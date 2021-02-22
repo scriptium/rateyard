@@ -13,10 +13,7 @@ function saveNewTeacherButton(buttonElement) {
         email: emailElement.value
     }]
 
-    createTeachers(JSON.stringify(requestJSON)).then((responseData) => {
-        window.history.back();
-    },
-    (responseData) => {
+    createTeachers(requestJSON).then((responseData) => {
         if (responseData.status == 400) {
             let parsedResponseJSON = responseData.json;
 
@@ -28,7 +25,10 @@ function saveNewTeacherButton(buttonElement) {
 
             enableButton(buttonElement);
         }
-    })
+        else if (responseData.status == 200) {
+            window.history.back();
+        }
+    });
 }
 
 window.onload = async () => {
