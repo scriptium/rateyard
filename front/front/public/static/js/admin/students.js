@@ -8,6 +8,8 @@ let searchIndex = FlexSearch.create({
 let studentsTableElement = document.getElementById('students_table');
 let mainTbodyElement = studentsTableElement.getElementsByTagName('tbody')[1];
 
+let hidableChildrenStudentsTbody;
+
 function fillStudentsTable(parsedResponse) {
     console.log(parsedResponse)    
     parsedResponse.forEach(student => {
@@ -29,23 +31,28 @@ function fillStudentsTable(parsedResponse) {
         emailElement.innerHTML = student.email;
 
         searchIndex.add(
-            student.id,
+            newRowElement,
             `${student.id} ${student.username} ${student.full_name} ${student.email} ${student.class.name}`
         )
 
         mainTbodyElement.appendChild(newRowElement);
     });
-
+    hidableChildrenStudentsTbody = new HidableChildrenElement(mainTbodyElement);
     studentsTableElement.classList.add('visible');
 }
 
 function searchStudents(text) {
-    let searchedStudents = searchIndex.search(text);
-    for (let element of mainTbodyElement.children){
-        if (!searchedStudents.includes(parseInt(element.children[0].innerHTML)) && text!=='')
-            element.hidden = true;
-        else element.hidden = false;
+    let searchedTrs = searchIndex.search(text);
+
+    if (text!=='') {
+        hidableChildrenStudentsTbody.hideAll();
+        searchedTrs.forEach(
+            (tr) => {hidableChildrenStudentsTbody.show(tr);}
+        );
     }
+    else hidableChildrenStudentsTbody.showAll();
+
+    hidableChildrenStudentsTbody.update();
 }
 
 window.onload = async () => {
