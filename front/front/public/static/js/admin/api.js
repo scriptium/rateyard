@@ -152,6 +152,17 @@ async function getGroupFull(id) {
     }
 }
 
+async function editGroup(groupChanges) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'edit_group', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(groupChanges), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}
+
 
 async function getClassesShort() {
     let xhr = await adminRateyardApiClient.sendRequest('get_classes_short', 'GET', {}, null, true);

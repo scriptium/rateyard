@@ -13,37 +13,40 @@ let classesHasFilled = new Promise(async (resolve, reject) => {
 let afterStudentGroupsElements = document.querySelectorAll('.appear_after_student_groups');
 let studentGroupsTbodyElement = document.querySelector('#student_groups tbody')
 
-let studentGroupsHasFilled = new Promise(async (resolve, reject) => {
-    getGroupsShort(undefined, studentId).then((responseData) => {
-        let groupsShort = responseData.json;
-
-        afterStudentGroupsElements.forEach(
-            (element) => {
-                element.classList.add('visible');
-            }
-        )
-
-        groupsShort.forEach(group => {
-            let newRowElement = document.createElement('tr');
-
-            let groupIdElement = newRowElement.appendChild(document.createElement('td'));
-            groupIdElement.innerHTML = group.id;
-
-            let groupNameElement = newRowElement.appendChild(document.createElement('td'));
-            groupNameElement.innerHTML = `<a class=\"text\" href=\"group.php?id=${group.id}\">${group.name}</a>`;
-
-            studentGroupsTbodyElement.appendChild(newRowElement);
-        });
-        resolve();
-        console.log(groupsShort);
-    }, reject);
-});
-
 let usernameElement = document.getElementById('username');
 let fullNameElement = document.getElementById('full_name');
 let classElement = document.getElementById('class_id');
 let passwordElement = document.getElementById('password');
 let emailElement = document.getElementById('email');
+
+function updateStudentGroups() {
+    return new Promise(async (resolve, reject) => {
+        getGroupsShort(undefined, studentId).then((responseData) => {
+            let groupsShort = responseData.json;
+    
+            afterStudentGroupsElements.forEach(
+                (element) => {
+                    element.classList.add('visible');
+                }
+            )
+    
+            studentGroupsTbodyElement.innerHTML = '';
+            groupsShort.forEach(group => {
+                let newRowElement = document.createElement('tr');
+    
+                let groupIdElement = newRowElement.appendChild(document.createElement('td'));
+                groupIdElement.innerHTML = group.id;
+    
+                let groupNameElement = newRowElement.appendChild(document.createElement('td'));
+                groupNameElement.innerHTML = `<a class=\"text\" href=\"group.php?id=${group.id}\">${group.name}</a>`;
+    
+                studentGroupsTbodyElement.appendChild(newRowElement);
+            });
+            resolve();
+            console.log(groupsShort);
+        }, reject);
+    });
+}
 
 function updateStudentData() {
     return new Promise(async (resolve, reject) => {
@@ -64,6 +67,7 @@ function updateStudentData() {
 }
 
 let studentHasFilled = updateStudentData();
+let studentGroupsHasFilled = updateStudentGroups();
 
 function saveStudentChangesButton(buttonElement) {
     buttonElement.classList.add('disabled');
@@ -78,21 +82,12 @@ function saveStudentChangesButton(buttonElement) {
         }
     );
 
-    editStudents(requestJSON).then((responseData) => {
+    editStudents(requestJSON).then(async (responseData) => {
         if (responseData.status === 200) {
-            updateStudentData()
-                .then(() => { changesSet.discardChanges() })
-                .then(
-                    () => {
-                        buttonElements = document.querySelectorAll('.appear_on_change .blue_button');
-
-                        buttonElements.forEach(
-                            (element) => {
-                                element.classList.remove('disabled');
-                            }
-                        )
-                    }
-                )
+            await updateStudentData();
+            await updateStudentGroups();
+            changesSet.discardChanges();
+            buttonElement.classList.remove('disabled');
         }
         else if (responseData.status == 400) {
             if (responseData.json[0].includes(0)) makeInputTextWrong(usernameElement);

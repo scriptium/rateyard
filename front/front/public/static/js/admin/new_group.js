@@ -1,6 +1,6 @@
-let windowHasLoaded = new Promise((resolve) => {window.onload = resolve})
+let windowHasLoaded = new Promise((resolve) => { window.onload = resolve })
 
-let classesHasFilled = new Promise (async (resolve, reject) => {
+let classesHasFilled = new Promise(async (resolve, reject) => {
     getClassesShort().then(async (responseData) => {
         let classesSelectElement = document.getElementById('class_id');
         fillClassesSelect(classesSelectElement, responseData.json);
@@ -21,7 +21,7 @@ let groupStudentsTbodyElement = document.querySelector('#group_students tbody')
 let afterGroupStudentsElements = document.querySelectorAll('.appear_after_group_students');
 
 function updateGroupStudentData() {
-    return new Promise (async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         document.querySelectorAll('.appear_after_group_students').forEach(
             (element) => {
                 element.classList.remove('visible')
@@ -33,23 +33,23 @@ function updateGroupStudentData() {
             groupStudentsTbodyElement.innerHTML = '';
             parsedResponse.students.forEach(student => {
                 let newRowElement = document.createElement('tr');
-        
+
                 let idElement = newRowElement.appendChild(document.createElement('td'));
                 idElement.innerHTML = student.id;
-        
+
                 let fullNameElement = newRowElement.appendChild(document.createElement('td'));
                 fullNameElement.innerHTML = `<a class=\"text\" href=\"student.php?id=${student.id}\">${student.full_name}</a>`;
-        
+
                 let usernameElement = newRowElement.appendChild(document.createElement('td'));
                 usernameElement.innerHTML = student.username;
-        
+
                 let emailElement = newRowElement.appendChild(document.createElement('td'));
                 emailElement.innerHTML = student.email;
 
                 let checkboxElement = newRowElement.appendChild(document.createElement('td'));
 
                 checkboxElement.appendChild(createCheckboxElement());
-        
+
                 groupStudentsTbodyElement.appendChild(newRowElement);
             });
             await windowHasLoaded;
@@ -64,16 +64,14 @@ function updateGroupStudentData() {
 
 }
 
-function saveNewGroupButton(buttonElement)
-{
+function saveNewGroupButton(buttonElement) {
     buttonElement.classList.add('disabled');
 
     let name = groupNameElement.value;
     let classId = parseInt(groupClassElement.value);
     let studentsIds = []
 
-    for (let childIndex = 0; childIndex < groupStudentsTbodyElement.children.length; childIndex++)
-    {
+    for (let childIndex = 0; childIndex < groupStudentsTbodyElement.children.length; childIndex++) {
         let trowElement = groupStudentsTbodyElement.children[childIndex];
 
         if (trowElement.children[4].children[0].classList.contains('checked'))
@@ -81,14 +79,10 @@ function saveNewGroupButton(buttonElement)
     }
 
     createGroup(name, classId, studentsIds).then(
-        () => {
-            window.history.back();
-        },
         (requestData) => {
-            if (requestData.code === 400) {
-                let parsedErrors = JSON.parse(requestData.text);
-
-                if (parsedErrors.includes(1)) makeInputTextWrong(groupNameElement);
+            if (requestData.status == 200) window.history.back();
+            else if (requestData.status == 400) {
+                if (requestData.json.includes(1)) makeInputTextWrong(groupNameElement);
                 buttonElement.classList.remove('disabled');
             }
         }

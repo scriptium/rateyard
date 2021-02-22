@@ -8,10 +8,6 @@ let afterGroupElements = document.querySelectorAll('.appear_after_group');
 
 let changesSet = new ChangesSet(document.querySelectorAll('.appear_on_change'));
 
-function updateGroupStudents(){
-
-}
-
 async function updateGroupData() {
     getGroupFull(groupId).then((responseData) => {
         let parsedGroup = responseData.json;
@@ -67,6 +63,10 @@ async function updateGroupData() {
             groupStudentsTbodyElement.appendChild(newTr);
         });
     });
+}
+
+function saveGroupChanges(buttonElement) {
+    
 }
 
 let groupHasFilled = updateGroupData();

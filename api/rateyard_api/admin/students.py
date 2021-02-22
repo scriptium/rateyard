@@ -246,6 +246,12 @@ def edit_students():
                 f"UPDATE students SET {exec_sets_joined} WHERE id=%s",
                 exec_args + [student["id"]]
             )
+
+            if "class_id" in student.keys():
+                cursor.execute(
+                    "DELETE FROM students_groups WHERE student_id=%s;",
+                    (student["id"], )
+                )
             db.commit()
             return jsonify(result="ok")
 
