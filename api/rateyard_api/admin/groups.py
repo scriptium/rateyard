@@ -33,6 +33,29 @@ def check_group_data(cursor, edit=False):
 
     if was_error: group_data_errors.append(0)
 
+
+    was_error = False
+
+    if not edit: pass
+    elif (
+        not request.is_json or
+        not "id" in request.json.keys() or 
+        type(request.json["id"]) != int
+    ):
+        was_error = True
+    else:
+        cursor.execute("SELECT 1 FROM groups WHERE id=%s", (request.json["id"], ))
+        if cursor.fetchone() is None:
+            was_error = True
+
+    if was_error:
+        '''
+        Additional error code from groups
+        3: wrong group id
+        '''
+        group_data_errors.append(3)
+
+
     was_error = False
 
     if not "name" in request.json.keys():
@@ -44,12 +67,25 @@ def check_group_data(cursor, edit=False):
     ):
         was_error = True
     elif not 0 in group_data_errors: 
-        cursor.execute('''
-        SELECT 1 FROM groups WHERE group_name=%s AND class_id=%s
-        ''', (request.json["name"], request.json["class_id"]))
+        if edit:
+            if not 3 in group_data_errors:
+                cursor.execute('''
+                SELECT 1 FROM groups
+                WHERE class_id IN 
+                (SELECT class_id FROM groups WHERE id=%s) AND
+                group_name=%s;
+                ''', (request.json["id"], request.json["name"]))
+                if not cursor.fetchone() is None:
+                    was_error = True 
+            else: was_error = True
+        else:
+            cursor.execute('''
+            SELECT 1 FROM groups WHERE group_name=%s AND class_id=%s
+            ''', (request.json["name"], request.json["class_id"]))
+            if not cursor.fetchone() is None:
+                was_error = True 
 
-        if not cursor.fetchone() is None:
-            was_error = True 
+
     else: was_error = True
 
     if was_error: group_data_errors.append(1)
@@ -239,25 +275,7 @@ def edit_group():
 
     group_data_errors = check_group_data(cursor, True)
 
-    wrong_id = False
 
-    if (
-        not request.is_json or
-        not "id" in request.json.keys() or 
-        type(request.json["id"]) != int
-    ):
-        wrong_id = True
-    else:
-        cursor.execute("SELECT 1 FROM groups WHERE id=%s", (request.json["id"], ))
-        if cursor.fetchone() is None:
-            wrong_id = True
-
-    if wrong_id:
-        '''
-        Additional error code from groups
-        3: wrong group id
-        '''
-        group_data_errors.append(3)
 
     if group_data_errors != []:
         return jsonify(group_data_errors), 400
@@ -267,10 +285,10 @@ def edit_group():
     if "name" in request.json.keys():
         was_edit = True
         cursor.execute('''
-        UPDATE groups SET name=%s WHERE id=%s;
+        UPDATE groups SET group_name=%s WHERE id=%s;
         ''', (request.json["name"], request.json["id"]))
 
-    if "student_ids" in request.json.keys():
+    if "students_ids" in request.json.keys():
         was_edit = True
         set_group_students(cursor, request.json["id"])
 

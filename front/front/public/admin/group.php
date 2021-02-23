@@ -30,7 +30,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                 <div>Видалити</div>
             </div>
             <div class="appear_on_change appear_transition title_block">
-                <div class="blue_button" onclick="saveGroupChangesButton(this)">
+                <div class="blue_button" onclick="saveGroupChanges(this)">
                     <div class="button_icon save_icon"></div>
                     <div>Зберегти зміни</div>
                 </div>
