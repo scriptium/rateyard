@@ -31,6 +31,9 @@ class ChangesSet {
         this.changedElements.forEach(
             (element) => {
                 let elementInitialValue = element.getAttribute('initial_value');
+                if (element.tagName==='INPUT' && element.classList.contains('wrong')) {
+                    makeInputTextNotWrongWithoutOnchange(element);
+                }
                 if (element.classList.contains('checkbox'))
                 {
                     if (elementInitialValue === 'true')

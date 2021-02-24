@@ -6,12 +6,37 @@ function enableButton(button) {
     button.classList.remove('disabled');
 }
 
+function makeInputTextNotWrongWithoutOnchange(inputTextElement) {
+    if (inputTextElement.hasAttribute('default_oninput')) {
+        inputTextElement.setAttribute(
+            'oninput',
+            inputTextElement.getAttribute('default_oninput')
+        );
+        inputTextElement.removeAttribute('default_oninput')
+    }
+    else inputTextElement.removeAttribute('oninput');
+    inputTextElement.classList.remove('wrong');
+}
 function makeInputTextNotWrong(inputTextElement) {
-    inputTextElement.removeAttribute('oninput');
+    if (inputTextElement.hasAttribute('default_oninput')) {
+        inputTextElement.setAttribute(
+            'oninput',
+            inputTextElement.getAttribute('default_oninput')
+        );
+        eval(inputTextElement.getAttribute('default_oninput').replace('this', 'inputTextElement'));
+        inputTextElement.removeAttribute('default_oninput')
+    }
+    else inputTextElement.removeAttribute('oninput');
     inputTextElement.classList.remove('wrong');
 }
 
 function makeInputTextWrong(inputTextElement) {
+    if (inputTextElement.hasAttribute('oninput')) {
+        inputTextElement.setAttribute(
+            'default_oninput',
+            inputTextElement.getAttribute('oninput')
+        );
+    }
     inputTextElement.setAttribute('oninput', 'makeInputTextNotWrong(this)');
     inputTextElement.classList.add('wrong');
 }
