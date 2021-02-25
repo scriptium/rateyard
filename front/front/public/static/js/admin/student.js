@@ -103,7 +103,7 @@ function saveStudentChangesButton(buttonElement) {
 
 async function deleteStudentButton(buttonElement) {
     buttonElement.classList.add('disabled');
-    isConfirmed = confirm(`Видалити учня №${studentId}?`)
+    let isConfirmed = confirm(`Видалити учня №${studentId}?`)
     if (isConfirmed) {
         deleteStudents([studentId]).then(
             () => { window.history.back() },

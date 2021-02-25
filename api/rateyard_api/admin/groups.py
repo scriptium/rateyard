@@ -1,4 +1,3 @@
-from types import WrapperDescriptorType
 from flask import json, request, abort, jsonify
 
 from . import admin_token_required, get_db
@@ -275,8 +274,6 @@ def edit_group():
 
     group_data_errors = check_group_data(cursor, True)
 
-
-
     if group_data_errors != []:
         return jsonify(group_data_errors), 400
 
@@ -298,6 +295,29 @@ def edit_group():
     else:
         abort(400, "No changes provided")
 
+
+@admin_token_required
+def delete_group():
+    if (
+        not request.is_json or
+        not "id" in request.json.keys() or
+        type(request.json["id"]) != int
+    ):
+        abort(400)
+
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute('''
+    DELETE FROM groups WHERE id=%s RETURNING 1;
+    ''', (request.json["id"], ))
+
+    if cursor.fetchone() is None:
+        abort(400)
+
+    db.commit()
+    return jsonify(result="ok")
+
 #     @bp.route("/add_students_to_group", methods=("POST", ))
 # @admin_token_required
 # def add_students_to_group():
@@ -305,7 +325,7 @@ def edit_group():
 #         abort("400", "Expected json")
 #     print(request.json, flush=True)
 #     if ("group_id" in request.json.keys() and
-#             "students_ids" in request.json.keys() and
+#             "students_ids" in request.json.ke     ys() and
 #             type(request.json["students_ids"]) != list):
 #         abort(400, "Expected group id and array of students ids")
 #     for student_id in request.json["students_ids"]:

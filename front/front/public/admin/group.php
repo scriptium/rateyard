@@ -25,7 +25,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
     <div id="content">
         <div class="title_block">
             <div class="title">Налаштування групи №<span id="group_id"><?php echo $_GET['id']; ?></span></div>
-            <div class="delete_button" onclick="deleteStudentButton(this)">
+            <div class="delete_button" onclick="deleteGroupButton(this)">
                 <div class="button_icon delete_icon"></div>
                 <div>Видалити</div>
             </div>

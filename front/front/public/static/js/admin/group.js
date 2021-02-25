@@ -100,3 +100,15 @@ async function saveGroupChanges(buttonElement) {
 }
 
 let groupHasFilled = updateGroupData();
+
+function deleteGroupButton(buttonElement) {
+    buttonElement.classList.add('disabled');
+    let isConfirmed = confirm(`Видалити групу №${groupId}?`);
+    if (isConfirmed) {
+        deleteGroup(groupId).then(
+            () => { window.history.back() },
+            () => { buttonElement.classList.remove('disabled') }
+        )
+    }
+    else buttonElement.classList.remove('disabled');
+}
