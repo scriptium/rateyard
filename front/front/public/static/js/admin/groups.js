@@ -1,8 +1,8 @@
 let groupseResponseData = getGroupsShort(true)
 
 function fillGroupsTable(groups) {
-    groupsTableElement = document.getElementById('groups_table');
-    mainTbodyEleemnt = groupsTableElement.getElementsByTagName('tbody')[1];
+    let groupsTableElement = document.getElementById('groups_table');
+    let mainTbodyEleemnt = groupsTableElement.getElementsByTagName('tbody')[1];
     
     groups.forEach(group => {
         newRowElement = document.createElement('tr');
