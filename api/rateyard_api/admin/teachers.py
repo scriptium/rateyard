@@ -4,7 +4,7 @@ from . import admin_token_required, get_db
 
 
 
-def check_teacher_data(cursor, all_required=False):
+def check_teachers_data(cursor, all_required=False):
     for teacher_index in range(len(request.json)):
         '''
         Error codes for teachers:
@@ -161,7 +161,7 @@ def create_teachers():
 
     db = get_db()
     cursor = db.cursor()
-    teacher_data_errors = check_teacher_data(cursor, True)
+    teacher_data_errors = check_teachers_data(cursor, True)
     print ( teacher_data_errors)
     if teacher_data_errors == {}:
         for teacher in request.json:
@@ -190,66 +190,82 @@ def create_teachers():
         return jsonify(teacher_data_errors), 400
 
 
-# @bp.route("/delete_teachers", methods=("POST", ))
-# @admin_token_required
-# def delete_teachers():
-#     if not request.is_json:
-#         abort(400, "Expected json")
-#     if type(request.json) != list:
-#         abort(400, "Expected array of teachers id")
-#     exec_str = '''
-#             DELETE FROM teachers
-#             WHERE False
-#             '''
-#     exec_args = []
-#     for teacher_id in request.json:
-#         print(teacher_id)
-#         exec_str += (" OR  id=%s")
-#         exec_args.append(teacher_id)
-#     db = get_db()
-#     cursor = db.cursor()
-#     cursor.execute(exec_str, exec_args)
-#     db.commit()
-#     return jsonify({
-#         "result": "OK"
-#     }), 200
+@admin_token_required
+def delete_teachers():
+    if not request.is_json:
+        abort(400, "Expected json")
+    if type(request.json) != list:
+        abort(400, "Expected array of teachers id")
+    exec_str = '''
+            DELETE FROM teachers
+            WHERE False
+            '''
+    exec_args = []
+    for teacher_id in request.json:
+        print(teacher_id)
+        exec_str += (" OR  id=%s")
+        exec_args.append(teacher_id)
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute(exec_str, exec_args)
+    db.commit()
+    return jsonify({
+        "result": "OK"
+    }), 200
 
 
-# @bp.route("/edit_teachers", methods=("POST", ))
-# @admin_token_required
-# def edit_teachers():
-#     print(request.json, flush=True)
-#     if not request.is_json:
-#         abort(400, "Expected json")
-#         print("Expected json", flush=True)
-#     if type(request.json) != list:
-#         abort(400, "Expected array of teachers id")
-#         print("Expected array of teachers id", flush=True)
-#     for teacher in request.json:
-#         if ("id" in teacher.keys() and
-#                 "username" in teacher.keys() and
-#                 "full_name" in teacher.keys() and
-#                 "email" in teacher.keys()):
-#             db = get_db()
-#             cursor = db.cursor()
-#             cursor.execute('''
-#                 UPDATE teachers
-#                 SET username=%s, full_name=%s, email=%s
-#                 WHERE id=%s RETURNING True;
-#                 ''', (
-#                 teacher["username"],
-#                 teacher["full_name"],
-#                 teacher["email"],
-#                 teacher["id"],
-#             ))
-#             if cursor.fetchone() is None:
-#                 abort(400, 'There are not teachers with on of ids')
-#             db.commit()
-#             print("OK", flush=True)
-#         else:
-#             print("Wrong json", flush=True)
-#             abort(400, "Wrong json")
-#     return jsonify({
-#         "result": "OK"
-#     }), 201
+@admin_token_required
+def edit_teachers():
+    print(request.json, flush=True)
+    if not request.is_json:
+        print("Expected json", flush=True)
+        abort(400, "Expected json")
+    if type(request.json) != list:
+        print("Expected array of teachers id", flush=True)
+        abort(400, "Expected array of teachers id")
+       
+    db = get_db()
+    cursor = db.cursor()
+    teacher_data_errors = check_teachers_data(cursor, False)
+
+    for teacher_index in range(len(request.json)):
+        '''
+        Additional error code for teachers:
+        5: wrong teacher id
+        '''
+        if not "id" in request.json[teacher_index].keys():
+            teacher_data_errors[teacher_index].append(6)
+
+    if teacher_data_errors == {}:
+        for teacher in request.json:
+            teacher_mutable_attributes = (
+                "username", "full_name", "email")
+            exec_args = []
+            exec_sets = []
+
+            for attribute_name in teacher_mutable_attributes:
+                if attribute_name in teacher.keys():
+                    exec_sets.append(f"{attribute_name}=%s")
+                    exec_args.append(teacher[attribute_name])
+
+            if "password" in teacher.keys():
+                exec_sets.append("password_hash=crypt(%s, gen_salt('md5'))")
+                exec_args.append(teacher["password"])
+
+            if len(exec_sets) == 0:
+                continue
+
+            exec_sets_joined = ', '.join(exec_sets)
+
+            print(exec_sets_joined, exec_args)
+            cursor.execute(
+                f"UPDATE teachers SET {exec_sets_joined} WHERE id=%s",
+                exec_args + [teacher["id"]]
+            )
+
+            db.commit()
+            return jsonify(result="ok")
+
+    else:
+        return jsonify(teacher_data_errors), 400
 

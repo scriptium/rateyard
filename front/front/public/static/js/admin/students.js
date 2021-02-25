@@ -1,6 +1,6 @@
 let studentsResponseData = getStudents();
 let searchIndex = FlexSearch.create({
-    encode: false,
+    encode: "icase",
     split: /\s+/,
     tokenize: "forward"
 });

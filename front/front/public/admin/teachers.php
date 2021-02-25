@@ -25,7 +25,7 @@
                 </div>
             </a>
         </div>
-        <input type="text" class="default_input_text" placeholder="Пошук вчителів">
+        <input type="text" class="default_input_text" placeholder="Пошук вчителів" oninput="searchTeachers(this.value)">
         <table class="default_table appear_transition" id="teachers_table">
             <tbody>
                 <tr>
@@ -43,6 +43,8 @@
     <script type="text/javascript" src="/static/js/admin/base.js"></script>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
     <script type="text/javascript" src="/static/js/admin/api.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/nextapps-de/flexsearch@master/dist/flexsearch.light.js"></script>
+    <script type="text/javascript" src="/static/js/admin/hidable_children_element.js"></script>
     <script type="text/javascript" src="/static/js/admin/teachers.js"></script>
 </body>
 

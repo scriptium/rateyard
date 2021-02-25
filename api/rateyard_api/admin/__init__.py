@@ -45,3 +45,5 @@ bp.add_url_rule("/delete_group", methods=("POST", ), view_func=groups.delete_gro
 
 bp.add_url_rule("/create_teachers", methods=("POST", ), view_func=teachers.create_teachers)
 bp.add_url_rule("/get_teachers", methods=("POST", ), view_func=teachers.get_teachers)
+bp.add_url_rule("/delete_teachers", methods=("POST", ), view_func=teachers.delete_teachers)
+bp.add_url_rule("/edit_teachers", methods=("POST", ), view_func=teachers.edit_teachers)

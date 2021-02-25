@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/admin/base.css">
     <link rel="stylesheet" href="/static/css/admin/header.css">
-    <title>Наявні вчителі</title>
+    <title>Новий вчитель</title>
 </head>
 
 <body>
