@@ -302,4 +302,12 @@ a.text:hover {
     width: 25px;
     height: 25px;
 }
-
+.drag_and_drop_file {
+    background-color: var(--light-black-color);
+    opacity: 60%;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: none;
+    top: 30px;
+}

@@ -25,7 +25,7 @@
                 </div>
             </a>
         </div>
-        <input type="text" class="default_input_text" placeholder="Пошук груп">
+        <input type="text" class="default_input_text" placeholder="Пошук груп" oninput="searchGroups(this.value)">
         <table class="default_table appear_transition" id="groups_table">
             <tbody>
                 <tr>
@@ -39,6 +39,8 @@
 
         </table>
     </div>
+    <script src="https://cdn.jsdelivr.net/gh/nextapps-de/flexsearch@master/dist/flexsearch.light.js"></script>
+    <script type="text/javascript" src="/static/js/admin/hidable_children_element.js"></script>
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/base.js"></script>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>

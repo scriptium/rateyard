@@ -52,3 +52,4 @@ function toggleCheckbox(checkboxElement, onclick) {
     if (typeof onclick != 'undefined') onclick(checkboxElement);
     checkboxElement.classList.toggle('checked');
 }
+

@@ -46,6 +46,27 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
             <div>Адреса електронної пошти:</div><input id="email" type="text" class="default_input_text" placeholder="Введіть адресу електронної пошти вчителя" oninput="changesSet.updateChangedElements(this)">
             <div>Новий пароль:</div><input id="password" type="text" class="default_input_text" placeholder="Введіть новий пароль вчителя" oninput="changesSet.updateChangedElements(this)" initial_value="">
         </div>
+        <div class="subtitle">Групи у яких викладає вчитель:</div>
+        <div class="title_block">
+            <div class="blue_button" onclick="">
+                <div class="button_icon add_icon"></div>
+                <div>Додати групу</div>
+            </div>
+        </div>
+        <table class="default_table" id="groups_table">
+            <tbody>
+                <tr>
+                    <th>№</th>
+                    <th>Назва</th>
+                    <th>Клас</th>
+                    <th>Предмет</th>
+                </tr>
+            </tbody>
+            <tbody>
+            </tbody>
+        </table>
+
+
         <script type="text/javascript" src="/static/js/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/base.js"></script>
         <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>

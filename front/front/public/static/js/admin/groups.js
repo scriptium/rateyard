@@ -1,11 +1,18 @@
 let groupseResponseData = getGroupsShort(true)
+let hidableChildrenStudentsTbody;
+
+let searchIndex = FlexSearch.create({
+    encode: "icase",
+    split: /\s+/,
+    tokenize: "forward"
+});
+
+let groupsTableElement = document.getElementById('groups_table');
+let mainTbodyElement = groupsTableElement.getElementsByTagName('tbody')[1];
 
 function fillGroupsTable(groups) {
-    let groupsTableElement = document.getElementById('groups_table');
-    let mainTbodyEleemnt = groupsTableElement.getElementsByTagName('tbody')[1];
-    
     groups.forEach(group => {
-        newRowElement = document.createElement('tr');
+        let newRowElement = document.createElement('tr');
 
         let idElement = newRowElement.appendChild(document.createElement('td'));
         idElement.innerHTML = group.id;
@@ -16,10 +23,30 @@ function fillGroupsTable(groups) {
         let classElement = newRowElement.appendChild(document.createElement('td'));
         classElement.innerHTML = `<a class=\"text\" href=\"class.php?id=${group.class.id}\">${group.class.name}</a>`;
 
-        mainTbodyEleemnt.appendChild(newRowElement);
+        searchIndex.add(
+            newRowElement,
+            `${group.id} ${group.name} ${group.class.name}`
+        );
+
+        mainTbodyElement.appendChild(newRowElement);
     });
 
     groupsTableElement.classList.add('visible');
+    hidableChildrenStudentsTbody = new HidableChildrenElement(mainTbodyElement);
+}
+
+function searchGroups(text) {
+    let searchedTrs = searchIndex.search(text);
+
+    if (text !== '') {
+        hidableChildrenStudentsTbody.hideAll();
+        searchedTrs.forEach(
+            (tr) => {hidableChildrenStudentsTbody.show(tr);}
+        );
+    }
+    else hidableChildrenStudentsTbody.showAll();
+
+    hidableChildrenStudentsTbody.update();
 }
 
 window.onload = async () => {   

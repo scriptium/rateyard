@@ -59,13 +59,6 @@ def check_students_data(cursor, all_required=False):
             len(student["full_name"]) > 256
         ):
             was_error = True
-        else:
-            cursor.execute(
-                "SELECT 1 FROM students WHERE full_name=%s;",
-                (student['full_name'], )
-            )
-            if not cursor.fetchone() is None:
-                was_error = True
 
         if was_error:
             if type(student_data_errors.get(student_index)) != list:

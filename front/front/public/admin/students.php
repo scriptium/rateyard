@@ -24,7 +24,7 @@
                     <div>Додати учня</div>
                 </div>
             </a>
-            <div class="excel_button">
+            <div class="excel_button" onclick="showDragNDropArea()">
                 <div class="button_icon excel_icon"></div>
                 <div>Імпорт з файлу Microsoft Excel</div>
             </div>
@@ -43,6 +43,11 @@
             <tbody>
             </tbody>
         </table>
+    </div>
+    <div class="drag_and_drop_file" onclick='showDragNDropArea()'>
+        <div class="drag_area">
+        
+        </div>
     </div>
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/base.js"></script>

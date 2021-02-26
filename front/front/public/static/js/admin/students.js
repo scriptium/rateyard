@@ -55,6 +55,13 @@ function searchStudents(text) {
     hidableChildrenStudentsTbody.update();
 }
 
+function showDragNDropArea() {
+    let element = document.getElementsByClassName("drag_and_drop_file").item(0);
+    if (element.style.display === 'block')
+        element.style.display = 'none';
+    else element.style.display = 'block';
+}
+
 window.onload = async () => {
     studentsResponseData.then((responseData) => {
         fillStudentsTable(responseData.json);

@@ -59,6 +59,24 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
             <tbody>
             </tbody>
         </table>
+        <div class="subtitle">Викладачі групи:</div>
+        <div class="title_block">
+            <div class="blue_button" onclick="">
+                <div class="button_icon add_icon"></div>
+                <div>Додати викладача</div>
+            </div>
+        </div>
+        <table class="default_table" id="groups_table">
+            <tbody>
+                <tr>
+                    <th>№</th>
+                    <th>ПІБ</th>
+                    <th>Предмет</th>
+                </tr>
+            </tbody>
+            <tbody>
+            </tbody>
+        </table>
     </div>
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/base.js"></script>
