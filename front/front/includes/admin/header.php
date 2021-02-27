@@ -1,9 +1,9 @@
-<div id="header">
+<div id="white_header">
     <div>
         <div class="logo_main">Rateyard</div>
         <div class="logo_caption">Admin</div>
     </div>
-    <div>
+    <div>   
         <a <?php 
         if($current == 'students'){echo 'id="current"';}
         ?> href="students.php">

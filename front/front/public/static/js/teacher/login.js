@@ -4,9 +4,9 @@ let rateyardApiClient = new RateyardApiClient(
     ''
 );
 
-rateyardApiClient.sendRequest('/teacher/check_token', 'GET', {},  undefined, true)
+rateyardApiClient.sendRequest('/teacher/get_me', 'GET', {},  undefined, true)
 .then((xhr) => {
-    if (xhr.status === 200) document.location.replace('main.php')
+    if (xhr.status === 200) document.location.replace('index.php')
 });
 
 async function loginButton(button) {
@@ -21,7 +21,7 @@ async function loginButton(button) {
         else {
             localStorage.setItem('teacher_access_token', xhr.getResponseHeader('Access-Token'));
             localStorage.setItem('teacher_refresh_token', xhr.getResponseHeader('Refresh-Token'));
-            document.location.replace('main.php');
+            document.location.replace('index.php');
         }
     });
 }

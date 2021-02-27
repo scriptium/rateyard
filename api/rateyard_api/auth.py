@@ -35,7 +35,7 @@ def login_student():
     else:
         identity = {
             "type": "student",
-            "id": student_id 
+            "id": student_id[0]
         }
         response = jsonify(result="ok")
         response.headers["Access-Token"] = create_access_token(identity=identity)
@@ -69,7 +69,7 @@ def login_teacher():
     else:
         identity = {
             "type": "teacher",
-            "id": teacher_id
+            "id": teacher_id[0]
         }
         response = jsonify(result="ok")
         response.headers["Access-Token"] = create_access_token(identity=identity)

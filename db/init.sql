@@ -56,22 +56,22 @@ CREATE TABLE grades (
 );
 
 
-INSERT INTO classes (class_name) VALUES ('8A');
+INSERT INTO classes (class_name) VALUES ('8А');
 INSERT INTO classes (class_name) VALUES ('8Б');
 INSERT INTO classes (class_name) VALUES ('8В');
 INSERT INTO classes (class_name) VALUES ('8Г');
 
-INSERT INTO classes (class_name) VALUES ('9A');
+INSERT INTO classes (class_name) VALUES ('9А');
 INSERT INTO classes (class_name) VALUES ('9Б');
 INSERT INTO classes (class_name) VALUES ('9В');
 INSERT INTO classes (class_name) VALUES ('9Г');
 
-INSERT INTO classes (class_name) VALUES ('10A');
+INSERT INTO classes (class_name) VALUES ('10А');
 INSERT INTO classes (class_name) VALUES ('10Б');
 INSERT INTO classes (class_name) VALUES ('10В');
 INSERT INTO classes (class_name) VALUES ('10Г');
 
-INSERT INTO classes (class_name) VALUES ('11A');
+INSERT INTO classes (class_name) VALUES ('11А');
 INSERT INTO classes (class_name) VALUES ('11Б');
 INSERT INTO classes (class_name) VALUES ('11В');
 INSERT INTO classes (class_name) VALUES ('11Г');

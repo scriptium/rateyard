@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/admin/base.css">
-    <link rel="stylesheet" href="/static/css/admin/header.css">
+    <link rel="stylesheet" href="/static/css/header.css">
     <title>Наявні класи</title>
 </head>
 

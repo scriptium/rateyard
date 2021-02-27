@@ -1,5 +1,4 @@
-#header {
-    background: white;
+#white_header, #blue_header {
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
     position: sticky;
     top: 0;
@@ -11,7 +10,7 @@
     column-gap: 20px;
 }
 
-#header>div:nth-child(1) {
+#white_header>div:nth-child(1), #blue_header>div:nth-child(1) {
     padding-left: 20px;
     flex-grow: 0;
     display: flex;
@@ -19,14 +18,14 @@
     align-items: center;
 }
 
-#header>div:nth-child(2) {
+#white_header>div:nth-child(2), #blue_header>div:nth-child(2) {
     flex-grow: 1;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
 }
 
-#header>div:nth-child(2)>a {
+#white_header>div:nth-child(2)>a, #blue_header>div:nth-child(2)>a {
     color: var(--light-black-color);
     display: flex;
     justify-content: center;
@@ -35,11 +34,14 @@
     text-decoration: none;
     transition: background 0.3s, color 0.3s;
 }
-#header>div:nth-child(2)>a:hover, #header>div:nth-child(2)>a#current {
+#blue_header>div:nth-child(2)>a:hover,
+#white_header>div:nth-child(2)>a:hover,
+#blue_header>div:nth-child(2)>a#current,
+#white_header>div:nth-child(2)>a#current {
     background-color: var(--light-blue-color);
     color: white;
 }
-#header>div:nth-child(2)>a>div {
+#white_header>div:nth-child(2)>a>div, #blue_header>div:nth-child(2)>a>div {
     font-size: var(--big-font-size);
     font-weight: bold;
     font-style: normal;
@@ -54,15 +56,14 @@
     padding: 10px 20px;
     border-radius: 15px;
     align-items: center;
-    background: var(--light-blue-color);
-    color: white;
     transition: transform 0.3s, box-shadow 0.3s;
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
     cursor: pointer;
 }
 #exit_button.disabled {
     box-shadow: none;
-    background: var(--blue-color);
+    background: var(--blue-color) !important;
+    color: white !important;
     cursor: default;
 }
 #exit_button:hover:not(.disabled) {
@@ -77,4 +78,24 @@
 #exit_button>div:nth-child(2) {
     font-weight: bold;
     font-size: var(--normal-font-size);
+}
+
+#white_header {
+    background: white;
+}
+#white_header #exit_button {
+    background: var(--light-blue-color);
+    color: white;
+}
+
+
+#blue_header {
+    background: var(--light-blue-color);
+}
+#blue_header .logo_main, #blue_header .logo_caption {
+    color: white;
+}
+#blue_header #exit_button {
+    color: var(--light-blue-color);
+    background: white;
 }
