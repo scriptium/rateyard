@@ -63,6 +63,7 @@
     text-align: center;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 #drag_area.drag_over {
@@ -79,7 +80,7 @@ label[for="table_file"] > strong {
 }
 
 label[for="table_file"] > strong:hover {
-    color: var(--blue-color);
+    color: #1b93d8;
 }
 
 .drag_icon {

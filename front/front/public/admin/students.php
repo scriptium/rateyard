@@ -46,13 +46,11 @@
     </div>
     <div class="drag_and_drop_file" onclick='showDragNDropArea()'>
         <div id="drag_area">
-            <div class="drag_input">
-                <div class="drag_icon"></div>
-                <input type="file" id="table_file" name="file" accept=".xlsx, .xls" onchange="onFileInput(this.files)">
-                <label for="table_file">
-                    <strong>Виберіть файл</strong> або перетягніть його сюди.
-                </label>
-            </div>
+            <div class="drag_icon"></div>
+            <input type="file" id="table_file" name="file" accept=".xlsx, .xls" onchange="onFileInput(this.files)">
+            <label for="table_file">
+                <strong>Виберіть файл</strong> або перетягніть його сюди.
+            </label>
         </div>
     </div>
 
