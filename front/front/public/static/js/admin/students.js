@@ -56,10 +56,38 @@ function searchStudents(text) {
 }
 
 function showDragNDropArea() {
-    let element = document.getElementsByClassName("drag_and_drop_file").item(0);
-    if (element.style.display === 'block')
+    let element = document.getElementsByClassName('drag_and_drop_file').item(0);
+    if (element.style.display === 'flex')
         element.style.display = 'none';
-    else element.style.display = 'block';
+    else element.style.display = 'flex';
+}
+
+let dragArea = document.getElementById('drag_area');
+
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dragArea.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+    dragArea.addEventListener(eventName, () => {
+        dragArea.classList.remove('drag_over');
+    });
+});
+
+dragArea.addEventListener('dragover', () => {
+    dragArea.classList.add('drag_over');
+});
+
+dragArea.addEventListener('drop', (e) => onFileInput(e.dataTransfer.files));
+
+function onFileInput(files) {
+    let formData = new FormData();
+    formData.append('file', files[0]);
+    console.log(files);
+    showDragNDropArea();
 }
 
 window.onload = async () => {

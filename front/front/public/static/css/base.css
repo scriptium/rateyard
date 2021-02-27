@@ -9,7 +9,7 @@
     --light-blue-color: #5AADDD;
     --light-black-color: #34373E;
     --red-color: #C33420;
-    --blue-color: #7298AE;
+    --blue-color: #1b93d8;
     --table-gray-color: rgba(90, 173, 221, 0.15);
 }
 * {
@@ -301,13 +301,4 @@ a.text:hover {
     background-position: center;
     width: 25px;
     height: 25px;
-}
-.drag_and_drop_file {
-    background-color: var(--light-black-color);
-    opacity: 60%;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    display: none;
-    top: 30px;
 }

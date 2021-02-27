@@ -45,10 +45,17 @@
         </table>
     </div>
     <div class="drag_and_drop_file" onclick='showDragNDropArea()'>
-        <div class="drag_area">
-        
+        <div id="drag_area">
+            <div class="drag_input">
+                <div class="drag_icon"></div>
+                <input type="file" id="table_file" name="file" accept=".xlsx, .xls" onchange="onFileInput(this.files)">
+                <label for="table_file">
+                    <strong>Виберіть файл</strong> або перетягніть його сюди.
+                </label>
+            </div>
         </div>
     </div>
+
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/base.js"></script>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
