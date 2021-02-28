@@ -18,6 +18,7 @@ function fillClassesTable(classes) {
 
 window.onload = async () => {   
     classesResponseData.then((responseData) => {
-        fillClassesTable(responseData.json)
+        fillClassesTable(responseData.json);
+        document.getElementById('loader').style.display = 'none';
     });
 }

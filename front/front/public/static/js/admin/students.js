@@ -57,9 +57,9 @@ function searchStudents(text) {
 
 function showDragNDropArea() {
     let element = document.getElementsByClassName('drag_and_drop_file').item(0);
-    if (element.style.display === 'flex')
-        element.style.display = 'none';
-    else element.style.display = 'flex';
+    if (element.classList.contains('show'))
+        element.classList.remove('show');
+    else element.classList.add('show');
 }
 
 let dragArea = document.getElementById('drag_area');
@@ -93,5 +93,6 @@ function onFileInput(files) {
 window.onload = async () => {
     studentsResponseData.then((responseData) => {
         fillStudentsTable(responseData.json);
+        document.getElementById('loader').style.display = 'none';
     });
 }

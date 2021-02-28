@@ -51,6 +51,7 @@ function searchGroups(text) {
 
 window.onload = async () => {   
     groupseResponseData.then((responseData) => {
-        fillGroupsTable(responseData.json)
+        fillGroupsTable(responseData.json);
+        document.getElementById('loader').style.display = 'none';
     });
 }

@@ -58,5 +58,6 @@ function searchTeachers(text) {
 window.onload = async () => {
     teachersResponseData.then((responseData) => {
         fillTeachersTable(responseData.json);
+        document.getElementById('loader').style.display = 'none';
     });
 }

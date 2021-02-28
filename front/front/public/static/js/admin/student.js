@@ -116,4 +116,5 @@ async function deleteStudentButton(buttonElement) {
 window.onload = async () => {
     await studentHasFilled;
     document.getElementById('load_data').classList.add('visible');
+    document.getElementById('loader').style.display = 'none';
 }

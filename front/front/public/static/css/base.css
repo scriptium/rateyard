@@ -11,6 +11,7 @@
     --red-color: #C33420;
     --blue-color: #7298AE;
     --table-gray-color: rgba(90, 173, 221, 0.15);
+    --drag-area-color: #8faebf;
 }
 * {
     font-family: 'Open Sans', sans-serif;
@@ -301,4 +302,19 @@ a.text:hover {
     background-position: center;
     width: 25px;
     height: 25px;
+}
+
+#loader {
+    border: 7px solid #f3f3f3;
+    border-top: 7px solid var(--light-blue-color);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1.5s linear infinite;
+    margin: 0 auto;
+}
+  
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }

@@ -39,6 +39,9 @@
             </tbody>
         </table>
     </div>
+    <?php
+    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/loader.php';
+    ?>
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/base.js"></script>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>

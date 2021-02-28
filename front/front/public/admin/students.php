@@ -44,7 +44,10 @@
             </tbody>
         </table>
     </div>
-    <div class="drag_and_drop_file" onclick='showDragNDropArea()'>
+    <?php
+    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/loader.php';
+    ?>
+    <div class="drag_and_drop_file hide" onclick='showDragNDropArea()'>
         <div id="drag_area">
             <div class="drag_icon"></div>
             <input type="file" id="table_file" name="file" accept=".xlsx, .xls" onchange="onFileInput(this.files)">

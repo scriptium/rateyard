@@ -31,6 +31,7 @@
             <div>Новий пароль:</div><input id="password" type="text" class="default_input_text"
                 placeholder="Введіть новий пароль вчителя">
         </div>
+    </div>
         <script type="text/javascript" src="/static/js/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/base.js"></script>
         <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
