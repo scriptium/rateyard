@@ -55,7 +55,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                     <div>Додати вчителя</div>
                 </div>
             </a>
-            <table class="default_table appear_transition appear_after_group" id="group_students">
+            <table class="default_table appear_transition appear_after_group" id="lecturers_table">
                 <thead>
                     <tr>
                         <th>№</th>
@@ -89,16 +89,15 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                 <div>Перемістити всіх учнів до</div>
             </div>
         </div>
-        <table class="default_table appear_transition" id="students_table">
-            <tbody>
+        <table class="default_table appear_transition" id="classes_table">
+            <thead>
                 <tr>
                     <th>№</th>
                     <th>ПІБ</th>
-                    <th>Клас</th>
                     <th>Логін</th>
                     <th>Адреса електронної пошти</th>
                 </tr>
-            </tbody>
+            </thead>
             <tbody>
             </tbody>
         </table>
@@ -110,7 +109,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
     <script type="text/javascript" src="/static/js/admin/api.js"></script>
     <script type="text/javascript" src="/static/js/admin/changes_set.js"></script>
-    <script type="text/javascript" src="/static/js/admin/group.js"></script>
+    <script type="text/javascript" src="/static/js/admin/class.js"></script>
 </body>
 
 </html>

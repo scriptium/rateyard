@@ -191,9 +191,19 @@ async function getClassFull(id) {
     return {
         status: xhr.status,
         json: JSON.parse(xhr.responseText)
-    }
+    };
 }
 
+async function deleteStudentsFromClass(class_id) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'delete_students_from_class', 'POST', { 'Content-Type': 'application/json'},
+        JSON.stringify({ class_id }), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    };
+}
 
 
 

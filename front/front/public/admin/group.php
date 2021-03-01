@@ -66,7 +66,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                 <div>Додати викладача</div>
             </div>
         </div>
-        <table class="default_table" id="groups_table">
+        <table class="default_table" id="group_teachers">
             <tbody>
                 <tr>
                     <th>№</th>

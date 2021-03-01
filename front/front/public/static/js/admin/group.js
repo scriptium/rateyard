@@ -28,42 +28,43 @@ function updateGroupData() {
             )
 
             groupStudentsTbodyElement.innerHTML = '';
-            parsedGroup.group_class_students.forEach((student) => {
-                let newTr = document.createElement('tr');
+            insertStudentsData(parsedGroup.group_class_students, groupStudentsTbodyElement, false, true, null);
+            // parsedGroup.group_class_students.forEach((student) => {
+            //     let newTr = document.createElement('tr');
 
-                let studentIdTd = document.createElement('td');
-                studentIdTd.innerHTML = student.id;
-                newTr.appendChild(studentIdTd);
+            //     let studentIdTd = document.createElement('td');
+            //     studentIdTd.innerHTML = student.id;
+            //     newTr.appendChild(studentIdTd);
 
-                let studentFullNameTd = document.createElement('td');
-                studentFullNameTd.innerHTML = `<a class=\"text\" href=\"student.php?id=${student.id}\">${student.full_name}</a>`;
-                newTr.appendChild(studentFullNameTd);
+            //     let studentFullNameTd = document.createElement('td');
+            //     studentFullNameTd.innerHTML = `<a class=\"text\" href=\"student.php?id=${student.id}\">${student.full_name}</a>`;
+            //     newTr.appendChild(studentFullNameTd);
 
-                let studentUsernameTd = document.createElement('td');
-                studentUsernameTd.innerHTML = student.username;
-                newTr.appendChild(studentUsernameTd);
+            //     let studentUsernameTd = document.createElement('td');
+            //     studentUsernameTd.innerHTML = student.username;
+            //     newTr.appendChild(studentUsernameTd);
 
-                let studentEmailTd = document.createElement('td');
-                studentEmailTd.innerHTML = student.email;
-                newTr.appendChild(studentEmailTd);
+            //     let studentEmailTd = document.createElement('td');
+            //     studentEmailTd.innerHTML = student.email;
+            //     newTr.appendChild(studentEmailTd);
 
-                let studentCheckboxTd = document.createElement('td');
-                let checkboxElement = createCheckboxElement();
-                if (student.is_group_member) {
-                    checkboxElement.classList.add('checked');
-                    checkboxElement.setAttribute('initial_value', true);
-                }
-                else {
-                    checkboxElement.setAttribute('initial_value', false);
-                }
-                checkboxElement.setAttribute('onclick', 'changesSet.updateChangedElements(this)');
-                studentCheckboxTd.appendChild(checkboxElement);
+            //     let studentCheckboxTd = document.createElement('td');
+            //     let checkboxElement = createCheckboxElement();
+            //     if (student.is_group_member) {
+            //         checkboxElement.classList.add('checked');
+            //         checkboxElement.setAttribute('initial_value', true);
+            //     }
+            //     else {
+            //         checkboxElement.setAttribute('initial_value', false);
+            //     }
+            //     checkboxElement.setAttribute('onclick', 'changesSet.updateChangedElements(this)');
+            //     studentCheckboxTd.appendChild(checkboxElement);
 
-                newTr.appendChild(studentCheckboxTd);
+            //     newTr.appendChild(studentCheckboxTd);
 
-                groupStudentsTbodyElement.appendChild(newTr);
-                resolve();
-            });
+            //     groupStudentsTbodyElement.appendChild(newTr);
+            //     resolve();
+            // });
         });
     });
 }

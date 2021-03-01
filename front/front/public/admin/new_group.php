@@ -41,6 +41,18 @@
             <tbody>
             </tbody>
         </table> 
+        <div class="subtitle">Викладачі групи:</div>
+        <table class="default_table" id="group_teachers">
+            <tbody>
+                <tr>
+                    <th>№</th>
+                    <th>ПІБ</th>
+                    <th>Предмет</th>
+                </tr>
+            </tbody>
+            <tbody>
+            </tbody>
+        </table>
     </div>
         <script type="text/javascript" src="/static/js/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/base.js"></script>

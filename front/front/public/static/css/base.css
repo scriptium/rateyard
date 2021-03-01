@@ -275,17 +275,6 @@ a.text:hover {
     color: var(--light-blue-color)
 }
 
-.appear_transition {
-    -webkit-transition: opacity 0.3s;
-    -moz-transition: opacity 0.3s;
-    -o-transition: opacity 0.3s;
-    transition: opacity 0.3s;
-    opacity: 0;
-}
-.appear_transition.visible {
-    opacity: 1;
-}
-
 .checkbox {
     background-image: url(/static/images/checkbox.svg);
     background-repeat: no-repeat;
@@ -304,17 +293,49 @@ a.text:hover {
     height: 25px;
 }
 
-#loader {
-    border: 7px solid #f3f3f3;
-    border-top: 7px solid var(--light-blue-color);
+.loader_icon {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--light-blue-color);
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width:  50px;
+    height: 50px;
     animation: spin 1.5s linear infinite;
-    margin: 0 auto;
 }
-  
+
 @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+@keyframes disapear {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        display: none;
+    }
+}
+
+.preloader {
+    position: fixed;
+    background: white;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    visibility: visible;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+.loaded .preloader {
+    animation-name: disapear;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    transition: display 0s 10s;
+    display: none;
 }

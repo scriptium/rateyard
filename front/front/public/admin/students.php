@@ -45,7 +45,7 @@
         </table>
     </div>
     <?php
-    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/loader.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
     <div class="drag_and_drop_file hide" onclick='showDragNDropArea()'>
         <div id="drag_area">

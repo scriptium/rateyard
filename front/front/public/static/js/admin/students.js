@@ -12,31 +12,32 @@ let hidableChildrenStudentsTbody;
 
 function fillStudentsTable(parsedResponse) {
     console.log(parsedResponse)    
-    parsedResponse.forEach(student => {
-        let newRowElement = document.createElement('tr');
+    // parsedResponse.forEach(student => {
+    //     let newRowElement = document.createElement('tr');
 
-        let idElement = newRowElement.appendChild(document.createElement('td'));
-        idElement.innerHTML = student.id;
+    //     let idElement = newRowElement.appendChild(document.createElement('td'));
+    //     idElement.innerHTML = student.id;
 
-        let fullNameElement = newRowElement.appendChild(document.createElement('td'));
-        fullNameElement.innerHTML = `<a class=\"text\" href=\"student.php?id=${student.id}\">${student.full_name}</a>`;
+    //     let fullNameElement = newRowElement.appendChild(document.createElement('td'));
+    //     fullNameElement.innerHTML = `<a class=\"text\" href=\"student.php?id=${student.id}\">${student.full_name}</a>`;
 
-        let classElement = newRowElement.appendChild(document.createElement('td'));
-        classElement.innerHTML = `<a class=\"text\" href=\"class.php?id=${student.class.id}\">${student.class.name}</a>`;
+    //     let classElement = newRowElement.appendChild(document.createElement('td'));
+    //     classElement.innerHTML = `<a class=\"text\" href=\"class.php?id=${student.class.id}\">${student.class.name}</a>`;
 
-        let usernameElement = newRowElement.appendChild(document.createElement('td'));
-        usernameElement.innerHTML = student.username;
+    //     let usernameElement = newRowElement.appendChild(document.createElement('td'));
+    //     usernameElement.innerHTML = student.username;
 
-        let emailElement = newRowElement.appendChild(document.createElement('td'));
-        emailElement.innerHTML = student.email;
+    //     let emailElement = newRowElement.appendChild(document.createElement('td'));
+    //     emailElement.innerHTML = student.email;
 
-        searchIndex.add(
-            newRowElement,
-            `${student.id} ${student.username} ${student.full_name} ${student.email} ${student.class.name}`
-        )
+    //     searchIndex.add(
+    //         newRowElement,
+    //         `${student.id} ${student.username} ${student.full_name} ${student.email} ${student.class.name}`
+    //     )
 
-        mainTbodyElement.appendChild(newRowElement);
-    });
+    //     mainTbodyElement.appendChild(newRowElement);
+    // });
+    insertStudentsData(parsedResponse, mainTbodyElement, true, null);
     hidableChildrenStudentsTbody = new HidableChildrenElement(mainTbodyElement);
     studentsTableElement.classList.add('visible');
 }
@@ -90,9 +91,7 @@ function onFileInput(files) {
     showDragNDropArea();
 }
 
-window.onload = async () => {
-    studentsResponseData.then((responseData) => {
-        fillStudentsTable(responseData.json);
-        document.getElementById('loader').style.display = 'none';
-    });
-}
+studentsResponseData.then((responseData) => {
+    fillStudentsTable(responseData.json);
+    document.body.classList.add('loaded');
+});
