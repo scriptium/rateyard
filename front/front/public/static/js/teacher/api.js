@@ -12,3 +12,12 @@ let adminRateyardApiClient = new RateyardApiClient(
     }
 )
 
+async function getMe() {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'get_me', 'GET', { 'Content-Type': 'application/json' }, null, true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}

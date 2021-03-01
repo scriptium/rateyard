@@ -1,4 +1,4 @@
-<div id="white_header">
+<div id="admin_header">
     <div>
         <div class="logo_main">Rateyard</div>
         <div class="logo_caption">Admin</div>

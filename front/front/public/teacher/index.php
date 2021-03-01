@@ -13,6 +13,7 @@
 <body>
     <?php
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/teacher/header.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
     <script type="text/javascript" src="/static/js/base.js"></script>

@@ -1,4 +1,4 @@
-#white_header, #blue_header {
+#admin_header, #teacher_header {
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
     position: sticky;
     top: 0;
@@ -10,7 +10,7 @@
     column-gap: 20px;
 }
 
-#white_header>div:nth-child(1), #blue_header>div:nth-child(1) {
+#admin_header>div:nth-child(1), #teacher_header>div:nth-child(1) {
     padding-left: 20px;
     flex-grow: 0;
     display: flex;
@@ -18,14 +18,14 @@
     align-items: center;
 }
 
-#white_header>div:nth-child(2), #blue_header>div:nth-child(2) {
+#admin_header>div:nth-child(2), #teacher_header>div:nth-child(2) {
     flex-grow: 1;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
 }
 
-#white_header>div:nth-child(2)>a, #blue_header>div:nth-child(2)>a {
+#admin_header>div:nth-child(2)>a, #teacher_header>div:nth-child(2)>a {
     color: var(--light-black-color);
     display: flex;
     justify-content: center;
@@ -34,14 +34,14 @@
     text-decoration: none;
     transition: background 0.3s, color 0.3s;
 }
-#blue_header>div:nth-child(2)>a:hover,
-#white_header>div:nth-child(2)>a:hover,
-#blue_header>div:nth-child(2)>a#current,
-#white_header>div:nth-child(2)>a#current {
+#teacher_header>div:nth-child(2)>a:hover,
+#admin_header>div:nth-child(2)>a:hover,
+#teacher_header>div:nth-child(2)>a#current,
+#admin_header>div:nth-child(2)>a#current {
     background-color: var(--light-blue-color);
     color: white;
 }
-#white_header>div:nth-child(2)>a>div, #blue_header>div:nth-child(2)>a>div {
+#admin_header>div:nth-child(2)>a>div, #teacher_header>div:nth-child(2)>a>div {
     font-size: var(--big-font-size);
     font-weight: bold;
     font-style: normal;
@@ -56,8 +56,7 @@
     padding: 10px 20px;
     border-radius: 15px;
     align-items: center;
-    transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+    transition: background 0.3s;
     cursor: pointer;
 }
 #exit_button.disabled {
@@ -66,9 +65,8 @@
     color: white !important;
     cursor: default;
 }
-#exit_button:hover:not(.disabled) {
-    transform: translateY(-1px);
-    box-shadow: 2px 3px 11px 4px rgba(0, 0, 0, 0.25);
+#teacher_header #exit_button:hover:not(.disabled) {
+    background: var(--lightest-blue-color) !important;
 }
 #exit_button>div:nth-child(1) {
     width: 23px;
@@ -80,22 +78,44 @@
     font-size: var(--normal-font-size);
 }
 
-#white_header {
+#admin_header {
     background: white;
 }
-#white_header #exit_button {
+#admin_header #exit_button {
     background: var(--light-blue-color);
     color: white;
 }
 
-
-#blue_header {
+#teacher_header {
     background: var(--light-blue-color);
 }
-#blue_header .logo_main, #blue_header .logo_caption {
+#teacher_header .logo_main, #teacher_header .logo_caption {
     color: white;
 }
-#blue_header #exit_button {
+#teacher_header #exit_button {
     color: var(--light-blue-color);
     background: white;
+}
+
+.header_icon {
+    width: 45px;
+    height: 45px;
+}
+
+#teacher_user {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+#teacher_user a {
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: var(--big-font-size);
+    color: white;
+    transition: color 0.3s;
+}
+
+#teacher_user a:hover {
+    color: var(--lightest-blue-color);
 }

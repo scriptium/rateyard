@@ -6,7 +6,9 @@ let rateyardApiClient = new RateyardApiClient(
 
 rateyardApiClient.sendRequest('/teacher/get_me', 'GET', {},  undefined, true)
 .then((xhr) => {
-    if (xhr.status === 200) document.location.replace('index.php')
+    if (xhr.status === 200) {
+        document.location.replace('index.php')
+    }
 });
 
 async function loginButton(button) {

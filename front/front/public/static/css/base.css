@@ -7,6 +7,7 @@
     --normal-font-size: 18px;
 
     --light-blue-color: #5AADDD;
+    --lightest-blue-color: #CDE4F1;
     --light-black-color: #34373E;
     --red-color: #C33420;
     --blue-color: #7298AE;
@@ -198,6 +199,20 @@ input[type='search'] {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+}
+
+.blue_exit_icon {
+    background-image: url(/static/images/exit_blue.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.user_icon {
+    background-image: url(/static/images/user.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center; 
 }
 
 .logo_main {
