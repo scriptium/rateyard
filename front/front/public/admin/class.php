@@ -79,7 +79,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                     <div>Додати учня</div>
                 </div>
             </a>
-            <div class="delete_button">
+            <div class="delete_button" onclick="deleteAllStudents(this);">
                 <div class="button_icon delete_icon"></div>
                 <div>Видалити всіх учнів класу</div>
             </div>

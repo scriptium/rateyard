@@ -29,5 +29,17 @@ let groupsHasFilled = new Promise(async (resolve, reject) => {
 });
 
 
+async function deleteAllStudents(buttonElement) {
+    buttonElement.classList.add('disabled');
+    let isConfirmed = confirm(`Видалити всіх учнів класу №${classId}?`)
+    if (isConfirmed) {
+        deleteStudentsFromClass(classId).then(
+            () => { window.history.back() },
+            () => { buttonElement.classList.remove('disabled') }
+        )
+    }
+    else buttonElement.classList.remove('disabled');
+}
+
 let mainPromise = Promise.all([studentsHasFilled, groupsHasFilled]);
 mainPromise.then(hidePreloader);
