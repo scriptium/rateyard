@@ -4,18 +4,21 @@
     top: 0;
     width: 100%;
     min-width: max-content;
-    z-index: 1001;
+    z-index: 2;
     display: flex;
     flex-direction: row;
     column-gap: 20px;
 }
 
 #admin_header>div:nth-child(1), #teacher_header>div:nth-child(1) {
-    padding-left: 20px;
     flex-grow: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+#admin_header .logo_main, #teacher_header .logo_main {
+    margin-left: 20px;
 }
 
 #admin_header>div:nth-child(2), #teacher_header>div:nth-child(2) {
@@ -118,4 +121,26 @@
 
 #teacher_user a:hover {
     color: var(--lightest-blue-color);
+}
+
+#burger_wrapper {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    transition: background 0.3s;
+    cursor: pointer;
+}
+
+#burger_wrapper > svg {
+    transition: fill 0.3s;
+    fill: white;
+}
+
+#burger_wrapper:hover {
+    background: white;    
+}
+
+#burger_wrapper:hover > svg {
+    fill: var(--light-blue-color);
 }

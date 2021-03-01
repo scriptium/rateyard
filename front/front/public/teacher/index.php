@@ -8,6 +8,7 @@
     <title>Rateyard</title>
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/header.css">
+    <link rel="stylesheet" href="/static/css/teacher/base.css">
 </head>
 
 <body>

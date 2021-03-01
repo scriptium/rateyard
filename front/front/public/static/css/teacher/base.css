@@ -1,0 +1,16 @@
+#side_bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 340px;
+    transform: translateX(-340px);
+    transition: transform 0.5s;
+    background: var(--light-blue-color);
+    z-index: 3;
+    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+}
+
+#side_bar.opened {
+    transform: none;
+}

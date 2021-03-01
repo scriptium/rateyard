@@ -1,5 +1,10 @@
 <div id="teacher_header">
     <div>
+        <div id="burger_wrapper" onclick="document.getElementById('side_bar').classList.toggle('opened')">
+            <?php
+            echo file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/static/images/burger.svg');
+            ?>
+        </div>
         <div class="logo_main">Rateyard</div>
         <div class="logo_caption">Teacher</div>
     </div>
@@ -13,4 +18,6 @@
             <div>Вихід</div>
         </div>
     </div>
+</div>
+<div id="side_bar" onclick="document.getElementById('side_bar').classList.toggle('opened')">
 </div>
