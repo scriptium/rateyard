@@ -177,7 +177,12 @@ def get_groups_short():
                 exec_where_str = " WHERE tcgr.teacher_id=%s"
             else:
                 abort(400)
-
+        if "class_id" in request.json.keys():
+            if(type(request.json["class_id"])) == int:
+                exec_where_str += " WHERE class_id=%s"
+                exec_args.append(request.json["class_id"])
+            else:
+                abort(400)
         if "editable" in request.json.keys():
             if type(request.json["editable"]) == bool:
                 if exec_where_str == "":

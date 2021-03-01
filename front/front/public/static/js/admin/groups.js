@@ -30,7 +30,7 @@ function searchGroups(text) {
     hidableChildrenStudentsTbody.update();
 }
 
-groupseResponseData.then((responseData) => {
+groupsResponseData.then((responseData) => {
     fillGroupsTable(responseData.json);
     hidePreloader();
 });
