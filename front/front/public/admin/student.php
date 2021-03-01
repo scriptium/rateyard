@@ -21,6 +21,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
     <?php
     $current = 'students';
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/header.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
     <div id="content">
         <div class="title_block">

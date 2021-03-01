@@ -53,3 +53,11 @@ function toggleCheckbox(checkboxElement, onclick) {
     checkboxElement.classList.toggle('checked');
 }
 
+async function hidePreloader()
+{
+    let preloaderItem = document.getElementById('preloader');
+    let animation = preloaderItem.animate([{opacity: 1}, {opacity: 0}], 500);
+    await animation.finished;
+    preloaderItem.classList.add('hidden');
+} 
+

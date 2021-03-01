@@ -16,9 +16,7 @@ function fillClassesTable(classes) {
     classesTableElement.classList.add('visible');
 }
 
-window.onload = async () => {   
-    classesResponseData.then((responseData) => {
-        fillClassesTable(responseData.json);
-        document.getElementById('loader').style.display = 'none';
-    });
-}
+classesResponseData.then((responseData) => {
+    fillClassesTable(responseData.json);
+    hidePreloader();
+});

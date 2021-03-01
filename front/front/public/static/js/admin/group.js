@@ -4,8 +4,6 @@ let groupNameElement = document.getElementById('name');
 let groupClassIdElement = document.getElementById('class_id');
 let groupStudentsTbodyElement = document.querySelector('#group_students tbody')
 
-let afterGroupElements = document.querySelectorAll('.appear_after_group');
-
 let changesSet = new ChangesSet(document.querySelectorAll('.appear_on_change'));
 
 function updateGroupData() {
@@ -21,14 +19,9 @@ function updateGroupData() {
             class=\"text\" 
             href=\"class.php?id=${parsedGroup.class.id}\">${parsedGroup.class.name}</a></div>`;
 
-            afterGroupElements.forEach(
-                (element) => {
-                    element.classList.add('visible');
-                }
-            )
-
             groupStudentsTbodyElement.innerHTML = '';
             insertStudentsData(parsedGroup.group_class_students, groupStudentsTbodyElement, false, true, null);
+            resolve();
             // parsedGroup.group_class_students.forEach((student) => {
             //     let newTr = document.createElement('tr');
 
@@ -113,3 +106,5 @@ function deleteGroupButton(buttonElement) {
     }
     else buttonElement.classList.remove('disabled');
 }
+
+groupHasFilled.then(hidePreloader);

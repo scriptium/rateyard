@@ -30,7 +30,3 @@ function saveNewTeacherButton(buttonElement) {
         }
     });
 }
-
-window.onload = async () => {
-    document.getElementById('load_data').classList.add('visible');
-}

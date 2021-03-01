@@ -52,12 +52,6 @@ function updateGroupStudentData() {
 
                 groupStudentsTbodyElement.appendChild(newRowElement);
             });
-            await windowHasLoaded;
-            afterGroupStudentsElements.forEach(
-                (element) => {
-                    element.classList.add('visible')
-                }
-            )
             resolve();
         }, reject)
     })
@@ -90,3 +84,6 @@ function saveNewGroupButton(buttonElement) {
 }
 
 let groupStudentsHasFilled = updateGroupStudentData();
+
+let mainPromise = Promise.all([groupStudentsHasFilled, classesHasFilled]);
+mainPromise.then(hidePreloader);

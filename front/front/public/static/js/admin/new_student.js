@@ -40,8 +40,4 @@ function saveNewStudentButton(buttonElement) {
     });
 }
 
-window.onload = async () => {
-    await classesHasFilled;
-    document.getElementById('load_data').classList.add('visible');
-    document.getElementById('loader').style.display = 'none';
-}   
+classesHasFilled.then(hidePreloader);

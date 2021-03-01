@@ -113,8 +113,4 @@ async function deleteStudentButton(buttonElement) {
     else buttonElement.classList.remove('disabled');
 }
 
-window.onload = async () => {
-    await studentHasFilled;
-    document.getElementById('load_data').classList.add('visible');
-    document.getElementById('loader').style.display = 'none';
-}
+studentHasFilled.then(hidePreloader);

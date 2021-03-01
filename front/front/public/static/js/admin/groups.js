@@ -49,9 +49,7 @@ function searchGroups(text) {
     hidableChildrenStudentsTbody.update();
 }
 
-window.onload = async () => {   
-    groupseResponseData.then((responseData) => {
-        fillGroupsTable(responseData.json);
-        document.getElementById('loader').style.display = 'none';
-    });
-}
+groupseResponseData.then((responseData) => {
+    fillGroupsTable(responseData.json);
+    hidePreloader();
+});

@@ -57,11 +57,8 @@ function fillTeachersTable(parsedResponse) {
     studentsTableElement.classList.add('visible');
 }
 
-window.onload = async () => {
-    studentsResponseData.then((responseData) => {
-        groupsStudents = await getGroupStudents();
-        fillStudentsTable(groupsStudents.json);
-    });
-     
-
-}   
+studentsResponseData.then(async (responseData) => {
+    groupsStudents = await getGroupStudents();
+    fillStudentsTable(groupsStudents.json);
+    hidePreloader();
+});

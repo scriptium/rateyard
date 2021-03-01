@@ -14,6 +14,7 @@
     <?php
     $current = 'students';
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/header.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
     <div id="content">
         <div class="title_block">
@@ -44,9 +45,6 @@
             </tbody>
         </table>
     </div>
-    <?php
-    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
-    ?>
     <div class="drag_and_drop_file hide" onclick='showDragNDropArea()'>
         <div id="drag_area">
             <div class="drag_icon"></div>

@@ -294,8 +294,8 @@ a.text:hover {
 }
 
 .loader_icon {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid var(--light-blue-color);
+    border: 7px solid #f3f3f3;
+    border-top: 7px solid var(--light-blue-color);
     border-radius: 50%;
     width:  50px;
     height: 50px;
@@ -307,17 +307,7 @@ a.text:hover {
     to { transform: rotate(360deg); }
 }
 
-@keyframes disapear {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-        display: none;
-    }
-}
-
-.preloader {
+#preloader {
     position: fixed;
     background: white;
     left: 0;
@@ -328,14 +318,8 @@ a.text:hover {
     justify-content: center;
     align-items: center;
     z-index: 1;
-    visibility: visible;
-    transition: visibility 0s, opacity 0.5s linear;
 }
 
-.loaded .preloader {
-    animation-name: disapear;
-    animation-duration: 2s;
-    animation-fill-mode: forwards;
-    transition: display 0s 10s;
+#preloader.hidden {
     display: none;
 }

@@ -93,5 +93,5 @@ function onFileInput(files) {
 
 studentsResponseData.then((responseData) => {
     fillStudentsTable(responseData.json);
-    document.body.classList.add('loaded');
+    hidePreloader();
 });

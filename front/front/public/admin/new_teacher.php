@@ -14,6 +14,7 @@
     <?php
     $current = 'teachers';
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/header.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
     <div id="content">
         <div class="title_block">
