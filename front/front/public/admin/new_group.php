@@ -24,12 +24,12 @@
                 <div>Зберегти</div>
             </div>
         </div>
-        <div class="appear_after_classes input_grid appear_transition">
+        <div class="appear_after_classes input_grid">
             <div>Назва:</div><input id="name" type="text" class="default_input_text" placeholder="Введіть назву групи">
             <div>Клас:</div><select id="class_id" class="default_select" onchange="updateGroupStudentData()"></select>
         </div>
-        <div class="subtitle appear_transition appear_after_group_students">Склад групи:</div>
-        <table class="default_table appear_transition appear_after_group_students" id="group_students">
+        <div class="subtitle">Склад групи:</div>
+        <table class="default_table" id="group_students">
             <thead>
                 <tr>
                     <th>№</th>

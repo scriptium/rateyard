@@ -20,7 +20,7 @@
         <div class="title_block">
             <div class="title">Наявні класи</div>
         </div>
-        <table class="default_table appear_transition" id="classes_table">
+        <table class="default_table" id="classes_table">
             <tbody>
                 <tr>
                     <th>Назва</th>

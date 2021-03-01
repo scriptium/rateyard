@@ -35,7 +35,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                     <div>Додати групу</div>
                 </div>
             </a>
-            <table class="default_table appear_transition" id="groups_table">
+            <table class="default_table" id="groups_table">
                 <tbody>
                     <tr>
                         <th>№</th>
@@ -56,7 +56,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                     <div>Додати вчителя</div>
                 </div>
             </a>
-            <table class="default_table appear_transition appear_after_group" id="lecturers_table">
+            <table class="default_table" id="lecturers_table">
                 <thead>
                     <tr>
                         <th>№</th>
@@ -90,7 +90,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                 <div>Перемістити всіх учнів до</div>
             </div>
         </div>
-        <table class="default_table appear_transition" id="classes_table">
+        <table class="default_table" id="classes_table">
             <thead>
                 <tr>
                     <th>№</th>

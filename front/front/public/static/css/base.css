@@ -338,3 +338,14 @@ a.text:hover {
 #preloader.hidden {
     display: none;
 }
+
+.appear_transition {
+    -webkit-transition: opacity 0.3s;
+    -moz-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+    opacity: 0;
+}
+.appear_transition.visible {
+    opacity: 1;
+}

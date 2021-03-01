@@ -41,13 +41,13 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                 </div>
             </div>
         </div>
-        <div class="appear_after_group input_grid appear_transition">
+        <div class="input_grid">
             <div>Назва:</div><input id="name" type="text" class="default_input_text" placeholder="Введіть назву групи" oninput="changesSet.updateChangedElements(this)">
             <div>Клас:</div>
             <div id="class_id"></div>
         </div>
-        <div class="subtitle appear_transition appear_after_group">Склад групи:</div>
-        <table class="default_table appear_transition appear_after_group" id="group_students">
+        <div class="subtitle">Склад групи:</div>
+        <table class="default_table" id="group_students">
             <thead>
                 <tr>
                     <th>№</th>

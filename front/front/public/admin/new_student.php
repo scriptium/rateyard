@@ -24,7 +24,7 @@
                 <div>Зберегти</div>
             </div>
         </div>
-        <div id="load_data" class="input_grid appear_transition">
+        <div id="load_data" class="input_grid">
             <div>ПІБ:</div><input id="full_name" type="text" class="default_input_text" placeholder="Введіть ПІБ учня">
             <div>Клас:</div><select id="classes_select" class="default_select"></select>
             <div>Логін:</div><input id="username" type="text" class="default_input_text" placeholder="Введіть логін">
