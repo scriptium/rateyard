@@ -123,15 +123,18 @@ async function createGroup(name, classId, studentsIds) {
     }
 }
 
-async function getGroupsShort(editable, student_id) {
+async function getGroupsShort(editable, student_id, teacher_id, class_id) {
     let body = null;
     let headers = {};
-    if (typeof editable != 'undefined' || typeof student_id != undefined) {
+    if (typeof editable != 'undefined' || typeof student_id != undefined ||
+         typeof teacher_id != undefined || typeof class_id != undefined) {
         headers = { 'Content-type': 'application/json' };
         let requestJSON = {};
         if (typeof editable != 'undefined') requestJSON.editable = editable;
         if (typeof student_id != 'undefined') requestJSON.student_id = student_id;
-
+        if (typeof teacher_id != 'undefined') requestJSON.teacher_id = teacher_id;
+        if (typeof class_id != 'undefined') requestJSON.class_id = class_id;
+        
         body = JSON.stringify(requestJSON);
     }
     let xhr = await adminRateyardApiClient.sendRequest('get_groups_short', 'POST', headers, body, true);

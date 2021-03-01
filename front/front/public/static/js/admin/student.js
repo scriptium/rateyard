@@ -21,7 +21,7 @@ let emailElement = document.getElementById('email');
 
 function updateStudentGroups() {
     return new Promise(async (resolve, reject) => {
-        getGroupsShort(undefined, studentId).then((responseData) => {
+        getGroupsShort(undefined, studentId, undefined, undefined).then((responseData) => {
             let groupsShort = responseData.json;
     
             afterStudentGroupsElements.forEach(
@@ -31,17 +31,7 @@ function updateStudentGroups() {
             )
     
             studentGroupsTbodyElement.innerHTML = '';
-            groupsShort.forEach(group => {
-                let newRowElement = document.createElement('tr');
-    
-                let groupIdElement = newRowElement.appendChild(document.createElement('td'));
-                groupIdElement.innerHTML = group.id;
-    
-                let groupNameElement = newRowElement.appendChild(document.createElement('td'));
-                groupNameElement.innerHTML = `<a class=\"text\" href=\"group.php?id=${group.id}\">${group.name}</a>`;
-    
-                studentGroupsTbodyElement.appendChild(newRowElement);
-            });
+            insertGroupsData(groupsShort, studentGroupsTbodyElement, false, false, null);
             resolve();
             console.log(groupsShort);
         }, reject);

@@ -1,4 +1,4 @@
-let groupseResponseData = getGroupsShort(true)
+let groupsResponseData = getGroupsShort(true, undefined, undefined, undefined)
 let hidableChildrenStudentsTbody;
 
 let searchIndex = FlexSearch.create({
@@ -11,26 +11,7 @@ let groupsTableElement = document.getElementById('groups_table');
 let mainTbodyElement = groupsTableElement.getElementsByTagName('tbody')[1];
 
 function fillGroupsTable(groups) {
-    groups.forEach(group => {
-        let newRowElement = document.createElement('tr');
-
-        let idElement = newRowElement.appendChild(document.createElement('td'));
-        idElement.innerHTML = group.id;
-
-        let nameElement = newRowElement.appendChild(document.createElement('td'));
-        nameElement.innerHTML = `<a class=\"text\" href=\"group.php?id=${group.id}\">${group.name}</a>`;
-
-        let classElement = newRowElement.appendChild(document.createElement('td'));
-        classElement.innerHTML = `<a class=\"text\" href=\"class.php?id=${group.class.id}\">${group.class.name}</a>`;
-
-        searchIndex.add(
-            newRowElement,
-            `${group.id} ${group.name} ${group.class.name}`
-        );
-
-        mainTbodyElement.appendChild(newRowElement);
-    });
-
+    insertGroupsData(groups, mainTbodyElement, true, false, searchIndex);
     groupsTableElement.classList.add('visible');
     hidableChildrenStudentsTbody = new HidableChildrenElement(mainTbodyElement);
 }

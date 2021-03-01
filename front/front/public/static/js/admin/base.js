@@ -52,7 +52,7 @@ function insertStudentsData(studentsData, mainTbodyElement, isClass = false, isC
         if(searchIndex) {
             pattern = `${student.id} ${student.username} ${student.full_name} ${student.email}`;
             if (isClass) 
-                pattern += `${student.class.name}`;
+                pattern += ` ${student.class.name}`;
             searchIndex.add(
                 newRowElement,
                 pattern
@@ -60,5 +60,37 @@ function insertStudentsData(studentsData, mainTbodyElement, isClass = false, isC
         }
         mainTbodyElement.appendChild(newRowElement);
     });
-    // syntax error: net takogo vyrasheniya drochit huy!!!
+}
+
+function insertGroupsData(groupsData, mainTbodyElement, isClass = false, isSettings = false, searchIndex = null) {
+    groupsData.forEach(group => {
+        let newRowElement = document.createElement('tr');
+
+        let groupIdElement = newRowElement.appendChild(document.createElement('td'));
+        groupIdElement.innerHTML = group.id;
+
+        let groupNameElement = newRowElement.appendChild(document.createElement('td'));
+        groupNameElement.innerHTML = `<a class=\"text\" href=\"group.php?id=${group.id}\">${group.name}</a>`;
+
+        if (isClass) {
+            let groupClassElement = newRowElement.appendChild(document.createElement('td'));
+            groupClassElement.innerHTML = `<a class=\"text\" href=\"class.php?id=${group.class.id}\">${group.class.name}</a>`;
+        }
+
+        if (isSettings) {
+            let groupsSettingsElement = newRowElement.appendChild(document.createElement('td'));
+            groupsSettingsElement.innerHTML = `<a class=\"text\" href=\"group.php?id=${group.id}\">Налаштування</a>`;
+        }
+
+        if (searchIndex) {
+            pattern = `${group.id} ${group.name}`;
+            if (isClass)
+                pattern += ` ${group.id}`;
+            searchIndex.add(
+                newRowElement,
+                `${group.id} ${group.class.name}`
+            );
+        }
+        mainTbodyElement.appendChild(newRowElement);
+    });
 }

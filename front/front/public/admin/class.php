@@ -35,19 +35,18 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                     <div>Додати групу</div>
                 </div>
             </a>
-            <table class="default_table" id="groups_table">
-                <tbody>
-                    <tr>
-                        <th>№</th>
-                        <th>Назва</th>
-                        <th>Клас</th>
-                    </tr>
-                </tbody>
-                <tbody>
-                </tbody>
-            </table>
         </div>
-
+        <table class="default_table" id="groups_table">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Назва</th>
+                    <th width="150px"></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
         <div class="subtitle">Викладачі класу:</div>
         <div class="title_block">
             <a href="new_teacher.php">
@@ -56,21 +55,20 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                     <div>Додати вчителя</div>
                 </div>
             </a>
-            <table class="default_table" id="lecturers_table">
-                <thead>
-                    <tr>
-                        <th>№</th>
-                        <th>ПІБ</th>
-                        <th>Предмет</th>
-                        <th>Група</th>
-                        <th style="width: 25px;"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
         </div>
-
+        <table class="default_table" id="lecturers_table">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>ПІБ</th>
+                    <th>Предмет</th>
+                    <th>Група</th>
+                    <th style="width: 25px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
 
         <div class="subtitle">Наявні учні:</div>
         <div class="title_block">
@@ -90,7 +88,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                 <div>Перемістити всіх учнів до</div>
             </div>
         </div>
-        <table class="default_table" id="classes_table">
+        <table class="default_table" id="students_table">
             <thead>
                 <tr>
                     <th>№</th>
