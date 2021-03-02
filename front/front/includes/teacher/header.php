@@ -1,6 +1,6 @@
 <div id="teacher_header">
     <div>
-        <div id="burger_wrapper" onclick="document.getElementById('side_bar').classList.toggle('opened')">
+        <div id="burger_wrapper" onclick="document.getElementById('sidebar').classList.toggle('opened')">
             <?php
             echo file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/static/images/burger.svg');
             ?>
@@ -19,5 +19,13 @@
         </div>
     </div>
 </div>
-<div id="side_bar" onclick="document.getElementById('side_bar').classList.toggle('opened')">
+<div id="sidebar">
+    <div>
+        <div class="sidebar_text">Ваші групи: </div>
+        <div id="sidebar_close_wrapper" onclick="document.getElementById('sidebar').classList.toggle('opened')">
+            <?php
+                echo file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/static/images/delete.svg');
+            ?>
+        </div>
+    </div>
 </div>
