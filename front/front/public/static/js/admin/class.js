@@ -28,6 +28,15 @@ let groupsHasFilled = new Promise(async (resolve, reject) => {
     }, reject)
 });
 
+let lectureresHasFilled = new Promise(async (resolve, reject) => {
+    getGroupFull(classId).then((responseData) => {
+        let parsedResponse = responseData.json;
+        console.log(parsedResponse.group_lecturers);
+        let groupInfo = JSON.stringify(parsedResponse.id, parsedResponse.name);
+        insertLecturersData(parsedResponse.group_lecturers, mainLecturersTbodyElement, groupInfo);
+        resolve();
+    }, reject)
+});
 
 async function deleteAllStudents(buttonElement) {
     buttonElement.classList.add('disabled');
@@ -41,5 +50,5 @@ async function deleteAllStudents(buttonElement) {
     else buttonElement.classList.remove('disabled');
 }
 
-let mainPromise = Promise.all([studentsHasFilled, groupsHasFilled]);
+let mainPromise = Promise.all([studentsHasFilled, groupsHasFilled, lectureresHasFilled]);
 mainPromise.then(hidePreloader);

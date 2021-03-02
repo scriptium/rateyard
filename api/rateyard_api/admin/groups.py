@@ -214,11 +214,13 @@ def get_groups_short():
 
 @admin_token_required
 def get_group_full():
+    print(type(request.json["id"]))
     if (
         not request.is_json or
         not "id" in request.json.keys() or
         type(request.json["id"]) != int
     ):
+        print('a')
         abort(400)
 
     cursor = get_db().cursor()
@@ -269,6 +271,29 @@ def get_group_full():
         } for data in cursor.fetchall()
     ]
 
+    cursor.execute('''
+        SELECT teachers.id, teachers.username, teachers.full_name, teachers.email, subjects.id, subjects.subject_name
+        FROM teachers_groups
+        INNER JOIN teachers ON teachers_groups.teacher_id=teachers.id
+        INNER JOIN subjects ON teachers_groups.subject_id=subjects.id
+        WHERE teachers_groups.group_id=%s
+    ''', (request.json["id"], ))
+
+    result["group_lecturers"] = [
+        {
+            "id": data[0],
+            "username": data[1],
+            "full_name": data[2],
+            "email": data[3],
+            "subject": {
+                "id": data[4],
+                "name": data[5],
+                "type": "Subject"
+            },
+            "type": "GroupLecturer"
+        } for data in cursor.fetchall()
+    ]
+    
     return jsonify(result)
 
 

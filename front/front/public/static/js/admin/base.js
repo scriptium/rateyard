@@ -94,3 +94,25 @@ function insertGroupsData(groupsData, mainTbodyElement, isClass = false, isSetti
         mainTbodyElement.appendChild(newRowElement);
     });
 }
+
+function insertLecturersData(lecturersData, mainTbodyElement, groupInfo = null) {
+    lecturersData.forEach(lecturer => {
+        let newRowElement = document.createElement('tr');
+
+        let lecturerIdElement = newRowElement.appendChild(document.createElement('td'));
+        lecturerIdElement.innerHTML = lecturer.id;
+
+        let lecturerNameElement = newRowElement.appendChild(document.createElement('td'));
+        lecturerNameElement.innerHTML = `<a class=\"text\" href=\"teacher.php?id=${lecturer.id}\">${lecturer.full_name}</a>`;
+
+        let lecturerSubjectElement = newRowElement.appendChild(document.createElement('td'));
+        lecturerSubjectElement.innerHTML = lecturer.subject.name;
+        
+        if (groupInfo) {
+            let lecturerGroupElement = newRowElement.appendChild(document.createElement('td'));
+            lecturerGroupElement.innerHTML = `<a class=\"text\" href=\"group.php?id=${groupInfo.id}\">${groupInfo.name}</a>`;
+        }
+
+        mainTbodyElement.appendChild(newRowElement);
+    });
+}

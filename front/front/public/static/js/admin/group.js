@@ -4,6 +4,8 @@ let groupNameElement = document.getElementById('name');
 let groupClassIdElement = document.getElementById('class_id');
 let groupStudentsTbodyElement = document.querySelector('#group_students tbody')
 
+let mainLecturersTbodyElement = document.querySelector('#lecturers_table tbody');
+
 let changesSet = new ChangesSet(document.querySelectorAll('.appear_on_change'));
 
 function updateGroupData() {
@@ -59,6 +61,16 @@ async function saveGroupChanges(buttonElement) {
 
 let groupHasFilled = updateGroupData();
 
+let lectureresHasFilled = new Promise(async (resolve, reject) => {
+    getGroupFull(groupId).then((responseData) => {
+        let parsedResponse = responseData.json;
+        console.log(parsedResponse.group_lecturers);
+        insertLecturersData(parsedResponse.group_lecturers, mainLecturersTbodyElement, null);
+        resolve();
+    }, reject)
+});
+
+
 function deleteGroupButton(buttonElement) {
     buttonElement.classList.add('disabled');
     let isConfirmed = confirm(`Видалити групу №${groupId}?`);
@@ -71,4 +83,6 @@ function deleteGroupButton(buttonElement) {
     else buttonElement.classList.remove('disabled');
 }
 
-groupHasFilled.then(hidePreloader);
+
+let mainPromise = Promise.all([groupHasFilled, lectureresHasFilled]);
+mainPromise.then(hidePreloader);
