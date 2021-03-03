@@ -100,27 +100,38 @@ INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Група 4', 1
 
 INSERT INTO students (username, full_name, email, password_hash, class_id)
 VALUES ('zhmisenko1', 'Жмишенко Валерій Альбертович', 'zmyshenko1@mail.com', 'a', 1);
-
 INSERT INTO students (username, full_name, email, password_hash, class_id)
 VALUES ('zhmisenko2', 'Жмишенко Валерій Альбертович', 'zmyshenko2@mail.com', 'a', 1);
-
 INSERT INTO students (username, full_name, email, password_hash, class_id)
 VALUES ('zhmisenko3', 'Жмишенко Валерій Альбертович', 'zmyshenko3@mail.com', 'a', 1);
-
 INSERT INTO students (username, full_name, email, password_hash, class_id)
 VALUES ('zhmisenko4', 'Жмишенко Валерій Альбертович', 'zmyshenk4@mail.com', 'a', 1);
-
 INSERT INTO students (username, full_name, email, password_hash, class_id)
 VALUES ('zhmisenko5', 'Жмишенко Валерій Альбертович', 'zmyshenk5@mail.com', 'a', 1);
-
 INSERT INTO teachers (username, full_name, email, password_hash)
-VALUES ('nagibator1', 'Кислородницкий Влад Афанасьевич', 'mamayakrutoy1@mail.com', 'a');
 
+VALUES ('nagibator1', 'Кислородницкий Влад Афанасьевич', 'mamayakrutoy1@mail.com', 'a');
 INSERT INTO teachers (username, full_name, email, password_hash)
 VALUES ('nagibator2', 'Кислородницкий Влад Афанасьевич', 'mamayakrutoy2@mail.com', 'a');
-
 INSERT INTO teachers (username, full_name, email, password_hash)
 VALUES ('nagibator3', 'Кислородницкий Влад Афанасьевич', 'mamayakrutoy3@mail.com', 'a');
-
 INSERT INTO teachers (username, full_name, email, password_hash)
 VALUES ('nagibator4', 'Кислородницкий Влад Афанасьевич', 'mamayakrutoy4@mail.com', 'a');
+
+INSERT INTO subjects (subject_name)
+VALUES ('Алгебра');
+INSERT INTO subjects (subject_name)
+VALUES ('Геометрія');
+INSERT INTO subjects (subject_name)
+VALUES ('Фізика');
+INSERT INTO subjects (subject_name)
+VALUES ('Інформатика');
+
+INSERT INTO teachers_groups (teacher_id, group_id, subject_id)
+VALUES (1, 16, 1);
+INSERT INTO teachers_groups (teacher_id, group_id, subject_id)
+VALUES (1, 17, 2);
+INSERT INTO teachers_groups (teacher_id, group_id, subject_id)
+VALUES (1, 15, 1);
+INSERT INTO teachers_groups (teacher_id, group_id, subject_id)
+VALUES (1, 2, 3);

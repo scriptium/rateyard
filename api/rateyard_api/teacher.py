@@ -36,10 +36,41 @@ def get_me():
 
     if exec_result == None:
         abort(400)
-
-    return jsonify({
+        
+    response_json = {
         'id': exec_result[0],
         'username': exec_result[1],
         'full_name': exec_result[2],
-        'email_name': exec_result[3],
-    })
+        'email': exec_result[3],
+    }
+
+    cursor.execute('''
+    SELECT g.id, g.group_name, c.id, c.class_name, s.id, s.subject_name
+    FROM teachers_groups AS tg
+    INNER JOIN groups AS g ON tg.group_id=g.id
+    INNER JOIN classes AS c ON g.class_id=c.id
+    INNER JOIN subjects AS s ON tg.subject_id=s.id
+    WHERE tg.teacher_id=%s; 
+    ''', (identity['id'], ))
+
+    exec_result = cursor.fetchall()
+
+    response_json['groups'] = [
+        {
+            'id': data[0],
+            'name': data[1],
+            'class': {
+                'id': data[2],
+                'name': data[3],
+                'type': 'ClassShort'
+            },
+            'subject': {
+                'id': data[4],
+                'name': data[5],
+                'type': 'Subject'
+            },
+            'type': 'groupShort'
+        } for data in exec_result
+    ]
+
+    return jsonify(response_json)

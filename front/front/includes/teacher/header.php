@@ -24,8 +24,17 @@
         <div class="sidebar_text">Ваші групи: </div>
         <div id="sidebar_close_wrapper" onclick="document.getElementById('sidebar').classList.toggle('opened')">
             <?php
-                echo file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/static/images/delete.svg');
+            echo file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/static/images/delete.svg');
             ?>
         </div>
     </div>
+    <template id="group_box_template">
+        <div class="group_box">
+            <div>
+                <span class="class_name">fsdfsdf</span>
+                <span class="group_name">fsdfsdf</span>
+            </div>
+            <span>dsdasdsa</span>
+        </div>
+    </template>
 </div>

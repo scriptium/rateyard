@@ -3,7 +3,7 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 340px;
+    width: max-content;
     transform: translateX(-100%);
     transition: transform 0.5s;
     background: var(--light-blue-color);
@@ -23,6 +23,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+#sidebar > * {
+    margin-bottom: 20px;
 }
 
 #sidebar > div:nth-child(1) > div:nth-child(2) {
@@ -54,4 +58,39 @@
 
 #sidebar_close_wrapper:hover > svg {
     fill: var(--light-blue-color);
+}
+
+.group_box {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    height: min-content;
+    padding: 20px;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+    transition: background 0.3s;
+}
+
+.group_box * {
+    color: var(--light-blue-color);
+    transition: color 0.3s;
+    font-weight: 600;
+    font-size: var(--normal-font-size);
+}
+
+.group_box .class_name {
+    font-size: var(--huge-font-size);
+}
+
+.group_box .group_name {
+    font-size: var(--big-font-size);
+}
+
+.group_box.current, .group_box:hover {
+    background: var(--light-blue-color);
+}
+
+.group_box.current *, .group_box:hover * {
+    color: white;
 }
