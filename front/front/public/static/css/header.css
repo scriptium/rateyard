@@ -28,7 +28,7 @@
     justify-content: flex-end;
 }
 
-#admin_header>div:nth-child(2)>a, #teacher_header>div:nth-child(2)>a {
+#admin_header>div:nth-child(2)>a {
     color: var(--light-black-color);
     display: flex;
     justify-content: center;
@@ -37,14 +37,12 @@
     text-decoration: none;
     transition: background 0.3s, color 0.3s;
 }
-#teacher_header>div:nth-child(2)>a:hover,
 #admin_header>div:nth-child(2)>a:hover,
-#teacher_header>div:nth-child(2)>a#current,
 #admin_header>div:nth-child(2)>a#current {
     background-color: var(--light-blue-color);
     color: white;
 }
-#admin_header>div:nth-child(2)>a>div, #teacher_header>div:nth-child(2)>a>div {
+#admin_header>div:nth-child(2)>a>div{
     font-size: var(--big-font-size);
     font-weight: bold;
     font-style: normal;
@@ -103,24 +101,6 @@
 .header_icon {
     width: 45px;
     height: 45px;
-}
-
-#teacher_user {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-}
-
-#teacher_user a {
-    margin-right: 10px;
-    font-weight: bold;
-    font-size: var(--big-font-size);
-    color: white;
-    transition: color 0.3s;
-}
-
-#teacher_user a:hover {
-    color: var(--lightest-blue-color);
 }
 
 #burger_wrapper {
