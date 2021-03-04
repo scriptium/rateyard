@@ -3,7 +3,7 @@ from functools import wraps
 from flask import Blueprint, jsonify
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 
-from db import get_db, get_group_full_from_db
+import db
 
 
 def admin_token_required(fn):

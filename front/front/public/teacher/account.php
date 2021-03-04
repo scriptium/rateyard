@@ -20,16 +20,17 @@
         <div class="title_block">
             <div class="title">Налаштування облікового запису</div>
             <div class="appear_on_change appear_transition">
-                <div class="blue_button">
+                <div class="blue_button" onclick="saveAccountChangesButton(this)">
                     <div class="button_icon save_icon"></div>
-                    <div>Зберегти</div>
+                    <div>Зберегти зміни</div>
                 </div>
             </div>
         </div>
         <div class="input_grid">
-            <div>ПІБ:</div><input id="full_name" type="text" class="default_input_text" placeholder="Введіть назву групи" oninput="changesSet.updateChangedElements(this)">
-            <div>Логін:</div><input id="username" type="text" class="default_input_text" placeholder="Введіть назву групи" oninput="changesSet.updateChangedElements(this)">
-            <div>Новий пароль:</div><input id="password" type="text" class="default_input_text" placeholder="Введіть назву групи" oninput="changesSet.updateChangedElements(this)">
+            <div>ПІБ:</div><input id="full_name" type="text" class="default_input_text" placeholder="Введіть ПІБ" oninput="changesSet.updateChangedElements(this)">
+            <div>Логін:</div><input id="username" type="text" class="default_input_text" placeholder="Введіть логін" oninput="changesSet.updateChangedElements(this)">
+            <div>Адреса електронної пошти:</div><input id="email" type="text" class="default_input_text" placeholder="Введіть адресу електронної пошти" oninput="changesSet.updateChangedElements(this)">
+            <div>Новий пароль:</div><input id="password" type="password" class="default_input_text" placeholder="Введіть новий пароль" oninput="changesSet.updateChangedElements(this)">
         </div>
     </div>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>

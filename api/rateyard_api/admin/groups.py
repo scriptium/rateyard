@@ -1,6 +1,6 @@
 from flask import json, request, abort, jsonify
 
-from . import admin_token_required, get_db, get_group_full_from_db
+from . import admin_token_required, db
 
 
 def check_group_data(cursor, edit=False):
@@ -128,8 +128,8 @@ def create_group():
     if not request.is_json:
         abort("400", "Expected json")
 
-    db = get_db()
-    cursor = db.cursor()
+    database = db.get_db()
+    cursor = database.cursor()
 
     group_data_errors = check_group_data(cursor)
 
@@ -143,7 +143,7 @@ def create_group():
 
     group_id = cursor.fetchone()[0]
     set_group_students(cursor, group_id)
-    db.commit()
+    database.commit()
 
     return jsonify(result="ok")
 
@@ -194,7 +194,7 @@ def get_groups_short():
             else:
                 abort(400)
 
-    cursor = get_db().cursor()
+    cursor = db.get_db().cursor()
     cursor.execute(exec_main_str + exec_where_str, exec_args)
     exec_result = cursor.fetchall()
 
@@ -221,7 +221,7 @@ def get_group_full():
     ):
         abort(400)
 
-    response_json = get_group_full_from_db(request.json['id'])
+    response_json = db.get_group_full(request.json['id'])
 
     if response_json is None:
         abort(400)
@@ -231,8 +231,8 @@ def get_group_full():
 
 @admin_token_required
 def edit_group():
-    db = get_db()
-    cursor = db.cursor()
+    database = db.get_db()
+    cursor = database.cursor()
 
     group_data_errors = check_group_data(cursor, True)
 
@@ -252,7 +252,7 @@ def edit_group():
         set_group_students(cursor, request.json["id"])
 
     if was_edit:
-        db.commit()
+        database.commit()
         return jsonify(result="ok")
     else:
         abort(400, "No changes provided")
@@ -267,8 +267,8 @@ def delete_group():
     ):
         abort(400)
 
-    db = get_db()
-    cursor = db.cursor()
+    database = db.get_db()
+    cursor = database.cursor()
 
     cursor.execute('''
     DELETE FROM groups WHERE id=%s RETURNING 1;
@@ -277,7 +277,7 @@ def delete_group():
     if cursor.fetchone() is None:
         abort(400)
 
-    db.commit()
+    database.commit()
     return jsonify(result="ok")
 
 #     @bp.route("/add_students_to_group", methods=("POST", ))
@@ -291,7 +291,7 @@ def delete_group():
 #             type(request.json["students_ids"]) != list):
 #         abort(400, "Expected group id and array of students ids")
 #     for student_id in request.json["students_ids"]:
-#         db = get_db()
+#         db = db.get_db()
 #         cursor = db.cursor()
 #         cursor.execute('''
 #             INSERT INTO students_groups (
@@ -320,7 +320,7 @@ def delete_group():
 #             type(request.json["teachers_ids"]) != list):
 #         abort(400, "Expected group id and array of teachers ids")
 #     for teacher_id in request.json["teachers_ids"]:
-#         db = get_db()
+#         db = db.get_db()
 #         cursor = db.cursor()
 #         cursor.execute('''
 #             INSERT INTO teachers_groups (

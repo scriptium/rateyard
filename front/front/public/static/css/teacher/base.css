@@ -59,7 +59,7 @@
 }
 
 .group_box.current * {
-    font-weight: bold;
+    color: var(--blue-color);
 }
 
 #sidebar {

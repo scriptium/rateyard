@@ -1,6 +1,6 @@
 from flask import Blueprint, request, abort, jsonify
 
-from . import admin_token_required, get_db
+from . import admin_token_required, db
 
 @admin_token_required
 def delete_students_from_class():
@@ -9,15 +9,15 @@ def delete_students_from_class():
     if (not "class_id" in request.json or
             type(request.json["class_id"]) != int):
         abort(400, "Expected class id as int")
-    db = get_db()
-    cursor = db.cursor()
+    database = db.get_db()
+    cursor = database.cursor()
     cursor.execute('''
             DELETE FROM students
             WHERE class_id=%s
             ''', 
             (request.json["class_id"], )
     )
-    db.commit()
+    database.commit()
     return jsonify({
         "result": "OK"
     }), 200
@@ -26,8 +26,7 @@ def delete_students_from_class():
 
 @admin_token_required
 def get_classes_short():
-    db = get_db()
-    cursor = db.cursor()
+    cursor = db.get_db().cursor()
     cursor.execute('''
         SELECT id, class_name
         FROM classes;
@@ -55,7 +54,7 @@ def get_class_full():
     ):
         abort(400)
 
-    cursor = get_db().cursor()
+    cursor = db.get_db().cursor()
     cursor.execute(
         "SELECT id, class_name FROM classes WHERE id=%s",
         (request.json["id"], )
@@ -102,7 +101,7 @@ def get_class_full():
 #     for class_ in request.json:
 #         if ("id" in class_.keys() and
 #                 "name" in class_.keys()):
-#             db = get_db()
+#             db = db.get_db()
 #             cursor = db.cursor()
 #             cursor.execute('''
 #                 UPDATE classes

@@ -1,14 +1,13 @@
 from functools import wraps
 
-from flask import (Blueprint, request, jsonify, abort)
+from flask import (Blueprint, json, request, jsonify, abort)
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 
-from db import (
-    get_db, close_db, get_group_full_from_db
-)
+import db
 
 
 bp = Blueprint("teacher", __name__)
+
 
 def teacher_token_required(fn):
     @wraps(fn)
@@ -21,11 +20,12 @@ def teacher_token_required(fn):
             return fn(*args, **kwargs)
     return wrapper
 
-@bp.route("/get_me", methods = ("GET", ))
+
+@bp.route("/get_me", methods=("GET", ))
 @teacher_token_required
 def get_me():
     identity = get_jwt_identity()
-    cursor = get_db().cursor()
+    cursor = db.get_db().cursor()
 
     cursor.execute('''
     SELECT id, username, full_name, email FROM teachers WHERE id=%s;
@@ -35,7 +35,7 @@ def get_me():
     exec_result = cursor.fetchone()
     if exec_result == None:
         abort(400)
-        
+
     response_json = {
         'id': exec_result[0],
         'username': exec_result[1],
@@ -70,7 +70,8 @@ def get_me():
     ]
     return jsonify(response_json)
 
-@bp.route("/get_group_full", methods = ("GET", ))
+
+@bp.route("/get_group_full", methods=("GET", ))
 @teacher_token_required
 def get_group_full():
     if (
@@ -80,12 +81,28 @@ def get_group_full():
     ):
         abort(400)
 
-    result_json = get_group_full_from_db()
-    if result_json is None: abort(400)
-    cursor = get_db().cursor()
+    result_json = db.get_group_full()
+    if result_json is None:
+        abort(400)
+    cursor = db.get_db().cursor()
     cursor.execute('''
     SELECT 1 FROM teachers_groups WHERE teacher_id=%s AND group_id=%s;
     ''', (get_jwt_identity()['id'], result_json['id']))
-    if cursor.fetchone() is None: abort(400)
+    if cursor.fetchone() is None:
+        abort(400)
 
     return jsonify(result_json)
+
+
+@bp.route('/edit_me', methods=('POST', ))
+@teacher_token_required
+def edit_me():
+    if not request.is_json:
+        abort(400, "Expected json")
+
+    teachers_data_errors = db.check_teachers_data([request.json])
+    if teachers_data_errors:
+        return jsonify(teachers_data_errors[0]), 400
+
+    db.edit_teacher(get_jwt_identity()['id'], request.json)
+    return jsonify(result='ok')

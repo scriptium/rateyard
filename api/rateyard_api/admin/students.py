@@ -1,6 +1,6 @@
 from flask import Blueprint, request, abort, jsonify
 
-from . import admin_token_required, get_db
+from . import admin_token_required, db
 
 
 def check_students_data(cursor, all_required=False):
@@ -135,8 +135,8 @@ def create_students():
         abort(400, "Expected array of students")
         print("Expected array of students", flush=True)
 
-    db = get_db()
-    cursor = db.cursor()
+    database = db.get_db()
+    cursor = database.cursor()
     student_data_errors = check_students_data(cursor, True)
 
     if student_data_errors == {}:
@@ -161,7 +161,7 @@ def create_students():
                 student["password"],
                 student["class_id"]
             ))
-        db.commit()
+        database.commit()
         return jsonify({
             "result": "OK"
         })
@@ -183,10 +183,10 @@ def delete_students():
         print(student_id)
         exec_str += (" OR  id=%s")
         exec_args.append(student_id)
-    db = get_db()
-    cursor = db.cursor()
+    database = db.get_db()
+    cursor = database.cursor()
     cursor.execute(exec_str, exec_args)
-    db.commit()
+    database.commit()
     return jsonify({
         "result": "OK"
     }), 200
@@ -201,8 +201,8 @@ def edit_students():
         abort(400, "Expected array of students id")
         print("Expected array of students id", flush=True)
 
-    db = get_db()
-    cursor = db.cursor()
+    database = db.get_db()
+    cursor = database.cursor()
     student_data_errors = check_students_data(cursor, False)
 
     for student_index in range(len(request.json)):
@@ -245,7 +245,7 @@ def edit_students():
                     "DELETE FROM students_groups WHERE student_id=%s;",
                     (student["id"], )
                 )
-            db.commit()
+            database.commit()
             return jsonify(result="ok")
 
     else:
@@ -270,8 +270,7 @@ def get_students():
             exec_args.append(student_id)
             exec_str += " OR students.id=%s"
 
-    db = get_db()
-    cursor = db.cursor()
+    cursor = db.get_db().cursor()
     cursor.execute(exec_str, exec_args)
     exec_result = cursor.fetchall()
 
