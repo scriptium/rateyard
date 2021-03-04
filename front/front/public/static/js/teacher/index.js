@@ -10,4 +10,4 @@ myUserPromise.then((myUser) => {
         contentElement.appendChild(groupBoxElement);
     });
     hidePreloader();
-})();
+});

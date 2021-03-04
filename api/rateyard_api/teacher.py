@@ -4,7 +4,7 @@ from flask import (Blueprint, request, jsonify, abort)
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 
 from db import (
-    get_db, close_db
+    get_db, close_db, get_group_full_from_db
 )
 
 
@@ -33,7 +33,6 @@ def get_me():
     )
 
     exec_result = cursor.fetchone()
-
     if exec_result == None:
         abort(400)
         
@@ -43,7 +42,6 @@ def get_me():
         'full_name': exec_result[2],
         'email': exec_result[3],
     }
-
     cursor.execute('''
     SELECT g.id, g.group_name, c.id, c.class_name, s.id, s.subject_name
     FROM teachers_groups AS tg
@@ -52,9 +50,7 @@ def get_me():
     INNER JOIN subjects AS s ON tg.subject_id=s.id
     WHERE tg.teacher_id=%s; 
     ''', (identity['id'], ))
-
     exec_result = cursor.fetchall()
-
     response_json['groups'] = [
         {
             'id': data[0],
@@ -72,5 +68,24 @@ def get_me():
             'type': 'groupShort'
         } for data in exec_result
     ]
-
     return jsonify(response_json)
+
+@bp.route("/get_group_full", methods = ("GET", ))
+@teacher_token_required
+def get_group_full():
+    if (
+        not request.is_json or
+        not "id" in request.json.keys() or
+        type(request.json["id"]) != int
+    ):
+        abort(400)
+
+    result_json = get_group_full_from_db()
+    if result_json is None: abort(400)
+    cursor = get_db().cursor()
+    cursor.execute('''
+    SELECT 1 FROM teachers_groups WHERE teacher_id=%s AND group_id=%s;
+    ''', (get_jwt_identity()['id'], result_json['id']))
+    if cursor.fetchone() is None: abort(400)
+
+    return jsonify(result_json)

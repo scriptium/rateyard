@@ -1,65 +1,3 @@
-#sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: max-content;
-    transform: translateX(-100%);
-    transition: transform 0.5s;
-    background: var(--light-blue-color);
-    z-index: 3;
-    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
-
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-}
-
-#sidebar.opened {
-    transform: none;
-}
-
-#sidebar > div:nth-child(1) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-#sidebar > * {
-    margin-bottom: 20px;
-}
-
-#sidebar > div:nth-child(1) > div:nth-child(2) {
-    justify-self: end;
-}
-
-.sidebar_text {
-    font-weight: bold;
-    font-size: var(--big-font-size);
-    color: white;
-}
-
-#sidebar_close_wrapper {
-    height: 20px;
-    width: 20px;
-    padding: 10px;
-    border-radius: 50%;
-    transition: background 0.3s;
-}
-
-#sidebar_close_wrapper:hover {
-    background: white;
-}
-
-#sidebar_close_wrapper > svg {
-    fill: white;
-    transition: fill 0.3s;
-}
-
-#sidebar_close_wrapper:hover > svg {
-    fill: var(--light-blue-color);
-}
-
 .group_box {
     display: flex;
     flex-direction: column;
@@ -87,10 +25,81 @@
     font-size: var(--big-font-size);
 }
 
-.group_box.current, .group_box:hover {
+.group_box:hover {
     background: var(--light-blue-color);
 }
 
-.group_box.current *, .group_box:hover * {
+.group_box:hover * {
     color: white;
+}
+
+.group_box.current * {
+    font-weight: bold;
+}
+
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    min-width: 300px;
+    width: max-content;
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+    background: var(--light-blue-color);
+    z-index: 4;
+    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+#sidebar_close_area {
+    display: none; 
+}
+
+#sidebar_close_area.opened {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+}
+
+#sidebar.opened {
+    transform: none;
+}
+
+#sidebar > * {
+    margin-bottom: 20px;
+}
+
+.sidebar_text {
+    font-weight: bold;
+    font-size: var(--big-font-size);
+    color: white;
+}
+
+#sidebar_close_wrapper {
+    height: 20px;
+    width: 20px;
+    padding: 10px;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+#sidebar_close_wrapper:hover {
+    background: white;
+}
+
+#sidebar_close_wrapper > svg {
+    fill: white;
+    transition: fill 0.3s;
+}
+
+#sidebar_close_wrapper:hover > svg {
+    fill: var(--light-blue-color);
 }

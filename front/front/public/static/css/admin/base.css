@@ -19,27 +19,6 @@
     background: rgba(90, 173, 221, 0.05);
 }
 
-.title_block {
-    display: flex;
-    flex-direction: row;
-    min-width: max-content;
-}
-
-.title_block > * {
-    margin-right: 20px;
-}
-
-.input_grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-.input_grid>div:nth-child(odd) {
-    font-size: var(--big-font-size);
-    font-weight: bold;
-}
-
 .drag_and_drop_file {
     background-color: rgba(52, 55, 62, 0.6);
     position: fixed;

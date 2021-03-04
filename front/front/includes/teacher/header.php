@@ -1,6 +1,6 @@
 <div id="teacher_header">
     <div>
-        <div id="burger_wrapper" onclick="document.getElementById('sidebar').classList.toggle('opened')">
+        <div id="burger_wrapper" onclick="openSidebar()">
             <?php
             echo file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/static/images/burger.svg');
             ?>
@@ -10,7 +10,7 @@
     </div>
     <div>
         <div id="teacher_user">
-            <a id="header_teacher_full_name" href="nahui">Hello</a>
+            <a id="header_teacher_full_name" href="account.php"></a>
             <div class="user_icon header_icon"></div>
         </div>
         <div id="exit_button" onclick="logoutButton(this)">
@@ -20,21 +20,21 @@
     </div>
 </div>
 <div id="sidebar">
-    <div>
-        <div class="sidebar_text">Ваші групи: </div>
-        <div id="sidebar_close_wrapper" onclick="document.getElementById('sidebar').classList.toggle('opened')">
-            <?php
-            echo file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/static/images/delete.svg');
-            ?>
-        </div>
-    </div>
+    <a href="index.php" class="group_box <?php 
+        if($current == 'index'){echo 'current';}
+        ?>">
+        <span class="group_name">Головна</span>
+    </a>
+    <div class="sidebar_text">Ваші групи: </div>
     <template id="group_box_template">
-        <div class="group_box">
+        <a href="#" class="group_box">
             <div>
-                <span class="class_name">fsdfsdf</span>
-                <span class="group_name">fsdfsdf</span>
+                <span class="class_name"></span>
+                <span class="group_name"></span>
             </div>
-            <span>dsdasdsa</span>
-        </div>
+            <span></span>
+        </a>
     </template>
+</div>
+<div id="sidebar_close_area" onclick="closeSidebar()">
 </div>

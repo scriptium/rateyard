@@ -86,8 +86,7 @@ input[type='search'] {
     font-weight: bold;
 }
 .blue_button:hover:not(.disabled) {
-    transform: translateY(-2px);
-    box-shadow: 2px 3px 11px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 2px 3px 11px 4px rgba(0, 0, 0, 0.35);
 }
 .blue_button.disabled {
     background: var(--blue-color);
@@ -114,8 +113,7 @@ input[type='search'] {
     font-weight: bold;
 }
 .delete_button:hover:not(.disabled) {
-    transform: translateY(-2px);
-    box-shadow: 2px 3px 11px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 2px 3px 11px 4px rgba(0, 0, 0, 0.35);
 }
 .delete_button.disabled {
     background: var(--blue-color);
@@ -181,8 +179,7 @@ input[type='search'] {
     font-weight: bold;
 }
 .excel_button:hover {
-    transform: translateY(-2px);
-    box-shadow: 2px 3px 11px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 2px 3px 11px 4px rgba(0, 0, 0, 0.35);
 }
 
 .excel_icon {
@@ -348,4 +345,24 @@ a.text:hover {
 }
 .appear_transition.visible {
     opacity: 1;
+}
+
+.input_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.input_grid>div:nth-child(odd) {
+    font-size: var(--big-font-size);
+    font-weight: bold;
+}
+.title_block {
+    display: flex;
+    flex-direction: row;
+    min-width: max-content;
+}
+
+.title_block > * {
+    margin-right: 20px;
 }
