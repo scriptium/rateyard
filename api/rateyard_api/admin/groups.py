@@ -150,8 +150,8 @@ def create_group():
 
 @admin_token_required
 def get_groups_short():
+    exec_select_str = '''SELECT gr.id, gr.group_name, cl.id, cl.class_name'''
     exec_main_str = '''
-    SELECT gr.id, gr.group_name, cl.id, cl.class_name
     FROM groups as gr
     LEFT JOIN classes as cl ON gr.class_id = cl.id
     ''' 
@@ -170,8 +170,10 @@ def get_groups_short():
                 abort(400)
         if "teacher_id" in request.json.keys():
             if type(request.json["teacher_id"]) == int:
+                exec_select_str += ''' subject.id, subject.subject_name'''
                 exec_main_str += '''
                 INNER JOIN teachers_groups as tcgr ON tcgr.group_id=gr.id
+                INNER JOIN subjects ON subject.id=tcgr.subject_id
                 '''
                 exec_args.append(request.json["teacher_id"])
                 exec_where_str = " WHERE tcgr.teacher_id=%s"
@@ -195,7 +197,7 @@ def get_groups_short():
                 abort(400)
 
     cursor = db.get_db().cursor()
-    cursor.execute(exec_main_str + exec_where_str, exec_args)
+    cursor.execute(exec_select_str + exec_main_str + exec_where_str, exec_args)
     exec_result = cursor.fetchall()
 
     result = [{
@@ -209,6 +211,13 @@ def get_groups_short():
         "type": "GroupShort"
     } for data in exec_result
     ]
+    if "teacher_id" in request.json.keys():
+        for group in result:
+            result[group]["subject"] = {
+                "id": data[4],
+                "name": data[5],
+                "type": "Subject"
+            }
     return jsonify(result)
 
 

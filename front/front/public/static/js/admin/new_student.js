@@ -2,6 +2,13 @@ let classesHasFilled = new Promise (async (resolve, reject) => {
     getClassesShort().then((responseData) => {
         let classesSelectElement = document.getElementById('classes_select');
         fillClassesSelect(classesSelectElement, responseData.json);
+        let val = "<?php echo $_GET['class']; ?>";
+        console.log("Its");
+        console.log(val);
+        for (let i = 0 ; i < classesSelectElement.children.length; i++)
+        {
+            if (classesSelectElement.children[i].getAttribute("value") == val) children[i].setAttribute("selected", "selected");
+        } 
         resolve();
     }, reject);
 })

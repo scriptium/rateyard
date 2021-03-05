@@ -99,24 +99,24 @@ INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Група 3', 1
 INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Група 4', 16, True);
 
 INSERT INTO students (username, full_name, email, password_hash, class_id)
-VALUES ('zhmisenko1', 'Жмишенко Валерій Альбертович', 'zmyshenko1@mail.com', 'a', 1);
+VALUES ('shevel', 'Шевель Денис', 'shevel@mail.com', crypt('1', gen_salt('md5')), 1);
 INSERT INTO students (username, full_name, email, password_hash, class_id)
-VALUES ('zhmisenko2', 'Жмишенко Валерій Альбертович', 'zmyshenko2@mail.com', 'a', 1);
+VALUES ('stetsiuk', 'Стецюк Юрій', 'stetsiuk@mail.com', crypt('1', gen_salt('md5')), 1);
 INSERT INTO students (username, full_name, email, password_hash, class_id)
-VALUES ('zhmisenko3', 'Жмишенко Валерій Альбертович', 'zmyshenko3@mail.com', 'a', 1);
+VALUES ('patraboy', 'Патрабой Назарій', 'patraboy@mail.com', crypt('1', gen_salt('md5')), 1);
 INSERT INTO students (username, full_name, email, password_hash, class_id)
-VALUES ('zhmisenko4', 'Жмишенко Валерій Альбертович', 'zmyshenk4@mail.com', 'a', 1);
+VALUES ('borovyi', 'Боровий Іван', 'borovyi@mail.com', crypt('1', gen_salt('md5')), 1);
 INSERT INTO students (username, full_name, email, password_hash, class_id)
-VALUES ('zhmisenko5', 'Жмишенко Валерій Альбертович', 'zmyshenk5@mail.com', 'a', 1);
+VALUES ('gavrysh', 'Гавриш Олексій', 'gavrysh@mail.com', crypt('1', gen_salt('md5')), 1);
 INSERT INTO teachers (username, full_name, email, password_hash)
 
-VALUES ('nagibator1', 'Кислородницкий Влад Афанасьевич', 'mamayakrutoy1@mail.com', 'a');
+VALUES ('moroz', 'Мороз Микола Петрович', 'moroz@mail.com', crypt('1', gen_salt('md5')));
 INSERT INTO teachers (username, full_name, email, password_hash)
-VALUES ('nagibator2', 'Кислородницкий Влад Афанасьевич', 'mamayakrutoy2@mail.com', 'a');
+VALUES ('sklyar', 'Скляр Ірина Вільївна', 'sklyar@mail.com', crypt('1', gen_salt('md5')));
 INSERT INTO teachers (username, full_name, email, password_hash)
-VALUES ('nagibator3', 'Кислородницкий Влад Афанасьевич', 'mamayakrutoy3@mail.com', 'a');
+VALUES ('perga', 'Перга Вікторія Віталіївна', 'perga@mail.com', crypt('1', gen_salt('md5')));
 INSERT INTO teachers (username, full_name, email, password_hash)
-VALUES ('nagibator4', 'Кислородницкий Влад Афанасьевич', 'mamayakrutoy4@mail.com', 'a');
+VALUES ('rzhanska', 'Ржанська Тетяна Миколаївна', 'rzhanska@mail.com', crypt('1', gen_salt('md5')));
 
 INSERT INTO subjects (subject_name)
 VALUES ('Алгебра');
@@ -126,12 +126,14 @@ INSERT INTO subjects (subject_name)
 VALUES ('Фізика');
 INSERT INTO subjects (subject_name)
 VALUES ('Інформатика');
+INSERT INTO subjects (subject_name)
+VALUES ('Фізична культура');
 
 INSERT INTO teachers_groups (teacher_id, group_id, subject_id)
 VALUES (1, 16, 1);
 INSERT INTO teachers_groups (teacher_id, group_id, subject_id)
 VALUES (1, 17, 2);
 INSERT INTO teachers_groups (teacher_id, group_id, subject_id)
-VALUES (1, 15, 1);
+VALUES (3, 15, 3);
 INSERT INTO teachers_groups (teacher_id, group_id, subject_id)
-VALUES (1, 2, 3);
+VALUES (2, 2, 4);

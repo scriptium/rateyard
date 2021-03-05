@@ -41,7 +41,7 @@
 }
 
 #drag_area {
-    display: flex;
+    display: none;
     width: 700px;
     height: 400px;
     background-color: var(--drag-area-color);
@@ -53,6 +53,14 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    position: fixed;
+    left: calc(50vw - 350px);
+    top: calc(50vh - 250px);
+}
+
+#drag_area.show {
+    display: flex;
+    animation: fadein 0.25s;
 }
 
 #drag_area.drag_over {
@@ -64,12 +72,12 @@
     height: 0;
 }
 
-label[for="table_file"] > div > p > strong {
+label[for="table_file"] > p > strong {
     font-weight: bold;
     display: inline;
 }
 
-label[for="table_file"] > div > p > strong:hover {
+label[for="table_file"] > p > strong:hover {
     color: #1b93d8;
 }
 
@@ -78,7 +86,7 @@ label[for="table_file"] > div > p > strong:hover {
     height: 150px;
     display: block;
     background-image: url(/static/images/upload_file.svg);
-    background-color: var(--drag-area-color);
+    /* background-color: var(--drag-area-color); */
     opacity: 85%;
     margin: 0 auto 20px auto;
     background-size: contain;

@@ -9,6 +9,13 @@ let mainGroupsTbodyElement = document.querySelector('#groups_table tbody');
 let lecturersTableElement = document.querySelector('#lecturers_table');
 let mainLecturersTbodyElement = document.querySelector('#lecturers_table tbody');
 
+let classesHasFilled = new Promise (async (resolve, reject) => {
+    getClassesShort().then((responseData) => {
+        let classesSelectElement = document.getElementById('classes_select');
+        fillClassesSelect(classesSelectElement, responseData.json);
+        resolve();
+    }, reject);
+}) 
 
 let studentsHasFilled = new Promise(async (resolve, reject) => {
     getClassFull(classId).then((responseData) => {

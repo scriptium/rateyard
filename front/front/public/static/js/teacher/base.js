@@ -29,11 +29,14 @@ let groupBoxTemplateElement = document.getElementById('group_box_template');
 myUserPromise.then((myUser) => {
     document.getElementById('header_teacher_full_name').innerHTML = myUser.full_name;
     myUser.groups.forEach(group => {
-        let groupBoxElement = groupBoxTemplateElement.content.cloneNode(true);
-
-        groupBoxElement.children[0].children[0].children[0].innerHTML = group.class.name;
-        groupBoxElement.children[0].children[0].children[1].innerHTML = group.name;
-        groupBoxElement.children[0].children[1].innerHTML = group.subject.name;
+        let groupBoxElement = groupBoxTemplateElement.content.cloneNode(true).children[0];
+        groupBoxElement.setAttribute('href', `/teacher/group.php?id=${group.id}`);
+        if (window.location.pathname + window.location.search === groupBoxElement.getAttribute('href')) {
+            groupBoxElement.classList.add('current');
+        }
+        groupBoxElement.children[0].children[0].innerHTML = group.class.name;
+        groupBoxElement.children[0].children[1].innerHTML = group.name;
+        groupBoxElement.children[1].innerHTML = group.subject.name;
         sidebarElement.appendChild(groupBoxElement);
     });
 });

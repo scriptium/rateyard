@@ -13,6 +13,9 @@ let classesHasFilled = new Promise(async (resolve, reject) => {
 let afterStudentGroupsElements = document.querySelectorAll('.appear_after_student_groups');
 let studentGroupsTbodyElement = document.querySelector('#student_groups tbody')
 
+let mainGroupsTbodyElement = document.querySelector('#groups_table tbody');
+
+
 let usernameElement = document.getElementById('username');
 let fullNameElement = document.getElementById('full_name');
 let classElement = document.getElementById('class_id');
@@ -103,4 +106,14 @@ async function deleteStudentButton(buttonElement) {
     else buttonElement.classList.remove('disabled');
 }
 
-studentHasFilled.then(hidePreloader);
+let groupsHasFilled = new Promise(async (resolve, reject) => {
+    getGroupsShort(undefined, studentId, undefined, undefined).then((responseData) => {
+        let parsedResponse = responseData.json;
+        console.log(parsedResponse);
+        insertGroupsData(parsedResponse, mainGroupsTbodyElement, false, false, null);
+        resolve();
+    }, reject)
+});
+
+let mainPromise = Promise.all([studentHasFilled, groupsHasFilled]);
+mainPromise.then(hidePreloader);

@@ -73,7 +73,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
         <div class="subtitle">Наявні учні:</div>
         <div class="title_block">
 
-            <a href="new_student.php">
+            <a href="new_student.php?class=<?php echo $_GET['id']; ?>">
                 <div class="blue_button">
                     <div class="button_icon add_icon"></div>
                     <div>Додати учня</div>
@@ -87,6 +87,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                 <div class="button_icon add_icon"></div>
                 <div>Перемістити всіх учнів до</div>
             </div>
+            <select id="classes_select" class="default_select"></select>
         </div>
         <table class="default_table" id="students_table">
             <thead>

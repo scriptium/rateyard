@@ -31,11 +31,20 @@ function searchStudents(text) {
     hidableChildrenStudentsTbody.update();
 }
 
-function showDragNDropArea() {
-    let element = document.getElementsByClassName('drag_and_drop_file').item(0);
-    if (element.classList.contains('show'))
-        element.classList.remove('show');
-    else element.classList.add('show');
+async function showDragNDropArea() {
+    let black_area = document.getElementsByClassName('drag_and_drop_file').item(0);
+    let drag_area = document.getElementById('drag_area');
+    if (black_area.classList.contains('show'))
+    {
+        black_area.animate([{opacity: 1}, {opacity: 0}], 250);
+        await drag_area.animate([{opacity: 1}, {opacity: 0}], 250).finished;
+
+        black_area.classList.remove('show');
+        drag_area.classList.remove('show');
+    } else {
+        black_area.classList.add('show');  
+        drag_area.classList.add('show');
+    }
 }
 
 let dragArea = document.getElementById('drag_area');

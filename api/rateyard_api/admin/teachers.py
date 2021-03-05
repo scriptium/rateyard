@@ -46,7 +46,7 @@ def create_teachers():
         abort(400, "Expected array of teachers")
 
     database = db.get_db()
-    cursor = db.cursor()
+    cursor = database.cursor()
     teacher_data_errors = db.check_teachers_data(request.json, True)
     print ( teacher_data_errors)
     if teacher_data_errors == {}:

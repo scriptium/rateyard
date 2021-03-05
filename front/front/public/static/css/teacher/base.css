@@ -55,11 +55,12 @@
 }
 
 .group_box:hover * {
-    color: white;
+    color: white !important;
 }
 
 .group_box.current * {
     color: var(--blue-color);
+    font-weight: 600;
 }
 
 #sidebar {

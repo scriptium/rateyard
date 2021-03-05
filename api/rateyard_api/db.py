@@ -20,7 +20,7 @@ def close_db(e=None):
         db.close()
 
 
-def get_group(id):
+def get_group_full(id):
     cursor = get_db().cursor()
     cursor.execute('''
     SELECT gr.id, gr.group_name, cl.id, cl.class_name

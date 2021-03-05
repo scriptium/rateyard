@@ -11,5 +11,5 @@ ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "admin"
 
 CORS_EXPOSE_HEADERS = ['Access-Token', 'Refresh-Token']
-JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=1)
+JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=30)
 JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)

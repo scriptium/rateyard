@@ -26,17 +26,15 @@
         <div id="load_data" class="input_grid">
             <div>ПІБ:</div><input id="full_name" type="text" class="default_input_text" placeholder="Введіть ПІБ вчителя">
             <div>Логін:</div><input id="username" type="text" class="default_input_text" placeholder="Введіть логін вчителя">
-            <div>Адреса електронної пошти:</div><input id="email" type="text" class="default_input_text"
-                placeholder="Введіть адресу електронної пошти вчителя">
-            <div>Новий пароль:</div><input id="password" type="text" class="default_input_text"
-                placeholder="Введіть новий пароль вчителя">
+            <div>Адреса електронної пошти:</div><input id="email" type="text" class="default_input_text" placeholder="Введіть адресу електронної пошти вчителя">
+            <div>Новий пароль:</div><input id="password" type="text" class="default_input_text" placeholder="Введіть новий пароль вчителя">
         </div>
     </div>
-        <script type="text/javascript" src="/static/js/base.js"></script>
-        <script type="text/javascript" src="/static/js/admin/base.js"></script>
-        <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
-        <script type="text/javascript" src="/static/js/admin/api.js"></script>
-        <script type="text/javascript" src="/static/js/admin/new_teacher.js"></script>
+    <script type="text/javascript" src="/static/js/base.js"></script>
+    <script type="text/javascript" src="/static/js/admin/base.js"></script>
+    <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
+    <script type="text/javascript" src="/static/js/admin/api.js"></script>
+    <script type="text/javascript" src="/static/js/admin/new_teacher.js"></script>
 </body>
 
 </html>
