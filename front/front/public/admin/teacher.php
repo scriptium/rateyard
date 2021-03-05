@@ -55,14 +55,14 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
             </div>
         </div>
         <table class="default_table" id="groups_table">
-            <tbody>
+            <thead>
                 <tr>
                     <th>№</th>
                     <th>Назва</th>
                     <th>Клас</th>
                     <th>Предмет</th>
                 </tr>
-            </tbody>
+            </thead>
             <tbody>
             </tbody>
         </table>

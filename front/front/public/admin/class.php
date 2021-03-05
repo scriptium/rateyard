@@ -41,7 +41,6 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                 <tr>
                     <th>№</th>
                     <th>Назва</th>
-                    <th width="150px"></th>
                 </tr>
             </thead>
             <tbody>
@@ -63,7 +62,6 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                     <th>ПІБ</th>
                     <th>Предмет</th>
                     <th>Група</th>
-                    <th style="width: 25px;"></th>
                 </tr>
             </thead>
             <tbody>

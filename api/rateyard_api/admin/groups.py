@@ -170,10 +170,10 @@ def get_groups_short():
                 abort(400)
         if "teacher_id" in request.json.keys():
             if type(request.json["teacher_id"]) == int:
-                exec_select_str += ''' subject.id, subject.subject_name'''
+                exec_select_str += ''', subjects.id, subjects.subject_name'''
                 exec_main_str += '''
                 INNER JOIN teachers_groups as tcgr ON tcgr.group_id=gr.id
-                INNER JOIN subjects ON subject.id=tcgr.subject_id
+                INNER JOIN subjects ON subjects.id=tcgr.subject_id
                 '''
                 exec_args.append(request.json["teacher_id"])
                 exec_where_str = " WHERE tcgr.teacher_id=%s"
@@ -211,13 +211,16 @@ def get_groups_short():
         "type": "GroupShort"
     } for data in exec_result
     ]
+
     if "teacher_id" in request.json.keys():
         for group in result:
-            result[group]["subject"] = {
-                "id": data[4],
-                "name": data[5],
-                "type": "Subject"
-            }
+            for data in exec_result:
+                group["subject"] = {
+                    "id": data[4],
+                    "name": data[5],
+                    "type": "Subject"
+                }
+    
     return jsonify(result)
 
 

@@ -11,8 +11,6 @@ let classesHasFilled = new Promise(async (resolve, reject) => {
 });
 
 let afterStudentGroupsElements = document.querySelectorAll('.appear_after_student_groups');
-let studentGroupsTbodyElement = document.querySelector('#student_groups tbody')
-
 let mainGroupsTbodyElement = document.querySelector('#groups_table tbody');
 
 
@@ -33,8 +31,8 @@ function updateStudentGroups() {
                 }
             )
     
-            studentGroupsTbodyElement.innerHTML = '';
-            insertGroupsData(groupsShort, studentGroupsTbodyElement, false, false, null);
+            mainGroupsTbodyElement.innerHTML = '';
+            insertGroupsData(groupsShort, mainGroupsTbodyElement, false, false, false, null);
             resolve();
             console.log(groupsShort);
         }, reject);

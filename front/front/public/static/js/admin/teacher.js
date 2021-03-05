@@ -7,6 +7,8 @@ let fullNameElement = document.getElementById('full_name');
 let passwordElement = document.getElementById('password');
 let emailElement = document.getElementById('email');
 
+let mainGroupsTbodyElement = document.querySelector('#groups_table tbody');
+
 function updateTeacherData() {
     return new Promise(async (resolve, reject) => {
         getTeachers([teacherId]).then(async (responseData) => {
@@ -65,4 +67,13 @@ async function deleteTeacherButton(buttonElement) {
     else buttonElement.classList.remove('disabled');
 }
 
-teacherHasFilled.then(hidePreloader);
+let groupsHasFilled = new Promise(async (resolve, reject) => {
+    getGroupsShort(undefined, undefined, teacherId, undefined).then((responseData) => {
+        let parsedResponse = responseData.json;
+        insertGroupsData(parsedResponse, mainGroupsTbodyElement, true, true, true, null);
+        resolve();
+    }, reject)
+});
+
+let mainPromise = Promise.all([teacherHasFilled, groupsHasFilled]);
+mainPromise.then(hidePreloader);

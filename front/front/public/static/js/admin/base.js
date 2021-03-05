@@ -62,7 +62,7 @@ function insertStudentsData(studentsData, mainTbodyElement, isClass = false, isC
     });
 }
 
-function insertGroupsData(groupsData, mainTbodyElement, isClass = false, isSettings = false, searchIndex = null) {
+function insertGroupsData(groupsData, mainTbodyElement, isClass = false, isSubject = false, isSettings = false, searchIndex = null) {
     groupsData.forEach(group => {
         let newRowElement = document.createElement('tr');
 
@@ -75,6 +75,11 @@ function insertGroupsData(groupsData, mainTbodyElement, isClass = false, isSetti
         if (isClass) {
             let groupClassElement = newRowElement.appendChild(document.createElement('td'));
             groupClassElement.innerHTML = `<a class=\"text\" href=\"class.php?id=${group.class.id}\">${group.class.name}</a>`;
+        }
+
+        if (isSubject) {
+            let lecturerSubjectElement = newRowElement.appendChild(document.createElement('td'));
+            lecturerSubjectElement.innerHTML = group.subject.name;
         }
 
         if (isSettings) {

@@ -19,7 +19,6 @@ let classesHasFilled = new Promise (async (resolve, reject) => {
 
 let studentsHasFilled = new Promise(async (resolve, reject) => {
     getClassFull(classId).then((responseData) => {
-        console.log('')
         let parsedResponse = responseData.json;
         insertStudentsData(parsedResponse.students, mainStudentsTbodyElement, false, false, null);
         resolve();
@@ -29,8 +28,7 @@ let studentsHasFilled = new Promise(async (resolve, reject) => {
 let groupsHasFilled = new Promise(async (resolve, reject) => {
     getGroupsShort(undefined, undefined, undefined, classId).then((responseData) => {
         let parsedResponse = responseData.json;
-        console.log(parsedResponse);
-        insertGroupsData(parsedResponse, mainGroupsTbodyElement, false, true, null);
+        insertGroupsData(parsedResponse, mainGroupsTbodyElement, false, false, false, null);
         resolve();
     }, reject)
 });
@@ -38,8 +36,10 @@ let groupsHasFilled = new Promise(async (resolve, reject) => {
 let lectureresHasFilled = new Promise(async (resolve, reject) => {
     getGroupFull(classId).then((responseData) => {
         let parsedResponse = responseData.json;
-        console.log(parsedResponse.group_lecturers);
-        let groupInfo = JSON.stringify(parsedResponse.id, parsedResponse.name);
+        let groupInfo = {
+            "id": parsedResponse.id,
+            "name": parsedResponse.name
+        };
         insertLecturersData(parsedResponse.group_lecturers, mainLecturersTbodyElement, groupInfo);
         resolve();
     }, reject)
