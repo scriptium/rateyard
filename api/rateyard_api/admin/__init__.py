@@ -28,6 +28,7 @@ from . import teachers
 from . import groups
 from . import students
 from . import classes
+from . import subjects
 
 bp.add_url_rule("/create_students", methods=("POST", ), view_func=students.create_students)
 bp.add_url_rule("/delete_students", methods=("POST", ), view_func=students.delete_students)
@@ -48,3 +49,7 @@ bp.add_url_rule("/create_teachers", methods=("POST", ), view_func=teachers.creat
 bp.add_url_rule("/get_teachers", methods=("POST", ), view_func=teachers.get_teachers)
 bp.add_url_rule("/delete_teachers", methods=("POST", ), view_func=teachers.delete_teachers)
 bp.add_url_rule("/edit_teachers", methods=("POST", ), view_func=teachers.edit_teachers)
+bp.add_url_rule("/create_lecturer", methods=("POST", ), view_func=teachers.create_lecturer)
+bp.add_url_rule("/delete_lecturer", methods=("POST", ), view_func=teachers.delete_lecturer)
+
+bp.add_url_rule("/get_subjects", methods=("GET", ), view_func=subjects.get_subjects)

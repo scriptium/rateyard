@@ -208,16 +208,26 @@ async function deleteStudentsFromClass(class_id) {
     };
 }
 
+async function createLecturer(teacher_id, group_id, subject_id) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'create_lecturer', 'POST', { 'Content-Type': 'application/json'},
+        JSON.stringify({ teacher_id, group_id, subject_id }), true
+    );
+}
 
-
-
-
-
-
-
-
-
-
-
-
+async function deleteLecturer(teacher_id, group_id, subject_id) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'delete_lecturer', 'POST', { 'Content-Type': 'application/json'},
+        JSON.stringify({ teacher_id, group_id, subject_id }), true
+    );
+}
+async function getSubjects() {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'get_subjects', 'GET', {}, null, true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}
 

@@ -1,3 +1,25 @@
+from flask import jsonify
+
+
+from . import admin_token_required, db
+
+@admin_token_required
+def get_subjects():
+	cursor = db.get_db().cursor()
+	cursor.execute('''
+		SELECT id, subject_name
+		FROM subjects
+	''')
+	exec_result = cursor.fetchall()
+	result = [{
+        "id": data[0],
+        "name": data[1],
+        "type": "Subject"
+    } for data in exec_result
+    ]
+	return jsonify(result)
+
+
 # @bp.route("/create_subject", methods=("POST", ))
 # @admin_token_required
 # def create_subject():
@@ -81,24 +103,3 @@
 #     return jsonify({
 #         "result": "OK"
 #     }), 201
-
-# @bp.route("/get_subjects", methods=("GET", ))
-# @admin_token_required
-# def get_subjects():
-#     db = get_db()
-#     cursor = db.cursor()
-#     cursor.execute('''
-#         SELECT id, subject_name
-#         FROM subjects;
-#         '''
-#                    )
-#     exec_result = cursor.fetchall()
-#     if exec_result is None:
-#         return None
-#     result = [{
-#         "id": data[0],
-#         "name": data[1],
-#         "type": "Subject"
-#     } for data in exec_result
-#     ]
-#     return jsonify(result), 200

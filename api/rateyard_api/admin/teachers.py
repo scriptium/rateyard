@@ -92,7 +92,7 @@ def delete_teachers():
         exec_str += (" OR  id=%s")
         exec_args.append(teacher_id)
     database = db.get_db()
-    cursor = db.cursor()
+    cursor = database.cursor()
     cursor.execute(exec_str, exec_args)
     database.commit()
     return jsonify({
@@ -128,3 +128,57 @@ def edit_teachers():
     else:
         return jsonify(teacher_data_errors), 400
 
+@admin_token_required
+def create_lecturer():
+    if not request.is_json:
+        abort(400, "Expected json")
+    
+    lecturer_attributes = ["teacher_id", "group_id", "subject_id"]
+    for attribute in lecturer_attributes:
+        if (not attribute in request.json.keys() or
+                type(request.json[attribute]) != int):
+            abort(400, "Expected teacher id, group id, subject id as integers")
+
+    database = db.get_db()
+    cursor = database.cursor()
+
+    cursor.execute('''
+        INSERT INTO teachers_groups (
+            teacher_id,
+            group_id,
+            subject_id
+        )
+        VALUES(%s, %s, %s);
+    ''', (request.json["teacher_id"], request.json["group_id"], 
+            request.json["subject_id"]))
+    
+    database.commit()
+    return jsonify({
+        "result": "OK"
+    })
+
+@admin_token_required
+def delete_lecturer():
+    if not request.is_json:
+        abort(400, "Expected json")
+    
+    lecturer_attributes = ["teacher_id", "group_id", "subject_id"]
+    for attribute in lecturer_attributes:
+        if (not attribute in request.json.keys() or
+                type(request.json[attribute]) != int):
+            abort(400, "Expecter teacher id, group id, subject id as integers")
+
+    database = db.get_db()
+    cursor = database.cursor()
+
+    cursor.execute('''
+        DELETE 
+        FROM teachers_groups
+        WHERE teacher_id=%s AND group_id=%s AND subject_id=%s
+    ''', (request.json["teacher_id"], request.json["group_id"], 
+            request.json["subject_id"]))
+    
+    database.commit()
+    return jsonify({
+        "result": "OK"
+    })
