@@ -108,7 +108,7 @@ let groupsHasFilled = new Promise(async (resolve, reject) => {
     getGroupsShort(undefined, studentId, undefined, undefined).then((responseData) => {
         let parsedResponse = responseData.json;
         console.log(parsedResponse);
-        insertGroupsData(parsedResponse, mainGroupsTbodyElement, false, false, null);
+        insertGroupsData(parsedResponse, mainGroupsTbodyElement, false, false, false, null);
         resolve();
     }, reject)
 });
