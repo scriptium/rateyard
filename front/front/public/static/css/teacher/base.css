@@ -36,7 +36,8 @@
 }
 
 .group_box * {
-    color: var(--light-blue-color);
+    
+    color: var(--blue-color);
     transition: color 0.3s;
     font-weight: 600;
     font-size: var(--normal-font-size);
@@ -57,10 +58,11 @@
 .group_box:hover * {
     color: white !important;
 }
-
+.group_box.current {
+    background: var(--blue-color);
+}
 .group_box.current * {
-    color: var(--blue-color);
-    font-weight: 600;
+    color: white;
 }
 
 #sidebar {

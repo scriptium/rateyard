@@ -32,3 +32,14 @@ async function editMe(changes) {
         json: JSON.parse(xhr.responseText)
     }
 }
+
+async function getGroupFull(id) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'get_group_full', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify({id}), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}

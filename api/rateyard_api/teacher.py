@@ -71,7 +71,7 @@ def get_me():
     return jsonify(response_json)
 
 
-@bp.route("/get_group_full", methods=("GET", ))
+@bp.route("/get_group_full", methods=("POST", ))
 @teacher_token_required
 def get_group_full():
     if (
@@ -81,7 +81,7 @@ def get_group_full():
     ):
         abort(400)
 
-    result_json = db.get_group_full()
+    result_json = db.get_group_full(request.json['id'])
     if result_json is None:
         abort(400)
     cursor = db.get_db().cursor()

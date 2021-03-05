@@ -99,17 +99,23 @@ INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Група 3', 1
 INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Група 4', 16, True);
 
 INSERT INTO students (username, full_name, email, password_hash, class_id)
-VALUES ('shevel', 'Шевель Денис', 'shevel@mail.com', crypt('1', gen_salt('md5')), 1);
+VALUES ('shevel', 'Шевель Денис', 'shevel@mail.com', crypt('1', gen_salt('md5')), 16);
 INSERT INTO students (username, full_name, email, password_hash, class_id)
-VALUES ('stetsiuk', 'Стецюк Юрій', 'stetsiuk@mail.com', crypt('1', gen_salt('md5')), 1);
+VALUES ('stetsiuk', 'Стецюк Юрій', 'stetsiuk@mail.com', crypt('1', gen_salt('md5')), 16);
 INSERT INTO students (username, full_name, email, password_hash, class_id)
-VALUES ('patraboy', 'Патрабой Назарій', 'patraboy@mail.com', crypt('1', gen_salt('md5')), 1);
+VALUES ('patraboy', 'Патрабой Назарій', 'patraboy@mail.com', crypt('1', gen_salt('md5')), 16);
 INSERT INTO students (username, full_name, email, password_hash, class_id)
-VALUES ('borovyi', 'Боровий Іван', 'borovyi@mail.com', crypt('1', gen_salt('md5')), 1);
+VALUES ('borovyi', 'Боровий Іван', 'borovyi@mail.com', crypt('1', gen_salt('md5')), 16);
 INSERT INTO students (username, full_name, email, password_hash, class_id)
-VALUES ('gavrysh', 'Гавриш Олексій', 'gavrysh@mail.com', crypt('1', gen_salt('md5')), 1);
-INSERT INTO teachers (username, full_name, email, password_hash)
+VALUES ('gavrysh', 'Гавриш Олексій', 'gavrysh@mail.com', crypt('1', gen_salt('md5')), 16);
 
+INSERT INTO students_groups (student_id, group_id) VALUES (1, 16);
+INSERT INTO students_groups (student_id, group_id) VALUES (2, 16);
+INSERT INTO students_groups (student_id, group_id) VALUES (3, 16);
+INSERT INTO students_groups (student_id, group_id) VALUES (4, 16);
+INSERT INTO students_groups (student_id, group_id) VALUES (5, 16);
+
+INSERT INTO teachers (username, full_name, email, password_hash)
 VALUES ('moroz', 'Мороз Микола Петрович', 'moroz@mail.com', crypt('1', gen_salt('md5')));
 INSERT INTO teachers (username, full_name, email, password_hash)
 VALUES ('sklyar', 'Скляр Ірина Вільївна', 'sklyar@mail.com', crypt('1', gen_salt('md5')));
