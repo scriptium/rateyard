@@ -62,7 +62,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
         </table>
         <div class="subtitle">Викладачі групи:</div>
         <div class="title_block">
-            <div class="blue_button" onclick="">
+            <div class="blue_button" onclick="addNewLecturer(this)">
                 <div class="button_icon add_icon"></div>
                 <div>Додати викладача</div>
             </div>

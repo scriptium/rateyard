@@ -31,14 +31,28 @@ function makeInputTextNotWrong(inputTextElement) {
 }
 
 function makeInputTextWrong(inputTextElement) {
-    if (inputTextElement.hasAttribute('oninput')) {
-        inputTextElement.setAttribute(
-            'default_oninput',
-            inputTextElement.getAttribute('oninput')
-        );
+    if(!inputTextElement.classList.contains('wrong')) {
+        if (inputTextElement.hasAttribute('oninput')) {
+            inputTextElement.setAttribute(
+                'default_oninput',
+                inputTextElement.getAttribute('oninput')
+            );
+        }
+        inputTextElement.setAttribute('oninput', 'makeInputTextNotWrong(this)');
+        inputTextElement.classList.add('wrong');
     }
-    inputTextElement.setAttribute('oninput', 'makeInputTextNotWrong(this)');
-    inputTextElement.classList.add('wrong');
+}
+
+function makeDropDownSelectNotWrong(selectElement) {
+    selectElement.removeAttribute('onchange');
+    selectElement.classList.remove('wrong');
+}
+
+function makeDropDownSelectWrong(selectElement) {
+    if(!selectElement.classList.contains('wrong')) {
+        selectElement.setAttribute('onchange', 'makeDropDownSelectNotWrong(this)');
+        selectElement.classList.add('wrong');
+    }
 }
 
 function createCheckboxElement() {

@@ -5,7 +5,7 @@ let changesSet = new ChangesSet(document.querySelectorAll(".appear_on_change"));
 let classesHasFilled = new Promise(async (resolve, reject) => {
     getClassesShort().then((responseData) => {
         let classesSelectElement = document.getElementById('class_id');
-        fillClassesSelect(classesSelectElement, responseData.json);
+        fillDropDownSelect(classesSelectElement, responseData.json);
         resolve();
     }, reject)
 });

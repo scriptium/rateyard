@@ -3,7 +3,7 @@ let windowHasLoaded = new Promise((resolve) => { window.onload = resolve })
 let classesHasFilled = new Promise(async (resolve, reject) => {
     getClassesShort().then(async (responseData) => {
         let classesSelectElement = document.getElementById('class_id');
-        fillClassesSelect(classesSelectElement, responseData.json);
+        fillDropDownSelect(classesSelectElement, responseData.json);
         await windowHasLoaded;
         document.querySelectorAll('.appear_after_classes').forEach(
             (element) => {

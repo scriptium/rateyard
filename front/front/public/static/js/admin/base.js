@@ -5,11 +5,11 @@ function logoutButton(button) {
     document.location.replace('login.php')
 }
 
-function fillClassesSelect(dropdowmElement, classes) {
-    classes.forEach(_class => {
+function fillDropDownSelect(dropdowmElement, options) {
+    options.forEach(option => {
         let newOptionElement = document.createElement('option');
-        newOptionElement.value = _class.id;
-        newOptionElement.innerHTML = _class.name;
+        newOptionElement.value = option.id;
+        newOptionElement.innerHTML = option.name;
         dropdowmElement.appendChild(newOptionElement);
     });
 }

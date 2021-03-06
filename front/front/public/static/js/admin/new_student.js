@@ -1,7 +1,7 @@
 let classesHasFilled = new Promise (async (resolve, reject) => {
     getClassesShort().then((responseData) => {
         let classesSelectElement = document.getElementById('classes_select');
-        fillClassesSelect(classesSelectElement, responseData.json);
+        fillDropDownSelect(classesSelectElement, responseData.json);
         let val = "<?php echo $_GET['class']; ?>";
         console.log("Its");
         console.log(val);
@@ -33,7 +33,7 @@ function saveNewStudentButton(buttonElement) {
     createStudents(requestJSON).then((responseData) => {
         if (responseData.status == 400) {
             let parsedResponseJSON = responseData.json;
-
+            console.log(parsedResponseJSON);
             if (parsedResponseJSON[0].includes(0)) makeInputTextWrong(usernameElement);
             if (parsedResponseJSON[0].includes(1)) makeInputTextWrong(fullNameElement);
             if (parsedResponseJSON[0].includes(2)) makeInputTextWrong(classElement);

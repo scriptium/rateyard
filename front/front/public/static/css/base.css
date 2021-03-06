@@ -249,18 +249,21 @@ input[type='search'] {
     color: #B9B9B9;
     transition: color 0.3s;
 }
-.default_input_text.wrong {
+.default_input_text.wrong,
+.default_select.wrong {
     box-shadow: 2px 2px 9px 1px rgba(195, 52, 32, 0.65);
     color: var(--red-color);
 }
 .default_input_text.wrong::placeholder {
     color: rgba(195, 52, 32, 0.65);
 }
-.default_input_text.wrong:focus {
+.default_input_text.wrong:focus,
+.default_select.wrong:focus {
     box-shadow: 2px 2px 9px 3px rgba(195, 52, 32, 0.65);
 }
+
 .fake_readonly_input {
-    margin: 10px 20px;
+    margin: 5px 20px 10px 20px;
     font-weight: bold;
 }
 .fake_readonly_input * {

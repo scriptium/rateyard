@@ -132,53 +132,52 @@ def edit_teachers():
 def create_lecturer():
     if not request.is_json:
         abort(400, "Expected json")
-    
-    lecturer_attributes = ["teacher_id", "group_id", "subject_id"]
-    for attribute in lecturer_attributes:
-        if (not attribute in request.json.keys() or
-                type(request.json[attribute]) != int):
-            abort(400, "Expected teacher id, group id, subject id as integers")
 
     database = db.get_db()
-    cursor = database.cursor()
+    cursor = database.cursor()    
+    lecturer_data_errors = db.check_lecturer_data(request.json)
+    print(lecturer_data_errors)
+    if lecturer_data_errors == []:
+        cursor.execute('''
+            INSERT INTO teachers_groups (
+                teacher_id,
+                group_id,
+                subject_id
+            )
+            VALUES(%s, %s, %s);
+        ''', (request.json["teacher_id"], request.json["group_id"], 
+                request.json["subject_id"]))
 
-    cursor.execute('''
-        INSERT INTO teachers_groups (
-            teacher_id,
-            group_id,
-            subject_id
-        )
-        VALUES(%s, %s, %s);
-    ''', (request.json["teacher_id"], request.json["group_id"], 
-            request.json["subject_id"]))
-    
-    database.commit()
-    return jsonify({
-        "result": "OK"
-    })
+        database.commit()
+        return jsonify({
+            "result": "OK"
+        })
+    else:
+        return jsonify(lecturer_data_errors), 400
 
 @admin_token_required
 def delete_lecturer():
     if not request.is_json:
         abort(400, "Expected json")
     
-    lecturer_attributes = ["teacher_id", "group_id", "subject_id"]
-    for attribute in lecturer_attributes:
-        if (not attribute in request.json.keys() or
-                type(request.json[attribute]) != int):
-            abort(400, "Expecter teacher id, group id, subject id as integers")
-
     database = db.get_db()
     cursor = database.cursor()
 
-    cursor.execute('''
-        DELETE 
-        FROM teachers_groups
-        WHERE teacher_id=%s AND group_id=%s AND subject_id=%s
-    ''', (request.json["teacher_id"], request.json["group_id"], 
-            request.json["subject_id"]))
-    
-    database.commit()
-    return jsonify({
-        "result": "OK"
-    })
+    lecturer_data_errors = db.check_lecturer_data(request.json)
+
+    if (lecturer_data_errors == [3] or 
+        lecturer_data_errors == []):
+        cursor.execute('''
+            DELETE 
+            FROM teachers_groups
+            WHERE teacher_id=%s AND group_id=%s AND subject_id=%s
+        ''', (request.json["teacher_id"], request.json["group_id"], 
+                request.json["subject_id"]))
+
+        database.commit()
+        return jsonify({
+            "result": "OK"
+        })
+    else:
+        return jsonify(lecturer_data_errors), 400
+

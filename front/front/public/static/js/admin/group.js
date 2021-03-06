@@ -29,7 +29,7 @@ function updateGroupData() {
 }
 
 async function saveGroupChanges(buttonElement) {
-    buttonElement.classList.add('disabled');
+    disableButton(buttonElement);
     let groupChanges = {id: groupId};
     if (changesSet.changedElements.has(groupNameElement))
         groupChanges.name = groupNameElement.value;
@@ -51,11 +51,11 @@ async function saveGroupChanges(buttonElement) {
     if (responseData.status === 200) {
         await updateGroupData();
         changesSet.discardChanges();
-        buttonElement.classList.remove('disabled');
+        enableButton(buttonElement);
     }
     else if (responseData.status === 400) {
         if (responseData.json.includes(1)) makeInputTextWrong(groupNameElement);
-        buttonElement.classList.remove('disabled');
+        enableButton(buttonElement);
     }
 }
 
@@ -72,7 +72,7 @@ let lectureresHasFilled = new Promise(async (resolve, reject) => {
 
 
 function deleteGroupButton(buttonElement) {
-    buttonElement.classList.add('disabled');
+    disableButton(buttonElement);
     let isConfirmed = confirm(`Видалити групу №${groupId}?`);
     if (isConfirmed) {
         deleteGroup(groupId).then(
@@ -80,7 +80,16 @@ function deleteGroupButton(buttonElement) {
             () => { buttonElement.classList.remove('disabled') }
         )
     }
-    else buttonElement.classList.remove('disabled');
+    else enableButton(buttonElement);
+}
+
+function addNewLecturer(buttonElement) {
+    disableButton(buttonElement);
+    sessionStorage.setItem('group_id', groupId);
+    sessionStorage.setItem('group_name', groupNameElement.value);
+    sessionStorage.setItem('class_name', groupClassIdElement.children[0].children[0].innerHTML);
+    window.location = 'new_lecturer.php';
+    enableButton(buttonElement);
 }
 
 

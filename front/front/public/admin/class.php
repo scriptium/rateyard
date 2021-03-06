@@ -25,7 +25,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
     ?>
     <div id="content">
         <div class="title_block">
-            <div class="title">Налаштування <span id="class_id"><?php echo $_GET['id']; ?></span> класу </div>
+            <div class="title">Налаштування <span id="class_id" value="<?php echo $_GET['id']; ?>"></span> класу </div>
         </div>
         <div class="subtitle">Групи класу:</div>
         <div class="title_block">
@@ -48,12 +48,10 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
         </table>
         <div class="subtitle">Викладачі класу:</div>
         <div class="title_block">
-            <a href="new_teacher.php">
-                <div class="blue_button">
-                    <div class="button_icon add_icon"></div>
-                    <div>Додати вчителя</div>
-                </div>
-            </a>
+            <div class="blue_button" onclick="addNewLecturer(this)">
+                <div class="button_icon add_icon"></div>
+                <div>Додати викладача</div>
+            </div>
         </div>
         <table class="default_table" id="lecturers_table">
             <thead>
@@ -70,7 +68,6 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
 
         <div class="subtitle">Наявні учні:</div>
         <div class="title_block">
-
             <a href="new_student.php?class=<?php echo $_GET['id']; ?>">
                 <div class="blue_button">
                     <div class="button_icon add_icon"></div>

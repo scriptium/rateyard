@@ -235,3 +235,61 @@ def check_teachers_data(data, all_required=False):
             teacher_data_errors[teacher_index].append(3)
 
     return teacher_data_errors
+
+
+def check_lecturer_data(lecturer):
+    '''
+        Error codes for lectures:
+        0: teacher_id not found or teacher with this id doesn't exist
+        1: group_id not found or group with this id doesn't exist
+        2: subject_id not found or subject with this id doesn't exist
+        3: lecturer with same data already exists 
+    '''
+    cursor = get_db().cursor()
+    lecturer_data_errors = []
+    print(lecturer)
+    if (not "teacher_id" in lecturer.keys() or
+        type(lecturer["teacher_id"]) != int):
+        lecturer_data_errors.append(0)
+    else:
+        cursor.execute(
+            "SELECT 1 FROM teachers WHERE id=%s",
+            (lecturer["teacher_id"], )
+        )
+        if cursor.fetchone() is None:
+            lecturer_data_errors.append(0)
+    
+    if (not "group_id" in lecturer.keys() or
+        type(lecturer["group_id"]) != int):
+        lecturer_data_errors.append(1)
+    else:
+        cursor.execute(
+            "SELECT 1 FROM groups WHERE id=%s",
+            (lecturer["group_id"], )
+        )
+        if cursor.fetchone() is None:
+            lecturer_data_errors.append(1)
+
+    if (not "subject_id" in lecturer.keys() or
+        type(lecturer["subject_id"]) != int):
+        lecturer_data_errors.append(2)
+    else:
+        cursor.execute(
+            "SELECT 1 FROM subjects WHERE id=%s",
+            (lecturer["subject_id"], )
+        )
+        if cursor.fetchone() is None:
+            lecturer_data_errors.append(2)
+
+    if lecturer_data_errors == []:
+        cursor.execute('''
+            SELECT 1
+            FROM teachers_groups
+            WHERE teacher_id=%s AND group_id=%s AND subject_id=%s
+        ''', (lecturer["teacher_id"], lecturer["group_id"], lecturer["subject_id"]))
+
+        if not cursor.fetchone() is None:
+            lecturer_data_errors.append(3)
+
+    return lecturer_data_errors
+    

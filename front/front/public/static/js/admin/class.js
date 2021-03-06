@@ -1,5 +1,8 @@
-let classId = parseInt(document.querySelector('#class_id').innerHTML);
+let classId = parseInt(document.querySelector('#class_id').getAttribute('value'));
+console.log(classId);
+let className = '';
 
+let classNameElement = document.querySelector('#class_id');
 let studentsTableElement = document.querySelector('#students_table');
 let mainStudentsTbodyElement = document.querySelector('#students_table tbody');
 
@@ -12,7 +15,7 @@ let mainLecturersTbodyElement = document.querySelector('#lecturers_table tbody')
 let classesHasFilled = new Promise (async (resolve, reject) => {
     getClassesShort().then((responseData) => {
         let classesSelectElement = document.getElementById('classes_select');
-        fillClassesSelect(classesSelectElement, responseData.json);
+        fillDropDownSelect(classesSelectElement, responseData.json);
         resolve();
     }, reject);
 }) 
@@ -20,6 +23,7 @@ let classesHasFilled = new Promise (async (resolve, reject) => {
 let studentsHasFilled = new Promise(async (resolve, reject) => {
     getClassFull(classId).then((responseData) => {
         let parsedResponse = responseData.json;
+        className = parsedResponse.name;
         insertStudentsData(parsedResponse.students, mainStudentsTbodyElement, false, false, null);
         resolve();
     }, reject)
@@ -57,5 +61,19 @@ async function deleteAllStudents(buttonElement) {
     else buttonElement.classList.remove('disabled');
 }
 
+function addNewLecturer(buttonElement) {
+    disableButton(buttonElement);
+    sessionStorage.setItem('group_id', classId);
+    sessionStorage.setItem('group_name', 'Весь клас');
+    sessionStorage.setItem('class_name', className);
+    window.location = 'new_lecturer.php';
+    enableButton(buttonElement);
+}
+
+
+
 let mainPromise = Promise.all([studentsHasFilled, groupsHasFilled, lectureresHasFilled]);
-mainPromise.then(hidePreloader);
+mainPromise.then(() => {
+    classNameElement.innerHTML = className;
+    hidePreloader();
+});
