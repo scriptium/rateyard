@@ -137,8 +137,8 @@ def create_group():
         return jsonify(group_data_errors), 400
 
     cursor.execute('''
-    INSERT INTO groups (class_id, group_name, is_editable)
-    VALUES (%s, %s, True) RETURNING id;
+    INSERT INTO groups (class_id, group_name, is_full_class_group)
+    VALUES (%s, %s, False) RETURNING id;
     ''', (request.json["class_id"], request.json["name"]))
 
     group_id = cursor.fetchone()[0]
