@@ -70,7 +70,7 @@ async function deleteTeacherButton(buttonElement) {
 let groupsHasFilled = new Promise(async (resolve, reject) => {
     getGroupsShort(undefined, undefined, teacherId, undefined).then((responseData) => {
         let parsedResponse = responseData.json;
-        insertGroupsData(parsedResponse, mainGroupsTbodyElement, true, true, true, null);
+        insertGroupsData(parsedResponse, mainGroupsTbodyElement, true, true, false, null);
         resolve();
     }, reject)
 });
