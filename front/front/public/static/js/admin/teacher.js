@@ -70,10 +70,19 @@ async function deleteTeacherButton(buttonElement) {
 let groupsHasFilled = new Promise(async (resolve, reject) => {
     getGroupsShort(undefined, undefined, teacherId, undefined).then((responseData) => {
         let parsedResponse = responseData.json;
-        insertGroupsData(parsedResponse, mainGroupsTbodyElement, true, true, false, null);
+        insertGroupsData(parsedResponse, mainGroupsTbodyElement, true, true, null);
         resolve();
     }, reject)
 });
+
+function addGroup(buttonElement) {
+    disableButton(buttonElement);
+    sessionStorage.setItem('class', JSON.stringify('false'))
+    sessionStorage.setItem('group', JSON.stringify('false'));
+    sessionStorage.setItem('teacher', JSON.stringify({id: teacherId, name: fullNameElement.value}));
+    window.location = 'new_lecturer.php';
+    enableButton(buttonElement);
+}
 
 let mainPromise = Promise.all([teacherHasFilled, groupsHasFilled]);
 mainPromise.then(hidePreloader);

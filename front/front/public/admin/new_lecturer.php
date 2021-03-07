@@ -24,10 +24,10 @@
             </div>
         </div>
         <div id="load_data" class="input_grid">
-            <div>Клас:</div><div id="class_name" class="fake_readonly_input"></div>
-            <div>Група:</div><div id="group_name" class="fake_readonly_input"></div>
+            <div id="class_block">Клас:</div>
+            <div id="group_block">Група:</div>
             <div>Предмет:</div><select id="subject_select" class="default_select"></select>
-            <div>Вчитель:</div><select id="teacher_select" class="default_select"></select>
+            <div id="teacher_block">Вчитель:</div>
         </div>
         <script type="text/javascript" src="/static/js/base.js"></script>
         <script type="text/javascript" src="/static/js/admin/base.js"></script>

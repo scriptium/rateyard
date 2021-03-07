@@ -5,12 +5,13 @@ function logoutButton(button) {
     document.location.replace('login.php')
 }
 
-function fillDropDownSelect(dropdowmElement, options) {
+function fillDropDownSelect(dropDownElement, options) {
+    dropDownElement.innerHTML = '';
     options.forEach(option => {
         let newOptionElement = document.createElement('option');
         newOptionElement.value = option.id;
         newOptionElement.innerHTML = option.name;
-        dropdowmElement.appendChild(newOptionElement);
+        dropDownElement.appendChild(newOptionElement);
     });
 }
 
@@ -50,7 +51,7 @@ function insertStudentsData(studentsData, mainTbodyElement, isClass = false, isC
         }
 
         if(searchIndex) {
-            pattern = `${student.id} ${student.username} ${student.full_name} ${student.email}`;
+            let pattern = `${student.id} ${student.username} ${student.full_name} ${student.email}`;
             if (isClass) 
                 pattern += ` ${student.class.name}`;
             searchIndex.add(
@@ -62,7 +63,7 @@ function insertStudentsData(studentsData, mainTbodyElement, isClass = false, isC
     });
 }
 
-function insertGroupsData(groupsData, mainTbodyElement, isClass = false, isSubject = false, isSettings = false, searchIndex = null) {
+function insertGroupsData(groupsData, mainTbodyElement, isClass = false, isSubject = false, searchIndex = null) {
     groupsData.forEach(group => {
         let newRowElement = document.createElement('tr');
 
@@ -82,18 +83,13 @@ function insertGroupsData(groupsData, mainTbodyElement, isClass = false, isSubje
             lecturerSubjectElement.innerHTML = group.subject.name;
         }
 
-        if (isSettings) {
-            let groupsSettingsElement = newRowElement.appendChild(document.createElement('td'));
-            groupsSettingsElement.innerHTML = `<a class=\"text\" href=\"group.php?id=${group.id}\">Налаштування</a>`;
-        }
-
         if (searchIndex) {
-            pattern = `${group.id} ${group.name}`;
+            let pattern = `${group.id} ${group.name}`;
             if (isClass)
-                pattern += ` ${group.id}`;
+                pattern += ` ${group.class.name}`;
             searchIndex.add(
                 newRowElement,
-                `${group.id} ${group.class.name}`
+                pattern
             );
         }
         mainTbodyElement.appendChild(newRowElement);

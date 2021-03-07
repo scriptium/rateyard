@@ -1,7 +1,9 @@
 let groupId = parseInt(document.getElementById("group_id").innerHTML);
 
 let groupNameElement = document.getElementById('name');
-let groupClassIdElement = document.getElementById('class_id');
+let groupClassIdElement = document.querySelector('#class_id')
+let groupClassName;
+let groupClassId;
 let groupStudentsTbodyElement = document.querySelector('#group_students tbody')
 
 let mainLecturersTbodyElement = document.querySelector('#lecturers_table tbody');
@@ -20,7 +22,9 @@ function updateGroupData() {
                 `<div class=\"fake_readonly_input\"><a
             class=\"text\" 
             href=\"class.php?id=${parsedGroup.class.id}\">${parsedGroup.class.name}</a></div>`;
-
+            
+            groupClassId = parsedGroup.class.id;
+            groupClassName = parsedGroup.class.name;
             groupStudentsTbodyElement.innerHTML = '';
             insertStudentsData(parsedGroup.group_class_students, groupStudentsTbodyElement, false, true, null);
             resolve();
@@ -85,9 +89,9 @@ function deleteGroupButton(buttonElement) {
 
 function addNewLecturer(buttonElement) {
     disableButton(buttonElement);
-    sessionStorage.setItem('group_id', groupId);
-    sessionStorage.setItem('group_name', groupNameElement.value);
-    sessionStorage.setItem('class_name', groupClassIdElement.children[0].children[0].innerHTML);
+    sessionStorage.setItem('class', JSON.stringify({id: groupClassId, name: groupClassName}))
+    sessionStorage.setItem('group', JSON.stringify({id: groupId, name: groupNameElement.value}));
+    sessionStorage.setItem('teacher', JSON.stringify('false'));
     window.location = 'new_lecturer.php';
     enableButton(buttonElement);
 }

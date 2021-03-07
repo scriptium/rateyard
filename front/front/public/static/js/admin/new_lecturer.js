@@ -1,11 +1,15 @@
-let classNameElement = document.querySelector('#class_name');
-let groupNameElement = document.querySelector('#group_name');
+let classBlock = document.querySelector('#class_block');
+let classElement;
+let groupBlock = document.querySelector('#group_block');
+let groupElement;
 let subjectSelectElement = document.querySelector('#subject_select');
-let teacherSelectElement = document.querySelector('#teacher_select');
+let teacherBlock = document.querySelector('#teacher_block');
+let teacherElement;
 
-let groupId = sessionStorage["group_id"];
-let groupName = sessionStorage["group_name"];
-let className = sessionStorage["class_name"];
+let classData = JSON.parse(sessionStorage['class']);
+let groupData = JSON.parse(sessionStorage['group']);
+let teacherData = JSON.parse(sessionStorage['teacher']);
+
 
 let subjectsHasFilled = new Promise(async (resolve, reject) => {
     getSubjects().then((responseData) => {
@@ -14,49 +18,125 @@ let subjectsHasFilled = new Promise(async (resolve, reject) => {
     }, reject)
 });
 
-let teachersHasFilled = new Promise(async (resolve, reject) => {
-    getTeachers().then((responseData) => {
-        let teachersData = [];
-        responseData.json.forEach(teacher => {
-        	teachersData.push({
-        		"id": teacher.id,
-        		"name": teacher.full_name
-        	});
-        });
-        fillDropDownSelect(teacherSelectElement, teachersData);
-        resolve();
-    }, reject)
-});
+function fillTeachersData() {
+    return new Promise(async (resolve, reject) => {
+        getTeachers().then((responseData) => {
+            let teachersData = [];
+            responseData.json.forEach(teacher => {
+            	teachersData.push({
+            		'id': teacher.id,
+            		'name': teacher.full_name
+            	});
+            });
+            fillDropDownSelect(teacherElement, teachersData);
+            resolve();
+        }, reject)
+    });
+}
+
+function fillGroupsData(classId) {
+    return new Promise(async (resolve, reject) => {
+        getGroupsShort(undefined, undefined, undefined, classId).then((responseData) => {
+            fillDropDownSelect(groupElement, responseData.json);
+            resolve();
+        }, reject)
+    });
+}
+
+function fillClassesData() {
+    return new Promise(async (resolve, reject) => {
+        getClassesShort().then((responseData) => {
+            fillDropDownSelect(classElement, responseData.json);
+            resolve();
+        }, reject)
+    });
+}
+
+async function updateGroups() {
+    await fillGroupsData(parseInt(classElement.value));
+}
+
+function createDefaultSelect(id, onChangeFunction = null) {
+    let selectElement = document.createElement('select');
+    selectElement.id = id;
+    selectElement.classList.add('default_select');
+    if(onChangeFunction) {
+        selectElement.setAttribute("onchange", onChangeFunction)
+    }
+    return selectElement;
+}
+
+function createFakeReadonlyInput(id, inner) {
+    let fakeReadonlyInputElement = document.createElement('div');
+    fakeReadonlyInputElement.id = id;
+    fakeReadonlyInputElement.classList.add('fake_readonly_input');
+    fakeReadonlyInputElement.innerHTML = inner;
+    return fakeReadonlyInputElement;
+}
 
 async function fillSessionStorageData() {
-	if (typeof parseInt(groupId) !== "number" ||
-			parseInt(groupId) != groupId ||
-			typeof groupName !== "string" ||
-			typeof className !== "string") {
-		window.history.back();
-	}
-	else { 
-		classNameElement.innerHTML = className;
-		groupNameElement.innerHTML = groupName;
-	}
+
+    if(classData !== 'false') {
+        classElement = createFakeReadonlyInput('class_name', classData.name);
+    }
+    else {
+        classElement = createDefaultSelect('class_select', 'updateGroups()');
+        await fillClassesData();
+    }
+
+    if(groupData !== 'false') {
+        groupElement = createFakeReadonlyInput('group_name', groupData.name);
+    }
+    else {
+        groupElement = createDefaultSelect('group_select');
+        if(classData !== 'false')
+            await fillGroupsData(classData.id);
+        else
+            await fillGroupsData(parseInt(classElement.value));
+    }
+
+    if(teacherData !== 'false') {
+        teacherElement = createFakeReadonlyInput('teacher_name', teacherData.name);
+    }
+    else {
+        teacherElement = createDefaultSelect('teacher_select');
+        await fillTeachersData();
+    }
+
+    classBlock.after(classElement);
+    groupBlock.after(groupElement);
+    teacherBlock.after(teacherElement);
 }
 
 function saveNewLecturerButton(buttonElement) {
 	disableButton(buttonElement);
     
     let requestJSON = {
-        teacher_id: parseInt(teacherSelectElement.value),
-        group_id: parseInt(groupId),
         subject_id: parseInt(subjectSelectElement.value)
     };
+
+    if(groupData !== 'false') 
+        requestJSON.group_id = parseInt(groupData.id);
+    else
+        requestJSON.group_id = parseInt(groupElement.value);
+
+    if(teacherData !== 'false')
+        requestJSON.teacher_id = parseInt(teacherData.id);
+    else
+        requestJSON.teacher_id = parseInt(teacherElement.value);
 
     createLecturer(requestJSON).then((responseData) => {
         if (responseData.status == 400) {
             let parsedResponseJSON = responseData.json;
-            console.log(parsedResponseJSON);
             if (parsedResponseJSON.includes(3)) {
-            	makeDropDownSelectWrong(teacherSelectElement);
-            	makeDropDownSelectWrong(subjectSelectElement);
+                makeDropDownSelectWrong(subjectSelectElement);
+                if(classData === 'false')
+                    makeDropDownSelectWrong(classElement);
+                if(groupData === 'false') 
+                    makeDropDownSelectWrong(groupElement);
+                if(teacherData === 'false')
+                    makeDropDownSelectWrong(teacherElement);
+                
             }
             enableButton(buttonElement);
         }
@@ -67,8 +147,8 @@ function saveNewLecturerButton(buttonElement) {
     });
 }
 
-let mainPromise = Promise.all([subjectsHasFilled, teachersHasFilled]);
-mainPromise.then(() => {
-	fillSessionStorageData();
+let mainPromise = Promise.all([subjectsHasFilled]);
+mainPromise.then(async () => {
+	await fillSessionStorageData();
 	hidePreloader();
 });

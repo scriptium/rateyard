@@ -32,7 +32,7 @@ function updateStudentGroups() {
             )
     
             mainGroupsTbodyElement.innerHTML = '';
-            insertGroupsData(groupsShort, mainGroupsTbodyElement, false, false, false, null);
+            insertGroupsData(groupsShort, mainGroupsTbodyElement, false, false, null);
             resolve();
             console.log(groupsShort);
         }, reject);

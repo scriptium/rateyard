@@ -1,6 +1,5 @@
 let classId = parseInt(document.querySelector('#class_id').getAttribute('value'));
-console.log(classId);
-let className = '';
+let className;
 
 let classNameElement = document.querySelector('#class_id');
 let studentsTableElement = document.querySelector('#students_table');
@@ -36,7 +35,7 @@ let studentsHasFilled = new Promise(async (resolve, reject) => {
 let groupsHasFilled = new Promise(async (resolve, reject) => {
     getGroupsShort(undefined, undefined, undefined, classId).then((responseData) => {
         let parsedResponse = responseData.json;
-        insertGroupsData(parsedResponse, mainGroupsTbodyElement, false, false, false, null);
+        insertGroupsData(parsedResponse, mainGroupsTbodyElement, false, false, null);
         resolve();
     }, reject)
 });
@@ -67,9 +66,9 @@ async function deleteAllStudents(buttonElement) {
 
 function addNewLecturer(buttonElement) {
     disableButton(buttonElement);
-    sessionStorage.setItem('group_id', classId);
-    sessionStorage.setItem('group_name', 'Весь клас');
-    sessionStorage.setItem('class_name', className);
+    sessionStorage.setItem('class', JSON.stringify({id: classId, name: className}))
+    sessionStorage.setItem('group', JSON.stringify({id: classId, name: 'Весь клас'}));
+    sessionStorage.setItem('teacher', JSON.stringify('false')); 
     window.location = 'new_lecturer.php';
     enableButton(buttonElement);
 }

@@ -44,12 +44,26 @@ function makeInputTextWrong(inputTextElement) {
 }
 
 function makeDropDownSelectNotWrong(selectElement) {
+    if (selectElement.hasAttribute('default_onchange')) {
+        selectElement.setAttribute(
+            'onchange',
+            selectElement.getAttribute('default_onchange')
+        );
+        eval(selectElement.getAttribute('default_onchange').replace('this', 'selectElement'));
+        selectElement.removeAttribute('default_onchange')
+    }
     selectElement.removeAttribute('onchange');
     selectElement.classList.remove('wrong');
 }
 
 function makeDropDownSelectWrong(selectElement) {
     if(!selectElement.classList.contains('wrong')) {
+        if (selectElement.hasAttribute('onchange')) {
+            selectElement.setAttribute(
+                'default_onchange',
+                selectElement.getAttribute('onchange')
+            );
+        }
         selectElement.setAttribute('onchange', 'makeDropDownSelectNotWrong(this)');
         selectElement.classList.add('wrong');
     }
