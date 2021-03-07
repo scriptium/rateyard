@@ -31,7 +31,7 @@ CREATE TABLE groups (
     id SERIAL PRIMARY KEY NOT NULL, 
     class_id INTEGER REFERENCES classes(id) ON DELETE CASCADE NOT NULL,
     group_name VARCHAR(256) NOT NULL,
-    is_editable BOOLEAN NOT NULL
+    is_full_class_group BOOLEAN NOT NULL
 );
 
 CREATE TABLE students_groups (
@@ -76,27 +76,27 @@ INSERT INTO classes (class_name) VALUES ('11Б');
 INSERT INTO classes (class_name) VALUES ('11В');
 INSERT INTO classes (class_name) VALUES ('11Г');
 
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 1, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 2, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 3, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 4, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 5, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 6, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 7, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 8, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 9, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 10, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 11, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 12, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 13, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 14, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 15, False);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Весь клас', 16, False);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 1, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 2, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 3, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 4, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 5, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 6, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 7, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 8, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 9, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 10, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 11, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 12, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 13, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 14, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 15, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Весь клас', 16, True);
 
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Група 1', 16, True);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Група 2', 16, True);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Група 3', 16, True);
-INSERT INTO groups (group_name, class_id, is_editable) VALUES ('Група 4', 16, True);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Група 1', 16, False);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Група 2', 16, False);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Група 3', 16, False);
+INSERT INTO groups (group_name, class_id, is_full_class_group) VALUES ('Група 4', 16, False);
 
 INSERT INTO students (username, full_name, email, password_hash, class_id)
 VALUES ('shevel', 'Шевель Денис', 'shevel@mail.com', crypt('1', gen_salt('md5')), 16);
@@ -108,12 +108,6 @@ INSERT INTO students (username, full_name, email, password_hash, class_id)
 VALUES ('borovyi', 'Боровий Іван', 'borovyi@mail.com', crypt('1', gen_salt('md5')), 16);
 INSERT INTO students (username, full_name, email, password_hash, class_id)
 VALUES ('gavrysh', 'Гавриш Олексій', 'gavrysh@mail.com', crypt('1', gen_salt('md5')), 16);
-
-INSERT INTO students_groups (student_id, group_id) VALUES (1, 16);
-INSERT INTO students_groups (student_id, group_id) VALUES (2, 16);
-INSERT INTO students_groups (student_id, group_id) VALUES (3, 16);
-INSERT INTO students_groups (student_id, group_id) VALUES (4, 16);
-INSERT INTO students_groups (student_id, group_id) VALUES (5, 16);
 
 INSERT INTO teachers (username, full_name, email, password_hash)
 VALUES ('moroz', 'Мороз Микола Петрович', 'moroz@mail.com', crypt('1', gen_salt('md5')));

@@ -156,7 +156,7 @@ def get_groups_short():
     LEFT JOIN classes as cl ON gr.class_id = cl.id
     ''' 
     exec_args = []
-    exec_where_str = ""
+    exec_where_str = "WHERE True"
 
     if request.is_json:
         if "student_id" in request.json.keys():
@@ -165,7 +165,7 @@ def get_groups_short():
                 INNER JOIN students_groups as stgr ON stgr.group_id=gr.id
                 '''
                 exec_args.append(request.json["student_id"])
-                exec_where_str = " WHERE stgr.student_id=%s"
+                exec_where_str += " AND stgr.student_id=%s"
             else:
                 abort(400)
         if "teacher_id" in request.json.keys():
@@ -176,26 +176,16 @@ def get_groups_short():
                 INNER JOIN subjects ON subjects.id=tcgr.subject_id
                 '''
                 exec_args.append(request.json["teacher_id"])
-                exec_where_str = " WHERE tcgr.teacher_id=%s"
+                exec_where_str += " AND tcgr.teacher_id=%s"
             else:
                 abort(400)
         if "class_id" in request.json.keys():
             if(type(request.json["class_id"])) == int:
-                exec_where_str += " WHERE class_id=%s"
+                exec_where_str += " AND class_id=%s"
                 exec_args.append(request.json["class_id"])
             else:
                 abort(400)
-        if "editable" in request.json.keys():
-            if type(request.json["editable"]) == bool:
-                if exec_where_str == "":
-                    exec_where_str = " WHERE"
-                if request.json["editable"]:
-                    exec_where_str += " is_editable=True"
-                else:
-                    exec_where_str += " is_editable=False"
-            else:
-                abort(400)
-
+    
     cursor = db.get_db().cursor()
     cursor.execute(exec_select_str + exec_main_str + exec_where_str, exec_args)
     exec_result = cursor.fetchall()
@@ -242,9 +232,11 @@ def get_group_full():
 def edit_group():
     database = db.get_db()
     cursor = database.cursor()
-
     group_data_errors = check_group_data(cursor, True)
-
+    cursor.execute('''
+    SELECT is_full_class_group FROM groups WHERE id=%s;
+    ''', (request.json['id'], ))
+    if (cursor.fetchone()[0]): abort(400, 'You can\'t edit this group')
     if group_data_errors != []:
         return jsonify(group_data_errors), 400
 
@@ -280,11 +272,16 @@ def delete_group():
     cursor = database.cursor()
 
     cursor.execute('''
+    SELECT is_full_class_group FROM groups WHERE id=%s;
+    ''', (request.json['id'], ))
+    exec_result = cursor.fetchone()
+    if exec_result is None:
+        abort(400, 'There aren\'t groups with this id')
+    elif exec_result[0]: abort(400, 'You can\'t delete this group')
+
+    cursor.execute('''
     DELETE FROM groups WHERE id=%s RETURNING 1;
     ''', (request.json["id"], ))
-
-    if cursor.fetchone() is None:
-        abort(400)
 
     database.commit()
     return jsonify(result="ok")

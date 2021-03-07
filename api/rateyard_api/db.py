@@ -23,7 +23,7 @@ def close_db(e=None):
 def get_group_full(id):
     cursor = get_db().cursor()
     cursor.execute('''
-    SELECT gr.id, gr.group_name, cl.id, cl.class_name
+    SELECT gr.id, gr.group_name, cl.id, cl.class_name, gr.is_full_class_group
     FROM groups as gr
     LEFT JOIN classes as cl ON gr.class_id = cl.id
     WHERE gr.id = %s;
@@ -42,20 +42,28 @@ def get_group_full(id):
             "id": exec_result[2],
             "name": exec_result[3]
         },
+        "is_full_class_group": exec_result[4],
         "type": "GroupFull"
     }
-
-    cursor.execute('''
-    SELECT students.id, students.username, students.full_name, students.email,
-    EXISTS(
-        SELECT 1 FROM students_groups
-        WHERE students.id=students_groups.student_id AND
-        students_groups.group_id=%s
-    )
-    FROM students
-    INNER JOIN classes ON students.class_id=classes.id
-    WHERE classes.id = %s;
-    ''', (id, exec_result[2]))
+    if (exec_result[4]):
+        cursor.execute('''
+        SELECT students.id, students.username, students.full_name, students.email, True
+        FROM students
+        INNER JOIN classes ON students.class_id=classes.id
+        WHERE classes.id = %s;
+        ''', (exec_result[2], ))
+    else:
+        cursor.execute('''
+        SELECT students.id, students.username, students.full_name, students.email,
+        EXISTS(
+            SELECT 1 FROM students_groups
+            WHERE students.id=students_groups.student_id AND
+            students_groups.group_id=%s
+        )
+        FROM students
+        INNER JOIN classes ON students.class_id=classes.id
+        WHERE classes.id = %s;
+        ''', (id, exec_result[2]))
 
     result["group_class_students"] = [
         {
