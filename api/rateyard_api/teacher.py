@@ -81,15 +81,27 @@ def get_group_full():
     ):
         abort(400)
 
-    result_json = db.get_group_full(request.json['id'])
-    if result_json is None:
+    group_json = db.get_group_full(request.json['id'])
+    if group_json is None:
         abort(400)
     cursor = db.get_db().cursor()
     cursor.execute('''
-    SELECT 1 FROM teachers_groups WHERE teacher_id=%s AND group_id=%s;
-    ''', (get_jwt_identity()['id'], result_json['id']))
-    if cursor.fetchone() is None:
+    SELECT s.id, s.subject_name
+    FROM teachers_groups AS tg INNER JOIN subjects AS s ON tg.subject_id=s.id
+    WHERE tg.teacher_id=%s AND tg.group_id=%s;
+    ''', (get_jwt_identity()['id'], group_json['id']))
+    exec_result = cursor.fetchone()
+    if exec_result is None:
         abort(400)
+
+    del group_json['group_lecturers']
+    result_json = {
+        'subject': {
+            'id': exec_result[0],
+            'name': exec_result[1]
+        },
+        'group': group_json
+    }
 
     return jsonify(result_json)
 

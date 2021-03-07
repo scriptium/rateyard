@@ -233,11 +233,13 @@ input[type='search'] {
     -moz-box-shadow: none;
     box-shadow: 2px 2px 9px 1px rgba(0, 0, 0, 0.25);
     border-radius: 30px;
-    padding: 10px 30px 10px 20px;
+    padding: 10px 20px;
     transition: box-shadow 0.3s, color 0.3s;
     font-size: var(--normal-font-size);
-    max-height: min-content;
     align-self: stretch;
+}
+.default_select {
+    padding-right: 30px;
 }
 
 .default_input_text:focus, .default_select:focus {

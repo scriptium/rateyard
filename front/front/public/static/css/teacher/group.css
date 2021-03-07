@@ -1,0 +1,23 @@
+#tools > div {
+    display: flex;
+}
+#tools > div > div {
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+}
+#tools > div > div:last-child {
+    margin-right: 0;
+}
+.input_container > span {
+    margin-right: 10px;
+}
+#tools span {
+    font-weight: bold;
+}
+.stretched {
+    flex-grow: 1;
+}
+.stretched > input {
+    flex-grow: 1;
+}
