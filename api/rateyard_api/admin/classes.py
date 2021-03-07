@@ -23,7 +23,6 @@ def delete_students_from_class():
     }), 200
 
 
-
 @admin_token_required
 def get_classes_short():
     cursor = db.get_db().cursor()
@@ -87,6 +86,30 @@ def get_class_full():
             } for student_data in students_exec_result
         ]
     })
+
+@admin_token_required
+def move_students_to_class():
+    if (
+            not request.is_json or
+            not "class_id_from" in request.json.keys() or
+            type(request.json["class_id_from"]) != int or
+            not "class_id_to" in request.json.keys() or
+            type(request.json["class_id_to"]) != int
+    ):
+        abort(400, "Expected json with class_id_from and class_id_to as ints")
+    database = db.get_db();
+    cursor = database.cursor()
+    try:
+        cursor.execute('''
+            UPDATE students
+            SET class_id=%s
+            WHERE class_id=%s
+        ''', (request.json["class_id_to"], request.json["class_id_from"]))
+    except db.psycopg2.errors.ForeignKeyViolation:
+        abort(400, "Class with class_id_to doesn't exist")
+    else:
+        database.commit()
+    return jsonify(result="ok")
 
 # @bp.route("/edit_classes", methods=("POST", ))
 # @admin_token_required

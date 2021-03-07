@@ -208,6 +208,17 @@ async function deleteStudentsFromClass(class_id) {
     };
 }
 
+async function moveStudentsToClass(class_id_from, class_id_to) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'move_students_to_class', 'POST', { 'Content-Type': 'application/json'},
+        JSON.stringify({ class_id_from, class_id_to }), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    };
+}
+
 async function createLecturer(lecturer) {
     console.log(lecturer);
     let xhr = await adminRateyardApiClient.sendRequest(

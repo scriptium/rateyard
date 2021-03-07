@@ -15,6 +15,7 @@ let mainLecturersTbodyElement = document.querySelector('#lecturers_table tbody')
 let classesHasFilled = new Promise (async (resolve, reject) => {
     getClassesShort().then((responseData) => {
         let classesSelectElement = document.getElementById('classes_select');
+        responseData.json.splice(classId-1, 1);
         fillDropDownSelect(classesSelectElement, responseData.json);
         resolve();
     }, reject);
@@ -24,7 +25,10 @@ let studentsHasFilled = new Promise(async (resolve, reject) => {
     getClassFull(classId).then((responseData) => {
         let parsedResponse = responseData.json;
         className = parsedResponse.name;
-        insertStudentsData(parsedResponse.students, mainStudentsTbodyElement, false, false, null);
+        let students = parsedResponse.students;
+        if(students.length === 0)
+            disableButton(document.querySelector('#move_students_button'));
+        insertStudentsData(students, mainStudentsTbodyElement, false, false, null);
         resolve();
     }, reject)
 });
@@ -51,7 +55,7 @@ let lectureresHasFilled = new Promise(async (resolve, reject) => {
 
 async function deleteAllStudents(buttonElement) {
     buttonElement.classList.add('disabled');
-    let isConfirmed = confirm(`Видалити всіх учнів класу №${classId}?`)
+    let isConfirmed = confirm(`Видалити всіх учнів ${className} класу?`)
     if (isConfirmed) {
         deleteStudentsFromClass(classId).then(
             () => { window.history.back() },
@@ -70,7 +74,16 @@ function addNewLecturer(buttonElement) {
     enableButton(buttonElement);
 }
 
-
+function moveAllStudents(buttonElement) {
+    disableButton(buttonElement);
+    let classIdTo = parseInt(document.querySelector('#classes_select option:checked').value);
+    let classNameTo = document.querySelector('#classes_select option:checked').innerHTML;
+    let isConfirmed = confirm(`Перемістити всіх учнів з ${className} до ${classNameTo} класу?`);
+    if (isConfirmed) {
+        moveStudentsToClass(classId, classIdTo);
+    }
+    else enableButton(buttonElement);
+}
 
 let mainPromise = Promise.all([studentsHasFilled, groupsHasFilled, lectureresHasFilled]);
 mainPromise.then(() => {
