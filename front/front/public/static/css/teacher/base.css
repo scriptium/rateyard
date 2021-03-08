@@ -3,22 +3,26 @@
     align-items: center;
     margin-right: 10px;
 }
+
 #teacher_user div {
     transition: color 0.3s;
 }
+
 #teacher_user svg {
     transition: fill 0.3s;
 }
-#teacher_user > div:nth-child(1){
+
+#teacher_user>div:nth-child(1) {
     margin-right: 10px;
     font-weight: bold;
     font-size: var(--big-font-size);
     color: white;
-    
 }
+
 #teacher_user:hover div {
     color: var(--lightest-blue-color);
 }
+
 #teacher_user:hover svg {
     fill: var(--lightest-blue-color);
 }
@@ -36,8 +40,7 @@
 }
 
 .group_box * {
-    
-    color: var(--blue-color);
+    color: var(--light-blue-color);
     transition: color 0.3s;
     font-weight: 600;
     font-size: var(--normal-font-size);
@@ -51,18 +54,12 @@
     font-size: var(--big-font-size);
 }
 
-.group_box:hover {
+.group_box:hover, .group_box.current {
     background: var(--light-blue-color);
 }
 
-.group_box:hover * {
+.group_box:hover *, .group_box.current * {
     color: white !important;
-}
-.group_box.current {
-    background: var(--blue-color);
-}
-.group_box.current * {
-    color: white;
 }
 
 #sidebar {
@@ -77,14 +74,13 @@
     background: var(--light-blue-color);
     z-index: 12;
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
-
     display: flex;
     flex-direction: column;
     padding: 20px;
 }
 
 #sidebar_close_area {
-    display: none; 
+    display: none;
 }
 
 #sidebar_close_area.opened {
@@ -101,7 +97,7 @@
     transform: none;
 }
 
-#sidebar > * {
+#sidebar>* {
     margin-bottom: 20px;
 }
 
@@ -123,11 +119,11 @@
     background: white;
 }
 
-#sidebar_close_wrapper > svg {
+#sidebar_close_wrapper>svg {
     fill: white;
     transition: fill 0.3s;
 }
 
-#sidebar_close_wrapper:hover > svg {
+#sidebar_close_wrapper:hover>svg {
     fill: var(--light-blue-color);
 }
