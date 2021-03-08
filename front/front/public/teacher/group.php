@@ -33,11 +33,15 @@
                     </div>
                     <div class="blue_button">
                         <div class="button_icon save_icon"></div>
-                        <div>Зберегти колонку</div>
+                            <div>Зберегти</div>
                     </div>
-                    <div class="blue_button" onclick="hideTool()">
+                    <div class="blue_button">
                         <div class="button_icon back_icon"></div>
                         <div>Скасувати</div>
+                    </div>
+                    <div class="delete_button">
+                        <div class="button_icon delete_icon"></div>
+                        <div>Видалити</div>
                     </div>
                 </div>
                 <div id="mark_tool" class="hidden">
@@ -53,9 +57,13 @@
                         <div class="button_icon save_icon"></div>
                         <div>Зберегти оцінку</div>
                     </div>
-                    <div class="blue_button" onclick="hideTool()">
+                    <div class="blue_button">
                         <div class="button_icon back_icon"></div>
                         <div>Скасувати</div>
+                    </div>
+                    <div class="delete_button" onclick="hideTool()">
+                        <div class="button_icon delete_icon"></div>
+                        <div>Видалити</div>
                     </div>
                 </div>
             </div>
@@ -74,6 +82,8 @@
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/teacher/api.js"></script>
     <script type="text/javascript" src="/static/js/teacher/base.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
     <script type="text/javascript" src="/static/js/teacher/group.js"></script>
 </body>
 

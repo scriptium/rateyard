@@ -31,9 +31,13 @@ groupPromise.then((group) => {
             marksTableBodyElement.appendChild(newRowElement);
         });
     }
-    for (let i=0; i<100; i++) {
+    for (let i=10; i<100; i++) {
         let date = document.createElement('th')
-        date.innerHTML = i
+        tippy(date, {
+            content: `${i}.01.21<br>Зошит за березень`,
+            allowHTML: true
+        });
+        date.innerHTML = `<div>${i}.01.21</div>`
         marksTableHeadElement.children[0].appendChild(date)
     }
     hidePreloader();
