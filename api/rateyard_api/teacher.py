@@ -130,3 +130,60 @@ def edit_me():
 
     db.edit_teacher(get_jwt_identity()['id'], request.json)
     return jsonify(result='ok')
+
+
+@bp.route('create_mark', methods=('POST', ))
+@teacher_token_required
+def crete_mark():
+    if not (
+        request.is_json and
+        type(request.json.get('points')) != int and
+        type(request.json.get('student_id')) != int and
+        (
+            (
+                type(request.json.get('new_column')) == dict and
+                (   
+                    (
+                        request.json['new_column'].get('date') == int or
+                        request.json['new_column'].get('name') == str
+                    ) and
+                    type(request.json['new_column'].get('subject_id')) == int
+                )
+            ) or
+            type(request.json.get('column_id')) == int
+        ) 
+        
+    ):
+        abort(400)
+
+    database = db.get_db()
+    cursor = database.cursor()
+
+    if type(request.json.get('column_id')) == int:
+        cursor.execute('''
+        SELECT subject_id
+        FROM teachers_groups
+        WHERE id=%s
+        ''', (request.json['column_id'], ))
+        exec_result = cursor.fetchone()
+        if exec_result is None:
+            abort(400)
+        else:
+            subject_id = exec_result[0]
+    else:
+        subject_id = request.json['new_column']['subject_id']
+
+    cursor.execute('''
+    SELECT 1
+    FROM students_groups AS sg
+    INNER JOIN teachers_groups AS tg ON tg,group_id=sg.group_id
+    WHERE sg.student_id=%s AND tg.teacher_id=%s AND tg.subject_id=%s;
+    ''', (request.json['student_id'], get_jwt_identity()['id'], subject_id))
+
+    if cursor.fetchone() is None:
+        abort(400)
+
+    return jsonify(msg='not working yet')
+    
+
+
