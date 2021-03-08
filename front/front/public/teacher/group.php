@@ -19,23 +19,31 @@
     ?>
     <div id="content">
         <div id="toolbar">
-            <div id="group_title" class="title"></div>
-            <div id="group_subtitle" class="subtitle"></div>
+            <div>
+                <div id="group_title" class="title"></div>
+                <div id="group_subtitle" class="subtitle"></div>
+            </div>
             <div id="tools">
-                <div id="column_tool">
+                <div id="default_tool">
+                    <div class="blue_button" onclick="changeTool(prepareColumToolElement())">
+                        <div class="button_icon add_icon"></div>
+                        <div>Додати колонку</div>
+                    </div>
+                </div>
+                <div id="column_tool" class="hidden">
                     <div class="input_container">
                         <span>Дата:</span>
-                        <input type="date" class="default_input_text" style="width: 150px;">
+                        <input type="date" class="default_input_text" style="width: 150px;" id="column_date">
                     </div>
                     <div class="stretched input_container">
                         <span>Назва:</span>
-                        <input type="text" class="default_input_text" placeholder="Введіть назву колонки">
+                        <input type="text" class="default_input_text" placeholder="Введіть назву колонки" id="column_name">
                     </div>
                     <div class="blue_button">
                         <div class="button_icon save_icon"></div>
-                            <div>Зберегти</div>
+                        <div>Зберегти</div>
                     </div>
-                    <div class="blue_button">
+                    <div class="blue_button" onclick="changeTool(defaultToolElement)">
                         <div class="button_icon back_icon"></div>
                         <div>Скасувати</div>
                     </div>
@@ -51,7 +59,7 @@
                     </div>
                     <div class="stretched input_container">
                         <span>Кометар учню:</span>
-                        <input type="text" class="default_input_text" placeholder="Введіть кометар учню (необов'язково)">
+                        <input type="text" class="default_input_text" placeholder="Введіть кометар учню">
                     </div>
                     <div class="blue_button">
                         <div class="button_icon save_icon"></div>
@@ -61,7 +69,7 @@
                         <div class="button_icon back_icon"></div>
                         <div>Скасувати</div>
                     </div>
-                    <div class="delete_button" onclick="hideTool()">
+                    <div class="delete_button">
                         <div class="button_icon delete_icon"></div>
                         <div>Видалити</div>
                     </div>
@@ -84,6 +92,7 @@
     <script type="text/javascript" src="/static/js/teacher/base.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+    <script type="text/javascript" src="/static/js/hidable_children_element.js"></script>
     <script type="text/javascript" src="/static/js/teacher/group.js"></script>
 </body>
 

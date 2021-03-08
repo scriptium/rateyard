@@ -4,12 +4,17 @@ const groupPromise = new Promise(async (resolve, reject) => {
     let responseData = await getGroupFull(groupId);
     resolve(responseData.json);
 });
+
 const groupTitleElement = document.getElementById('group_title');
 const groupSubtitleElement = document.getElementById('group_subtitle'); 
 const marksTableElement = document.getElementById('marks_table');
 const marksTableBodyElement = marksTableElement.getElementsByTagName('tbody')[0]; 
 const marksTableHeadElement = marksTableElement.getElementsByTagName('thead')[0]; 
+
 const toolsElement = document.getElementById('tools');
+const columnToolHidableChildrenElement = new HidableChildrenElement(document.getElementById('column_tool'));
+const markToolElement = document.getElementById('mark_tool');
+const defaultToolElement = document.getElementById('default_tool');
 
 groupPromise.then((group) => {
     groupTitleElement.innerHTML = `${group.group.class.name} ${group.group.name}`;
@@ -42,3 +47,36 @@ groupPromise.then((group) => {
     }
     hidePreloader();
 });
+
+function prepareColumToolElement(newColumn=true) {
+    let columnToolElement = columnToolHidableChildrenElement.element;
+    console.log(columnToolHidableChildrenElement.childrenIndexes)
+    let deleteButtonElement = columnToolElement.querySelector('.delete_button');
+    if (newColumn) {
+        if (deleteButtonElement)
+            columnToolHidableChildrenElement.hide(
+                deleteButtonElement
+            );
+    }
+    else {
+        columnToolHidableChildrenElement.showAll();
+    }
+    columnToolHidableChildrenElement.update();
+    columnToolElement.querySelectorAll('input').forEach(
+        (inputElement) => {
+            inputElement.value = null;
+        }
+    )
+    return columnToolElement;
+}
+
+function changeTool(newTool) {
+    let oldTool = document.querySelector('#tools>*:not(.hidden)');
+
+    oldTool.classList.add('hidden');
+    newTool.classList.remove('hidden');
+    newTool.animate(
+        [{opacity: '0'}, {opacity: '1'}],
+        300
+    );
+}
