@@ -4,7 +4,8 @@
     top: 0;
     width: 100%;
     min-width: max-content;
-    z-index: 2;
+    height: min-content;
+    z-index: 10;
     display: flex;
     flex-direction: row;
     column-gap: 20px;

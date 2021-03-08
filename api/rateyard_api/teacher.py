@@ -95,6 +95,18 @@ def get_group_full():
         abort(400)
 
     del group_json['group_lecturers']
+    students_to_remove = []
+    for student in group_json['group_class_students']:
+        if not student['is_group_member']:
+            students_to_remove.append(student)
+        else:
+            student['type'] = 'GroupStudent'
+            del student['is_group_member']
+    for student in students_to_remove:
+        group_json['group_class_students'].remove(student)
+
+    group_json['students'] = group_json.pop('group_class_students')
+
     result_json = {
         'subject': {
             'id': exec_result[0],

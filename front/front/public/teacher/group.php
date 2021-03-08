@@ -18,48 +18,57 @@
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
     <div id="content">
-        <div id="group_title" class="title"></div>
-        <div id="group_subtitle" class="subtitle"></div>
-        <div id="tools">
-            <div id="column_tool">
-                <div class="input_container">
-                    <span>Дата:</span>
-                    <input type="date" class="default_input_text" style="width: 150px;">
+        <div id="toolbar">
+            <div id="group_title" class="title"></div>
+            <div id="group_subtitle" class="subtitle"></div>
+            <div id="tools">
+                <div id="column_tool">
+                    <div class="input_container">
+                        <span>Дата:</span>
+                        <input type="date" class="default_input_text" style="width: 150px;">
+                    </div>
+                    <div class="stretched input_container">
+                        <span>Назва:</span>
+                        <input type="text" class="default_input_text" placeholder="Введіть назву колонки">
+                    </div>
+                    <div class="blue_button">
+                        <div class="button_icon save_icon"></div>
+                        <div>Зберегти колонку</div>
+                    </div>
+                    <div class="blue_button" onclick="hideTool()">
+                        <div class="button_icon back_icon"></div>
+                        <div>Скасувати</div>
+                    </div>
                 </div>
-                <div class="stretched input_container">
-                    <span>Назва:</span>
-                    <input type="text" class="default_input_text" placeholder="Введіть назву колонки">
-                </div>
-                <div class="blue_button">
-                    <div class="button_icon save_icon"></div>
-                    <div>Зберегти колонку</div>
-                </div>
-                <div class="blue_button">
-                    <div class="button_icon back_icon"></div>
-                    <div>Скасувати</div>
-                </div>
-            </div>
-            <div id="mark_tool">
-                <div class="input_container">
-                    <span>Оцінка:</span>
-                    <input type="text" size="2" maxlength="2" class="default_input_text">
-                </div>
-                <div class="stretched input_container">
-                    <span>Кометар учню:</span>
-                    <input type="text" class="default_input_text" placeholder="Введіть кометар учню (необов'язково)">
-                </div>
-                <div class="blue_button">
-                    <div class="button_icon save_icon"></div>
-                    <div>Зберегти оцінку</div>
-                </div>
-                <div class="blue_button">
-                    <div class="button_icon back_icon"></div>
-                    <div>Скасувати</div>
+                <div id="mark_tool" class="hidden">
+                    <div class="input_container">
+                        <span>Оцінка:</span>
+                        <input type="text" size="2" maxlength="2" class="default_input_text">
+                    </div>
+                    <div class="stretched input_container">
+                        <span>Кометар учню:</span>
+                        <input type="text" class="default_input_text" placeholder="Введіть кометар учню (необов'язково)">
+                    </div>
+                    <div class="blue_button">
+                        <div class="button_icon save_icon"></div>
+                        <div>Зберегти оцінку</div>
+                    </div>
+                    <div class="blue_button" onclick="hideTool()">
+                        <div class="button_icon back_icon"></div>
+                        <div>Скасувати</div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="marks_table">
-        </div>
+        <table id="marks_table">
+            <thead>
+                <tr>
+                    <th>ПІБ учня</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
     <script type="text/javascript" src="/static/js/base.js"></script>
