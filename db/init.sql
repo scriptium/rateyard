@@ -37,20 +37,20 @@ CREATE TABLE teachers_groups (
     group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE NOT NULL,
     subject_id INTEGER REFERENCES subjects(id) ON DELETE CASCADE NOT NULL
 );
+CREATE TABLE marks_columns (
+    id SERIAL PRIMARY KEY NOT NULL,
+    subject_id INTEGER REFERENCES subjects(id) ON DELETE CASCADE NOT NULL,
+    column_name VARCHAR(256),
+    column_date TIMESTAMPTZ NOT NULL
+);
 CREATE TABLE marks (
     id SERIAL PRIMARY KEY NOT NULL,
     points INTEGER NOT NULL,
     creation_date TIMESTAMPTZ DEFAULT NOW() NOT NULL,
     comment VARCHAR(256),
     teacher_id INTEGER NOT NULL,
-    column_id INTEGER REFERENCES grades_columns(id) ON DELETE CASCADE NOT NULL
+    column_id INTEGER REFERENCES marks_columns(id) ON DELETE CASCADE NOT NULL
 );
-CREATE TABLE marks_columns (
-    id SERIAL PRIMARY KEY NOT NULL,
-    subject_id INTEGER REFERENCES subjects(id) ON DELETE CASCADE NOT NULL,
-    column_name VARCHAR(256),
-    column_date TIMESTAMPTZ NOT NULL,
-)
 INSERT INTO classes (class_name)
 VALUES ('8А');
 INSERT INTO classes (class_name)
