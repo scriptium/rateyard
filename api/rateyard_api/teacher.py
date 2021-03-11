@@ -162,7 +162,7 @@ def crete_mark():
     if type(request.json.get('column_id')) == int:
         cursor.execute('''
         SELECT subject_id
-        FROM teachers_groups
+        FROM marks_columns
         WHERE id=%s
         ''', (request.json['column_id'], ))
         exec_result = cursor.fetchone()
@@ -170,6 +170,7 @@ def crete_mark():
             abort(400)
         else:
             subject_id = exec_result[0]
+            column_id = request.json['column_id']
     else:
         subject_id = request.json['new_column']['subject_id']
 
@@ -183,7 +184,30 @@ def crete_mark():
     if cursor.fetchone() is None:
         abort(400)
 
-    return jsonify(msg='not working yet')
+    if type(request.json.get('column_id')) != int:
+        cursor.execute('''
+        INSERT INTO marks_columns (subject_id, column_name, column_date)
+        VALUES (%s, %s, %s) RETURNING id;
+        ''', (
+            subject_id,
+            request.json['column'].get('name'),
+            request.json['column'].get('date')
+        ))
+        column_id = cursor.fetchone()[0]
+
+    cursor.execute('''
+    INSERT INTO marks (points, comment, teacher_id, column_id)
+    VALUES (%s, %s, %s, %s);
+    ''', (
+        request.json['points'],
+        request.json.get['comment'],
+        get_jwt_identity()['id'],
+        column_id
+    ))
+
+    database.commit()
+
+    return jsonify(result="ok")
     
 
 

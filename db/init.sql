@@ -37,16 +37,15 @@ CREATE TABLE teachers_groups (
     group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE NOT NULL,
     subject_id INTEGER REFERENCES subjects(id) ON DELETE CASCADE NOT NULL
 );
-CREATE TABLE grades (
+CREATE TABLE marks (
     id SERIAL PRIMARY KEY NOT NULL,
     points INTEGER NOT NULL,
     creation_date TIMESTAMPTZ DEFAULT NOW() NOT NULL,
     comment VARCHAR(256),
-    student_id INTEGER NOT NULL,
     teacher_id INTEGER NOT NULL,
     column_id INTEGER REFERENCES grades_columns(id) ON DELETE CASCADE NOT NULL
 );
-CREATE TABLE grades_columns (
+CREATE TABLE marks_columns (
     id SERIAL PRIMARY KEY NOT NULL,
     subject_id INTEGER REFERENCES subjects(id) ON DELETE CASCADE NOT NULL,
     column_name VARCHAR(256),
