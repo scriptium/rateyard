@@ -76,10 +76,27 @@ body {
     font-weight: bold;
     border: 2px solid #cacaca;
     padding: 10px;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-#marks_table td.focused {
+:root {
+    --cell-outline: var(--light-blue-color) solid 6px;
+    --cell-outline-offset: -2px;
+}
+
+#marks_table td.highlighted {
     background: #ADD6EE !important;
+}
+
+#marks_table th.highlighted, th.focused {
+    background: white !important;
+    color: var(--light-blue-color) !important;
+}
+
+#marks_table td.focused, #marks_table th.focused {
+    outline: var(--cell-outline) !important;
+    outline-offset: var(--cell-outline-offset);
+    background: white !important;
 }
 
 #marks_table th {
@@ -102,13 +119,27 @@ body {
     cursor: pointer;
 }
 
+#marks_table thead th:nth-child(n+2):hover, #marks_table tbody td:nth-child(n+2):hover {
+    outline: var(--cell-outline);
+    outline-color: #a5a5a5;
+    outline-offset: var(--cell-outline-offset);
+}
+
+#marks_table thead th:nth-child(n+2):hover, #marks_table th.focused {
+    z-index: 4;
+}
+
+#marks_table tbody td:nth-child(n+2):hover, #marks_table td.focused {
+    z-index: 2;
+}
+
 #marks_table tr>td:first-child, #marks_table tr>th:first-child {
     position: sticky;
     left: 0;
 }
 
 #marks_table tr>td:first-child {
-    z-index: 1;
+    z-index: 2;
 }
 
 #marks_table tr>th:first-child {

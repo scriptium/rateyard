@@ -21,6 +21,7 @@ let passwordElement = document.getElementById('password');
 let emailElement = document.getElementById('email');
 
 function updateStudentGroups() {
+    console.log("checking groups");
     return new Promise(async (resolve, reject) => {
         getGroupsShort(undefined, studentId, undefined, undefined).then((responseData) => {
             let groupsShort = responseData.json;
@@ -34,6 +35,7 @@ function updateStudentGroups() {
             mainGroupsTbodyElement.innerHTML = '';
             insertGroupsData(groupsShort, mainGroupsTbodyElement, false, false, null);
             resolve();
+            console.log("groups ");
             console.log(groupsShort);
         }, reject);
     });

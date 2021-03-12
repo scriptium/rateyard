@@ -49,7 +49,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
             <div>Новий пароль:</div><input id="password" type="text" class="default_input_text" placeholder="Введіть новий пароль учня" oninput="changesSet.updateChangedElements(this)" initial_value="">
         </div>
         <div class="subtitle">Групи учня:</div>
-        <table class="default_table" id="groups_table">
+        <table class="default_table appear_transition" id="groups_table">
             <thead>
                 <tr>
                     <th>№</th>

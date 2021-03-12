@@ -146,6 +146,14 @@ input[type='search'] {
     width: 20px;
     height: 20px;
 }
+.edit_icon {
+    background-image: url(/static/images/edit.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 20px;
+    height: 20px;
+}
 .back_icon {
     background-image: url(/static/images/back.svg);
     background-repeat: no-repeat;
@@ -370,4 +378,28 @@ a.text:hover {
 
 .title_block > * {
     margin-right: 20px;
+}
+
+.td_icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.edit_td {
+    background-image: url(/static/images/edit_table.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 25px;
+    height: 25px;
+}
+
+.delete_td {
+    background-image: url(/static/images/delete_table.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 30px;
+    height: 30px;
 }

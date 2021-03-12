@@ -19,6 +19,62 @@ def get_subjects():
     ]
 	return jsonify(result)
 
+@admin_token_required
+def create_subjects():
+    if not request.is_json:
+        abort("400", "Expected json")
+    if "subject_name" in request.json.keys():
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute('''
+            INSERT INTO subjects (
+                subject_name
+            )
+            VALUES (
+                %s
+            );
+            ''', (
+            request.json["subject_name"],
+        ))
+        db.commit()
+        return jsonify({
+            "result": "OK"
+        }), 200
+    else:
+        abort(400, "Wrong json")
+
+# @admin_token_required
+# def edit_subjects():
+#     print(request.json, flush=True)
+#     if not request.is_json:
+# 		print("Expected json", flush=True)
+#         abort(400, "Expected json")
+#     if type(request.json) != list:
+# 		print("Expected array of subjects id", flush=True)
+#         abort(400, "Expected array of subjects id")
+#     for subject in request.json:
+#         if ("subject_id" in subject.keys() and
+#                 "subject_name" in subject.keys()):
+#             db = get_db()
+#             cursor = db.cursor()
+#             cursor.execute('''
+#                 UPDATE subjects
+#                 SET subject_name=%s
+#                 WHERE id=%s RETURNING True;
+#                 ''', (
+#                 subject["subject_name"],
+#                 subject["subject_id"],
+#             ))
+#             if cursor.fetchone() is None:
+#                 abort(400, 'There are not subjects with on of ids')
+#             db.commit()
+#             print("OK", flush=True)
+#         else:
+#             print("Wrong json", flush=True)
+#             abort(400, "Wrong json")
+#     return jsonify({
+#         "result": "OK"
+#     }), 201
 
 # @bp.route("/create_subject", methods=("POST", ))
 # @admin_token_required

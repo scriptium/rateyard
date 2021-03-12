@@ -241,6 +241,18 @@ async function deleteLecturer(lecturer) {
         json: JSON.parse(xhr.responseText)
     }
 }
+
+async function createSubjects(subjects) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'create_subjects', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(subjects), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}
+
 async function getSubjects() {
     let xhr = await adminRateyardApiClient.sendRequest(
         'get_subjects', 'GET', {}, null, true
@@ -251,3 +263,13 @@ async function getSubjects() {
     }
 }
 
+async function editSubjects(subjectsChanges) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'edit_subjects', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(subjectsChanges), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}
