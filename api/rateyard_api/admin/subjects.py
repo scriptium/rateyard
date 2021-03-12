@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, request, abort
 
 
 from . import admin_token_required, db
@@ -20,12 +20,15 @@ def get_subjects():
 	return jsonify(result)
 
 @admin_token_required
-def create_subjects():
+def create_subject():
     if not request.is_json:
         abort("400", "Expected json")
-    if "subject_name" in request.json.keys():
-        db = get_db()
-        cursor = db.cursor()
+
+    database = db.get_db()
+    cursor = database.cursor()
+
+    subject_data_errors = db.check_subject_data(request.json)
+    if subject_data_errors == []:
         cursor.execute('''
             INSERT INTO subjects (
                 subject_name
@@ -36,12 +39,10 @@ def create_subjects():
             ''', (
             request.json["subject_name"],
         ))
-        db.commit()
-        return jsonify({
-            "result": "OK"
-        }), 200
+        database.commit()
+        return jsonify(result="ok")
     else:
-        abort(400, "Wrong json")
+        return jsonify(subject_data_errors), 400
 
 # @admin_token_required
 # def edit_subjects():

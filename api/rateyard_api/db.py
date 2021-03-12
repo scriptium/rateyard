@@ -300,4 +300,26 @@ def check_lecturer_data(lecturer):
             lecturer_data_errors.append(3)
 
     return lecturer_data_errors
-    
+
+
+def check_subject_data(subject):
+    '''
+        Error codes for subject:
+        0: subject_name not found or has already taken 
+    '''
+    cursor = get_db().cursor()
+    subject_data_errors = []
+
+    if (not "subject_name" in subject.keys() or
+        type(subject["subject_name"]) != str or
+        len(subject["subject_name"]) > 256):
+        subject_data_errors.append(0)
+    else:
+        cursor.execute(
+            "SELECT 1 FROM subjects WHERE subject_name=%s",
+            (subject["subject_name"],)
+        )
+        if not cursor.fetchone() is None:
+            subject_data_errors.append(0)
+
+    return subject_data_errors

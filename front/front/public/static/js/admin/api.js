@@ -242,10 +242,10 @@ async function deleteLecturer(lecturer) {
     }
 }
 
-async function createSubjects(subjects) {
+async function createSubject(subject_name) {
     let xhr = await adminRateyardApiClient.sendRequest(
-        'create_subjects', 'POST', { 'Content-Type': 'application/json' },
-        JSON.stringify(subjects), true
+        'create_subject', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify({ subject_name }), true
     );
     return {
         status: xhr.status,

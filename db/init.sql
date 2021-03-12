@@ -20,7 +20,7 @@ CREATE TABLE teachers (
 );
 CREATE TABLE subjects (
     id SERIAL PRIMARY KEY NOT NULL,
-    subject_name VARCHAR(100) UNIQUE NOT NULL
+    subject_name VARCHAR(256) UNIQUE NOT NULL
 );
 CREATE TABLE groups (
     id SERIAL PRIMARY KEY NOT NULL,
