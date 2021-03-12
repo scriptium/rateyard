@@ -31,6 +31,7 @@ groupPromise.then((group) => {
             for (let i=0; i<100; i++) {
                 let newCellElement = document.createElement('td');
                 newCellElement.innerHTML = 11;
+                newCellElement.setAttribute('onclick', 'focusCell(this)');
                 newRowElement.appendChild(newCellElement);
             }
             marksTableBodyElement.appendChild(newRowElement);
@@ -79,4 +80,43 @@ function changeTool(newTool) {
         [{opacity: '0'}, {opacity: '1'}],
         300
     );
+}
+
+function focusCell(cellElement) {
+    document.querySelectorAll('#marks_table td.focused').forEach(
+        (element) => {
+            element.classList.remove('focused');
+        }
+    )
+    cellElement.classList.add('focused');
+    let cellColumn = 0;
+    let tempElement = cellElement.previousSibling;
+    while (tempElement.previousSibling) {
+        cellColumn++;
+        tempElement = tempElement.previousSibling;
+        tempElement.classList.add('focused');
+    }
+    tempElement = cellElement.nextSibling;
+    while (tempElement.nextSibling) {
+        tempElement = tempElement.nextSibling;
+        tempElement.classList.add('focused');
+    }
+    let cellRow = 0;
+    tempElement = cellElement.parentNode.previousSibling;
+    while (tempElement.previousSibling) {
+        cellRow++;
+        tempElement = tempElement.previousSibling;
+        if (tempElement.childNodes[cellColumn])
+            tempElement.childNodes[cellColumn].classList.add('focused');
+    }   
+    tempElement = cellElement.parentNode.nextSibling;
+    while (tempElement.nextSibling) {
+        tempElement = tempElement.nextSibling;
+        if (tempElement.childNodes[cellColumn])
+            tempElement.childNodes[cellColumn].classList.add('focused');
+    }
+    
+    marksTableHeadElement.querySelector('tr').childNodes[cellColumn].classList.add('focused');
+    console.log(cellColumn);
+    console.log(cellRow)
 }

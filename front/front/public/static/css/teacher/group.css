@@ -78,6 +78,10 @@ body {
     padding: 10px;
 }
 
+#marks_table td.focused {
+    background: #ADD6EE !important;
+}
+
 #marks_table th {
     background: var(--light-blue-color);
     color: white;
@@ -94,7 +98,7 @@ body {
     writing-mode: vertical-rl;
 }
 
-#marks_table thead th:nth-child(n+2) {
+#marks_table thead th:nth-child(n+2), #marks_table tbody td:nth-child(n+2) {
     cursor: pointer;
 }
 
