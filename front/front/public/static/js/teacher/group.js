@@ -38,10 +38,10 @@ groupPromise.then((group) => {
     }
     for (let i=10; i<100; i++) {
         let date = document.createElement('th')
-        // tippy(date, {
-        //     content: `${i}.01.21<br>Зошит за березень`,
-        //     allowHTML: true
-        // });
+        tippy(date, {
+            content: `${i}.01.21<br>Зошит за березень`,
+            allowHTML: true
+        });
         date.innerHTML = `<div>${i}.01.21</div>`
         date.setAttribute('onclick', 'focusColumn(this)')
         marksTableHeadElement.children[0].appendChild(date)

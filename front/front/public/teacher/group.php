@@ -21,7 +21,7 @@
         <div id="toolbar">
             <div>
                 <div id="group_title" class="title"></div>
-                <div id="group_subtitle" class="subtitle"></div>
+                <div id="group_subtitle" class="title"></div>
             </div>
             <div id="tools">
                 <div id="default_tool">
@@ -33,7 +33,7 @@
                 <div id="column_tool" class="hidden">
                     <div class="input_container">
                         <span>Дата:</span>
-                        <input type="date" class="default_input_text" style="width: 150px;" id="column_date">
+                        <input type="date" class="default_input_text" id="column_date">
                     </div>
                     <div class="stretched input_container">
                         <span>Назва:</span>
