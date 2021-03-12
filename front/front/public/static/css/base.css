@@ -387,13 +387,22 @@ a.text:hover {
     justify-content: flex-end;
 }
 
+.save_td {
+    background-image: url(/static/images/tick_table.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 26px;
+    height: 26px;
+}
+
 .edit_td {
     background-image: url(/static/images/edit_table.svg);
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
     width: 25px;
-    height: 25px;
+    height: 26px;
 }
 
 .delete_td {
@@ -401,6 +410,29 @@ a.text:hover {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+    width: 32px;
+    height: 26px;
+}
+
+.back_td {
+    background-image: url(/static/images/back_table.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 32px;
+    height: 25px;
+}
+
+.back_td_light {
+    background-image: url(/static/images/back_table_white.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
     width: 30px;
     height: 30px;
+}
+
+tr.to_delete {
+    background-color: var(--light-red-color) !important;
+    color: white;
 }

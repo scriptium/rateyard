@@ -27,11 +27,11 @@
                 </div>
             </a>
             <div class="appear_on_change appear_transition title_block">
-                <div class="blue_button" onclick="saveGroupChanges(this)">
+                <div class="blue_button" onclick="saveChanges()">
                     <div class="button_icon save_icon"></div>
                     <div>Зберегти зміни</div>
                 </div>
-                <div class="blue_button" onclick="changesSet.discardChanges()">
+                <div class="blue_button" onclick="discardChanges()">
                     <div class="button_icon back_icon"></div>
                     <div>Прибрати зміни</div>
                 </div>
@@ -53,7 +53,6 @@
     <script type="text/javascript" src="/static/js/admin/base.js"></script>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
     <script type="text/javascript" src="/static/js/admin/api.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/nextapps-de/flexsearch@master/dist/flexsearch.light.js"></script>
     <script type="text/javascript" src="/static/js/hidable_children_element.js"></script>
     <script type="text/javascript" src="/static/js/admin/subjects.js"></script>
 
