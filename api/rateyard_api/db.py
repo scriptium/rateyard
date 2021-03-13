@@ -20,7 +20,7 @@ def close_db(e=None):
         db.close()
 
 
-def get_group_full(id):
+def get_group_full(id, marks_subject_id=None):
     cursor = get_db().cursor()
     cursor.execute('''
     SELECT gr.id, gr.group_name, cl.id, cl.class_name, gr.is_full_class_group
@@ -75,6 +75,46 @@ def get_group_full(id):
             "type": "GroupClassStudent"
         } for data in cursor.fetchall()
     ]
+
+    fetched_marks_columns = {}
+    for student in result['group_class_students']:
+        exec_args = []
+        if not marks_subject_id is None:
+            exec_join_str = 'INNER JOIN marks_columns AS mc ON m.column_id=mc.id AND mc.subject_id=%s'
+            exec_args.append(marks_subject_id)
+        else: 
+            exec_join_str = ''
+        exec_args.append(student['id'])
+        cursor.execute(f'''
+        SELECT m.id, m.points, m.edition_date, m.comment, m.column_id
+        FROM marks AS m {exec_join_str}
+        WHERE m.student_id=%s;
+        ''', exec_args)
+        student['marks'] = []
+        for mark_data in cursor.fetchall():
+            if mark_data[4] in fetched_marks_columns.keys():
+                column = fetched_marks_columns[mark_data[4]]
+            else:
+                cursor.execute('''
+                SELECT column_name, column_date
+                FROM marks_columns
+                WHERE id=%s
+                ''', (mark_data[4], ))
+                exec_result = cursor.fetchone()
+                column = {
+                    'id': mark_data[4],
+                    'name': exec_result[0],
+                    'date': exec_result[1],
+                }
+                fetched_marks_columns[mark_data[4]] = column
+
+            student['marks'].append({
+                'id': mark_data[0],
+                'points': mark_data[1],
+                'edition_date': mark_data[2].timestamp(),
+                'comment': mark_data[3],
+                'column': column,
+            })
 
     cursor.execute('''
         SELECT teachers.id, teachers.username, teachers.full_name, teachers.email, subjects.id, subjects.subject_name

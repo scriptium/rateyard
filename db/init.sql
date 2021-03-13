@@ -41,14 +41,15 @@ CREATE TABLE marks_columns (
     id SERIAL PRIMARY KEY NOT NULL,
     subject_id INTEGER REFERENCES subjects(id) ON DELETE CASCADE NOT NULL,
     column_name VARCHAR(256),
-    column_date TIMESTAMPTZ NOT NULL
+    column_date TIMESTAMPTZ
 );
 CREATE TABLE marks (
     id SERIAL PRIMARY KEY NOT NULL,
     points INTEGER NOT NULL,
-    creation_date TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+    edition_date TIMESTAMPTZ DEFAULT NOW() NOT NULL,
     comment VARCHAR(256),
-    teacher_id INTEGER NOT NULL,
+    teacher_id INTEGER REFERENCES teachers(id) NOT NULL,
+    student_id INTEGER REFERENCES students(id) ON DELETE CASCADE NOT NULL,
     column_id INTEGER REFERENCES marks_columns(id) ON DELETE CASCADE NOT NULL
 );
 INSERT INTO classes (class_name)
@@ -233,6 +234,26 @@ INSERT INTO subjects (subject_name)
 VALUES ('Фізична культура');
 INSERT INTO teachers_groups (teacher_id, group_id, subject_id)
 VALUES (1, 16, 1);
+INSERT INTO marks_columns (subject_id, column_name)
+VALUES (1, 'Зошит');
+INSERT INTO marks (
+        points,
+        comment,
+        teacher_id,
+        student_id,
+        column_id
+    )
+VALUES (1, 'Не перездаєтся', 1, 3, 1);
+INSERT INTO marks_columns (subject_id, column_name)
+VALUES (5, 'Розтяжка');
+INSERT INTO marks (
+        points,
+        comment,
+        teacher_id,
+        student_id,
+        column_id
+    )
+VALUES (1, 'Погано розтягуєшся', 4, 3, 2);
 INSERT INTO teachers_groups (teacher_id, group_id, subject_id)
 VALUES (1, 17, 2);
 INSERT INTO teachers_groups (teacher_id, group_id, subject_id)
