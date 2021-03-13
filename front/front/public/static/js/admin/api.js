@@ -273,3 +273,14 @@ async function editSubjects(subjectsChanges) {
         json: JSON.parse(xhr.responseText)
     }
 }
+
+async function deleteSubjects(subjectsId) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'delete_subjects', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(subjectsId), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}

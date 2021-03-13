@@ -387,8 +387,25 @@ a.text:hover {
     justify-content: flex-end;
 }
 
+.td_icons > div {
+    transition: all 0.2s ease-out;
+}
+
+.td_icons > div:hover {
+    scale: 1.15;
+}
+
 .save_td {
     background-image: url(/static/images/tick_table.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 26px;
+    height: 26px;
+}
+
+.save_td_light {
+    background-image: url(/static/images/tick_table_white.svg);
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -421,6 +438,7 @@ a.text:hover {
     background-position: center;
     width: 32px;
     height: 25px;
+    margin-right: 1px;
 }
 
 .back_td_light {
@@ -429,10 +447,22 @@ a.text:hover {
     background-size: contain;
     background-position: center;
     width: 30px;
-    height: 30px;
+    height: 26px;
+    margin-right: 1px;
 }
 
 tr.to_delete {
     background-color: var(--light-red-color) !important;
     color: white;
+}
+tr.edit {
+    background-color: var(--light-blue-color) !important;
+    color: white;
+}
+
+.table_input {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: bold;
 }
