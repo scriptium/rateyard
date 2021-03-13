@@ -6,50 +6,100 @@ const groupPromise = new Promise(async (resolve, reject) => {
 });
 
 const groupTitleElement = document.getElementById('group_title');
-const groupSubtitleElement = document.getElementById('group_subtitle'); 
+const groupSubtitleElement = document.getElementById('group_subtitle');
 const marksTableElement = document.getElementById('marks_table');
-const marksTableBodyElement = marksTableElement.getElementsByTagName('tbody')[0]; 
-const marksTableHeadElement = marksTableElement.getElementsByTagName('thead')[0]; 
+const marksTableBodyElement = marksTableElement.getElementsByTagName('tbody')[0];
+const marksTableHeadElement = marksTableElement.getElementsByTagName('thead')[0];
 
 const toolsElement = document.getElementById('tools');
 const columnToolHidableChildrenElement = new HidableChildrenElement(document.getElementById('column_tool'));
 const markToolElement = document.getElementById('mark_tool');
 const defaultToolElement = document.getElementById('default_tool');
 
+function addEmptyColumn(thElement) {
+    marksTableHeadElement.children[0].appendChild(thElement);
+    for (let trElement of marksTableBodyElement.children) {
+        let emptyTdElement = document.createElement('td');
+        trElement.appendChild(emptyTdElement);
+    }
+    return marksTableBodyElement.children[0].childElementCount - 1;
+}
+
 groupPromise.then((group) => {
     groupTitleElement.innerHTML = `${group.group.class.name} ${group.group.name}`;
     groupSubtitleElement.innerHTML = group.subject.name;
     console.log(group);
-    
-    for (let i=0; i<10; i++){
-        group.group.students.forEach((student) => {
-            let newCellElement = document.createElement('td');
-            newCellElement.innerHTML = student.full_name;
-            let newRowElement = document.createElement('tr');
-            newRowElement.appendChild(newCellElement);
-            for (let i=0; i<100; i++) {
-                let newCellElement = document.createElement('td');
-                newCellElement.innerHTML = 11;
-                newCellElement.setAttribute('onclick', 'focusCell(this)');
-                newRowElement.appendChild(newCellElement);
-            }
-            marksTableBodyElement.appendChild(newRowElement);
-        });
+
+    for (let student of group.group.students) {
+        let newCellElement = document.createElement('td');
+        newCellElement.innerHTML = student.full_name;
+        let newRowElement = document.createElement('tr');
+        newRowElement.appendChild(newCellElement);
+        marksTableBodyElement.appendChild(newRowElement);
     }
-    for (let i=10; i<100; i++) {
-        let date = document.createElement('th')
-        tippy(date, {
-            content: `${i}.01.21<br>Зошит за березень`,
+    let columnsMap = new Map();
+    for (let studentIndex = 0; studentIndex < group.group.students.length; studentIndex++) {
+        let student = group.group.students[studentIndex];
+        for (let mark of student.marks) {
+            mark.studentIndex = studentIndex;
+            if (columnsMap.has(mark.column.id)) {
+                columnsMap.get(mark.column.id).marks.push(mark);
+            }
+            else {
+                let columnWithMarks = Object.assign({}, mark.column);
+                columnWithMarks.marks = [mark];
+                columnsMap.set(mark.column.id, columnWithMarks);
+            }
+        }
+    }
+    let columnsArray = [];
+    for (let column of columnsMap.values()) {
+        columnsArray.push(column);
+    }
+    let sortComparator = (leftColumn, rightColumn) => {
+        let leftDate = leftColumn.creation_date;
+        let rightDate = rightColumn.creation_date;
+        if (leftColumn.date) {
+            leftDate = leftColumn.date
+        }
+        if (rightColumn.date) {
+            rightDate = rightColumn.date
+        }
+        return leftDate - rightDate;
+    }
+    columnsArray.sort(sortComparator);
+    console.log(columnsArray);
+    for (let column of columnsArray) {
+        let newThElement = document.createElement('th');
+        let trText;
+        let date;
+        if (column.date) date = new Date(column.date * 1000);
+        if (column.name)
+        {
+            trText = column.name;
+        }
+        else {
+            trText = date.toLocaleDateString();
+        }
+        newThElement.innerHTML = `<div>${trText}</div>`;
+        let tooltipText;
+        if (column.date && column.name) tooltipText = 
+            `${column.name} (${date.toLocaleDateString()})`
+        else if (column.date) tooltipText = date.toLocaleDateString();
+        else tooltipText = column.name;
+        tippy(newThElement, {
+            content: tooltipText,
             allowHTML: true
         });
-        date.innerHTML = `<div>${i}.01.21</div>`
-        date.setAttribute('onclick', 'focusColumn(this)')
-        marksTableHeadElement.children[0].appendChild(date)
+        let columnIndex = addEmptyColumn(newThElement);
+        for (let mark of column.marks) {
+            marksTableBodyElement.children[mark.studentIndex].children[columnIndex].innerHTML = mark.points;
+        }
     }
     hidePreloader();
 });
 
-function prepareColumToolElement(newColumn=true) {
+function prepareColumToolElement(newColumn = true) {
     let columnToolElement = columnToolHidableChildrenElement.element;
     let deleteButtonElement = columnToolElement.querySelector('.delete_button');
     if (newColumn) {
@@ -76,11 +126,11 @@ function changeTool(newTool) {
     oldTool.classList.add('hidden');
     newTool.classList.remove('hidden');
     newTool.animate(
-        [{opacity: '0'}, {opacity: '1'}],
+        [{ opacity: '0' }, { opacity: '1' }],
         300
     );
 }
- function unfocusAll() {
+function unfocusAll() {
     document.querySelectorAll('#marks_table td.highlighted, #marks_table th.highlighted').forEach(
         (element) => {
             element.classList.remove('highlighted');
@@ -91,7 +141,7 @@ function changeTool(newTool) {
             element.classList.remove('focused');
         }
     )
- }
+}
 
 function focusCell(cellElement) {
     unfocusAll();
@@ -128,7 +178,7 @@ function focusCell(cellElement) {
         if (tempElement.children.item(cellColumn))
             tempElement.children[cellColumn].classList.add('highlighted');
         tempElement = tempElement.previousSibling;
-    }   
+    }
     tempElement = cellElement.parentNode.nextSibling;
     while (tempElement) {
         if (tempElement.nodeName === '#text') {
@@ -139,7 +189,7 @@ function focusCell(cellElement) {
             tempElement.children[cellColumn].classList.add('highlighted');
         tempElement = tempElement.nextSibling;
     }
-    
+
     marksTableHeadElement.querySelector('tr').children[cellColumn].classList.add('highlighted');
     console.log(cellColumn);
     console.log(cellRow)

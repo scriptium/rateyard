@@ -41,7 +41,8 @@ CREATE TABLE marks_columns (
     id SERIAL PRIMARY KEY NOT NULL,
     subject_id INTEGER REFERENCES subjects(id) ON DELETE CASCADE NOT NULL,
     column_name VARCHAR(256),
-    column_date TIMESTAMPTZ
+    column_date TIMESTAMPTZ,
+    creation_date TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
 CREATE TABLE marks (
     id SERIAL PRIMARY KEY NOT NULL,
@@ -235,7 +236,7 @@ VALUES ('Фізична культура');
 INSERT INTO teachers_groups (teacher_id, group_id, subject_id)
 VALUES (1, 16, 1);
 INSERT INTO marks_columns (subject_id, column_name)
-VALUES (1, 'Зошит');
+VALUES (1, 'Зошит за вересень');
 INSERT INTO marks (
         points,
         comment,
@@ -244,6 +245,18 @@ INSERT INTO marks (
         column_id
     )
 VALUES (1, 'Не перездаєтся', 1, 3, 1);
+
+INSERT INTO marks_columns (subject_id, column_date)
+VALUES (1, NOW());
+INSERT INTO marks (
+        points,
+        comment,
+        teacher_id,
+        student_id,
+        column_id
+    )
+VALUES (1, 'dfsfsd', 1, 3, 2);
+
 INSERT INTO marks_columns (subject_id, column_name)
 VALUES (5, 'Розтяжка');
 INSERT INTO marks (
@@ -253,7 +266,28 @@ INSERT INTO marks (
         student_id,
         column_id
     )
-VALUES (1, 'Погано розтягуєшся', 4, 3, 2);
+VALUES (1, 'Погано розтягуєшся', 4, 3, 3);
+
+INSERT INTO marks_columns (subject_id, column_date, column_name)
+VALUES (1, NOW(), 'КР 1');
+INSERT INTO marks (
+        points,
+        comment,
+        teacher_id,
+        student_id,
+        column_id
+    )
+VALUES (1, 'dfsfsd', 1, 3, 4);
+INSERT INTO marks (
+        points,
+        comment,
+        teacher_id,
+        student_id,
+        column_id
+    )
+VALUES (1, 'dfsfsd', 1, 2, 4);
+
+
 INSERT INTO teachers_groups (teacher_id, group_id, subject_id)
 VALUES (1, 17, 2);
 INSERT INTO teachers_groups (teacher_id, group_id, subject_id)

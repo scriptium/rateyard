@@ -96,7 +96,7 @@ def get_group_full(id, marks_subject_id=None):
                 column = fetched_marks_columns[mark_data[4]]
             else:
                 cursor.execute('''
-                SELECT column_name, column_date
+                SELECT column_name, column_date, creation_date
                 FROM marks_columns
                 WHERE id=%s
                 ''', (mark_data[4], ))
@@ -104,7 +104,8 @@ def get_group_full(id, marks_subject_id=None):
                 column = {
                     'id': mark_data[4],
                     'name': exec_result[0],
-                    'date': exec_result[1],
+                    'date': exec_result[1].timestamp() if not exec_result[1] is None else None,
+                    'creation_date': exec_result[2].timestamp()
                 }
                 fetched_marks_columns[mark_data[4]] = column
 

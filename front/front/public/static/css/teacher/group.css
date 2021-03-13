@@ -84,6 +84,7 @@ body {
     border: 2px solid #cacaca;
     padding: 10px;
     transition: background-color 0.2s, color 0.2s;
+    text-align: center;
 }
 
 :root {
@@ -112,14 +113,14 @@ body {
     position: sticky;
     top: 0;
     z-index: 3;
-    text-align: left;
-    width: min-content;
 }
 
 #marks_table thead th:nth-child(n+2)>div {
     font-weight: inherit;
     transform: rotate(180deg);
     writing-mode: vertical-rl;
+    width: 24px;
+    max-height: 100px;
 }
 
 #marks_table thead th:nth-child(n+2), #marks_table tbody td:nth-child(n+2) {
