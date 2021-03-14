@@ -43,7 +43,7 @@
                         <div class="button_icon save_icon"></div>
                         <div>Зберегти</div>
                     </div>
-                    <div class="blue_button" onclick="changeTool(defaultToolElement)">
+                    <div class="blue_button" onclick="changeTool(defaultToolElement);unfocusAll()">
                         <div class="button_icon back_icon"></div>
                         <div>Скасувати</div>
                     </div>
@@ -55,17 +55,17 @@
                 <div id="mark_tool" class="hidden">
                     <div class="input_container">
                         <span>Оцінка:</span>
-                        <input type="text" size="2" maxlength="2" class="default_input_text">
+                        <input type="text" size="2" maxlength="2" id="mark_points" class="default_input_text">
                     </div>
                     <div class="stretched input_container">
                         <span>Кометар учню:</span>
-                        <input type="text" class="default_input_text" placeholder="Введіть кометар учню">
+                        <input type="text" class="default_input_text" id="mark_comment" placeholder="Введіть кометар учню">
                     </div>
                     <div class="blue_button">
                         <div class="button_icon save_icon"></div>
                         <div>Зберегти оцінку</div>
                     </div>
-                    <div class="blue_button">
+                    <div class="blue_button" onclick="changeTool(defaultToolElement);unfocusAll()">
                         <div class="button_icon back_icon"></div>
                         <div>Скасувати</div>
                     </div>

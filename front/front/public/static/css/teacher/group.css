@@ -37,6 +37,7 @@ body {
 
 #tools>div {
     display: flex;
+    min-width: max-content
 }
 
 #tools>div.hidden {
