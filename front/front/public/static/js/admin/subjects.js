@@ -8,6 +8,10 @@ let mainTbodyElement = table.getElementsByTagName('tbody')[0];
 let backData = [];
 let changes = 0;
 
+function findRow(id) {
+    return [...table.getElementsByTagName('tr')].find(row => row.firstChild.innerHTML === `${id}`);
+}
+
 function fillSubjectsTable(data) {
     let cnt = 0;
     data.forEach(subject => {
@@ -32,19 +36,20 @@ function fillSubjectsTable(data) {
     return cnt;
 }
 
-function onInput(id, oldName, name) {
-    let row = table.getElementsByTagName('tr').item(id);
-    if (name !== oldName) {
+async function onInput(id, oldName, name) {
+    let row = findRow(id);
+    if (name !== oldName && row.children[2].childElementCount !== 2) {
         row.children[2].innerHTML = `<div class='save_td_light' onclick='saveInTable(${id})'></div> 
             <div class='back_td_light' onclick="backRowData(${id}, '${oldName}')"></div>`;
-    } else { 
+    } else if (name === oldName) {
+        await row.children[2].firstChild.animate([{opacity: 1}, {opacity: 0}], 250).finished;
         row.children[2].innerHTML = `<div class='back_td_light' onclick="backRowData(${id}, '${oldName}')"></div>`;  
     } 
 }
 
 function editSubjectName(id) {
     changes++;
-    let row = table.getElementsByTagName('tr').item(id);
+    let row = findRow(id);
     row.classList.add('edit');
 
     let subjectName = row.children[1];
@@ -61,7 +66,7 @@ function editSubjectName(id) {
 }
 
 function saveInTable(id) {
-    let row = table.getElementsByTagName('tr').item(id);
+    let row = findRow(id);
     let newName = row.children[1].children[0].value;
     backRowData(id);
     row.children[1].innerHTML = `${newName}`;
@@ -75,7 +80,7 @@ function saveInTable(id) {
 
 function deleteSubjectFromTable(id) {
     changes++;
-    let row = table.getElementsByTagName('tr').item(id);
+    let row = findRow(id);
     row.classList.add('to_delete');
     row.children[2].innerHTML = `<div class='back_td_light' 
         onclick="backRowData(${id}, '${row.children[1].innerHTML}')"></div>`;
@@ -84,7 +89,7 @@ function deleteSubjectFromTable(id) {
 }
 
 function backRowData(id, name = null) {
-    let row = table.getElementsByTagName('tr').item(id);
+    let row = findRow(id);
     row.innerHTML = backData[id - 1];
     if (name) row.children[1].innerHTML = name;
     row.className = '';

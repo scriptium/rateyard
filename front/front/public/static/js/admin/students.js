@@ -34,14 +34,18 @@ function searchStudents(text) {
 async function showDragNDropArea() {
     let black_area = document.getElementsByClassName('drag_and_drop_file').item(0);
     let drag_area = document.getElementById('drag_area');
+    let main = document.getElementById('content');
+
     if (black_area.classList.contains('show'))
     {
+        main.style.filter = 'none';
         black_area.animate([{opacity: 1}, {opacity: 0}], 250);
         await drag_area.animate([{opacity: 1}, {opacity: 0}], 250).finished;
 
         black_area.classList.remove('show');
         drag_area.classList.remove('show');
     } else {
+        main.style.filter = 'blur(3px)';
         black_area.classList.add('show');  
         drag_area.classList.add('show');
     }

@@ -411,6 +411,7 @@ a.text:hover {
     background-position: center;
     width: 26px;
     height: 26px;
+    animation: fadein 0.25s;
 }
 
 .edit_td {

@@ -28,6 +28,7 @@
     top: 0px;
     align-items: center;
     justify-content: center;
+    z-index: 1;
 }
 
 .drag_and_drop_file.show {
@@ -56,6 +57,7 @@
     position: fixed;
     left: calc(50vw - 350px);
     top: calc(50vh - 250px);
+    z-index: 1;
 }
 
 #drag_area.show {
