@@ -26,11 +26,11 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
     <div id="content">
         <div class="title_block">
             <div class="title">Налаштування групи №<span id="group_id"><?php echo $_GET['id']; ?></span></div>
-            <div class="delete_button" onclick="deleteGroupButton(this)">
+            <div class="delete_button not_full_group" onclick="deleteGroupButton(this)">
                 <div class="button_icon delete_icon"></div>
                 <div>Видалити</div>
             </div>
-            <div class="appear_on_change appear_transition title_block">
+            <div class="appear_on_change appear_transition title_block not_full_group">
                 <div class="blue_button" onclick="saveGroupChanges(this)">
                     <div class="button_icon save_icon"></div>
                     <div>Зберегти зміни</div>
@@ -41,8 +41,11 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                 </div>
             </div>
         </div>
+        <div class="subtitle full_group">*Ця група створена автоматично. Щоб видалити її, потрібно видалити цей клас</div>
         <div class="input_grid">
-            <div>Назва:</div><input id="name" type="text" class="default_input_text" placeholder="Введіть назву групи" oninput="changesSet.updateChangedElements(this)">
+            <div>Назва:</div>
+            <input id="name_input" type="text" class="default_input_text not_full_group" placeholder="Введіть назву групи" oninput="changesSet.updateChangedElements(this)">
+            <div id="name_fake_input" class="fake_readonly_input full_group" hidden></div>
             <div>Клас:</div>
             <div id="class_id"></div>
         </div>
@@ -54,7 +57,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                     <th>ПІБ</th>
                     <th>Логін</th>
                     <th>Адреса електронної пошти</th>
-                    <th style="width: 25px;"></th>
+                    <th style="width: 25px;" class="not_full_group"></th>
                 </tr>
             </thead>
             <tbody>

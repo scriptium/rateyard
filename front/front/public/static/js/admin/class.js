@@ -80,6 +80,7 @@ function moveAllStudents(buttonElement) {
     let isConfirmed = confirm(`Перемістити всіх учнів з ${className} до ${classNameTo} класу?`);
     if (isConfirmed) {
         moveStudentsToClass(classId, classIdTo);
+        location.reload();
     }
     else enableButton(buttonElement);
 }

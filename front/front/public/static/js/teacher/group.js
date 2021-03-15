@@ -32,11 +32,13 @@ function addEmptyColumn(thElement) {
     return marksTableBodyElement.children[0].childElementCount - 1;
 }
 
-groupPromise.then((group) => {
-    groupTitleElement.innerHTML = `${group.group.class.name} ${group.group.name}`;
-    groupSubtitleElement.innerHTML = group.subject.name;
-    console.log(group);
-
+async function fillMarksTable() {
+    marksTableBodyElement.innerHTML = '';
+    marksTableHeadElement.children[0].innerHTML = '';
+    let group = await groupPromise;
+    let firstThElement = document.createElement('th');
+    firstThElement.innerHTML = 'ПІБ';
+    marksTableHeadElement.children[0].appendChild(firstThElement);
     for (let student of group.group.students) {
         let newCellElement = document.createElement('td');
         newCellElement.innerHTML = student.full_name;
@@ -44,37 +46,6 @@ groupPromise.then((group) => {
         newRowElement.appendChild(newCellElement);
         marksTableBodyElement.appendChild(newRowElement);
     }
-    let columnsMap = new Map();
-    for (let studentIndex = 0; studentIndex < group.group.students.length; studentIndex++) {
-        let student = group.group.students[studentIndex];
-        for (let mark of student.marks) {
-            mark.studentIndex = studentIndex;
-            if (columnsMap.has(mark.column.id)) {
-                columnsMap.get(mark.column.id).marks.push(mark);
-            }
-            else {
-                let columnWithMarks = Object.assign({}, mark.column);
-                columnWithMarks.marks = [mark];
-                columnsMap.set(mark.column.id, columnWithMarks);
-            }
-        }
-    }
-    columnsArray = [];
-    for (let column of columnsMap.values()) {
-        columnsArray.push(column);
-    }
-    let sortComparator = (leftColumn, rightColumn) => {
-        let leftDate = leftColumn.creation_date;
-        let rightDate = rightColumn.creation_date;
-        if (leftColumn.date) {
-            leftDate = leftColumn.date
-        }
-        if (rightColumn.date) {
-            rightDate = rightColumn.date
-        }
-        return leftDate - rightDate;
-    }
-    columnsArray.sort(sortComparator);
     for (let column of columnsArray) {
         let newThElement = document.createElement('th');
         let thText;
@@ -108,6 +79,45 @@ groupPromise.then((group) => {
             tdElement.setAttribute('columns_array_index', columnIndex - 1);
         }
     }
+}
+
+groupPromise.then((group) => {
+    groupTitleElement.innerHTML = `${group.group.class.name} ${group.group.name}`;
+    groupSubtitleElement.innerHTML = group.subject.name;
+    console.log(group);
+    
+    let columnsMap = new Map();
+    for (let studentIndex = 0; studentIndex < group.group.students.length; studentIndex++) {
+        let student = group.group.students[studentIndex];
+        for (let mark of student.marks) {
+            mark.studentIndex = studentIndex;
+            if (columnsMap.has(mark.column.id)) {
+                columnsMap.get(mark.column.id).marks.push(mark);
+            }
+            else {
+                let columnWithMarks = Object.assign({}, mark.column);
+                columnWithMarks.marks = [mark];
+                columnsMap.set(mark.column.id, columnWithMarks);
+            }
+        }
+    }
+    columnsArray = [];
+    for (let column of columnsMap.values()) {
+        columnsArray.push(column);
+    }
+    let sortComparator = (leftColumn, rightColumn) => {
+        let leftDate = leftColumn.creation_date;
+        let rightDate = rightColumn.creation_date;
+        if (leftColumn.date) {
+            leftDate = leftColumn.date
+        }
+        if (rightColumn.date) {
+            rightDate = rightColumn.date
+        }
+        return leftDate - rightDate;
+    }
+    columnsArray.sort(sortComparator);
+    fillMarksTable();
     hidePreloader();
 });
 
@@ -120,12 +130,14 @@ function dateToInputDateString(date) {
 function prepareColumToolElement(newColumn = true, date = null, name = null) {
     let columnToolElement = columnToolHidableChildrenElement.element;
     let deleteButtonElement = columnToolElement.querySelector('.delete_button');
+    let saveColumnButtonElement = document.getElementById('save_column_button');
     if (newColumn) {
         if (deleteButtonElement)
             columnToolHidableChildrenElement.hide(
                 deleteButtonElement
             );
         unfocusAll();
+        saveColumnButtonElement.setAttribute('onclick', 'addColumnButton()');
     }
     else {
         columnToolHidableChildrenElement.showAll();
@@ -270,4 +282,18 @@ function focusColumn(thElement) {
     let column = columnsArray[parseInt(thElement.getAttribute('columns_array_index'))];
     console.log(column);
     changeTool(prepareColumToolElement(false, column.date, column.name));
+}
+
+function addColumnButton() {
+    let columnDateElement = document.getElementById('column_date');
+    let columnNameElement = document.getElementById('column_name');
+    if (columnDateElement.value === '' && columnNameElement.value === '') {
+        makeInputTextWrong(columnDateElement);
+        makeInputTextWrong(columnNameElement);
+    }
+    else {
+        makeInputTextNotWrong(columnDateElement);
+        makeInputTextNotWrong(columnNameElement);
+        fillMarksTable();
+    }
 }

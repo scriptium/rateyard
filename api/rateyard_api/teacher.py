@@ -132,6 +132,36 @@ def edit_me():
     db.edit_teacher(get_jwt_identity()['id'], request.json)
     return jsonify(result='ok')
 
+@bp.route('delete_mark', methods=('POST', ))
+@teacher_token_required
+def delete_mark():
+    if not (
+        request.is_json and
+        type(request.json.get('id')) != int
+    ):
+        abort(400, 'Invalid json data.')
+    
+    database = db.get_db()
+    cursor = database.cursor()
+    cursor.execute('''
+    SELECT 1 FROM marks AS m
+    INNER JOIN marks_columns AS mc ON m.column_id=mc.id
+    INNER JOIN teachers_groups AS tg ON tg.subject_id=mc.subject_id
+    WHERE m.id=%s AND tg.id=%s;
+    ''', (request.json['id'], get_jwt_identity()['id']))
+    if cursor.fetchone() is None:
+        abort(400, 'Wrong id.')
+
+    cursor.execute('''
+    DELETE FROM marks
+    WHERE id=%s
+    RETURNING column_id;
+    ''', (request.json['id'], ))
+    cursor.execute('''
+    DELETE FROM marks_columns AS mc
+    WHERE id=%s AND NOT EXISTS(SELECT 1 FROM marks AS m WHERE m.column_id=mc.id);
+    ''', (cursor.fetchone()[0], ))
+    db.commit()
 
 @bp.route('create_mark', methods=('POST', ))
 @teacher_token_required
@@ -205,9 +235,7 @@ def crete_mark():
         get_jwt_identity()['id'],
         column_id
     ))
-
     database.commit()
-
     return jsonify(result="ok")
 
 

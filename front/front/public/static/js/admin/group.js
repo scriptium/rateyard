@@ -1,7 +1,8 @@
 let groupId = parseInt(document.getElementById("group_id").innerHTML);
 
-let groupNameElement = document.getElementById('name');
-let groupClassIdElement = document.querySelector('#class_id')
+let groupNameElement = document.querySelector('#name_input');
+let groupName;
+let groupClassIdElement = document.querySelector('#class_id');
 let groupClassName;
 let groupClassId;
 let groupStudentsTbodyElement = document.querySelector('#group_students tbody')
@@ -10,14 +11,26 @@ let mainLecturersTbodyElement = document.querySelector('#lecturers_table tbody')
 
 let changesSet = new ChangesSet(document.querySelectorAll('.appear_on_change'));
 
+
+function makeNotFullGroupItemsHidden(name) {
+    let notFullGroupItems = document.querySelectorAll('.not_full_group');
+    notFullGroupItems.forEach(element => {
+        element.parentElement.removeChild(element);
+    });
+    let fakeInputGroupName = document.querySelector('#name_fake_input');
+    fakeInputGroupName.innerHTML = name;
+    fakeInputGroupName.hidden = false;
+    groupName = name;
+}
+
 function updateGroupData() {
     return new Promise((resolve) => {
         getGroupFull(groupId).then((responseData) => {
             let parsedGroup = responseData.json;
+            
             console.log(parsedGroup)
-            groupNameElement.value = parsedGroup.name;
-            groupNameElement.setAttribute('initial_value', parsedGroup.name);
-            groupNameElement.setAttribute('oninput', 'changesSet.updateChangedElements(this)');
+
+            
             groupClassIdElement.innerHTML =
                 `<div class=\"fake_readonly_input\"><a
             class=\"text\" 
@@ -26,7 +39,20 @@ function updateGroupData() {
             groupClassId = parsedGroup.class.id;
             groupClassName = parsedGroup.class.name;
             groupStudentsTbodyElement.innerHTML = '';
-            insertStudentsData(parsedGroup.group_class_students, groupStudentsTbodyElement, false, true, null);
+            
+            if(parsedGroup.is_full_class_group) {
+                makeNotFullGroupItemsHidden(parsedGroup.name);
+            }
+            else {
+                groupNameElement.value = parsedGroup.name;
+                groupNameElement.setAttribute('initial_value', parsedGroup.name);
+                groupNameElement.setAttribute('oninput', 'changesSet.updateChangedElements(this)');
+                let fullGroupElements = document.querySelectorAll('.full_group');
+                fullGroupElements.forEach(element => {
+                    fullGroupElements.parentNode.removeChild(element);
+                });
+            }
+            insertStudentsData(parsedGroup.group_class_students, groupStudentsTbodyElement, false, !parsedGroup.is_full_class_group, null);
             resolve();
         });
     });
@@ -90,7 +116,7 @@ function deleteGroupButton(buttonElement) {
 function addNewLecturer(buttonElement) {
     disableButton(buttonElement);
     sessionStorage.setItem('class', JSON.stringify({id: groupClassId, name: groupClassName}))
-    sessionStorage.setItem('group', JSON.stringify({id: groupId, name: groupNameElement.value}));
+    sessionStorage.setItem('group', JSON.stringify({id: groupId, name: groupName}));
     sessionStorage.setItem('teacher', JSON.stringify('false'));
     window.location = 'new_lecturer.php';
     enableButton(buttonElement);

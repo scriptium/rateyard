@@ -6,9 +6,9 @@ let subjectSelectElement = document.querySelector('#subject_select');
 let teacherBlock = document.querySelector('#teacher_block');
 let teacherElement;
 
-let classData = JSON.parse(sessionStorage['class']);
-let groupData = JSON.parse(sessionStorage['group']);
-let teacherData = JSON.parse(sessionStorage['teacher']);
+let classData = sessionStorage['class'];
+let groupData = sessionStorage['group'];
+let teacherData = sessionStorage['teacher'];
 
 
 let subjectsHasFilled = new Promise(async (resolve, reject) => {
@@ -75,6 +75,13 @@ function createFakeReadonlyInput(id, inner) {
 }
 
 async function fillSessionStorageData() {
+
+    if(classData !== undefined) classData = JSON.parse(classData)
+    else classData = 'false';
+    if(groupData !== undefined) groupData = JSON.parse(groupData)
+    else groupData = 'false';
+    if(teacherData !== undefined) teacherData = JSON.parse(teacherData)
+    else teacherData = 'false';
 
     if(classData !== 'false') {
         classElement = createFakeReadonlyInput('class_name', classData.name);

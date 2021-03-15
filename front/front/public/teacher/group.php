@@ -39,7 +39,7 @@
                         <span>Назва:</span>
                         <input type="text" class="default_input_text" placeholder="Введіть назву колонки" id="column_name">
                     </div>
-                    <div class="blue_button">
+                    <div class="blue_button" id="save_column_button">
                         <div class="button_icon save_icon"></div>
                         <div>Зберегти</div>
                     </div>

@@ -54,7 +54,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                 <div>Додати групу</div>
             </div>
         </div>
-        <table class="default_table appear_transition" id="groups_table">
+        <table class="default_table" id="groups_table">
             <thead>
                 <tr>
                     <th>№</th>

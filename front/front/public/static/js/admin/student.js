@@ -20,27 +20,6 @@ let classElement = document.getElementById('class_id');
 let passwordElement = document.getElementById('password');
 let emailElement = document.getElementById('email');
 
-function updateStudentGroups() {
-    console.log("checking groups");
-    return new Promise(async (resolve, reject) => {
-        getGroupsShort(undefined, studentId, undefined, undefined).then((responseData) => {
-            let groupsShort = responseData.json;
-    
-            afterStudentGroupsElements.forEach(
-                (element) => {
-                    element.classList.add('visible');
-                }
-            )
-    
-            mainGroupsTbodyElement.innerHTML = '';
-            insertGroupsData(groupsShort, mainGroupsTbodyElement, false, false, null);
-            resolve();
-            console.log("groups ");
-            console.log(groupsShort);
-        }, reject);
-    });
-}
-
 function updateStudentData() {
     return new Promise(async (resolve, reject) => {
         getStudents([studentId]).then(async (responseData) => {
@@ -60,7 +39,6 @@ function updateStudentData() {
 }
 
 let studentHasFilled = updateStudentData();
-let studentGroupsHasFilled = updateStudentGroups();
 
 function saveStudentChangesButton(buttonElement) {
     buttonElement.classList.add('disabled');
