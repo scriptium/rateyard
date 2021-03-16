@@ -32,7 +32,7 @@ function addEmptyColumn(thElement) {
     return marksTableBodyElement.children[0].childElementCount - 1;
 }
 
-async function fillMarksTable() {
+async function fillMarksTable(columnForThReturn=null) {
     marksTableBodyElement.innerHTML = '';
     marksTableHeadElement.children[0].innerHTML = '';
     let group = await groupPromise;
@@ -58,8 +58,11 @@ async function fillMarksTable() {
         return leftDate - rightDate;
     }
     columnsArray.sort(sortComparator);
+    let returnTh;
     for (let column of columnsArray) {
         let newThElement = document.createElement('th');
+        if (column === columnForThReturn)
+            returnTh = newThElement; 
         let thText;
         if (column.name) {
             thText = column.name;
@@ -89,6 +92,7 @@ async function fillMarksTable() {
             tdElement.setAttribute('columns_array_index', columnIndex - 1);
         }
     }
+    return returnTh;
 }
 
 groupPromise.then((group) => {
@@ -262,6 +266,25 @@ function focusCell(cellElement) {
     }
 }
 
+function deleteColumnButton() {
+    let focusedThElement = document.querySelector('th.focused');
+    let columnIndex = focusedThElement.getAttribute('columns_array_index');
+    let column = columnsArray[columnIndex];
+    let confirmed = true;
+    if (column.marks.length > 0)
+        confirmed = confirm('Видалити колонку? Оцінки з цієї колонки також буде видалено.')
+    if (!confirmed) return;
+    if (column.id) {
+        console.log('id not null')
+    }
+    columnsArray.splice(columnIndex, 1);
+    fillMarksTable();
+    changeTool(defaultToolElement);
+    for (let mark of column.marks) {
+        deleteMark(mark.id);
+    }
+}
+
 function focusColumn(thElement) {
     unfocusAll();
     thElement.classList.add('focused')
@@ -282,7 +305,7 @@ function focusColumn(thElement) {
     changeTool(prepareColumToolElement(false, column.date, column.name));
 }
 
-function addColumnButton() {
+async function addColumnButton() {
     let columnDateElement = document.getElementById('column_date');
     let columnNameElement = document.getElementById('column_name');
     if (columnDateElement.value === '' && columnNameElement.value === '') {
@@ -303,8 +326,8 @@ function addColumnButton() {
             marks: [],
             id: null
         }
-        console.log(column);
         columnsArray.push(column);
-        fillMarksTable();
+        thElement = await fillMarksTable(column);
+        focusColumn(thElement);
     }
 }

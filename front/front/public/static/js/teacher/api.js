@@ -1,4 +1,4 @@
-let adminRateyardApiClient = new RateyardApiClient(
+let teacherRateyardApiClient = new RateyardApiClient(
     localStorage.getItem('teacher_access_token'),
     localStorage.getItem('teacher_refresh_token'),
     '/teacher/',
@@ -13,7 +13,7 @@ let adminRateyardApiClient = new RateyardApiClient(
 )
 
 async function getMe() {
-    let xhr = await adminRateyardApiClient.sendRequest(
+    let xhr = await teacherRateyardApiClient.sendRequest(
         'get_me', 'GET', {}, null, true
     );
     return {
@@ -23,7 +23,7 @@ async function getMe() {
 }
 
 async function editMe(changes) {
-    let xhr = await adminRateyardApiClient.sendRequest(
+    let xhr = await teacherRateyardApiClient.sendRequest(
         'edit_me', 'POST', { 'Content-Type': 'application/json' },
         JSON.stringify(changes), true
     );
@@ -34,8 +34,19 @@ async function editMe(changes) {
 }
 
 async function getGroupFull(id) {
-    let xhr = await adminRateyardApiClient.sendRequest(
+    let xhr = await teacherRateyardApiClient.sendRequest(
         'get_group_full', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify({id}), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}
+
+async function deleteMark(id) {
+    let xhr = await teacherRateyardApiClient.sendRequest(
+        'delete_mark', 'POST', { 'Content-Type': 'application/json' },
         JSON.stringify({id}), true
     );
     return {

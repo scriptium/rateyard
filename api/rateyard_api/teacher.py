@@ -135,20 +135,31 @@ def edit_me():
 @bp.route('delete_mark', methods=('POST', ))
 @teacher_token_required
 def delete_mark():
+    print(type(request.json.get('id')))
     if not (
         request.is_json and
-        type(request.json.get('id')) != int
+        type(request.json.get('id')) == int
     ):
         abort(400, 'Invalid json data.')
     
     database = db.get_db()
     cursor = database.cursor()
+    print(request.json['id'], get_jwt_identity()['id'])
     cursor.execute('''
     SELECT 1 FROM marks AS m
+    INNER JOIN students AS s ON m.student_id=s.id
+    INNER JOIN groups AS g ON s.class_id=s.class_id AND (
+        g.is_full_class_group OR
+        EXISTS(
+            SELECT 1 FROM students_groups
+            WHERE student_id=s.id AND group_id=g.id
+        )
+    )
     INNER JOIN marks_columns AS mc ON m.column_id=mc.id
-    INNER JOIN teachers_groups AS tg ON tg.subject_id=mc.subject_id
-    WHERE m.id=%s AND tg.id=%s;
-    ''', (request.json['id'], get_jwt_identity()['id']))
+    INNER JOIN teachers_groups AS tg ON tg.teacher_id=%s AND tg.group_id=g.id
+    AND tg.subject_id=mc.subject_id
+    WHERE m.id=%s;
+    ''', (get_jwt_identity()['id'], request.json['id']))
     if cursor.fetchone() is None:
         abort(400, 'Wrong id.')
 
@@ -161,7 +172,8 @@ def delete_mark():
     DELETE FROM marks_columns AS mc
     WHERE id=%s AND NOT EXISTS(SELECT 1 FROM marks AS m WHERE m.column_id=mc.id);
     ''', (cursor.fetchone()[0], ))
-    db.commit()
+    database.commit()
+    return jsonify(result='ok')
 
 @bp.route('create_mark', methods=('POST', ))
 @teacher_token_required
