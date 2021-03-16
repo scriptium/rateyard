@@ -46,11 +46,21 @@ async function fillMarksTable() {
         newRowElement.appendChild(newCellElement);
         marksTableBodyElement.appendChild(newRowElement);
     }
+    let sortComparator = (leftColumn, rightColumn) => {
+        let leftDate = leftColumn.creation_date;
+        let rightDate = rightColumn.creation_date;
+        if (leftColumn.date) {
+            leftDate = leftColumn.date
+        }
+        if (rightColumn.date) {
+            rightDate = rightColumn.date
+        }
+        return leftDate - rightDate;
+    }
+    columnsArray.sort(sortComparator);
     for (let column of columnsArray) {
         let newThElement = document.createElement('th');
         let thText;
-        column.creation_date = new Date(column.creation_date * 1000);
-        if (column.date) column.date = new Date(column.date * 1000);
         if (column.name) {
             thText = column.name;
         }
@@ -104,19 +114,9 @@ groupPromise.then((group) => {
     columnsArray = [];
     for (let column of columnsMap.values()) {
         columnsArray.push(column);
+        column.creation_date = new Date(column.creation_date * 1000);
+        if (column.date) column.date = new Date(column.date * 1000);
     }
-    let sortComparator = (leftColumn, rightColumn) => {
-        let leftDate = leftColumn.creation_date;
-        let rightDate = rightColumn.creation_date;
-        if (leftColumn.date) {
-            leftDate = leftColumn.date
-        }
-        if (rightColumn.date) {
-            rightDate = rightColumn.date
-        }
-        return leftDate - rightDate;
-    }
-    columnsArray.sort(sortComparator);
     fillMarksTable();
     hidePreloader();
 });
@@ -227,9 +227,8 @@ function focusCell(cellElement) {
         tempElement.classList.add('highlighted');
         tempElement = tempElement.nextSibling;
     }
-    let cellRow = 0;
     tempElement = cellElement.parentNode.previousSibling;
-
+    let cellRow=0;
     while (tempElement) {
         if (tempElement.nodeName === '#text') {
             tempElement = tempElement.previousSibling;
@@ -280,7 +279,6 @@ function focusColumn(thElement) {
         element.children[cellColumn].classList.add('highlighted');
 
     let column = columnsArray[parseInt(thElement.getAttribute('columns_array_index'))];
-    console.log(column);
     changeTool(prepareColumToolElement(false, column.date, column.name));
 }
 
@@ -294,6 +292,19 @@ function addColumnButton() {
     else {
         makeInputTextNotWrong(columnDateElement);
         makeInputTextNotWrong(columnNameElement);
+        let date = null;
+        if (columnDateElement.value !== '') {
+            date = new Date(columnDateElement.value);
+        }
+        let column = {
+            creation_date: new Date(Date.now()),
+            date,
+            name: columnNameElement.value,
+            marks: [],
+            id: null
+        }
+        console.log(column);
+        columnsArray.push(column);
         fillMarksTable();
     }
 }
