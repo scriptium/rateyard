@@ -73,13 +73,13 @@ function addNewLecturer(buttonElement) {
     enableButton(buttonElement);
 }
 
-function moveAllStudents(buttonElement) {
+async function moveAllStudents(buttonElement) {
     disableButton(buttonElement);
     let classIdTo = parseInt(document.querySelector('#classes_select option:checked').value);
     let classNameTo = document.querySelector('#classes_select option:checked').innerHTML;
     let isConfirmed = confirm(`Перемістити всіх учнів з ${className} до ${classNameTo} класу?`);
     if (isConfirmed) {
-        moveStudentsToClass(classId, classIdTo);
+        await moveStudentsToClass(classId, classIdTo);
         location.reload();
     }
     else enableButton(buttonElement);

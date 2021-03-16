@@ -11,46 +11,41 @@ let mainLecturersTbodyElement = document.querySelector('#lecturers_table tbody')
 
 let changesSet = new ChangesSet(document.querySelectorAll('.appear_on_change'));
 
-
-function makeNotFullGroupItemsHidden(name) {
-    let notFullGroupItems = document.querySelectorAll('.not_full_group');
-    notFullGroupItems.forEach(element => {
-        element.parentElement.removeChild(element);
-    });
-    let fakeInputGroupName = document.querySelector('#name_fake_input');
-    fakeInputGroupName.innerHTML = name;
-    fakeInputGroupName.hidden = false;
-    groupName = name;
-}
-
 function updateGroupData() {
     return new Promise((resolve) => {
         getGroupFull(groupId).then((responseData) => {
             let parsedGroup = responseData.json;
             
             console.log(parsedGroup)
-
             
             groupClassIdElement.innerHTML =
                 `<div class=\"fake_readonly_input\"><a
             class=\"text\" 
             href=\"class.php?id=${parsedGroup.class.id}\">${parsedGroup.class.name}</a></div>`;
             
+            groupName = parsedGroup.name;
             groupClassId = parsedGroup.class.id;
             groupClassName = parsedGroup.class.name;
             groupStudentsTbodyElement.innerHTML = '';
             
             if(parsedGroup.is_full_class_group) {
-                makeNotFullGroupItemsHidden(parsedGroup.name);
+                let notFullGroupItems = document.querySelectorAll('.not_full_group');
+                notFullGroupItems.forEach(element => {
+                    element.parentElement.removeChild(element);
+                });
+
+                let fakeInputGroupName = document.querySelector('#name_fake_input');
+                fakeInputGroupName.innerHTML = groupName;
             }
             else {
-                groupNameElement.value = parsedGroup.name;
-                groupNameElement.setAttribute('initial_value', parsedGroup.name);
-                groupNameElement.setAttribute('oninput', 'changesSet.updateChangedElements(this)');
                 let fullGroupElements = document.querySelectorAll('.full_group');
                 fullGroupElements.forEach(element => {
-                    fullGroupElements.parentNode.removeChild(element);
+                    element.parentNode.removeChild(element);
                 });
+
+                groupNameElement.value = groupName;
+                groupNameElement.setAttribute('initial_value', groupName);
+                groupNameElement.setAttribute('oninput', 'changesSet.updateChangedElements(this)');
             }
             insertStudentsData(parsedGroup.group_class_students, groupStudentsTbodyElement, false, !parsedGroup.is_full_class_group, null);
             resolve();
@@ -119,6 +114,7 @@ function addNewLecturer(buttonElement) {
     sessionStorage.setItem('group', JSON.stringify({id: groupId, name: groupName}));
     sessionStorage.setItem('teacher', JSON.stringify('false'));
     window.location = 'new_lecturer.php';
+    sessionStorage.clear();
     enableButton(buttonElement);
 }
 
