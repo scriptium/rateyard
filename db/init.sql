@@ -49,6 +49,7 @@ CREATE TABLE marks (
     points INTEGER NOT NULL,
     edition_date TIMESTAMPTZ DEFAULT NOW() NOT NULL,
     comment VARCHAR(256),
+    is_read BOOLEAN NOT NULL,
     teacher_id INTEGER REFERENCES teachers(id) NOT NULL,
     student_id INTEGER REFERENCES students(id) ON DELETE CASCADE NOT NULL,
     column_id INTEGER REFERENCES marks_columns(id) ON DELETE CASCADE NOT NULL
@@ -240,52 +241,57 @@ VALUES (1, 'Зошит за вересень');
 INSERT INTO marks (
         points,
         comment,
+        is_read,
         teacher_id,
         student_id,
         column_id
     )
-VALUES (1, 'Не перездаєтся', 1, 3, 1);
+VALUES (1, 'Не перездаєтся', False, 1, 3, 1);
 
 INSERT INTO marks_columns (subject_id, column_date)
 VALUES (1, NOW());
 INSERT INTO marks (
         points,
         comment,
+        is_read,
         teacher_id,
         student_id,
         column_id
     )
-VALUES (1, 'dfsfsd', 1, 3, 2);
+VALUES (1, 'dfsfsd', False, 1, 3, 2);
 
 INSERT INTO marks_columns (subject_id, column_name)
 VALUES (5, 'Розтяжка');
 INSERT INTO marks (
         points,
         comment,
+        is_read,
         teacher_id,
         student_id,
         column_id
     )
-VALUES (1, 'Погано розтягуєшся', 4, 3, 3);
+VALUES (1, 'Погано розтягуєшся', False, 4, 3, 3);
 
 INSERT INTO marks_columns (subject_id, column_date, column_name)
 VALUES (1, NOW(), 'КР 1');
 INSERT INTO marks (
         points,
         comment,
+        is_read,
         teacher_id,
         student_id,
         column_id
     )
-VALUES (1, 'dfsfsd', 1, 3, 4);
+VALUES (1, 'dfsfsd', False, 1, 3, 4);
 INSERT INTO marks (
         points,
         comment,
+        is_read,
         teacher_id,
         student_id,
         column_id
     )
-VALUES (1, 'dfsfsd', 1, 2, 4);
+VALUES (1, 'dfsfsd', False, 1, 2, 4);
 
 
 INSERT INTO teachers_groups (teacher_id, group_id, subject_id)
