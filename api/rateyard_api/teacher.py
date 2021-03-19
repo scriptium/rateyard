@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import (Blueprint, json, request, jsonify, abort)
+from flask import Blueprint, json, request, jsonify, abort, current_app
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 
 import db
@@ -249,6 +249,57 @@ def crete_mark():
     ))
     database.commit()
     return jsonify(result="ok")
+    
 
+@bp.route('/edit_mark', methods=('POST', ))
+@teacher_token_required
+def edit_mark():
+    if not (
+        request.is_json and
+        type(request.json.get('id')) == int
+    ):
+        abort(400, 'Invalid json data')
+    database = db.get_db()
+    cursor = database.cursor()
+    cursor.execute('''
+    SELECT 1 FROM marks AS m
+    INNER JOIN marks_columns AS mc ON m.column_id=mc.id
+    INNER JOIN teachers_groups AS tg ON tg.subject_id=mc.subject_id
+    WHERE m.id=%s AND tg.id=%s;
+    ''', (request.json['id'], get_jwt_identity()['id']))
+    if cursor.fetchone() is None:
+        abort(400, 'Wrong id')
+    
+    changes = {}
+    if not request.json.get('points') is None:
+        if type(request.json['points']) != int:
+            abort(400, 'Points must be int')
+        if request.json['points'] != -1 and not request.json['points'] in current_app.config['MARKS_VALUES']:
+            abort(400, 'Invalid mark value')
+        changes['points'] = request.json['points']
 
+    if not request.json.get('comment') is None:
+        if type(request.json['comment']) != str:
+            abort(400, 'Comment must be string')
+        if len(request.json['comment']) == 0 or len(request.json['comment']) > 256:
+            abort(400, 'Comment is empty or too long')
+        changes['comment'] = request.json['comment']
 
+    keys = []
+    exec_args = []
+    for key, value in changes.items():
+        keys.append(key)
+        exec_args.append(value)
+    
+    if len(keys) == 0:
+        abort(400, 'No changes provided')
+
+    set_exec_part_str = ', '.join((f'{key}=%s' for key in keys))
+    exec_args.append(request.json['id'])
+    cursor.execute(f'''
+    UPDATE marks
+    {set_exec_part_str}
+    WHERE id=%s;
+    ''', exec_args)
+    db.commit()
+    return jsonify(result=True)

@@ -22,7 +22,4 @@ def create_app():
     app.register_blueprint(student.bp, url_prefix="/student")
     app.register_blueprint(teacher.bp, url_prefix="/teacher")
     app.register_blueprint(admin.bp, url_prefix="/admin")
-    @app.route("/test", methods=["GET"])
-    def test():
-        return "HEYOO"
     return app
