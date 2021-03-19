@@ -69,7 +69,7 @@
                         <div class="button_icon back_icon"></div>
                         <div>Скасувати</div>
                     </div>
-                    <div class="delete_button">
+                    <div class="delete_button"  onclick="deleteMarkButton()">
                         <div class="button_icon delete_icon"></div>
                         <div>Видалити</div>
                     </div>

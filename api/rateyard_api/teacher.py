@@ -181,6 +181,10 @@ def crete_mark():
     if not (
         request.is_json and
         type(request.json.get('points')) != int and
+        (
+            request.json['points'] == -1 or
+            request.json['points'] in current_app.config['MARKS_VALUES']
+        ) and
         type(request.json.get('student_id')) != int and
         (
             (
@@ -249,7 +253,7 @@ def crete_mark():
     ))
     database.commit()
     return jsonify(result="ok")
-    
+
 
 @bp.route('/edit_mark', methods=('POST', ))
 @teacher_token_required

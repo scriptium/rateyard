@@ -274,15 +274,31 @@ function deleteColumnButton() {
     if (column.marks.length > 0)
         confirmed = confirm('Видалити колонку? Оцінки з цієї колонки також буде видалено.')
     if (!confirmed) return;
-    if (column.id) {
-        console.log('id not null')
-    }
+
     columnsArray.splice(columnIndex, 1);
     fillMarksTable();
     changeTool(defaultToolElement);
-    for (let mark of column.marks) {
-        deleteMark(mark.id);
+    if (column.id) {
+        for (let mark of column.marks) {
+            deleteMark(mark.id);
+        }
     }
+}
+
+function deleteMarkButton() {
+    let focusedTdElement = document.querySelector('td.focused');
+    let columnIndex = focusedTdElement.getAttribute('columns_array_index');
+    let markIndex = focusedTdElement.getAttribute('marks_array_index');
+    let mark = columnsArray[columnIndex].marks[markIndex];
+    confirmed = confirm('Видалити оцінку?')
+    if (!confirmed) return;
+    deleteMark(mark.id);
+    columnsArray[columnIndex].marks.splice(markIndex, 1);
+    if (columnsArray[columnIndex].marks.length === 0) {
+        columnIndex[columnIndex].id = null;
+    }
+    fillMarksTable();
+    changeTool(defaultToolElement);
 }
 
 function focusColumn(thElement) {
@@ -331,3 +347,10 @@ async function addColumnButton() {
         focusColumn(thElement);
     }
 }
+
+marksTableElement.addEventListener('keydown', (event) => {
+    if (event.key == 'ArrowDown') console.log('down');
+    else if (event.key == 'ArrowUp') console.log('up');
+    else if (event.key == 'ArrowLeft') console.log('a')
+    else if (event.key == 'ArrowRight') console.log('right');
+})
