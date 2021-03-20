@@ -19,17 +19,40 @@ const defaultToolElement = document.getElementById('default_tool');
 
 let columnsArray;
 
+let cellHoveredByKeyboard = false;
+
+function hoverCell(cell) {
+    for (let element of document.querySelectorAll('.hovered'))
+        element.classList.remove('hovered');
+    cell.classList.add('hovered');
+}
+
+marksTableElement.addEventListener('mousemove', () => {cellHoveredByKeyboard = false});
+
 function addEmptyColumn(thElement) {
     marksTableHeadElement.children[0].appendChild(thElement);
     thElement.setAttribute('onclick', 'focusColumn(this)');
     thElement.setAttribute('initial_value', thElement.children[0].innerHTML);
-    for (let trElement of marksTableBodyElement.children) {
+    let hoverCallback = (event) => {
+        if (cellHoveredByKeyboard) return;
+        hoverCell(event.target)
+    }
+    let unhoverCallback = (event) => {
+        if (document.querySelector('.focused')) event.target.classList.remove('hovered');
+    }
+    thElement.addEventListener('mouseenter', hoverCallback);
+    for (let trElementIndex=0; trElementIndex < marksTableBodyElement.children.length; trElementIndex++) {
+        let trElement = marksTableBodyElement.children[trElementIndex];
         let emptyTdElement = document.createElement('td');
         emptyTdElement.setAttribute('onclick', 'focusCell(this)');
+        emptyTdElement.addEventListener('mouseenter', hoverCallback);
+        emptyTdElement.addEventListener('mouseleave', unhoverCallback);
         emptyTdElement.setAttribute('initial_value', '');
+        emptyTdElement.setAttribute('row_index', trElementIndex);
+        emptyTdElement.setAttribute('column_index', marksTableHeadElement.children[0].childElementCount - 1);
         trElement.appendChild(emptyTdElement);
     }
-    return marksTableBodyElement.children[0].childElementCount - 1;
+    return marksTableHeadElement.children[0].childElementCount - 1;
 }
 
 async function fillMarksTable(columnForThReturn=null) {
@@ -61,6 +84,7 @@ async function fillMarksTable(columnForThReturn=null) {
     let returnTh;
     for (let column of columnsArray) {
         let newThElement = document.createElement('th');
+        newThElement.addEventListener('mouseenter', hoverCell);
         if (column === columnForThReturn)
             returnTh = newThElement; 
         let thText;
@@ -348,9 +372,47 @@ async function addColumnButton() {
     }
 }
 
-marksTableElement.addEventListener('keydown', (event) => {
-    if (event.key == 'ArrowDown') console.log('down');
-    else if (event.key == 'ArrowUp') console.log('up');
-    else if (event.key == 'ArrowLeft') console.log('a')
-    else if (event.key == 'ArrowRight') console.log('right');
+document.addEventListener('keydown', (event) => {
+    let focusedCell = document.querySelector('.focused');
+    if (focusedCell) {
+        if (event.key == 'Escape') {
+            changeTool(defaultToolElement);
+            unfocusAll();
+        }
+        return;
+    }
+    let hoveredCell = document.querySelector('.hovered');
+    let newHoveredCell = null;
+    if (hoveredCell) {
+        if (event.key == 'ArrowDown') {
+            if (hoveredCell.parentElement.nextElementSibling) {
+                let columnIndex = hoveredCell.getAttribute('column_index');
+                newHoveredCell = hoveredCell.parentElement.nextElementSibling.children[parseInt(columnIndex)];
+            }
+        }
+        else if (event.key == 'ArrowUp') {
+            if (hoveredCell.parentElement.previousElementSibling) {
+                let columnIndex = hoveredCell.getAttribute('column_index');
+                newHoveredCell = hoveredCell.parentElement.previousElementSibling.children[parseInt(columnIndex)];
+            }
+        }
+        else if (event.key == 'ArrowLeft') {
+            if (newHoveredCell = hoveredCell.previousElementSibling.previousElementSibling)
+                newHoveredCell = hoveredCell.previousElementSibling;
+        }
+        else if (event.key == 'ArrowRight') {
+            newHoveredCell = hoveredCell.nextElementSibling;
+        }
+        else if (event.key == 'Escape') {
+            hoveredCell.classList.remove('hovered');
+        }
+        else if (event.key == 'Enter' && !document.querySelector('.focused')) {
+            focusCell(hoveredCell);
+        }
+    }
+    else if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+        newHoveredCell = document.querySelector('#marks_table tbody tr:first-child td:last-child');
+    }
+    if (newHoveredCell) hoverCell(newHoveredCell);
+    cellHoveredByKeyboard = true;
 })

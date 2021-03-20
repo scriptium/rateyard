@@ -128,7 +128,7 @@ body {
     cursor: pointer;
 }
 
-#marks_table thead th:nth-child(n+2):hover, #marks_table tbody td:nth-child(n+2):hover {
+#marks_table thead th:nth-child(n+2).hovered, #marks_table tbody td:nth-child(n+2).hovered {
     outline: var(--cell-outline);
     outline-color: #a5a5a5;
     outline-offset: var(--cell-outline-offset);
@@ -139,7 +139,7 @@ body {
     z-index: 2;
 }
 
-#marks_tabl td:nth-child(n+2):hover {
+#marks_tabl td:nth-child(n+2).hovered {
     z-index: 1;
     position: relative;
 }
@@ -149,7 +149,7 @@ body {
     z-index: 5;
 }
 
-#marks_table th:nth-child(n+2):hover {
+#marks_table th:nth-child(n+2).hovered {
     z-index: 4;
     position: relative;
 }
