@@ -7,6 +7,8 @@ DB_HOST = "docker-postgresql"
 
 JWT_SECRET_KEY = "jwtsecretkey"
 
+EMAIL_VALIDATION_API_KEY = "39fd626c-3f59-46ce-8860-7b7a95dca932"
+
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "admin"
 

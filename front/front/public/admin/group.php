@@ -45,7 +45,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
         <div class="input_grid">
             <div>Назва:</div>
             <input id="name_input" type="text" class="default_input_text not_full_group" placeholder="Введіть назву групи" oninput="changesSet.updateChangedElements(this)">
-            <div id="name_fake_input" class="fake_readonly_input full_group" hidden></div>
+            <div id="name_fake_input" class="fake_readonly_input full_group"></div>
             <div>Клас:</div>
             <div id="class_id"></div>
         </div>

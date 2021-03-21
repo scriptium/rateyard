@@ -1,4 +1,5 @@
 import psycopg2
+import requests
 
 from flask import current_app, g
 
@@ -18,6 +19,14 @@ def close_db(e=None):
     db = g.pop("db", None)
     if db is not None:
         db.close()
+
+def check_email(email):
+    response = requests.get(
+        "https://isitarealemail.com/api/email/validate",
+        params = {'email': email},
+        headers = {'Authorization': "Bearer " + current_app.config["EMAIL_VALIDATION_API_KEY"]}
+    )
+    return response.json()["status"] == "valid"
 
 
 def get_group_full(id, marks_subject_id=None):
