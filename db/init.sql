@@ -49,7 +49,7 @@ CREATE TABLE marks (
     points INTEGER NOT NULL,
     edition_date TIMESTAMPTZ DEFAULT NOW() NOT NULL,
     comment VARCHAR(256),
-    is_read BOOLEAN NOT NULL,
+    is_read BOOLEAN NOT NULL DEFAULT False,
     teacher_id INTEGER REFERENCES teachers(id) NOT NULL,
     student_id INTEGER REFERENCES students(id) ON DELETE CASCADE NOT NULL,
     column_id INTEGER REFERENCES marks_columns(id) ON DELETE CASCADE NOT NULL

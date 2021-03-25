@@ -61,7 +61,7 @@
                         <span>Кометар учню:</span>
                         <input type="text" class="default_input_text" id="mark_comment" placeholder="Введіть кометар учню">
                     </div>
-                    <div class="blue_button">
+                    <div class="blue_button" onclick="saveMarkButton()">
                         <div class="button_icon save_icon"></div>
                         <div>Зберегти оцінку</div>
                     </div>

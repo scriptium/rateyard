@@ -54,3 +54,25 @@ async function deleteMark(id) {
         json: JSON.parse(xhr.responseText)
     }
 }
+
+async function createMark(markJSON) {
+    let xhr = await teacherRateyardApiClient.sendRequest(
+        'create_mark', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(markJSON), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}
+
+async function editMark(markJSON) {
+    let xhr = await teacherRateyardApiClient.sendRequest(
+        'edit_mark', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(markJSON), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}

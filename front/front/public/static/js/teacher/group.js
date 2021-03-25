@@ -177,6 +177,10 @@ function prepareColumToolElement(newColumn = true, date = null, name = null) {
     return columnToolElement;
 }
 
+function updatePointsInFocusedCell(points) {
+    document.querySelector('#marks_table tbody td.focused').innerHTML = points;
+}
+
 function prepareMarkToolElement(newMark = true, points = null, comment = null) {
     let markToolElement = markToolHidableChildrenElement.element;
     let deleteButtonElement = markToolElement.querySelector('.delete_button');
@@ -193,15 +197,12 @@ function prepareMarkToolElement(newMark = true, points = null, comment = null) {
     document.getElementById('mark_comment').value = comment;
     let markPointsElement = document.getElementById('mark_points');
     markPointsElement.value = points;
-    markPointsElement.oninput = (event) => {
-        document.querySelector('#marks_table tbody td.focused').innerHTML = event.target.value;
-    }
+    markPointsElement.setAttribute('oninput', 'updatePointsInFocusedCell(this.value)');
     return markToolElement;
 }
 
 function changeTool(newTool) {
     let oldTool = document.querySelector('#tools>*:not(.hidden)');
-
     if (oldTool !== newTool) {
         oldTool.classList.add('hidden');
         newTool.classList.remove('hidden');
@@ -210,7 +211,6 @@ function changeTool(newTool) {
             300
         );
     }
-
     let inputElement = newTool.querySelector('input');
     if (inputElement) inputElement.focus();
 }
@@ -283,7 +283,7 @@ function focusCell(cellElement) {
     let columnsArrayIndex = cellElement.getAttribute('columns_array_index');
     if (marksArrayIndex && columnsArrayIndex) {
         let mark = columnsArray[columnsArrayIndex].marks[marksArrayIndex];
-        changeTool(prepareMarkToolElement(false, cellElement.innerHTML, mark.comment));
+        changeTool(prepareMarkToolElement(false, mark.points, mark.comment));
     }
     else {
         changeTool(prepareMarkToolElement(true));
@@ -325,6 +325,68 @@ function deleteMarkButton() {
     changeTool(defaultToolElement);
 }
 
+async function saveMarkButton() {
+    let markPointsInputElement = document.querySelector('#mark_points');
+    markValues = ['н', 'Н']
+    for (let points=1; points<13; points++) {
+        markValues.push(points.toString())
+    }
+    let pointsStr = markPointsInputElement.value;
+    if (!markValues.includes(pointsStr)) {
+        makeInputTextWrong(markPointsInputElement);
+        return;
+    }
+    let focusedCellElement = document.querySelector('td.focused');
+    let columnsArrayIndex = parseInt(focusedCellElement.getAttribute('column_index')) - 1;
+    let column = columnsArray[columnsArrayIndex];
+    let marksArrayIndexStr = focusedCellElement.getAttribute('marks_array_index');
+    let markJSON = {};
+    if (['н', 'Н'].includes(pointsStr)) markJSON.points = null;
+    else markJSON.points = parseInt(pointsStr);
+    let markCommentInputElement = document.querySelector('#mark_comment');
+    markJSON.comment = markCommentInputElement.value;
+    if (marksArrayIndexStr) {
+        let mark = column.marks[parseInt(marksArrayIndexStr)];
+        markJSON.id = mark.id;
+        mark.comment = markJSON.comment;
+        mark.points = markJSON.points;
+        let responseJSON = await editMark(markJSON);
+        console.log(responseJSON);
+    }
+    else {
+        let group = await groupPromise;
+        let studentId = group.group.students[parseInt(focusedCellElement.getAttribute('row_index'))].id;
+        console.log(group.group.students[parseInt(focusedCellElement.getAttribute('row_index'))]);
+        markJSON.student_id = studentId;
+        if (column.id) {
+            markJSON.column_id = column.id;
+        }
+        else {
+            let subject_id = group.subject.id;
+            markJSON.new_column = {
+                name: column.name,
+                date: column.date,
+                subject_id,
+            }
+        }
+        let responseJSON = (await createMark(markJSON)).json;
+        focusedCellElement.setAttribute('marks_array_index', column.marks.length);
+        focusedCellElement.setAttribute(
+            'columns_array_index',
+            parseInt(focusedCellElement.getAttribute('column_index')) - 1
+        );
+        console.log(column.marks);
+        column.marks.push({
+            id: responseJSON.mark_id,
+            comment: markJSON.comment,
+            points: markJSON.points
+        })
+    }
+    focusedCellElement.setAttribute('initial_value', focusedCellElement.innerHTML);
+    unfocusAll();
+    changeTool(defaultToolElement);
+}
+
 function focusColumn(thElement) {
     unfocusAll();
     thElement.classList.add('focused')
@@ -356,13 +418,17 @@ async function addColumnButton() {
         makeInputTextNotWrong(columnDateElement);
         makeInputTextNotWrong(columnNameElement);
         let date = null;
-        if (columnDateElement.value !== '') {
+        if (columnDateElement.value.length > 0) {
             date = new Date(columnDateElement.value);
+        }
+        let name = null;
+        if (columnNameElement.value.length > 0) {
+            name = columnNameElement.value;
         }
         let column = {
             creation_date: new Date(Date.now()),
             date,
-            name: columnNameElement.value,
+            name: name,
             marks: [],
             id: null
         }
