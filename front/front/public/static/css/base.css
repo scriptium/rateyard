@@ -25,7 +25,7 @@
 
 body {
     color: var(--light-black-color);
-    min-width: max-content;
+    min-width: min-content;
 }
 
 a {

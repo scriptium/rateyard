@@ -52,41 +52,61 @@ def get_me():
     }
 
     cursor.execute('''
-    SELECT s.id, s.subject_name, 
-    m.id, m.points, m.edition_date, m.comment, m.is_read,
-    mc.column_name,
-    t.id, t.full_name
+    SELECT DISTINCT s.id, s.subject_name
     FROM marks AS m
     INNER JOIN marks_columns AS mc ON m.column_id=mc.id
     INNER JOIN subjects AS s ON mc.subject_id=s.id
-    INNER JOIN teachers AS t ON m.teacher_id=t.id
     WHERE m.student_id = %s;
     ''', (identity['id'], ))
     exec_result = cursor.fetchall()
 
-    subjects = {}
-    for data in exec_result:
-        if not data[0] in subjects:
-            subjects[data[0]] = {
-                'id': data[0],
-                'name': data[1],
-                'type': 'Subject',
-                'marks': [] 
-            }
-        subjects[data[0]]['marks'].append({
-            'id': data[2],
-            'points': data[3],
-            'date': data[4],
-            'comment': data[5],
-            'is_read': data[6],
-            'type_of_work': data[7],
-            'type': 'MarkForStudent',
-            'teacher': {
-                'id': data[8],
-                'full_name': data[9],
-                'type': 'TeacherShort'
-            }
-        })
-    response_json['subjects'] = list(subjects.values())
+    response_json['subjects'] = [{
+        'id': data[0],
+        'name': data[1],
+        'type': 'Subject'
+    } for data in exec_result
+    ]
     
+    return jsonify(response_json)
+
+@bp.route("/get_marks", methods=("GET", ))
+def get_marks():
+    if not (
+        request.is_json and
+        type(request.json.get('subject_id')) == int
+    ):
+        abort(400, 'Expected json with subject_id as int')
+
+    # identity = get_jwt_identity()
+    identity = {
+        'id': 3
+    }
+    cursor = db.get_db().cursor()
+
+    cursor.execute('''
+    SELECT m.id, m.points, m.edition_date,
+    m.comment, mc.column_name,
+    t.id, t.full_name
+    FROM marks AS m
+    INNER JOIN marks_columns AS mc ON m.column_id=mc.id
+    INNER JOIN teachers as t ON m.teacher_id=t.id
+    WHERE m.student_id=%s AND mc.subject_id=%s
+    ''', (identity['id'], request.json['subject_id']))
+    exec_result = cursor.fetchall()
+
+    response_json = [{
+        'id': data[0],
+        'points': data[1],
+        'date': data[2],
+        'comment': data[3],
+        'type_of_work': data[4] if not data[4] is None else '',
+        'type': 'MarkForStudent',
+        'teacher': {
+            'id': data[5],
+            'full_name': data[6],
+            'type': 'TeacherShort'
+        }
+    } for data in exec_result
+    ]
+
     return jsonify(response_json)

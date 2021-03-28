@@ -42,7 +42,7 @@ function saveNewStudentButton(buttonElement) {
             enableButton(buttonElement);
         }
         else if (responseData.status === 200) {
-            window.history.back();
+            window.location.href = `${location.protocol}//${location.host}/admin/students.php`;
         }
     });
 }

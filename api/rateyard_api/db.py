@@ -20,7 +20,7 @@ def close_db(e=None):
     if db is not None:
         db.close()
 
-def check_email(email):
+def check_email(email: str) -> bool:
     response = requests.get(
         "https://isitarealemail.com/api/email/validate",
         params = {'email': email},

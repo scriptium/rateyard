@@ -110,11 +110,10 @@ function deleteGroupButton(buttonElement) {
 
 function addNewLecturer(buttonElement) {
     disableButton(buttonElement);
-    sessionStorage.setItem('class', JSON.stringify({id: groupClassId, name: groupClassName}))
+    sessionStorage.setItem('class', JSON.stringify({id: groupClassId, name: groupClassName}));
     sessionStorage.setItem('group', JSON.stringify({id: groupId, name: groupName}));
     sessionStorage.setItem('teacher', JSON.stringify('false'));
     window.location = 'new_lecturer.php';
-    sessionStorage.clear();
     enableButton(buttonElement);
 }
 

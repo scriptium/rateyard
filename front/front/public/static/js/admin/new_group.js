@@ -74,7 +74,7 @@ function saveNewGroupButton(buttonElement) {
 
     createGroup(name, classId, studentsIds).then(
         (requestData) => {
-            if (requestData.status == 200) window.history.back();
+            if (requestData.status == 200) window.location.href = `${location.protocol}//${location.host}/admin/groups.php`;
             else if (requestData.status == 400) {
                 if (requestData.json.includes(1)) makeInputTextWrong(groupNameElement);
                 buttonElement.classList.remove('disabled');
