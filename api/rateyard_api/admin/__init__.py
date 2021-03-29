@@ -56,5 +56,5 @@ bp.add_url_rule("/delete_lecturer", methods=("POST", ), view_func=teachers.delet
 bp.add_url_rule("/create_subject", methods=("POST", ), view_func=subjects.create_subject)
 bp.add_url_rule("/get_subjects", methods=("GET", ), view_func=subjects.get_subjects)
 bp.add_url_rule("/delete_subjects", methods=("POST", ), view_func=subjects.delete_subjects)
-#bp.add_url_rule("/edit_subjects", methods=("POST", ), view_func=subjects.edit_subjects)
+bp.add_url_rule("/edit_subjects", methods=("POST", ), view_func=subjects.edit_subjects)
 

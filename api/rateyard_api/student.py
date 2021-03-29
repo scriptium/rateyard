@@ -77,10 +77,7 @@ def get_marks():
     ):
         abort(400, 'Expected json with subject_id as int')
 
-    # identity = get_jwt_identity()
-    identity = {
-        'id': 3
-    }
+    identity = get_jwt_identity()
     cursor = db.get_db().cursor()
 
     cursor.execute('''
@@ -110,3 +107,19 @@ def get_marks():
     ]
 
     return jsonify(response_json)
+
+@bp.route("/read_marks", methods=("POST", ))
+def read_marks():
+    if not (
+        request.is_json and
+        type(request.json) == list and
+        all(type(mark_id) == int for mark_id in request.json)
+    ):
+        abort(400, "Expected json with mark ids")
+    
+    database = db.get_db()
+    cursor = database.cursor()
+
+    exec_str = '''
+    UPDATE
+    '''

@@ -14,6 +14,7 @@
     --blue-color: #7298AE;
     --table-gray-color: rgba(90, 173, 221, 0.15);
     --drag-area-color: #8faebf;
+    --link-color: #747a8a;
 }
 * {
     font-family: 'Open Sans', sans-serif;

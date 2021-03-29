@@ -5,19 +5,19 @@ from . import admin_token_required, db
 
 @admin_token_required
 def get_subjects():
-	cursor = db.get_db().cursor()
-	cursor.execute('''
-		SELECT id, subject_name
-		FROM subjects
-	''')
-	exec_result = cursor.fetchall()
-	result = [{
+    cursor = db.get_db().cursor()
+    cursor.execute('''
+        SELECT id, subject_name
+        FROM subjects
+    ''')
+    exec_result = cursor.fetchall()
+    result = [{
         "id": data[0],
         "name": data[1],
         "type": "Subject"
     } for data in exec_result
     ]
-	return jsonify(result)
+    return jsonify(result)
 
 @admin_token_required
 def create_subject():
@@ -44,38 +44,36 @@ def create_subject():
     else:
         return jsonify(subject_data_errors), 400
 
-# @admin_token_required
-# def edit_subjects():
-#     print(request.json, flush=True)
-#     if not request.is_json:
-# 		print("Expected json", flush=True)
-#         abort(400, "Expected json")
-#     if type(request.json) != list:
-# 		print("Expected array of subjects id", flush=True)
-#         abort(400, "Expected array of subjects id")
-#     for subject in request.json:
-#         if ("subject_id" in subject.keys() and
-#                 "subject_name" in subject.keys()):
-#             db = get_db()
-#             cursor = db.cursor()
-#             cursor.execute('''
-#                 UPDATE subjects
-#                 SET subject_name=%s
-#                 WHERE id=%s RETURNING True;
-#                 ''', (
-#                 subject["subject_name"],
-#                 subject["subject_id"],
-#             ))
-#             if cursor.fetchone() is None:
-#                 abort(400, 'There are no subjects with on of ids')
-#             db.commit()
-#             print("OK", flush=True)
-#         else:
-#             print("Wrong json", flush=True)
-#             abort(400, "Wrong json")
-#     return jsonify({
-#         "result": "OK"
-#     }), 201
+@admin_token_required
+def edit_subjects():
+    print(request.json, flush=True)
+    if not request.is_json:
+        print("Expected json", flush=True)
+        abort(400, "Expected json")
+    if type(request.json) != list:
+        print("Expected array of subjects id", flush=True)
+        abort(400, "Expected array of subjects id")
+    for subject in request.json:
+        if ("subject_id" in subject.keys() and
+                "subject_name" in subject.keys()):
+            database = db.get_db()
+            cursor = database.cursor()
+            cursor.execute('''
+                UPDATE subjects
+                SET subject_name=%s
+                WHERE id=%s RETURNING True;
+                ''', (
+                subject["subject_name"],
+                subject["subject_id"],
+            ))
+            if cursor.fetchone() is None:
+                abort(400, 'There are no subjects with on of ids')
+            database.commit()
+            print("OK", flush=True)
+        else:
+            print("Wrong json", flush=True)
+            abort(400, "Wrong json")
+    return jsonify(result="OK")
 
 
 @admin_token_required
@@ -94,12 +92,10 @@ def delete_subjects():
         print(subject_id)
         exec_str += (" OR  id=%s")
         exec_args.append(subject_id)
-    db = get_db()
-    cursor = db.cursor()
+    database = db.get_db()
+    cursor = database.cursor()
     cursor.execute(exec_str, exec_args)
-    db.commit()
+    database.commit()
     return jsonify({
         "result": "OK"
     }), 200
-
-

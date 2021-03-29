@@ -5,11 +5,15 @@ let getAllData = Promise.all([subjects]);
 let table = document.getElementById('subjects_table');
 let mainTbodyElement = table.getElementsByTagName('tbody')[0];
 
-let backData = [];
+let backData = {};
 let changes = 0;
 
 function findRow(id) {
     return [...table.getElementsByTagName('tr')].find(row => row.firstChild.innerHTML === `${id}`);
+    // let rows = table.getElementsByTagName('tr');
+    // for (let i = 0; i < rows.length; i++)
+    //     if (rows.item(i).firstChild.innerHTML === `${id}`)
+    //         return rows.item(i);
 }
 
 function fillSubjectsTable(data) {
@@ -30,6 +34,8 @@ function fillSubjectsTable(data) {
             <div class='delete_td' onclick='deleteSubjectFromTable(${subject.id})'></div>`;
 
         mainTbodyElement.appendChild(newRowElement);
+
+        backData[`${subject.id}`] = newRowElement.innerHTML;
     });
 
     table.classList.add('visible');
@@ -90,7 +96,8 @@ function deleteSubjectFromTable(id) {
 
 function backRowData(id, name = null) {
     let row = findRow(id);
-    row.innerHTML = backData[id - 1];
+    row.innerHTML = backData[id];
+    console.log(row);
     if (name) row.children[1].innerHTML = name;
     row.className = '';
     if (row.getAttribute('changed')) {
@@ -114,9 +121,11 @@ function discardChanges(isOnlyHideButtons = false) {
     if(isOnlyHideButtons) return;
 
     let rows = table.getElementsByTagName('tr');
+
     for (let i = 1; i < rows.length; i++) {
-        rows.item(i).innerHTML = backData[i - 1];
-        rows.item(i).className = '';
+        let row = rows.item(i);
+        row.innerHTML = backData[row.firstChild.innerHTML];
+        row.className = '';
     }
 }
 
@@ -127,13 +136,13 @@ function saveChanges() {
 
     [...table.getElementsByTagName('tr')].forEach(row => {
         if (row.classList.contains('to_delete'))
-            toDelete.push({subject_id: row.children[0].innerHTML});
+            toDelete.push(row.children[0].innerHTML);
         else if (row.getAttribute('changed') && !row.classList.contains('edit'))
             toChange.push({subject_id: row.children[0].innerHTML, subject_name: row.children[1].innerHTML});
     });
 
-    let deleting = deleteSubjects(toDelete);
-    let editing = editSubjects(toChange);
+    let deleting = toDelete ? deleteSubjects(toDelete) : new Promise();
+    let editing = toChange ? editSubjects(toChange) : new Promise();
 
     Promise.all([deleting, editing]).then(() => {
         location.reload();
@@ -145,10 +154,8 @@ function saveChanges() {
 
 window.onload = async() => {    
     getAllData.then(values => {
-        // console.log(values);
+        // console.table(values[0].json);
         let cnt = fillSubjectsTable(values[0].json);
-        for(let i = 0; i < cnt; i++)
-            backData[i] = table.getElementsByTagName('tr').item(i + 1).innerHTML;
         hidePreloader();
     });
 }

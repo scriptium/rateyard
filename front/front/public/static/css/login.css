@@ -16,3 +16,23 @@
 #login_block > * {
     margin-bottom: 15px;
 }
+
+#account{
+    display: flex;
+    justify-content: space-between;
+}
+
+#account > .blue_button {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    margin-left: 15px;
+}
+
+.forget_password {
+    color: var(--link-color);
+}
+
+.forget_password:hover {
+    cursor: pointer;
+}
