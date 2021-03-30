@@ -319,7 +319,7 @@ function deleteMarkButton() {
     deleteMark(mark.id);
     columnsArray[columnIndex].marks.splice(markIndex, 1);
     if (columnsArray[columnIndex].marks.length === 0) {
-        columnIndex[columnIndex].id = null;
+        columnsArray[columnIndex].id = null;
     }
     fillMarksTable();
     changeTool(defaultToolElement);
@@ -355,7 +355,8 @@ async function saveMarkButton() {
     }
     else {
         let group = await groupPromise;
-        let studentId = group.group.students[parseInt(focusedCellElement.getAttribute('row_index'))].id;
+        let studentIndex = parseInt(focusedCellElement.getAttribute('row_index'));
+        let studentId = group.group.students[studentIndex].id;
         console.log(group.group.students[parseInt(focusedCellElement.getAttribute('row_index'))]);
         markJSON.student_id = studentId;
         if (column.id) {
@@ -363,9 +364,11 @@ async function saveMarkButton() {
         }
         else {
             let subject_id = group.subject.id;
+            let date = null;
+            if (column.date) date = column.date.getTime() / 1000;
             markJSON.new_column = {
                 name: column.name,
-                date: column.date,
+                date,
                 subject_id,
             }
         }
@@ -379,8 +382,10 @@ async function saveMarkButton() {
         column.marks.push({
             id: responseJSON.mark_id,
             comment: markJSON.comment,
-            points: markJSON.points
+            points: markJSON.points,
+            studentIndex
         })
+        column.id = responseJSON.column_id;
     }
     focusedCellElement.setAttribute('initial_value', focusedCellElement.innerHTML);
     unfocusAll();

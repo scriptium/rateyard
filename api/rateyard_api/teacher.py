@@ -1,4 +1,5 @@
 from functools import wraps
+from datetime import datetime
 
 from flask import Blueprint, json, request, jsonify, abort, current_app
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
@@ -193,8 +194,8 @@ def crete_mark():
                 type(request.json.get('new_column')) == dict and
                 (
                     (
-                        request.json['new_column'].get('date') == int or
-                        request.json['new_column'].get('name') == str
+                        type(request.json['new_column'].get('date')) == int or
+                        type(request.json['new_column'].get('name')) == str
                     ) and
                     type(request.json['new_column'].get('subject_id')) == int
                 )
@@ -204,6 +205,7 @@ def crete_mark():
 
     ):
         abort(400)
+    print('first')
 
     database = db.get_db()
     cursor = database.cursor()
@@ -240,14 +242,16 @@ def crete_mark():
         abort(400)
 
     if type(request.json.get('column_id')) != int:
+        if type(request.json['new_column'].get('date')) == int:
+            request.json['new_column']['date'] = datetime.fromtimestamp(request.json['new_column']['date'])
         cursor.execute('''
         INSERT INTO marks_columns (subject_id, column_name, column_date)
         VALUES (%s, %s, %s) RETURNING id;
         ''', (
             subject_id,
-            request.json['column'].get('name'),
-            request.json['column'].get('date')
-        ))
+            request.json['new_column'].get('name'),
+            request.json['new_column'].get('date')
+        ))  
         column_id = cursor.fetchone()[0]
     else:
         cursor.execute('''
@@ -268,7 +272,7 @@ def crete_mark():
         request.json['student_id']
     ))
     database.commit()
-    return jsonify(mark_id=cursor.fetchone()[0])
+    return jsonify(mark_id=cursor.fetchone()[0], column_id=column_id)
 
 
 @bp.route('/edit_mark', methods=('POST', ))
@@ -301,8 +305,8 @@ def edit_mark():
     if not request.json.get('comment') is None:
         if type(request.json['comment']) != str:
             abort(400, 'Comment must be string')
-        if len(request.json['comment']) == 0 or len(request.json['comment']) > 256:
-            abort(400, 'Comment is empty or too long')
+        if len(request.json['comment']) > 256:
+            abort(400, 'Comment is too long')
         changes['comment'] = request.json['comment']
 
     keys = []
