@@ -5,3 +5,8 @@ function logoutButton(button) {
     document.location.replace('login.php')
 }
 
+// let myUserPromise = new Promise((resolve, reject) => {
+//     getMe().then((responseData) => {
+//         resolve(responseData.json)
+//     })
+// });

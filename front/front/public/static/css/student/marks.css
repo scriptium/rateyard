@@ -1,0 +1,142 @@
+#subjects {
+    height: 100vh;
+    background-color: var(--light-blue-color);
+    width: 340px;
+    position: fixed;
+    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.subject {
+    height: 73px;
+    width: 300px;
+    background: #FFFFFF;
+    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    font-weight: bold;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    color: var(--light-blue-color);
+}
+
+.subject > .subject_name {
+    margin: 20px;
+    font-size: var(--big-font-size);
+}
+
+.subject.current {
+    background: var(--light-blue-color);
+    color: white;
+}
+
+.notification {
+    border-radius: 50%;
+    background: #F04747;
+    width: 19px;
+    height: 19px;
+    position: absolute;
+}
+
+.notification.notification-subject {
+    width: 40px;
+    height: 40px;
+    right: 1.2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+    font-weight: bold;
+    transform: translateY(-30px);
+}
+
+#marks {
+    width: calc(100vw - 340px);
+    transform: translateX(340px);
+}
+
+#marks-header {
+    font-weight: 700;
+    font-size: var(--huge-font-size);
+    margin: 24px 30px 30px 30px;
+}
+
+.mark-container:first-child {
+    margin-top: 30px;
+}
+
+.mark-container {
+    height: 73px;
+    background: #FFFFFF;
+    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    margin: 0 30px 10px 30px;
+    cursor: pointer;
+}
+
+.mark-container > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mark-info {
+    margin: 20px;
+}
+
+.mark-title {
+    font-weight: bold;
+    font-size: 24px;
+    color: var(--light-blue-color);
+}
+
+.mark-date {
+    color: var(--link-color);
+    font-weight: bold;
+    font-size: 18px;
+    margin-left: 20px;
+}
+
+.mark {
+    position: absolute;
+    border-radius: 50%; 
+    background-color: #BEE550;
+    width: 50px;
+    height: 50px;
+    font-weight: bold;
+    font-size: 24px;
+    color: white;
+    right: 2%;
+    margin-right: 30px;
+}
+
+.notification.notification-mark {
+    left: 0;
+    transform: translate(calc(100vw - 340px - 38px), -35.5px);
+}
+
+.comment {
+    color: white;
+    background: var(--light-blue-color);
+    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    width: calc(100% - 80px);
+    height: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 0 20px 20px;
+    position: relative;
+    top: -35px;
+    margin-left: 30px;
+    z-index: -1;
+    transition: height .4s;
+}
+
+.comment.show {
+    height: 73px;
+    transition: height .4s;
+}
