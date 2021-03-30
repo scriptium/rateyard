@@ -8,8 +8,7 @@
     <title>Rateyard</title>
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/header.css">
-    <link rel="stylesheet" href="/static/css/teacher/base.css">
-    <link rel="stylesheet" href="/static/css/teacher/index.css">
+    <link rel="stylesheet" href="/static/css/student/base.css">
     <link rel="stylesheet" href="/static/css/student/index.css">
 </head>
 
@@ -20,8 +19,8 @@
     // require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
     <div id="content">
-        <a class="group_box" href="subject.php?id=1">
-            <span class="subject_name">Алгебра</span>
+        <a class="subject_box" href="subject.php?id=1">
+            <span>Алгебра</span>
         </a>
     </div>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>

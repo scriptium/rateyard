@@ -1,0 +1,31 @@
+.subject_box > span {
+    font-weight: 700;
+    font-size: var(--big-font-size);
+}
+
+.subject_box {
+    display: flex;
+    flex-direction: column;
+    width: 260px;
+    height: min-content;
+    padding: 20px;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+    transition: background-color 0.3s;
+}
+
+.subject_box * {
+    color: var(--light-blue-color);
+    transition: color 0.3s;
+    font-weight: 600;
+    font-size: var(--normal-font-size);
+}
+
+.subject_box:hover, .subject_box.current {
+    background: var(--light-blue-color);
+}
+
+.subject_box:hover *, .subject_box.current * {
+    color: white !important;
+}

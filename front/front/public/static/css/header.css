@@ -38,12 +38,13 @@
     text-decoration: none;
     transition: background 0.3s, color 0.3s;
 }
-#admin_header>div:nth-child(2)>a:hover,
-#admin_header>div:nth-child(2)>a#current {
+
+#admin_header>div:nth-child(2)>a:hover, #admin_header>div:nth-child(2)>a#current {
     background-color: var(--light-blue-color);
     color: white;
 }
-#admin_header>div:nth-child(2)>a>div{
+
+#admin_header>div:nth-child(2)>a>div {
     font-size: var(--big-font-size);
     font-weight: bold;
     font-style: normal;
@@ -58,23 +59,27 @@
     padding: 10px 20px;
     border-radius: 15px;
     align-items: center;
-    transition: background 0.3s;
+    transition: background-color 0.3s;
     cursor: pointer;
 }
+
 #exit_button.disabled {
     box-shadow: none;
     background: var(--blue-color) !important;
     color: white !important;
     cursor: default;
 }
+
 #teacher_header #exit_button:hover:not(.disabled) {
     background: var(--lightest-blue-color) !important;
 }
+
 #exit_button>div:nth-child(1) {
     width: 23px;
     height: 26px;
     margin-right: 10px;
 }
+
 #exit_button>div:nth-child(2) {
     font-weight: bold;
     font-size: var(--normal-font-size);
@@ -83,6 +88,7 @@
 #admin_header {
     background: white;
 }
+
 #admin_header #exit_button {
     background: var(--light-blue-color);
     color: white;
@@ -91,9 +97,11 @@
 #teacher_header {
     background: var(--light-blue-color);
 }
+
 #teacher_header .logo_main, #teacher_header .logo_caption {
     color: white;
 }
+
 #teacher_header #exit_button {
     color: var(--light-blue-color);
     background: white;
@@ -113,15 +121,44 @@
     cursor: pointer;
 }
 
-#burger_wrapper > svg {
+#burger_wrapper>svg {
     transition: fill 0.3s;
     fill: white;
 }
 
 #burger_wrapper:hover {
-    background: white;    
+    background: white;
 }
 
-#burger_wrapper:hover > svg {
+#burger_wrapper:hover>svg {
     fill: var(--light-blue-color);
+}
+
+#teacher_user {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+#teacher_user div {
+    transition: color 0.3s;
+}
+
+#teacher_user svg {
+    transition: fill 0.3s;
+}
+
+#teacher_user>div:nth-child(1) {
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: var(--big-font-size);
+    color: white;
+}
+
+#teacher_user:hover div {
+    color: var(--lightest-blue-color);
+}
+
+#teacher_user:hover svg {
+    fill: var(--lightest-blue-color);
 }

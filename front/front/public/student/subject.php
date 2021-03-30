@@ -8,10 +8,8 @@
     <title>Rateyard</title>
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/header.css">
-    <link rel="stylesheet" href="/static/css/teacher/base.css">
-    <link rel="stylesheet" href="/static/css/teacher/index.css">
-    <link rel="stylesheet" href="/static/css/student/index.css">
-    <link rel="stylesheet" href="/static/css/student/marks.css">
+    <link rel="stylesheet" href="/static/css/student/base.css">
+    <link rel="stylesheet" href="/static/css/student/subject.css">
 </head>
 
 <body>
@@ -21,11 +19,11 @@
     // require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
     <div id="subjects">
-        <a class='subject current' href="">
+        <a class='subject_box' href="">
             <span class='subject_name'>Алгебра</span>
             <div class="notification notification-subject">12</div>
         </a>
-        <a class='subject' href="subject.php?id=2">
+        <a class='subject_box' href="subject.php?id=2">
             <span class='subject_name'>Фізика</span>
             <div class="notification notification-subject">1</div>
         </a>

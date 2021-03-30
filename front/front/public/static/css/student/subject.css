@@ -1,15 +1,18 @@
 #subjects {
     height: 100vh;
     background-color: var(--light-blue-color);
-    width: 340px;
     position: fixed;
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
     display: flex;
-    align-items: center;
     flex-direction: column;
+    padding: 20px 20px 0 20px;
 }
 
-.subject {
+#subjects > * {
+    margin-bottom: 20px;
+}
+
+/* .subject {
     height: 73px;
     width: 300px;
     background: #FFFFFF;
@@ -30,7 +33,7 @@
 .subject.current {
     background: var(--light-blue-color);
     color: white;
-}
+} */
 
 .notification {
     border-radius: 50%;
