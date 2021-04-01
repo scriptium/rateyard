@@ -7,18 +7,23 @@ const marksDiv = document.querySelector('#marks');
 
 let subjectTag = (id, name) => `<a class='subject_box' href="subject.php?id=${id}">
                                     <span class='subject_name'>${name}</span>
-                                    <div class="notification notification-subject">12</div>
+                                    <div class="new-marks-wrapper">
+                                        <div class="new-marks"><div>12</div></div>
+                                    </div>
                                 </a>`;
 
-let markTag = (title, date, mark, comment) => `<div class="mark-container">
-                                                  <div class="mark-info">
-                                                      <div class="mark-title">${title}</div>
-                                                      <div class="mark-date">${(new Date(date)).toLocaleDateString()}</div>
-                                                  </div>
-                                                  <div class="mark" style="background-color: ${marksColor[mark]}">${mark}</div>
-                                                  <div class="notification notification-mark"></div>
-                                               </div>
-                                               <div class="comment show">${comment}</div>`;
+let markTag = (title, date, mark, comment) => `
+<div class="mark-container">
+    <div class="mark-info">
+        <div class="mark-title">${title}</div>
+        <div class="mark-date">${(new Date(date)).toLocaleDateString()}</div>
+    </div>
+    <div class="mark_wrapper">
+        <div class="mark" style="background-color: ${marksColor[mark]}"><div>${mark}</div></div>
+    </div>
+    <div class="notification notification-mark"></div>
+</div>
+<div class="comment show">${comment}</div>`;
                                                
 const marksColor = {
     '12': '#35DD64',
@@ -49,6 +54,63 @@ let marksPromise = new Promise(resolve => {
 myUserPromise.then(data => {
     fullName.innerHTML = data.full_name;
     data.subjects.forEach(subject => {
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
+        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
+        if (subject.id === subjectId)
+            subjectHeader.innerHTML = subject.name;
         subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
         if (subject.id === subjectId)
             subjectHeader.innerHTML = subject.name;

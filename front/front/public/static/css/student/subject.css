@@ -1,18 +1,19 @@
 #subjects {
-    height: 100vh;
     background-color: var(--light-blue-color);
-    position: fixed;
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
     display: flex;
     flex-direction: column;
-    padding: 20px 20px 0 20px;
+    padding: 30px;
+    overflow-y: scroll;
+    height: 100%-60px;
+    max-height: 100%;
 }
 
 #subjects > * {
     margin-bottom: 20px;
 }
-
-/* .subject {
+/* 
+.subject {
     height: 73px;
     width: 300px;
     background: #FFFFFF;
@@ -35,7 +36,7 @@
     color: white;
 } */
 
-.notification {
+/* .notification {
     border-radius: 50%;
     background: #F04747;
     width: 19px;
@@ -54,11 +55,8 @@
     font-weight: bold;
     transform: translateY(-30px);
 }
+*/
 
-#marks {
-    width: calc(100vw - 340px);
-    transform: translateX(340px);
-}
 
 #marks-header {
     font-weight: 700;
@@ -80,45 +78,45 @@
     margin: 0 30px 10px 30px;
 }
 
-.mark-container > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .mark-info {
     margin: 20px;
 }
 
-.mark-title {
+.mark-info div:nth-child(1) {
     font-weight: bold;
     font-size: 24px;
     color: var(--light-blue-color);
     margin-right: 20px;
 }
 
-.mark-date {
+.mark-info div:nth-child(2) {
     color: var(--link-color);
     font-weight: bold;
     font-size: 18px;
 }
 
+.mark_wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
 .mark {
-    position: absolute;
     border-radius: 50%; 
     background-color: #BEE550;
     width: 50px;
     height: 50px;
+    margin-right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mark > div {
     font-weight: bold;
     font-size: 24px;
     color: white;
-    right: 2%;
-    margin-right: 30px;
-}
-
-.notification.notification-mark {
-    left: 0;
-    transform: translate(calc(100vw - 340px - 38px), -35.5px);
 }
 
 .comment {
@@ -141,4 +139,92 @@
 .comment.show {
     height: 73px;
     transition: height .4s;
+}
+
+
+
+
+
+
+body, html {
+    height: 100%;
+    max-height: 100%;
+}
+
+body {
+    display: grid;
+    grid-template-rows: min-content 1fr;
+}
+
+#content {
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    margin: 0;
+    min-height: 0;
+    height: 100%;
+}
+
+
+@media only screen and (max-width: 800px) {
+    body, #content {
+        display: block;
+        max-height: max-content;
+    }
+
+    #content {
+        height: max-content;
+    }
+
+    #subjects {
+        position: fixed;
+        top: 0;
+        z-index: 11;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        align-items: stretch;
+    }
+
+    #subjects > * {
+        width: auto;
+    }
+
+    #header_teacher_full_name, .logo_main, .logo_caption {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    #burger_wrapper {
+        display: none;
+    }
+}
+
+
+.new-marks {
+    --size: 35px;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background: red;
+    --offset: 10px;
+    right: var(--offset);
+    top: var(--offset);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    left: 30px;
+    top: -30px;
+}
+
+.new-marks > div {
+    color: white;
+}
+
+.new-marks-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex-grow: 1;
 }

@@ -70,6 +70,11 @@ def get_me():
     
     return jsonify(response_json)
 
+@bp.route("/edit_me", methods=("POST", ))
+@student_token_required
+def edit_me():
+    pass
+
 @bp.route("/get_marks", methods=("POST", ))
 @student_token_required
 def get_marks():

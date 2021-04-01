@@ -18,12 +18,12 @@
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/student/header.php';
     // require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
-    <div id="subjects">
-
-    </div>
-
-    <div id="marks">
-        <div id="marks-header">Алгебра</div>
+    <div id="content">
+        <div id="subjects">
+        </div>
+        <div id="marks">
+            <div id="marks-header">Алгебра</div>
+        </div>
     </div>
     
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
