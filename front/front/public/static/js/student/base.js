@@ -1,12 +1,15 @@
+const fullName = document.querySelector('#header_teacher_full_name');
+
 function logoutButton(button) {
-    disableButton(button)
+    disableButton(button);
     localStorage.removeItem('student_access_token');
     localStorage.removeItem('student_refresh_token');
-    document.location.replace('login.php')
+    document.location.replace('login.php');
 }
 
-// let myUserPromise = new Promise((resolve, reject) => {
-//     getMe().then((responseData) => {
-//         resolve(responseData.json)
-//     })
-// });
+let myUserPromise = new Promise((resolve, reject) => {
+    getMe().then((responseData) => {
+        resolve(responseData.json);
+    });
+});
+

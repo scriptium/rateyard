@@ -1,4 +1,5 @@
 from functools import wraps
+from datetime import datetime
 
 from flask import (Blueprint, json, request, jsonify, abort)
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
@@ -69,7 +70,8 @@ def get_me():
     
     return jsonify(response_json)
 
-@bp.route("/get_marks", methods=("GET", ))
+@bp.route("/get_marks", methods=("POST", ))
+@student_token_required
 def get_marks():
     if not (
         request.is_json and
@@ -94,7 +96,7 @@ def get_marks():
     response_json = [{
         'id': data[0],
         'points': data[1],
-        'date': data[2],
+        'date': datetime.timestamp(data[2]),
         'comment': data[3],
         'type_of_work': data[4] if not data[4] is None else '',
         'type': 'MarkForStudent',
@@ -109,6 +111,7 @@ def get_marks():
     return jsonify(response_json)
 
 @bp.route("/read_marks", methods=("POST", ))
+@student_token_required
 def read_marks():
     if not (
         request.is_json and
@@ -121,5 +124,15 @@ def read_marks():
     cursor = database.cursor()
 
     exec_str = '''
-    UPDATE
+    UPDATE marks
+    SET is_read=True
+    WHERE False
     '''
+
+    exec_args = []
+
+    for mark_id in request.json:
+        exec_str += " OR id=%s"
+        exec_args.append(mark_id)
+
+    cursor.execute(exec_str, exec_args)

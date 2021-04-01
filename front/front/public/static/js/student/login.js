@@ -6,7 +6,7 @@ let rateyardApiClient = new RateyardApiClient(
 
 rateyardApiClient.sendRequest('/student/check_token', 'GET', {},  undefined, true)
 .then((xhr) => {
-    if (xhr.status === 200) document.location.replace('main.php')
+    if (xhr.status === 200) document.location.replace('index.php')
 });
 
 async function loginButton(button) {
@@ -21,7 +21,7 @@ async function loginButton(button) {
         else {
             localStorage.setItem('student_access_token', xhr.getResponseHeader('Access-Token'));
             localStorage.setItem('student_refresh_token', xhr.getResponseHeader('Refresh-Token'));
-            document.location.replace('main.php');
+            document.location.replace('index.php');
         }
     });
 }
