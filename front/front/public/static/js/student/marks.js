@@ -5,12 +5,7 @@ const subjectsDiv = document.querySelector('#subjects');
 const subjectHeader = document.querySelector('#marks-header');
 const marksDiv = document.querySelector('#marks');
 
-let subjectTag = (id, name) => `<a class='subject_box' href="subject.php?id=${id}">
-                                    <span class='subject_name'>${name}</span>
-                                    <div class="new-marks-wrapper">
-                                        <div class="new-marks"><div>12</div></div>
-                                    </div>
-                                </a>`;
+let subjectTag = (id, name) => ``;
 
 let markTag = (title, date, mark, comment) => `
 <div class="mark-container">
@@ -54,75 +49,29 @@ let marksPromise = new Promise(resolve => {
 myUserPromise.then(data => {
     fullName.innerHTML = data.full_name;
     data.subjects.forEach(subject => {
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
-        subjectsDiv.innerHTML += subjectTag(subject.id, subject.name);
-        if (subject.id === subjectId)
-            subjectHeader.innerHTML = subject.name;
+        for (let i=0; i<100; i++) {
+            subjectsDiv.appendChild(createSubjectBoxElement(subject.name, '12', subject.id));
+        }
     });
 });
 
 marksPromise.then(data => {
     console.log(data);
     data.forEach(mark => {
-        marksDiv.innerHTML += markTag(mark.type_of_work, mark.date, mark.points, mark.comment);
-        
-        
+        let clonedMarkElement = document.querySelector('#mark_template').content.children[0].cloneNode(true);
+        let markInfo = clonedMarkElement.querySelector('.mark_info');
+        if (mark.type_of_work) {
+            let name = document.createElement('div');
+            name.textContent = mark.type_of_work
+            markInfo.appendChild(name);
+        }
+        if (mark.date) {
+            let date = document.createElement('div');
+            date.textContent = (new Date(mark.date)).toLocaleDateString();
+            markInfo.appendChild(date);
+        }
+        clonedMarkElement.querySelector('.mark > div').textContent = mark.points;
+        marksDiv.appendChild(clonedMarkElement)
     });
 });
 

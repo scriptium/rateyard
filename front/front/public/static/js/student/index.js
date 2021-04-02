@@ -1,13 +1,11 @@
-const main = document.querySelector('#content');
-
-let subjectTag = (id, name) => `<a class="subject_box" href="subject.php?id=${id}">
-                                    <span>${name}</span>
-                                </a>`;
+const contentElement = document.querySelector('#content');
 
 myUserPromise.then(data => {
     console.table(data);
     fullName.innerHTML = data.full_name;
     data.subjects.forEach(subject => {
-        main.innerHTML += subjectTag(subject.id, subject.name);
+        for (let i=0; i<100; i++) {
+            contentElement.appendChild(createSubjectBoxElement(subject.name, '12', subject.id));
+        }
     });
 });

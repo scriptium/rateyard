@@ -25,6 +25,18 @@
             <div id="marks-header">Алгебра</div>
         </div>
     </div>
+
+    <template id="mark_template">
+        <div class="mark-container">
+            <div class="mark_info"></div>
+            <div class="mark">
+                <div></div>
+            </div>
+        </div>
+    </template>
+    <?php
+    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/student/subject_box_template.php';
+    ?>
     
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
     <script type="text/javascript" src="/static/js/base.js"></script>

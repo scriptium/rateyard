@@ -13,3 +13,10 @@ let myUserPromise = new Promise((resolve, reject) => {
     });
 });
 
+function createSubjectBoxElement(name, new_marks, subject_id) {
+    let clonedSubjectElement = document.querySelector('#subject_box_template').content.children[0].cloneNode(true);
+    clonedSubjectElement.setAttribute('href', `/student/subject.php?id=${subject_id}`)
+    clonedSubjectElement.querySelector('.subject_name').textContent = name;
+    clonedSubjectElement.querySelector('.new-marks > div').textContent = new_marks;
+    return clonedSubjectElement;
+}

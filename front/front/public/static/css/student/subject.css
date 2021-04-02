@@ -5,115 +5,68 @@
     flex-direction: column;
     padding: 30px;
     overflow-y: scroll;
-    height: 100%-60px;
+    height: auto;
     max-height: 100%;
 }
 
-#subjects > * {
+#subjects>* {
     margin-bottom: 20px;
 }
-/* 
-.subject {
-    height: 73px;
-    width: 300px;
-    background: #FFFFFF;
-    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-    font-weight: bold;
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    color: var(--light-blue-color);
+
+#marks {
+    margin: 30px;
 }
 
-.subject > .subject_name {
-    margin: 20px;
-    font-size: var(--big-font-size);
+#marks>* {
+    margin-bottom: 30px;
 }
-
-.subject.current {
-    background: var(--light-blue-color);
-    color: white;
-} */
-
-/* .notification {
-    border-radius: 50%;
-    background: #F04747;
-    width: 19px;
-    height: 19px;
-    position: absolute;
-}
-
-.notification.notification-subject {
-    width: 40px;
-    height: 40px;
-    right: 1.2%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #FFFFFF;
-    font-weight: bold;
-    transform: translateY(-30px);
-}
-*/
-
 
 #marks-header {
     font-weight: 700;
     font-size: var(--huge-font-size);
-    margin: 24px 30px 30px 30px;
-}
-
-.mark-container:first-child {
-    margin-top: 30px;
 }
 
 .mark-container {
-    height: 73px;
     background: #FFFFFF;
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     display: flex;
     align-items: center;
-    margin: 0 30px 10px 30px;
+    padding: 0 20px;
 }
 
-.mark-info {
-    margin: 20px;
+.mark_info {
+    padding: 20px 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
 }
 
-.mark-info div:nth-child(1) {
+.mark_info div:nth-child(1) {
     font-weight: bold;
     font-size: 24px;
     color: var(--light-blue-color);
-    margin-right: 20px;
 }
 
-.mark-info div:nth-child(2) {
+.mark_info div:nth-child(2) {
     color: var(--link-color);
     font-weight: bold;
     font-size: 18px;
 }
 
-.mark_wrapper {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-}
-
 .mark {
-    border-radius: 50%; 
+    border-radius: 50%;
     background-color: #BEE550;
     width: 50px;
     height: 50px;
-    margin-right: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.mark > div {
+.mark>div {
     font-weight: bold;
     font-size: 24px;
     color: white;
@@ -141,11 +94,6 @@
     transition: height .4s;
 }
 
-
-
-
-
-
 body, html {
     height: 100%;
     max-height: 100%;
@@ -164,17 +112,14 @@ body {
     height: 100%;
 }
 
-
 @media only screen and (max-width: 800px) {
     body, #content {
         display: block;
         max-height: max-content;
     }
-
     #content {
         height: max-content;
     }
-
     #subjects {
         position: fixed;
         top: 0;
@@ -184,11 +129,9 @@ body {
         bottom: 0;
         align-items: stretch;
     }
-
-    #subjects > * {
+    #subjects>* {
         width: auto;
     }
-
     #header_teacher_full_name, .logo_main, .logo_caption {
         display: none;
     }
@@ -198,33 +141,4 @@ body {
     #burger_wrapper {
         display: none;
     }
-}
-
-
-.new-marks {
-    --size: 35px;
-    width: var(--size);
-    height: var(--size);
-    border-radius: 50%;
-    background: red;
-    --offset: 10px;
-    right: var(--offset);
-    top: var(--offset);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    left: 30px;
-    top: -30px;
-}
-
-.new-marks > div {
-    color: white;
-}
-
-.new-marks-wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    flex-grow: 1;
 }
