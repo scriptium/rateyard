@@ -25,9 +25,12 @@ const subjectsFilled = new Promise(async (resolve) => {
     let data = await myUserPromise;
     fullName.innerHTML = data.full_name;
     data.subjects.forEach(subject => {
-        for (let i=0; i<100; i++) {
-            sidebarElement.appendChild(createSubjectBoxElement(subject.name, '12', subject.id));
+        let subjectBoxElement = createSubjectBoxElement(subject.name, '12', subject.id);
+        console.log();
+        if (window.location.pathname + window.location.search == subjectBoxElement.getAttribute('href')) {
+            subjectBoxElement.classList.add('current');
         }
+        sidebarElement.appendChild(subjectBoxElement);
     });
     resolve();
 })

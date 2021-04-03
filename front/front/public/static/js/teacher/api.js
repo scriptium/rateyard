@@ -33,10 +33,10 @@ async function editMe(changes) {
     }
 }
 
-async function getGroupFull(id) {
+async function getGroupFull(id, subject_id) {
     let xhr = await teacherRateyardApiClient.sendRequest(
         'get_group_full', 'POST', { 'Content-Type': 'application/json' },
-        JSON.stringify({id}), true
+        JSON.stringify({id, subject_id}), true
     );
     return {
         status: xhr.status,

@@ -1,7 +1,8 @@
 const URLParams = new URLSearchParams(window.location.search);
 const groupId = parseInt(URLParams.get('id'));
-const groupPromise = new Promise(async (resolve, reject) => {
-    let responseData = await getGroupFull(groupId);
+const subjectId = parseInt(URLParams.get('subject_id'));
+const groupPromise = new Promise(async resolve => {
+    let responseData = await getGroupFull(groupId, subjectId);
     resolve(responseData.json);
 });
 

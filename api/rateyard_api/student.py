@@ -88,7 +88,7 @@ def get_marks():
     cursor = db.get_db().cursor()
 
     cursor.execute('''
-    SELECT m.id, m.points, m.edition_date,
+    SELECT m.id, m.points, m.edition_date, mc.column_date,
     m.comment, mc.column_name,
     t.id, t.full_name
     FROM marks AS m
@@ -101,13 +101,14 @@ def get_marks():
     response_json = [{
         'id': data[0],
         'points': data[1],
-        'date': datetime.timestamp(data[2]),
-        'comment': data[3],
-        'type_of_work': data[4] if not data[4] is None else '',
+        'edition_date': datetime.timestamp(data[2]),
+        'date': datetime.timestamp(data[3]) if not data[3] is None else None,
+        'comment': data[4],
+        'type_of_work': data[5] if not data[5] is None else '',
         'type': 'MarkForStudent',
         'teacher': {
-            'id': data[5],
-            'full_name': data[6],
+            'id': data[6],
+            'full_name': data[7],
             'type': 'TeacherShort'
         }
     } for data in exec_result

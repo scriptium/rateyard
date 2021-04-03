@@ -49,7 +49,7 @@ let marksFilled = new Promise(async resolve => {
         }
         if (mark.date) {
             let date = document.createElement('div');
-            date.textContent = (new Date(mark.date)).toLocaleDateString();
+            date.textContent = (new Date(mark.date * 1000)).toLocaleDateString();
             markInfo.appendChild(date);
         }
         clonedMarkElement.querySelector('.mark').classList.add(marksClasses[mark.points]);
@@ -67,4 +67,3 @@ subjectsMoved.then((subjectsDiv) => {
 });
 
 Promise.all([marksFilled, subjectsMoved]).then(hidePreloader);
-

@@ -77,8 +77,8 @@ def get_me():
 def get_group_full():
     if (
         not request.is_json or
-        not "id" in request.json.keys() or
-        type(request.json["id"]) != int
+        type(request.json.get("id")) != int or
+        type(request.json.get('subject_id')) != int
     ):
         abort(400)
 
@@ -86,8 +86,8 @@ def get_group_full():
     cursor.execute('''
     SELECT s.id, s.subject_name
     FROM teachers_groups AS tg INNER JOIN subjects AS s ON tg.subject_id=s.id
-    WHERE tg.teacher_id=%s AND tg.group_id=%s;
-    ''', (get_jwt_identity()['id'], request.json['id']))
+    WHERE tg.teacher_id=%s AND tg.group_id=%s AND s.id=%s;
+    ''', (get_jwt_identity()['id'], request.json['id'], request.json['subject_id']))
     exec_result = cursor.fetchone()
     if exec_result is None:
         abort(400)
