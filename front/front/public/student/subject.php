@@ -24,10 +24,15 @@
     </div>
 
     <template id="mark_template">
-        <div class="mark-container">
-            <div class="mark_info"></div>
-            <div class="mark">
-                <div></div>
+        <div class="mark_wrapper">
+            <div class="mark-container">
+                <div class="mark_info"></div>
+                <div class="mark">
+                    <div></div>
+                </div>
+            </div>
+            <div class="mark_comment visible">
+                Маєш гарний зошит!
             </div>
         </div>
     </template>

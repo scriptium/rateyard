@@ -9,6 +9,7 @@
 
 @media only screen and (max-width: 800px) {
     #content>* {
-        width: 100%;
+        flex-grow: 1;
+        margin-right: 0px;
     }
 }
