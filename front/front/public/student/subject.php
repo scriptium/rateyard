@@ -14,9 +14,8 @@
 
 <body>
     <?php
-    $current = 'index';
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/student/header.php';
-    // require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
     <div id="content">
         <div id="marks">

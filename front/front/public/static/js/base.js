@@ -89,8 +89,8 @@ async function hidePreloader()
     preloaderItem.classList.add('hidden');
 }
 
-let sidebarElement = document.getElementById('sidebar');
-let sidebarCloseAreaElement = document.getElementById('sidebar_close_area');
+const sidebarElement = document.getElementById('sidebar');
+const sidebarCloseAreaElement = document.getElementById('sidebar_close_area');
 
 async function openSidebar() {
     await Promise.all(

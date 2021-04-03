@@ -21,11 +21,13 @@ function createSubjectBoxElement(name, new_marks, subject_id) {
     return clonedSubjectElement;
 }
 
-myUserPromise.then(data => {
+const subjectsFilled = new Promise(async (resolve) => {
+    let data = await myUserPromise;
     fullName.innerHTML = data.full_name;
     data.subjects.forEach(subject => {
         for (let i=0; i<100; i++) {
             sidebarElement.appendChild(createSubjectBoxElement(subject.name, '12', subject.id));
         }
     });
-});
+    resolve();
+})

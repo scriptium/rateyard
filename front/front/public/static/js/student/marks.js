@@ -1,54 +1,45 @@
+const contentElement = document.querySelector('#content');
+
+const subjectsMoved = new Promise(async resolve => {
+    await subjectsFilled;
+    if (window.screen.width >= 800) {
+        sidebarElement.setAttribute('id', 'subjects');
+        sidebarElement.querySelector('#sidebar_close_wrapper').remove();
+        contentElement.insertBefore(sidebarElement, contentElement.firstChild);
+    }
+    let scrollTop = sessionStorage.getItem('student_subjects_scroll_top');
+    if (scrollTop) sidebarElement.scrollTop = scrollTop;
+    resolve(sidebarElement);
+});
+
+
 const URLParams = new URLSearchParams(window.location.search);
 const subjectId = parseInt(URLParams.get('id'));
 
-const subjectsDiv = document.querySelector('#subjects');
 const subjectHeader = document.querySelector('#marks-header');
 const marksDiv = document.querySelector('#marks');
 
-let subjectTag = (id, name) => ``;
+const marksClasses = {
+    '12': 'best',
+    '11': 'best',
+    '10': 'best',
 
-let markTag = (title, date, mark, comment) => `
-<div class="mark-container">
-    <div class="mark-info">
-        <div class="mark-title">${title}</div>
-        <div class="mark-date">${(new Date(date)).toLocaleDateString()}</div>
-    </div>
-    <div class="mark_wrapper">
-        <div class="mark" style="background-color: ${marksColor[mark]}"><div>${mark}</div></div>
-    </div>
-    <div class="notification notification-mark"></div>
-</div>
-<div class="comment show">${comment}</div>`;
-                                               
-const marksColor = {
-    '12': '#35DD64',
-    '11': '#35DD64',
-    '10': '#35DD64',
+    '9': 'good',
+    '8': 'good',
+    '7': 'good',
 
-    '9': '#BEE550',
-    '8': '#BEE550',
-    '7': '#BEE550',
+    '6': 'bad',
+    '5': 'bad',
+    '4': 'bad',
 
-    '6': '#F1CF55',
-    '5': '#F1CF55',
-    '4': '#F1CF55',
-
-    '3': '#E46464',
-    '2': '#E46464',
-    '1': '#E46464',
-
-    'Н': '#5AADDD',
+    '3': 'worst',
+    '2': 'worst',
+    '1': 'worst',
 };
 
-let marksPromise = new Promise(resolve => {
-    getMarks(subjectId).then((responseData) => {
-        resolve(responseData.json);
-    });
-});
-
-marksPromise.then(data => {
-    console.log(data);
-    data.forEach(mark => {
+let marksFilled = new Promise(async resolve => {
+    let responseData = await getMarks(subjectId);
+    for (let mark of responseData.json) {
         let clonedMarkElement = document.querySelector('#mark_template').content.children[0].cloneNode(true);
         let markInfo = clonedMarkElement.querySelector('.mark_info');
         if (mark.type_of_work) {
@@ -61,8 +52,19 @@ marksPromise.then(data => {
             date.textContent = (new Date(mark.date)).toLocaleDateString();
             markInfo.appendChild(date);
         }
+        clonedMarkElement.querySelector('.mark').classList.add(marksClasses[mark.points]);
         clonedMarkElement.querySelector('.mark > div').textContent = mark.points;
         marksDiv.appendChild(clonedMarkElement)
-    });
+    }
+    resolve();
 });
+
+subjectsMoved.then((subjectsDiv) => {
+    subjectsDiv.onscroll = event => {
+        console.log(event);
+        sessionStorage.setItem('student_subjects_scroll_top', event.target.scrollTop);
+    }
+});
+
+Promise.all([marksFilled, subjectsMoved]).then(hidePreloader);
 
