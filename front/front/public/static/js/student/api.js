@@ -22,6 +22,17 @@ async function getMe() {
     };
 }
 
+async function editMe(changes) {
+    let xhr = await studentRateyardApiClient.sendRequest(
+        'edit_me', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(changes), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}
+
 async function getMarks(subject_id) {
     let xhr = await studentRateyardApiClient.sendRequest(
         'get_marks', 'POST', { 'Content-Type': 'application/json' },

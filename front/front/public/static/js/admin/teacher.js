@@ -56,7 +56,7 @@ function saveTeacherChangesButton(buttonElement) {
 }
 
 async function deleteTeacherButton(buttonElement) {
-    buttonElement.classList.add('disabled');
+    enableButton(buttonElement)
     let isConfirmed = confirm(`Видалити вчителя №${teacherId}?`)
     if (isConfirmed) {
         deleteTeachers([teacherId]).then(
@@ -64,13 +64,13 @@ async function deleteTeacherButton(buttonElement) {
             () => { buttonElement.classList.remove('disabled') }
         )
     }
-    else buttonElement.classList.remove('disabled');
+    else disableButton(buttonElement);
 }
 
 let groupsHasFilled = new Promise(async (resolve, reject) => {
     getGroupsShort(undefined, undefined, teacherId, undefined).then((responseData) => {
         let parsedResponse = responseData.json;
-        insertGroupsData(parsedResponse, mainGroupsTbodyElement, true, true, null);
+        insertGroupsData(parsedResponse, mainGroupsTbodyElement, true, true, true, null);
         resolve();
     }, reject)
 });
@@ -82,6 +82,27 @@ function addGroup(buttonElement) {
     sessionStorage.setItem('teacher', JSON.stringify({id: teacherId, name: fullNameElement.value}));
     window.location = 'new_lecturer.php';
     enableButton(buttonElement);
+}
+
+function deleteLecturerFromTable(buttonElement) {
+    let lecturerTr = buttonElement.parentElement.parentElement;
+    let groupId = parseInt(lecturerTr.children[1].id);
+    let groupName = lecturerTr.children[1].children[0].innerHTML
+    let subjectId = parseInt(lecturerTr.children[3].id);
+    let subjectName = lecturerTr.children[3].innerHTML;
+
+    let isConfirmed = confirm(`Видалити группу ${groupName} за предметом ${subjectName}?`);
+    if (isConfirmed) {
+        let requestJSON = {
+            'group_id': groupId,
+            'teacher_id': teacherId,
+            'subject_id': subjectId
+        };
+
+        deleteLecturer(requestJSON).then(() => {  
+            lecturerTr.remove();
+        });
+    }
 }
 
 let mainPromise = Promise.all([teacherHasFilled, groupsHasFilled]);

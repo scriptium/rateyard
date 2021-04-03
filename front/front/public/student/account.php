@@ -14,7 +14,7 @@
 <body>
     <?php
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/student/header.php';
-    //require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
     <div id="content">
         <div class="title_block">

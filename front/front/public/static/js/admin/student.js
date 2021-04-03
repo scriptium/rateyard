@@ -56,7 +56,6 @@ function saveStudentChangesButton(buttonElement) {
     editStudents(requestJSON).then(async (responseData) => {
         if (responseData.status === 200) {
             await updateStudentData();
-            await updateStudentGroups();
             changesSet.discardChanges();
             buttonElement.classList.remove('disabled');
         }

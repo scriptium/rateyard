@@ -60,6 +60,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                     <th>ПІБ</th>
                     <th>Предмет</th>
                     <th>Група</th>
+                    <th style="width: 32px;"></th>
                 </tr>
             </thead>
             <tbody>

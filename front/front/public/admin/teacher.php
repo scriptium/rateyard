@@ -61,6 +61,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
                     <th>Назва</th>
                     <th>Клас</th>
                     <th>Предмет</th>
+                    <th style="width: 32px;"></th>
                 </tr>
             </thead>
             <tbody>

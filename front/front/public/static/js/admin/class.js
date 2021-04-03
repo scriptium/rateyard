@@ -35,7 +35,7 @@ let studentsHasFilled = new Promise(async (resolve, reject) => {
 let groupsHasFilled = new Promise(async (resolve, reject) => {
     getGroupsShort(undefined, undefined, undefined, classId).then((responseData) => {
         let parsedResponse = responseData.json;
-        insertGroupsData(parsedResponse, mainGroupsTbodyElement, false, false, null);
+        insertGroupsData(parsedResponse, mainGroupsTbodyElement, false, false, false, null);
         resolve();
     }, reject)
 });
@@ -71,6 +71,28 @@ function addNewLecturer(buttonElement) {
     sessionStorage.setItem('teacher', JSON.stringify('false')); 
     window.location = 'new_lecturer.php';
     enableButton(buttonElement);
+}
+
+function deleteLecturerFromTable(buttonElement) {
+    let lecturerTr = buttonElement.parentElement.parentElement;
+    let groupId = parseInt(lecturerTr.children[3].id);
+    let teacherId = parseInt(lecturerTr.children[1].id);
+    let teacherFullName = lecturerTr.children[1].children[0].innerHTML
+    let subjectId = parseInt(lecturerTr.children[2].id);
+    let subjectName = lecturerTr.children[2].innerHTML;
+
+    let isConfirmed = confirm(`Видалити вчителя ${teacherFullName} за предметом ${subjectName}?`);
+    if (isConfirmed) {
+        let requestJSON = {
+            'group_id': groupId,
+            'teacher_id': teacherId,
+            'subject_id': subjectId
+        };
+
+        deleteLecturer(requestJSON).then(() => {  
+            lecturerTr.remove();
+        });
+    }
 }
 
 async function moveAllStudents(buttonElement) {

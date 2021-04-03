@@ -63,7 +63,7 @@ function insertStudentsData(studentsData, mainTbodyElement, isClass = false, isC
     });
 }
 
-function insertGroupsData(groupsData, mainTbodyElement, isClass = false, isSubject = false, searchIndex = null) {
+function insertGroupsData(groupsData, mainTbodyElement, isClass = false, isSubject = false, isDeleteLecturer = false, searchIndex = null) {
     groupsData.forEach(group => {
         let newRowElement = document.createElement('tr');
 
@@ -81,6 +81,12 @@ function insertGroupsData(groupsData, mainTbodyElement, isClass = false, isSubje
         if (isSubject) {
             let lecturerSubjectElement = newRowElement.appendChild(document.createElement('td'));
             lecturerSubjectElement.innerHTML = group.subject.name;
+            lecturerSubjectElement.id = group.subject.id;
+        }
+
+        if(isDeleteLecturer) {
+            let deleteLecturerElement = newRowElement.appendChild(document.createElement('td'));
+            deleteLecturerElement.innerHTML='<div class=\'delete_td\' onclick=\'deleteLecturerFromTable(this)\'></div>';
         }
 
         if (searchIndex) {
@@ -105,15 +111,21 @@ function insertLecturersData(lecturersData, mainTbodyElement, groupInfo = null) 
 
         let lecturerNameElement = newRowElement.appendChild(document.createElement('td'));
         lecturerNameElement.innerHTML = `<a class=\"text\" href=\"teacher.php?id=${lecturer.id}\">${lecturer.full_name}</a>`;
+        lecturerNameElement.id = lecturer.id;
 
         let lecturerSubjectElement = newRowElement.appendChild(document.createElement('td'));
         lecturerSubjectElement.innerHTML = lecturer.subject.name;
+        lecturerSubjectElement.id = lecturer.subject.id;
         
         if (groupInfo) {
             let lecturerGroupElement = newRowElement.appendChild(document.createElement('td'));
-            lecturerGroupElement.innerHTML = `<a class=\"text\" href=\"group.php?id=${groupInfo.id}\">${groupInfo.name}</a>`;
+            lecturerGroupElement.innerHTML = `<a class=\"text\" href=\"group.php?id=${groupInfo.id}\">${groupInfo.name}</a>`;      
+            lecturerGroupElement.id = groupInfo.id;
         }
 
+        let deleteLecturerElement = newRowElement.appendChild(document.createElement('td'));
+        deleteLecturerElement.innerHTML='<div class=\'delete_td\' onclick=\'deleteLecturerFromTable(this)\'></div>';
+        
         mainTbodyElement.appendChild(newRowElement);
     });
 }

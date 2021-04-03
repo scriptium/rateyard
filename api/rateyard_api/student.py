@@ -73,7 +73,15 @@ def get_me():
 @bp.route("/edit_me", methods=("POST", ))
 @student_token_required
 def edit_me():
-    pass
+    if not request.is_json:
+        abort(400, "Expected json")
+
+    students_data_errors = db.check_students_data([request.json])
+    if students_data_errors:
+        return jsonify(students_data_errors[0]), 400
+
+    db.edit_student(get_jwt_identity()['id'], request.json)
+    return jsonify(result='ok')
 
 @bp.route("/get_marks", methods=("POST", ))
 @student_token_required

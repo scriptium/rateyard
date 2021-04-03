@@ -31,7 +31,7 @@ function updateGroupData() {
             if(parsedGroup.is_full_class_group) {
                 let notFullGroupItems = document.querySelectorAll('.not_full_group');
                 notFullGroupItems.forEach(element => {
-                    element.parentElement.removeChild(element);
+                    element.remove();
                 });
 
                 let fakeInputGroupName = document.querySelector('#name_fake_input');
@@ -40,7 +40,7 @@ function updateGroupData() {
             else {
                 let fullGroupElements = document.querySelectorAll('.full_group');
                 fullGroupElements.forEach(element => {
-                    element.parentNode.removeChild(element);
+                    element.remove();
                 });
 
                 groupNameElement.value = groupName;
@@ -117,6 +117,26 @@ function addNewLecturer(buttonElement) {
     enableButton(buttonElement);
 }
 
+function deleteLecturerFromTable(buttonElement) {
+    let lecturerTr = buttonElement.parentElement.parentElement;
+    let teacherId = parseInt(lecturerTr.children[1].id);
+    let teacherFullName = lecturerTr.children[1].children[0].innerHTML;
+    let subjectId = parseInt(lecturerTr.children[2].id);
+    let subjectName = lecturerTr.children[2].innerHTML;
+
+    let isConfirmed = confirm(`Видалити викладача ${teacherFullName} за предметом ${subjectName}?`);
+    if (isConfirmed) {
+        let requestJSON = {
+            'group_id': groupId,
+            'teacher_id': teacherId,
+            'subject_id': subjectId
+        };
+
+        deleteLecturer(requestJSON).then(() => {  
+            lecturerTr.remove();
+        });
+    }
+}
 
 let mainPromise = Promise.all([groupHasFilled, lectureresHasFilled]);
 mainPromise.then(hidePreloader);

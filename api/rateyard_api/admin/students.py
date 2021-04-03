@@ -2,130 +2,6 @@ from flask import Blueprint, request, abort, jsonify
 
 from . import admin_token_required, db
 
-
-def check_students_data(cursor, all_required=False):
-    for student_index in range(len(request.json)):
-        '''
-        Error codes for students:
-        0: username not found or has already taken
-        1: full_name not found or has already taken
-        2: class_id not found or is wrong
-        3: password not found
-        4: email not found or is already taken
-
-        If something will go wrong this def will return json
-        with error codes for each bad student index from request array.
-
-        Example of json:
-        [
-            student_index: [error_code1, error_code2...],
-            ...
-        ]
-        '''
-
-        student = request.json[student_index]
-        student_data_errors = {}
-
-        was_error = False
-
-        if "username" not in student.keys():
-            if all_required:
-                was_error = True
-        elif (
-            student["username"] == "" or
-            type(student["username"]) != str or
-            len(student["username"]) > 256
-        ):
-            was_error = True
-        else:
-            cursor.execute(
-                "SELECT 1 FROM students WHERE username=%s;",
-                (student['username'], )
-            )
-            if not cursor.fetchone() is None:
-                was_error = True
-
-        if was_error:
-            student_data_errors[student_index] = [0]
-
-        was_error = False
-
-        if "full_name" not in student.keys():
-            if all_required:
-                was_error = True
-        elif (
-            type(student["full_name"]) != str or
-            student["full_name"] == "" or
-            len(student["full_name"]) > 256
-        ):
-            was_error = True
-
-        if was_error:
-            if type(student_data_errors.get(student_index)) != list:
-                student_data_errors[student_index] = []
-            student_data_errors[student_index].append(1)
-
-        was_error = False
-
-        if "class_id" not in student.keys():
-            if all_required:
-                was_error = True
-        else:
-            cursor.execute(
-                "SELECT 1 FROM classes WHERE id=%s;",
-                (student["class_id"], )
-            )
-            if cursor.fetchone() is None:
-                was_error = True
-
-        if was_error:
-            if type(student_data_errors.get(student_index)) != list:
-                student_data_errors[student_index] = []
-            student_data_errors[student_index].append(2)
-
-        was_error = False
-
-        if ("password" not in student.keys()):
-            if all_required:
-                was_error = True
-        elif (
-            student["password"] == "" or
-            type(student["password"]) != str or
-            len(student["password"]) > 256
-        ):
-            was_error = True
-
-        if was_error:
-            if type(student_data_errors.get(student_index)) != list:
-                student_data_errors[student_index] = []
-            student_data_errors[student_index].append(3)
-
-        was_error = False
-
-        if "email" not in student.keys():
-            if all_required:
-                was_error = True
-        elif (
-            student["email"] == "" or
-            type(student["email"]) != str or
-            len(student["email"]) > 320
-        ):
-            was_error = True
-        else:
-            cursor.execute(
-                "SELECT 1 FROM students WHERE email=%s;",
-                (student['email'], )
-            )
-            if not cursor.fetchone() is None:
-                was_error = True
-
-        if was_error:
-            if type(student_data_errors.get(student_index)) != list:
-                student_data_errors[student_index] = []
-            student_data_errors[student_index].append(4)
-
-    return student_data_errors
-
 @admin_token_required
 def create_students():
     if not request.is_json:
@@ -137,7 +13,7 @@ def create_students():
 
     database = db.get_db()
     cursor = database.cursor()
-    student_data_errors = check_students_data(cursor, True)
+    student_data_errors = db.check_students_data(request.json, True)
 
     if student_data_errors == {}:
         for student in request.json:
@@ -201,9 +77,7 @@ def edit_students():
         abort(400, "Expected array of students id")
         print("Expected array of students id", flush=True)
 
-    database = db.get_db()
-    cursor = database.cursor()
-    student_data_errors = check_students_data(cursor, False)
+    student_data_errors = db.check_students_data(request.json, False)
 
     for student_index in range(len(request.json)):
         '''
@@ -215,38 +89,8 @@ def edit_students():
 
     if student_data_errors == {}:
         for student in request.json:
-            student_mutable_attributes = (
-                "username", "full_name", "email", "class_id")
-            exec_args = []
-            exec_sets = []
-
-            for attribute_name in student_mutable_attributes:
-                if attribute_name in student.keys():
-                    exec_sets.append(f"{attribute_name}=%s")
-                    exec_args.append(student[attribute_name])
-
-            if "password" in student.keys():
-                exec_sets.append("password_hash=crypt(%s, gen_salt('md5'))")
-                exec_args.append(student["password"])
-
-            if len(exec_sets) == 0:
-                continue
-
-            exec_sets_joined = ', '.join(exec_sets)
-
-            print(exec_sets_joined, exec_args)
-            cursor.execute(
-                f"UPDATE students SET {exec_sets_joined} WHERE id=%s",
-                exec_args + [student["id"]]
-            )
-
-            if "class_id" in student.keys():
-                cursor.execute(
-                    "DELETE FROM students_groups WHERE student_id=%s;",
-                    (student["id"], )
-                )
-            database.commit()
-            return jsonify(result="ok")
+            db.edit_student(int(student['id']), student) 
+        return jsonify(result="ok")
 
     else:
         return jsonify(student_data_errors), 400

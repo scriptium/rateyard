@@ -11,7 +11,7 @@ let groupsTableElement = document.getElementById('groups_table');
 let mainTbodyElement = groupsTableElement.getElementsByTagName('tbody')[1];
 
 function fillGroupsTable(groups) {
-    insertGroupsData(groups, mainTbodyElement, true, false, searchIndex);
+    insertGroupsData(groups, mainTbodyElement, true, false, false, searchIndex);
     groupsTableElement.classList.add('visible');
     hidableChildrenStudentsTbody = new HidableChildrenElement(mainTbodyElement);
 }
