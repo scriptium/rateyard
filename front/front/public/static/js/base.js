@@ -87,5 +87,32 @@ async function hidePreloader()
     let animation = preloaderItem.animate([{opacity: 1}, {opacity: 0}], 500);
     await animation.finished;
     preloaderItem.classList.add('hidden');
-} 
+}
+
+let sidebarElement = document.getElementById('sidebar');
+let sidebarCloseAreaElement = document.getElementById('sidebar_close_area');
+
+async function openSidebar() {
+    await Promise.all(
+        sidebarElement.getAnimations({ subtree: true })
+          .map(animation => animation.finished)
+    );
+    sidebarElement.classList.add('visible');
+    sidebarCloseAreaElement.classList.add('opened');
+    let animation = sidebarElement.animate([{transform: 'translateX(-100%)'}, {transform: 'none'}], {duration: 400});
+    await animation.finished;
+    sidebarElement.classList.add('opened');
+}
+
+async function closeSidebar() {
+    await Promise.all(
+        sidebarElement.getAnimations({ subtree: true })
+          .map(animation => animation.finished)
+    );
+    sidebarElement.classList.remove('opened');
+    let animation = sidebarElement.animate([{transform: 'none'}, {transform: 'translateX(-100%)'}], {duration: 400});
+    await animation.finished;
+    sidebarElement.classList.remove('visible');
+    sidebarCloseAreaElement.classList.remove('opened');
+}
 

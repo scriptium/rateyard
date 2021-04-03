@@ -132,9 +132,6 @@ body {
     #subjects>* {
         width: auto;
     }
-    #header_teacher_full_name, .logo_main, .logo_caption {
-        display: none;
-    }
 }
 
 @media only screen and (min-width: 800px) {

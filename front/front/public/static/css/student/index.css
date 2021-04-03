@@ -3,3 +3,9 @@
     gap: 30px;
     flex-wrap: wrap;
 }
+
+@media only screen and (max-width: 800px) {
+    #content > * {
+        width: 100%;
+    }
+}

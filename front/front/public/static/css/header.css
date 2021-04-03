@@ -162,3 +162,91 @@
 #teacher_user:hover svg {
     fill: var(--lightest-blue-color);
 }
+
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    min-width: 300px;
+    width: max-content;
+    transform: translateX(-100%);
+    background: var(--light-blue-color);
+    z-index: 12;
+    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: scroll;
+    visibility: hidden;
+}
+
+#sidebar_close_area {
+    display: none;
+}
+
+#sidebar_close_area.opened {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 11;
+}
+
+#sidebar.visible {
+    visibility: visible;
+}
+
+#sidebar.opened {
+    transform: none;
+}
+
+#sidebar>* {
+    margin-bottom: 20px;
+}
+
+.sidebar_text {
+    font-weight: bold;
+    font-size: var(--big-font-size);
+    color: white;
+}
+
+#sidebar_close_wrapper {
+    height: 20px;
+    width: 20px;
+    padding: 10px;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+    align-self: flex-end;
+}
+
+#sidebar_close_wrapper:hover {
+    background: white;
+}
+
+#sidebar_close_wrapper>svg {
+    fill: white;
+    transition: fill 0.3s;
+}
+
+#sidebar_close_wrapper:hover>svg {
+    fill: var(--light-blue-color);
+}
+
+@media only screen and (max-width: 800px) {
+    #sidebar {
+        right: 0;
+        width: auto;
+    }
+    #sidebar>* {
+        width: auto;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    #sidebar_close_wrapper {
+        display: none;
+    }
+}

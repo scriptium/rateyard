@@ -46,15 +46,6 @@ let marksPromise = new Promise(resolve => {
     });
 });
 
-myUserPromise.then(data => {
-    fullName.innerHTML = data.full_name;
-    data.subjects.forEach(subject => {
-        for (let i=0; i<100; i++) {
-            subjectsDiv.appendChild(createSubjectBoxElement(subject.name, '12', subject.id));
-        }
-    });
-});
-
 marksPromise.then(data => {
     console.log(data);
     data.forEach(mark => {

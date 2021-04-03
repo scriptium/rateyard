@@ -19,8 +19,6 @@
     // require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
     <div id="content">
-        <div id="subjects">
-        </div>
         <div id="marks">
             <div id="marks-header">Алгебра</div>
         </div>
@@ -34,9 +32,6 @@
             </div>
         </div>
     </template>
-    <?php
-    require $_SERVER['DOCUMENT_ROOT'] . '/../includes/student/subject_box_template.php';
-    ?>
     
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
     <script type="text/javascript" src="/static/js/base.js"></script>

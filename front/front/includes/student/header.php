@@ -21,3 +21,31 @@
         </div>
     </div>
 </div>
+<div id="sidebar">
+    <div id="sidebar_close_wrapper" onclick="closeSidebar()">
+        <?php
+        echo file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/static/images/delete.svg');
+        ?>
+    </div>
+    <a href="index.php" class="subject_box
+    <?php
+    if ($current == 'index') {
+        echo 'current';
+    }
+    ?>">
+        <div>Головна сторінка</div>
+    </a>
+    <div class="sidebar_text">Список предметів: </div>
+</div>
+<div id="sidebar_close_area" onclick="closeSidebar()">
+</div>
+<template id="subject_box_template">
+        <a class="subject_box">
+            <div class='subject_name'></div>
+            <div class="new-marks-wrapper">
+                <div class="new-marks">
+                    <div></div>
+                </div>
+            </div>
+        </a>
+</template>

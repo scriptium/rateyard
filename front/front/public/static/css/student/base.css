@@ -54,8 +54,8 @@
     flex-grow: 1;
 }
 
-@media only screen and (min-width: 800px) {
-    #burger_wrapper {
+@media only screen and (max-width: 800px) {
+    #header_teacher_full_name, .logo_main, .logo_caption {
         display: none;
     }
 }

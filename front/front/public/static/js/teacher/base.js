@@ -5,19 +5,6 @@ function logoutButton(button) {
     document.location.replace('login.php')
 }
 
-let sidebarElement = document.getElementById('sidebar');
-let sidebarCloseAreaElement = document.getElementById('sidebar_close_area');
-
-function openSidebar() {
-    sidebarElement.classList.add('opened');
-    sidebarCloseAreaElement.classList.add('opened');
-}
-
-function closeSidebar() {
-    sidebarElement.classList.remove('opened');
-    sidebarCloseAreaElement.classList.remove('opened');
-}
-
 let myUserPromise = new Promise((resolve, reject) => {
     getMe().then((responseData) => {
         resolve(responseData.json)

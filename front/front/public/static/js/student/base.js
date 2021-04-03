@@ -20,3 +20,12 @@ function createSubjectBoxElement(name, new_marks, subject_id) {
     clonedSubjectElement.querySelector('.new-marks > div').textContent = new_marks;
     return clonedSubjectElement;
 }
+
+myUserPromise.then(data => {
+    fullName.innerHTML = data.full_name;
+    data.subjects.forEach(subject => {
+        for (let i=0; i<100; i++) {
+            sidebarElement.appendChild(createSubjectBoxElement(subject.name, '12', subject.id));
+        }
+    });
+});
