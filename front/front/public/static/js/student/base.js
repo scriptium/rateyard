@@ -26,7 +26,6 @@ const subjectsFilled = new Promise(async (resolve) => {
     fullName.innerHTML = data.full_name;
     data.subjects.forEach(subject => {
         let subjectBoxElement = createSubjectBoxElement(subject.name, '12', subject.id);
-        console.log();
         if (window.location.pathname + window.location.search == subjectBoxElement.getAttribute('href')) {
             subjectBoxElement.classList.add('current');
         }

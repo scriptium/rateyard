@@ -18,8 +18,10 @@
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
     <div id="content">
-        <div id="marks">
-            <div id="marks-header">Алгебра</div>
+        <div id="marks_wrapper">
+            <div id="marks">
+                <div id="marks-header">Алгебра</div>
+            </div>
         </div>
     </div>
 
@@ -31,12 +33,11 @@
                     <div></div>
                 </div>
             </div>
-            <div class="mark_comment visible">
-                Маєш гарний зошит!
+            <div class="mark_comment">
             </div>
         </div>
     </template>
-    
+
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/student/api.js"></script>

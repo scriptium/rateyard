@@ -5,8 +5,6 @@
     flex-direction: column;
     padding: 30px;
     overflow-y: scroll;
-    height: auto;
-    max-height: 100%;
 }
 
 #subjects>* {
@@ -15,6 +13,7 @@
 
 #marks {
     margin: 30px;
+    min-width: 0;
 }
 
 #marks>* {
@@ -48,6 +47,8 @@
     font-style: italic;
     font-weight: 600;
     display: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .mark_comment.visible {
@@ -60,11 +61,16 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .mark_info > * {
     padding-right: 20px;
+    overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 0;
+    flex-shrink: 1;
 }
 
 .mark_info div:nth-child(1) {
@@ -84,6 +90,7 @@
     background-color: var(--light-blue-color);
     width: 50px;
     height: 50px;
+    min-width: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -111,31 +118,10 @@
     color: white;
 }
 
-.comment {
-    color: white;
-    background: var(--light-blue-color);
-    box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-    width: calc(100% - 80px);
-    height: 0;
-    display: flex;
-    align-items: flex-end;
-    padding: 0 0 20px 20px;
-    position: relative;
-    top: -35px;
-    margin-left: 30px;
-    z-index: -1;
-    transition: height .4s;
-}
-
-.comment.show {
-    height: 73px;
-    transition: height .4s;
-}
-
 body, html {
-    height: 100%;
-    max-height: 100%;
+    max-width: 100%;
+    width: 100%;
+    min-width: 300px;
 }
 
 body {
@@ -148,16 +134,14 @@ body {
     grid-template-columns: min-content 1fr;
     margin: 0;
     min-height: 0;
-    height: 100%;
 }
 
 @media only screen and (max-width: 800px) {
     body, #content {
         display: block;
-        max-height: max-content;
     }
     #content {
-        height: max-content;
+        grid-template-columns: 1fr;
     }
     #subjects {
         position: fixed;
@@ -176,5 +160,13 @@ body {
 @media only screen and (min-width: 800px) {
     #burger_wrapper {
         display: none;
+    }
+    #marks_wrapper {
+        overflow-y: auto;
+    }
+    body, html {
+        height: 100%;
+        max-height: 100%;
+        min-height: 0;
     }
 }

@@ -52,6 +52,11 @@ let marksFilled = new Promise(async resolve => {
             date.textContent = (new Date(mark.date * 1000)).toLocaleDateString();
             markInfo.appendChild(date);
         }
+        if (mark.comment.length > 0) {
+            let commentElement = clonedMarkElement.querySelector('.mark_comment');
+            commentElement.textContent = mark.comment;
+            commentElement.classList.add('visible');
+        }
         clonedMarkElement.querySelector('.mark').classList.add(marksClasses[mark.points]);
         clonedMarkElement.querySelector('.mark > div').textContent = mark.points;
         marksDiv.appendChild(clonedMarkElement)
@@ -61,7 +66,6 @@ let marksFilled = new Promise(async resolve => {
 
 subjectsMoved.then((subjectsDiv) => {
     subjectsDiv.onscroll = event => {
-        console.log(event);
         sessionStorage.setItem('student_subjects_scroll_top', event.target.scrollTop);
     }
 });
