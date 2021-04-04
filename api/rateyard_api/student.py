@@ -53,17 +53,22 @@ def get_me():
     }
 
     cursor.execute('''
-    SELECT DISTINCT s.id, s.subject_name
-    FROM marks AS m
-    INNER JOIN marks_columns AS mc ON m.column_id=mc.id
-    INNER JOIN subjects AS s ON mc.subject_id=s.id
-    WHERE m.student_id = %s;
+    SELECT DISTINCT s.id, s.subject_name, (
+        SELECT COUNT(1) FROM marks
+        INNER JOIN marks_columns ON marks.column_id=marks_columns.id AND marks_columns.subject_id=s.id
+        WHERE student_id=m.student_id AND is_read=False
+    )
+    FROM subjects AS s
+    INNER JOIN marks_columns AS mc ON mc.subject_id=s.id
+    INNER JOIN marks AS m ON m.column_id=mc.id AND m.student_id=%s;
     ''', (identity['id'], ))
+    
     exec_result = cursor.fetchall()
 
     response_json['subjects'] = [{
         'id': data[0],
         'name': data[1],
+        'new_marks': data[2],
         'type': 'Subject'
     } for data in exec_result
     ]
