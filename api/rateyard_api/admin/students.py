@@ -14,33 +14,40 @@ def create_students():
     database = db.get_db()
     cursor = database.cursor()
     student_data_errors = db.check_students_data(request.json, True)
-
+    was_error = False
     if student_data_errors == {}:
         for student in request.json:
-            cursor.execute('''
-                INSERT INTO students (
-                    username,
-                    full_name,
-                    email,
-                    password_hash,
-                    class_id
-                )
-                VALUES (
-                    %s, %s, %s,
-                    crypt(%s, gen_salt('md5')),
-                    %s
-                );
-                ''', (
-                student["username"],
-                student["full_name"],
-                student["email"],
-                student["password"],
-                student["class_id"]
-            ))
+            try:
+                cursor.execute('''
+                    INSERT INTO students (
+                        username,
+                        full_name,
+                        email,
+                        password_hash,
+                        class_id
+                    )
+                    VALUES (
+                        %s, %s, %s,
+                        crypt(%s, gen_salt('md5')),
+                        %s
+                    );
+                    ''', (
+                    student["username"],
+                    student["full_name"],
+                    student["email"],
+                    student["password"],
+                    student["class_id"]
+                ))
+            except Exception:
+                was_error = True
+                
         database.commit()
-        return jsonify({
-            "result": "OK"
-        })
+        if was_error:
+            return jsonify({'result': 'Not all students have created'})
+        else:
+            return jsonify({
+                "result": "OK",
+            })
     else:
         return jsonify(student_data_errors), 400
 
