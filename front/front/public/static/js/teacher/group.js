@@ -109,12 +109,19 @@ async function fillMarksTable(columnForThReturn=null) {
         newThElement.setAttribute('columns_array_index', columnIndex - 1);
         for (let marksArrayIndex = 0; marksArrayIndex < column.marks.length; marksArrayIndex++) {
             let mark = column.marks[marksArrayIndex];
-            mark.edition_date = new Date(mark.edition_date * 1000);
             let tdElement = marksTableBodyElement.children[mark.studentIndex].children[columnIndex];
             tdElement.innerHTML = mark.points;
             tdElement.setAttribute('initial_value', mark.points);
             tdElement.setAttribute('marks_array_index', marksArrayIndex);
             tdElement.setAttribute('columns_array_index', columnIndex - 1);
+            tooltipText = `Дата зміни: ${mark.edition_date.toLocaleDateString()}`
+            if (mark.comment.length > 0) {
+                tooltipText += `</br>Коментар: ${mark.comment}`
+            }
+            tippy(tdElement, {
+                content: tooltipText,
+                allowHTML: true
+            });
         }
     }
     return returnTh;
@@ -130,6 +137,7 @@ groupPromise.then((group) => {
         let student = group.group.students[studentIndex];
         for (let mark of student.marks) {
             mark.studentIndex = studentIndex;
+            mark.edition_date = new Date(mark.edition_date * 1000);
             if (columnsMap.has(mark.column.id)) {
                 columnsMap.get(mark.column.id).marks.push(mark);
             }
@@ -351,6 +359,7 @@ async function saveMarkButton() {
         markJSON.id = mark.id;
         mark.comment = markJSON.comment;
         mark.points = markJSON.points;
+        mark.edition_date = new Date();
         let responseJSON = await editMark(markJSON);
         console.log(responseJSON);
     }
@@ -374,21 +383,16 @@ async function saveMarkButton() {
             }
         }
         let responseJSON = (await createMark(markJSON)).json;
-        focusedCellElement.setAttribute('marks_array_index', column.marks.length);
-        focusedCellElement.setAttribute(
-            'columns_array_index',
-            parseInt(focusedCellElement.getAttribute('column_index')) - 1
-        );
-        console.log(column.marks);
         column.marks.push({
             id: responseJSON.mark_id,
             comment: markJSON.comment,
             points: markJSON.points,
-            studentIndex
+            studentIndex,
+            edition_date: new Date()
         })
         column.id = responseJSON.column_id;
     }
-    focusedCellElement.setAttribute('initial_value', focusedCellElement.innerHTML);
+    fillMarksTable();
     unfocusAll();
     changeTool(defaultToolElement);
 }

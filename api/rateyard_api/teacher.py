@@ -318,7 +318,8 @@ def edit_mark():
     if len(keys) == 0:
         abort(400, 'No changes provided')
 
-    set_exec_part_str = ', '.join((f'{key}=%s' for key in keys))
+    exprs = (*(f'{key}=%s' for key in keys), 'edition_date=NOW()')
+    set_exec_part_str = ', '.join(exprs)
     exec_args.append(request.json['id'])
     cursor.execute(f'''
     UPDATE marks
