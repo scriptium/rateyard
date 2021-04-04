@@ -145,13 +145,11 @@ body {
 }
 
 #marks_table th.focused {
-    position: relative;
     z-index: 5;
 }
 
 #marks_table th:nth-child(n+2).hovered {
     z-index: 4;
-    position: relative;
 }
 
 #marks_table tr>td:first-child, #marks_table tr>th:first-child {
