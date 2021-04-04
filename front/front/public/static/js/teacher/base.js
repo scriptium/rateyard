@@ -13,17 +13,20 @@ let myUserPromise = new Promise((resolve, reject) => {
 
 let groupBoxTemplateElement = document.getElementById('group_box_template');
 
-myUserPromise.then((myUser) => {
-    document.getElementById('header_teacher_full_name').innerHTML = myUser.full_name;
-    myUser.groups.forEach(group => {
-        let groupBoxElement = groupBoxTemplateElement.content.cloneNode(true).children[0];
-        groupBoxElement.setAttribute('href', `/teacher/group.php?id=${group.id}`);
-        if (window.location.pathname + window.location.search === groupBoxElement.getAttribute('href')) {
-            groupBoxElement.classList.add('current');
-        }
-        groupBoxElement.children[0].children[0].innerHTML = group.class.name;
-        groupBoxElement.children[0].children[1].innerHTML = group.name;
-        groupBoxElement.children[1].innerHTML = group.subject.name;
-        sidebarElement.appendChild(groupBoxElement);
-    });
+function createGroupBoxElement(group) {
+    let groupBoxElement = groupBoxTemplateElement.content.cloneNode(true);
+    groupBoxElement.children[0].setAttribute('href', `group.php?id=${group.id}&subject_id=${group.subject.id}`);
+    groupBoxElement.children[0].children[0].children[0].innerHTML = group.class.name;
+    groupBoxElement.children[0].children[0].children[1].innerHTML = group.name;
+    groupBoxElement.children[0].children[1].innerHTML = group.subject.name;
+    return groupBoxElement;
+}
+
+let groupsFilled = new Promise(async resolve => {
+    let myUser = await myUserPromise;
+    document.getElementById('header_teacher_full_name').textContent = myUser.full_name;
+    for (let group of myUser.groups) {
+        sidebarElement.appendChild(createGroupBoxElement(group));
+    }
+    resolve();
 });
