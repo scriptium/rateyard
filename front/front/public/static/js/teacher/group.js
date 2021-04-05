@@ -110,8 +110,9 @@ async function fillMarksTable(columnForThReturn=null) {
         for (let marksArrayIndex = 0; marksArrayIndex < column.marks.length; marksArrayIndex++) {
             let mark = column.marks[marksArrayIndex];
             let tdElement = marksTableBodyElement.children[mark.studentIndex].children[columnIndex];
-            tdElement.innerHTML = mark.points;
-            tdElement.setAttribute('initial_value', mark.points);
+            if (mark.points < 0) tdElement.textContent = 'Н';
+            else tdElement.textContent = mark.points;
+            tdElement.setAttribute('initial_value', tdElement.textContent);
             tdElement.setAttribute('marks_array_index', marksArrayIndex);
             tdElement.setAttribute('columns_array_index', columnIndex - 1);
             tooltipText = `Дата зміни: ${mark.edition_date.toLocaleDateString()}`
@@ -350,7 +351,7 @@ async function saveMarkButton() {
     let column = columnsArray[columnsArrayIndex];
     let marksArrayIndexStr = focusedCellElement.getAttribute('marks_array_index');
     let markJSON = {};
-    if (['н', 'Н'].includes(pointsStr)) markJSON.points = null;
+    if (['н', 'Н'].includes(pointsStr)) markJSON.points = -1;
     else markJSON.points = parseInt(pointsStr);
     let markCommentInputElement = document.querySelector('#mark_comment');
     markJSON.comment = markCommentInputElement.value;

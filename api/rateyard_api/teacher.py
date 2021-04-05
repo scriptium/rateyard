@@ -185,7 +185,7 @@ def crete_mark():
     if not (
         request.is_json and
         (
-            request.json.get('points') is None or
+            request.json.get('points') == -1 or
             request.json.get('points') in current_app.config['MARKS_VALUES']
         ) and
         type(request.json.get('student_id')) == int and
@@ -205,7 +205,6 @@ def crete_mark():
 
     ):
         abort(400)
-    print('first')
 
     database = db.get_db()
     cursor = database.cursor()
@@ -327,4 +326,4 @@ def edit_mark():
     WHERE id=%s;
     ''', exec_args)
     database.commit()
-    return jsonify(result=True)
+    return jsonify(result='OK')

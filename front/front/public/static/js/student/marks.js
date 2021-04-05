@@ -57,8 +57,15 @@ let marksFilled = new Promise(async resolve => {
             commentElement.textContent = mark.comment;
             commentElement.classList.add('visible');
         }
-        clonedMarkElement.querySelector('.mark').classList.add(marksClasses[mark.points]);
-        clonedMarkElement.querySelector('.mark > div').textContent = mark.points;
+        let markCircleElement = clonedMarkElement.querySelector('.mark');
+        let markElement = clonedMarkElement.querySelector('.mark > div');
+        if (mark.points < 0) {
+            markElement.textContent = 'Н';
+        }
+        else {
+            markCircleElement.classList.add(marksClasses[mark.points]);
+            markElement.textContent = mark.points;
+        }
         marksDiv.appendChild(clonedMarkElement)
     }
     resolve();
