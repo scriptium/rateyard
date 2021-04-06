@@ -43,3 +43,36 @@ async function getMarks(subject_id) {
         json: JSON.parse(xhr.responseText)
     };
 }
+
+async function sendVerificationEmail(username) {
+    let xhr = await studentRateyardApiClient.sendRequest(
+        'send_verification_email', 'POST', { 'Content-Type': 'application/json' },
+         JSON.stringify({username}), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    };
+}
+
+async function verifyCode(email, code) {
+    let xhr = await studentRateyardApiClient.sendRequest(
+        'verify', 'POST', { 'Content-Type': 'application/json' },
+         JSON.stringify({email, code}), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    };
+}
+
+async function changePassword(id, password) {
+    let xhr = await studentRateyardApiClient.sendRequest(
+        'change_password', 'POST', { 'Content-Type': 'application/json' },
+         JSON.stringify({id, password}), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    };
+}

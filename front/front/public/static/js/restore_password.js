@@ -1,36 +1,67 @@
-const restoreFor = document.querySelector('#restore_for');
 const input = document.querySelector('#username_input');
 const sendButton = document.querySelector('.blue_button');
 const message = document.querySelector('.message');
-// const mailMessage = document.querySelector('#mail');
 
 const animation = [{opacity: 0}, {opacity: 1}];
 
-function sendOnMail() {
-    //send huyny
+let email;
+let id;
+
+disableButton(sendButton);
+
+input.addEventListener('input', () => {
+    if (input.value) enableButton(sendButton);
+    else disableButton(sendButton);
+});
+
+async function sendOnMail() {
+    input.focus();
+    document.getElementById('preloader').classList.remove('hidden');
+    let data = await sendVerificationEmail(input.value);
+    hidePreloader();
+    email = data.json.email;
+    id = data.json.id;
     message.classList.add('show');
     message.animate(animation, 300);
     sendButton.innerHTML = 'Далі';
     input.placeholder = 'Введіть код';
-    // mailMessage.innerHTML = 'patraboy@pedik.com';
-    sendButton.removeEventListener('click', sendOnMail);
-    sendButton.addEventListener('click', checkCode);
+    message.innerHTML = `На вашу пошту ${email} відправлено код відновлення.`;
+    input.value = '';
+    input.focus();
+
+    sendButton.onclick = checkCode;
+    disableButton(sendButton);
 }
 
 async function checkCode() {
-    //check
-    await message.animate(animation, {duration: 150, direction: 'reverse'}).finished;
-    message.classList.remove('show');
-    sendButton.innerHTML = 'Зберегти';
-    input.placeholder = 'Новий пароль';
-    input.setAttribute('type', 'password');
-    sendButton.removeEventListener('click', checkCode);
-    sendButton.addEventListener('click', saveNewPassword);
+    let result = await verifyCode(email, input.value);
+    if (result.status !== 200) {
+        message.innerHTML = 'Невірний код! Перевірте його та спробуйте ще раз.';
+    } else {
+        message.innerHTML = 'Введіть новий пароль.';
+        sendButton.innerHTML = 'Зберегти';
+        input.placeholder = 'Новий пароль';
+        input.value = '';
+        input.focus();
+        input.setAttribute('type', 'password');
+        sendButton.onclick = saveNewPassword;
+        disableButton(sendButton);
+    }
 }
 
-function saveNewPassword() {
-    //
-    location.href = './login.php';
+async function saveNewPassword() {
+    await changePassword(id, input.value);
+    message.innerHTML = 'Новий пароль успішно збережено';
+    sendButton.innerHTML = 'Увійти в аккаунт';
+    input.style.display = 'none';
+    sendButton.onclick = () => {
+        location.href = './login.php';
+    };
 }
 
-sendButton.addEventListener('click', sendOnMail);
+window.onload = () => {
+    input.focus();
+    sendButton.onclick = sendOnMail;
+    hidePreloader();
+}
+

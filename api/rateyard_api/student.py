@@ -1,7 +1,7 @@
 from functools import wraps
 from datetime import datetime
 
-from flask import (Blueprint, json, request, jsonify, abort)
+from flask import (Blueprint, json, request, jsonify, abort, current_app)
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
 
 import db
@@ -155,3 +155,46 @@ def read_marks():
         exec_args.append(mark_id)
 
     cursor.execute(exec_str, exec_args)
+
+@bp.route("/send_verification_email", methods=("POST", ))
+def send_verification_email():
+    if not (request.is_json and 'username' in request.json.keys()):
+        abort(400, 'Expected username in json.')
+    database = db.get_db()
+    cursor = database.cursor()
+    cursor.execute('''
+    SELECT email, full_name, password_hash, id 
+    FROM students WHERE username=%s;
+    ''', (request.json['username'], ))
+    exec_result = cursor.fetchone()
+    if exec_result is None:
+        abort(400, description='This user does not exist.')
+    current_app.extensions['email_verifier'].add_verifiable_user(
+        exec_result[0], 
+        exec_result[1],
+        exec_result[2]
+    )
+    return jsonify({"email": exec_result[0], "id": exec_result[3]}), 200
+
+@bp.route("/verify", methods=("POST", ))
+def verify():
+    if not request.is_json: abort(400, 'Expected json')
+    if not 'code' in request.json.keys() or not 'email' in request.json.keys():
+        abort(400, 'Expected code and email json objects.')
+    verify_result = current_app.extensions['email_verifier'].verify(
+        request.json['email'],
+        request.json['code']
+    )
+    if verify_result is None:
+        return jsonify({"message": "Wrong code"}), 400
+    return jsonify({"verify_result": verify_result}), 200
+
+@bp.route("/change_password", methods=("POST", ))
+def change_password():
+    if not request.is_json: abort(400, 'Expected json')
+    if not 'password' in request.json.keys() or not 'id' in request.json.keys():
+        abort(400, 'Expected password and id in json')
+
+    db.edit_student(request.json['id'], {"password": request.json['password']})
+    return jsonify(result='ok')
+    

@@ -10,10 +10,6 @@ let changes = 0;
 
 function findRow(id) {
     return [...table.getElementsByTagName('tr')].find(row => row.firstChild.innerHTML === `${id}`);
-    // let rows = table.getElementsByTagName('tr');
-    // for (let i = 0; i < rows.length; i++)
-    //     if (rows.item(i).firstChild.innerHTML === `${id}`)
-    //         return rows.item(i);
 }
 
 function fillSubjectsTable(data) {

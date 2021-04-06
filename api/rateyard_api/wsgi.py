@@ -4,6 +4,8 @@ from flask import Flask, redirect
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
+from verifier import Verifier
+
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
@@ -17,6 +19,8 @@ def create_app():
     import student
     import teacher
     import admin
+
+    app.extensions['email_verifier'] = Verifier()
 
     app.register_blueprint(auth.bp, url_prefix="/auth")
     app.register_blueprint(student.bp, url_prefix="/student")

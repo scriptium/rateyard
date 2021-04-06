@@ -28,7 +28,7 @@
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
     <?php
-        $user_type = 'student';
+        $user_type = 'teacher';
         require $_SERVER['DOCUMENT_ROOT'] . '/../includes/include_api.php';
     ?>
     <script type="text/javascript" src="/static/js/restore_password.js"></script>

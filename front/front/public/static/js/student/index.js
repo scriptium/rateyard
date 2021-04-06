@@ -6,4 +6,5 @@ myUserPromise.then(data => {
     data.subjects.forEach(subject => {
         contentElement.appendChild(createSubjectBoxElement(subject.name, subject.new_marks, subject.id));
     });
+    hidePreloader();
 });
