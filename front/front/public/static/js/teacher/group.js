@@ -18,6 +18,9 @@ const markToolHidableChildrenElement = new HidableChildrenElement(document.getEl
 const markToolElement = document.getElementById('mark_tool');
 const defaultToolElement = document.getElementById('default_tool');
 
+const columnDateElement = document.getElementById('column_date');
+const columnNameElement = document.getElementById('column_name');
+
 let columnsArray;
 
 let cellHoveredByKeyboard = false;
@@ -85,7 +88,6 @@ async function fillMarksTable(columnForThReturn=null) {
     let returnTh;
     for (let column of columnsArray) {
         let newThElement = document.createElement('th');
-        newThElement.addEventListener('mouseenter', hoverCell);
         if (column === columnForThReturn)
             returnTh = newThElement; 
         let thText;
@@ -178,6 +180,7 @@ function prepareColumToolElement(newColumn = true, date = null, name = null) {
         saveColumnButtonElement.setAttribute('onclick', 'addColumnButton()');
     }
     else {
+        saveColumnButtonElement.setAttribute('onclick', 'changeColumnButton()');
         columnToolHidableChildrenElement.showAll();
     }
     columnToolHidableChildrenElement.update();
@@ -419,8 +422,6 @@ function focusColumn(thElement) {
 }
 
 async function addColumnButton() {
-    let columnDateElement = document.getElementById('column_date');
-    let columnNameElement = document.getElementById('column_name');
     if (columnDateElement.value === '' && columnNameElement.value === '') {
         makeInputTextWrong(columnDateElement);
         makeInputTextWrong(columnNameElement);
@@ -447,6 +448,42 @@ async function addColumnButton() {
         thElement = await fillMarksTable(column);
         focusColumn(thElement);
     }
+}
+
+async function changeColumnButton() {
+    let focusedThElement = document.querySelector('th.focused');
+    let column = columnsArray[focusedThElement.getAttribute('columns_array_index')];
+    let changes = []
+    if (column.name != columnNameElement.value) {
+        column.name = columnNameElement.value;
+        changes.push('name');
+    }
+    let new_date = new Date(columnDateElement.value)
+    let new_date_ms = new_date.getTime();
+    if (isNaN(new_date_ms)) new_date_ms = null;
+    let old_date_ms = column.date;
+    if (old_date_ms) old_date_ms = old_date_ms.getTime();
+    if (old_date_ms != new_date_ms) {
+        if (new_date_ms) column.date = new_date;
+        else column.date = null;
+        changes.push('date');
+    }
+    if (column.id) {
+        let requestJSON = {id: column.id}
+        for (let change of changes) {
+            if (change === 'date') {
+                if (column.date) requestJSON.date = column.date.getTime() / 1000;
+                else requestJSON.date = null;
+            }
+            else {
+                requestJSON[change] = column[change]
+            }
+        }
+        await editColumn(requestJSON);
+    }
+    fillMarksTable();
+    changeTool(defaultToolElement);
+    unfocusAll();
 }
 
 document.addEventListener('keydown', (event) => {

@@ -122,6 +122,8 @@ body {
     writing-mode: vertical-rl;
     width: 24px;
     max-height: 100px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 #marks_table thead th:nth-child(n+2), #marks_table tbody td:nth-child(n+2) {

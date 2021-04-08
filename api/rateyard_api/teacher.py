@@ -242,7 +242,8 @@ def crete_mark():
 
     if type(request.json.get('column_id')) != int:
         if type(request.json['new_column'].get('date')) == int:
-            request.json['new_column']['date'] = datetime.fromtimestamp(request.json['new_column']['date'])
+            request.json['new_column']['date'] = datetime.fromtimestamp(
+                request.json['new_column']['date'])
         cursor.execute('''
         INSERT INTO marks_columns (subject_id, column_name, column_date)
         VALUES (%s, %s, %s) RETURNING id;
@@ -250,7 +251,7 @@ def crete_mark():
             subject_id,
             request.json['new_column'].get('name'),
             request.json['new_column'].get('date')
-        ))  
+        ))
         column_id = cursor.fetchone()[0]
     else:
         cursor.execute('''
@@ -328,7 +329,68 @@ def edit_mark():
     database.commit()
     return jsonify(result='OK')
 
+
+@bp.route('/edit_column', methods=('POST', ))
+@teacher_token_required
+def edit_column():
+    if not (
+        request.is_json and
+        type(request.json.get('id')) == int and
+        (
+            request.json.get('name') is None or
+            type(request.json.get('name')) == str
+        ) and
+        (
+            request.json.get('date') is None or
+            type(request.json.get('date')) == int
+        )
+    ):
+        abort(400, 'Invalid data')
+
+    database = db.get_db()
+    cursor = database.cursor()
+    cursor.execute(r'''
+    SELECT 1 FROM marks_columns AS mc
+    INNER JOIN teachers_groups AS tg ON tg.subject_id = mc.subject_id AND tg.teacher_id=%s
+    WHERE mc.id = %s;
+    ''', (get_jwt_identity()['id'], request.json['id']))
+    if cursor.fetchone() is None:
+        abort(400, 'Invalid column id')
+
+    changes = {}
+    if 'name' in request.json.keys():
+        changes['column_name'] = request.json['name']
+
+    if 'date' in request.json.keys():
+        if request.json['date'] is None:
+            changes['column_date'] = None
+        else:
+            try:
+                changes['column_date'] = datetime.fromtimestamp(request.json['date'])
+            except TypeError:
+                abort(400, 'Invalid date')
+
+    set_exec_part = ''
+    exec_args = []
+    for key, value in changes.items():
+        set_exec_part += f' {key}=%s'
+        exec_args.append(value)
+
+    if len(set_exec_part) == 0:
+        abort('No changes provided')
+
+    exec_args.append(request.json['id'])
+    exec_str = f'''
+    UPDATE marks_columns
+    SET{set_exec_part} WHERE id = %s;
+    '''
+    cursor.execute(exec_str, exec_args)
+    database.commit()
+    return jsonify(result='OK')
+
+
 @bp.route("/send_verification_email", methods=("POST", ))
+@teacher_token_required
 def send_verification_email():
     if not (request.is_json and 'username' in request.json.keys()):
         abort(400, 'Expected username in json.')
@@ -342,15 +404,18 @@ def send_verification_email():
     if exec_result is None:
         abort(400, description='This user does not exist.')
     current_app.extensions['email_verifier'].add_verifiable_user(
-        exec_result[0], 
+        exec_result[0],
         exec_result[1],
         exec_result[2]
     )
     return jsonify({"email": exec_result[0], "id": exec_result[3]}), 200
 
+
 @bp.route("/verify", methods=("POST", ))
+@teacher_token_required
 def verify():
-    if not request.is_json: abort(400, 'Expected json')
+    if not request.is_json:
+        abort(400, 'Expected json')
     if not 'code' in request.json.keys() or not 'email' in request.json.keys():
         abort(400, 'Expected code and email json objects.')
     verify_result = current_app.extensions['email_verifier'].verify(
@@ -361,9 +426,12 @@ def verify():
         return jsonify({"message": "Wrong code"}), 400
     return jsonify({"verify_result": verify_result}), 200
 
+
 @bp.route("/change_password", methods=("POST", ))
+@teacher_token_required
 def change_password():
-    if not request.is_json: abort(400, 'Expected json')
+    if not request.is_json:
+        abort(400, 'Expected json')
     if not 'password' in request.json.keys() or not 'id' in request.json.keys():
         abort(400, 'Expected password and id in json')
 

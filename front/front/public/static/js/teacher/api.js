@@ -77,6 +77,17 @@ async function editMark(markJSON) {
     }
 }
 
+async function editColumn(columnJSON) {
+    let xhr = await teacherRateyardApiClient.sendRequest(
+        'edit_column', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(columnJSON), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}
+
 async function sendVerificationEmail(username) {
     let xhr = await teacherRateyardApiClient.sendRequest(
         'send_verification_email', 'POST', { 'Content-Type': 'application/json' },
