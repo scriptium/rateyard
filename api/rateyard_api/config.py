@@ -16,3 +16,6 @@ CORS_EXPOSE_HEADERS = ['Access-Token', 'Refresh-Token']
 MARKS_VALUES = tuple(range(1, 13))
 JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=30)
 JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
+
+EMAIL_NAME = 'rateyard@gmail.com'
+EMAIL_PASSWORD = ''

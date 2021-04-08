@@ -6,13 +6,11 @@ import random
 import os
 import sys
 import string
+from flask import current_app
 
 class Verifier:
     def __init__(self):
         self.__verifiable_users = {}
-        self.__email = ''
-        self.__password = ''
-
 
     def __clear_users(self):
         deletable = []
@@ -34,13 +32,13 @@ class Verifier:
         msg = MIMEText(body, 'html', 'utf-8')
 
         msg['Subject'] = Header('Код підтвердження зміни паролю', 'utf-8')
-        msg['From'] = 'Rateyard <%s>' % self.__email
+        msg['From'] = 'Rateyard <%s>' % current_app.config['EMAIL_NAME']
         msg['To'] = email
 
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
-        server.login(self.__email, self.__password)
-        server.sendmail(self.__email, email, msg.as_string())
+        server.login(current_app.config['EMAIL_NAME'], current_app.config['EMAIL_PASSWORD'])
+        server.sendmail(current_app.config['EMAIL_NAME'], email, msg.as_string())
         server.quit()
 
 
