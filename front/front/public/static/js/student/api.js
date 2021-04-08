@@ -33,10 +33,10 @@ async function editMe(changes) {
     }
 }
 
-async function getMarks(subject_id) {
+async function getSubject(id) {
     let xhr = await studentRateyardApiClient.sendRequest(
-        'get_marks', 'POST', { 'Content-Type': 'application/json' },
-         JSON.stringify({subject_id}), true
+        'get_subject', 'POST', { 'Content-Type': 'application/json' },
+         JSON.stringify({id}), true
     );
     return {
         status: xhr.status,

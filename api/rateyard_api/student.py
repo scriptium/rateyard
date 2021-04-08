@@ -88,19 +88,19 @@ def edit_me():
     db.edit_student(get_jwt_identity()['id'], request.json)
     return jsonify(result='ok')
 
-@bp.route("/get_marks", methods=("POST", ))
+@bp.route("/get_subject", methods=("POST", ))
 @student_token_required
 def get_marks():
     if not (
         request.is_json and
-        type(request.json.get('subject_id')) == int
+        type(request.json.get('id')) == int
     ):
         abort(400, 'Expected json with subject_id as int')
 
     identity = get_jwt_identity()
     cursor = db.get_db().cursor()
 
-    cursor.execute('''
+    cursor.execute(r'''
     SELECT m.id, m.points, m.edition_date, mc.column_date,
     m.comment, mc.column_name,
     t.id, t.full_name
@@ -108,24 +108,34 @@ def get_marks():
     INNER JOIN marks_columns AS mc ON m.column_id=mc.id
     INNER JOIN teachers as t ON m.teacher_id=t.id
     WHERE m.student_id=%s AND mc.subject_id=%s
-    ''', (identity['id'], request.json['subject_id']))
-    exec_result = cursor.fetchall()
+    ''', (identity['id'], request.json['id']))
+    marks_exec_result = cursor.fetchall()
 
-    response_json = [{
-        'id': data[0],
-        'points': data[1],
-        'edition_date': datetime.timestamp(data[2]),
-        'date': datetime.timestamp(data[3]) if not data[3] is None else None,
-        'comment': data[4],
-        'type_of_work': data[5] if not data[5] is None else '',
-        'type': 'MarkForStudent',
-        'teacher': {
-            'id': data[6],
-            'full_name': data[7],
-            'type': 'TeacherShort'
-        }
-    } for data in exec_result
-    ]
+    cursor.execute(r'''
+    SELECT subject_name FROM subjects WHERE id=%s;
+    ''', (request.json['id'], ))
+    subject_exec_result = cursor.fetchone()
+
+    response_json = {
+        'id': request.json['id'],
+        'name': subject_exec_result[0],
+        'marks': [
+            {
+                'id': data[0],
+                'points': data[1],
+                'edition_date': datetime.timestamp(data[2]),
+                'date': datetime.timestamp(data[3]) if not data[3] is None else None,
+                'comment': data[4],
+                'type_of_work': data[5] if not data[5] is None else '',
+                'type': 'MarkForStudent',
+                'teacher': {
+                    'id': data[6],
+                    'full_name': data[7],
+                    'type': 'TeacherShort'
+                }
+            } for data in marks_exec_result
+        ]
+    }
 
     return jsonify(response_json)
 

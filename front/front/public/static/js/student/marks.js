@@ -38,8 +38,9 @@ const marksClasses = {
 };
 
 let marksFilled = new Promise(async resolve => {
-    let responseData = await getMarks(subjectId);
-    for (let mark of responseData.json) {
+    let responseData = await getSubject(subjectId);
+    document.querySelector('#marks-header').textContent = responseData.json.name;
+    for (let mark of responseData.json.marks) {
         let clonedMarkElement = document.querySelector('#mark_template').content.children[0].cloneNode(true);
         let markInfo = clonedMarkElement.querySelector('.mark_info');
         if (mark.type_of_work) {
