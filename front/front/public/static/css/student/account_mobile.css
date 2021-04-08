@@ -1,0 +1,25 @@
+@media only screen and (max-width: 800px) {
+    #content {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .title_block {
+        flex-direction: column;
+        min-width: unset;
+        flex-grow: 1;
+        margin-bottom: -40px;
+    }
+    .input_grid {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+    .appear_on_change {
+        transform: translateY(265px);
+        width: 100%;
+    }
+    .blue_button {
+        width: unset;
+        justify-content: center;
+    }
+}

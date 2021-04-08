@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/header.css">
     <link rel="stylesheet" href="/static/css/student/base.css">
+    <link rel="stylesheet" href="/static/css/student/account_mobile.css">
 </head>
 
 <body>
