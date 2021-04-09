@@ -370,10 +370,9 @@ def edit_column():
             except TypeError:
                 abort(400, 'Invalid date')
 
-    set_exec_part = ''
+    set_exec_part = ', '.join([f'{key}=%s' for key in changes.keys()])
     exec_args = []
     for key, value in changes.items():
-        set_exec_part += f' {key}=%s'
         exec_args.append(value)
 
     if len(set_exec_part) == 0:
@@ -382,7 +381,7 @@ def edit_column():
     exec_args.append(request.json['id'])
     exec_str = f'''
     UPDATE marks_columns
-    SET{set_exec_part} WHERE id = %s;
+    SET {set_exec_part} WHERE id = %s;
     '''
     cursor.execute(exec_str, exec_args)
     database.commit()
