@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/static/css/admin/base.css">
     <link rel="stylesheet" href="/static/css/header.css">
     <title>Новий Предмет</title>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . '/../includes/icons.php'; ?>
 </head>
 
 <body>

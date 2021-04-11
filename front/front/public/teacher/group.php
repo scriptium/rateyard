@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/static/css/header.css">
     <link rel="stylesheet" href="/static/css/teacher/base.css">
     <link rel="stylesheet" href="/static/css/teacher/group.css">
+    <?php require $_SERVER['DOCUMENT_ROOT'] . '/../includes/icons.php'; ?>
 </head>
 
 <body>

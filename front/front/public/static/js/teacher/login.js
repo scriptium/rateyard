@@ -4,7 +4,7 @@ let rateyardApiClient = new RateyardApiClient(
     ''
 );
 
-rateyardApiClient.sendRequest('/teacher/get_me', 'GET', {},  undefined, true)
+rateyardApiClient.sendRequest('/teacher/check_token', 'GET', {},  undefined, true)
 .then((xhr) => {
     if (xhr.status === 200) {
         document.location.replace('index.php')

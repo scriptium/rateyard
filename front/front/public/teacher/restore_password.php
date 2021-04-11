@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/static/css/login.css">
     <link rel="stylesheet" href="/static/css/restore_password.css">
     <title>Відновлення паролю</title>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . '/../includes/icons.php'; ?>
 </head>
 
 <body>

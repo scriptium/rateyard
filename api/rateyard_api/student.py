@@ -207,4 +207,10 @@ def change_password():
 
     db.edit_student(request.json['id'], {"password": request.json['password']})
     return jsonify(result='ok')
+
+
+@bp.route("/check_token", methods=("GET",))
+@student_token_required
+def check_token():
+    return jsonify(msg='ok')
     

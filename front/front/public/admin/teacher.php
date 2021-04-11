@@ -15,6 +15,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
     <link rel="stylesheet" href="/static/css/admin/base.css">
     <link rel="stylesheet" href="/static/css/header.css">
     <title>Редагування вчителя</title>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . '/../includes/icons.php'; ?>
 </head>
 
 <body>

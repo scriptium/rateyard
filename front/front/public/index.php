@@ -7,6 +7,7 @@
     <title>Rateyard</title>
     <link rel="stylesheet" href="/static/css/base.css">
     <link rel="stylesheet" href="/static/css/index.css">
+    <?php require $_SERVER['DOCUMENT_ROOT'] . '/../includes/icons.php'; ?>
 </head>
 <body>
     <div>

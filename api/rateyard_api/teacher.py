@@ -389,7 +389,6 @@ def edit_column():
 
 
 @bp.route("/send_verification_email", methods=("POST", ))
-@teacher_token_required
 def send_verification_email():
     if not (request.is_json and 'username' in request.json.keys()):
         abort(400, 'Expected username in json.')
@@ -411,7 +410,6 @@ def send_verification_email():
 
 
 @bp.route("/verify", methods=("POST", ))
-@teacher_token_required
 def verify():
     if not request.is_json:
         abort(400, 'Expected json')
@@ -427,7 +425,6 @@ def verify():
 
 
 @bp.route("/change_password", methods=("POST", ))
-@teacher_token_required
 def change_password():
     if not request.is_json:
         abort(400, 'Expected json')
@@ -436,3 +433,9 @@ def change_password():
 
     db.edit_teacher(request.json['id'], {"password": request.json['password']})
     return jsonify(result='ok')
+
+
+@bp.route("/check_token", methods=("GET",))
+@teacher_token_required
+def check_token():
+    return jsonify(msg='ok')
