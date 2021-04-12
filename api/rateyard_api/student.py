@@ -156,7 +156,7 @@ def read_marks():
     exec_str = '''
     UPDATE marks
     SET is_read=True
-    WHERE False
+    WHERE (False
     '''
 
     exec_args = []
@@ -164,8 +164,14 @@ def read_marks():
     for mark_id in request.json:
         exec_str += " OR id=%s"
         exec_args.append(mark_id)
+    
 
+    exec_str += r') AND student_id=%s;'
+    exec_args.append(get_jwt_identity()['id'])
     cursor.execute(exec_str, exec_args)
+    database.commit()
+    return jsonify(result='OK')
+
 
 @bp.route("/send_verification_email", methods=("POST", ))
 def send_verification_email():

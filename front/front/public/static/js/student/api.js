@@ -76,3 +76,14 @@ async function changePassword(id, password) {
         json: JSON.parse(xhr.responseText)
     };
 }
+
+async function readMarks(idsJSON) {
+    let xhr = await studentRateyardApiClient.sendRequest(
+        'read_marks', 'POST', { 'Content-Type': 'application/json' },
+         JSON.stringify(idsJSON), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    };
+}

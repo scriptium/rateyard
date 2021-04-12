@@ -12,7 +12,6 @@ const subjectsMoved = new Promise(async resolve => {
     resolve(sidebarElement);
 });
 
-
 const URLParams = new URLSearchParams(window.location.search);
 const subjectId = parseInt(URLParams.get('id'));
 
@@ -37,6 +36,8 @@ const marksClasses = {
     '1': 'worst',
 };
 
+const unreadMarksElements = new Set();
+
 let marksFilled = new Promise(async resolve => {
     let responseData = await getSubject(subjectId);
     document.querySelector('#marks-header').textContent = responseData.json.name;
@@ -60,6 +61,8 @@ let marksFilled = new Promise(async resolve => {
         }
         if (!mark.is_read) {
             clonedMarkElement.querySelector('.new_mark_mark').classList.add('visible')
+            clonedMarkElement.setAttribute('mark_id', mark.id);
+            unreadMarksElements.add(clonedMarkElement);
         }
         let markCircleElement = clonedMarkElement.querySelector('.mark');
         let markElement = clonedMarkElement.querySelector('.mark > div');
@@ -81,4 +84,33 @@ subjectsMoved.then((subjectsDiv) => {
     }
 });
 
-Promise.all([marksFilled, subjectsMoved]).then(hidePreloader);
+const readMarksElements = new Set();
+let readMarksAreUpdating = false;
+async function updateReadMarks() {
+    if (!readMarksAreUpdating) {
+        readMarksAreUpdating = true;
+        for (let markElement of unreadMarksElements) {
+            let rect = markElement.getBoundingClientRect();
+            if (rect.bottom <= window.innerHeight) {
+                readMarksElements.add(markElement);
+                unreadMarksElements.delete(markElement);
+            }
+        }
+        let ids = []
+        for (let markElement of readMarksElements) {
+            ids.push(parseInt(markElement.getAttribute('mark_id')))
+        }
+        if (ids.length > 0) await readMarks(ids);
+        readMarksElements.clear();
+        readMarksAreUpdating = false;
+    }
+}
+
+const marksWrapprerElement = document.querySelector('#marks_wrapper');
+
+marksWrapprerElement.onscroll = updateReadMarks;
+
+Promise.all([marksFilled, subjectsMoved]).then(() => {
+    hidePreloader();
+    updateReadMarks();
+});

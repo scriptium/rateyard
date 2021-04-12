@@ -36,12 +36,16 @@
     --offset: 10px;
     right: var(--offset);
     top: var(--offset);
-    display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     left: 30px;
     top: -30px;
+    display: none;
+}
+
+.new-marks.visible {
+    display: flex;
 }
 
 .new-marks>div {
