@@ -25,13 +25,14 @@
     font-size: var(--huge-font-size);
 }
 
-.mark_wrapper {
+.mark_container {
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     overflow: hidden;
+    position: relative;
 }
 
-.mark-container {
+.mark_part {
     background: #FFFFFF;
     display: flex;
     align-items: center;
@@ -40,7 +41,7 @@
     position: relative;
 }
 
-.mark_comment { 
+.comment_part { 
     background-color: var(--light-blue-color);
     padding: 10px 20px;
     color: white;
@@ -51,7 +52,7 @@
     text-overflow: ellipsis;
 }
 
-.mark_comment.visible {
+.comment_part.visible {
     display: block;
 }
 
@@ -173,4 +174,19 @@ body {
         max-height: 100%;
         min-height: 0;
     }
+}
+
+.mark_wrapper {
+    position: relative;
+}
+
+.new_mark_mark.visible {
+    background: red;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    z-index: 1;
+    position: absolute;
+    top: -10px;
+    right: -10px;
 }

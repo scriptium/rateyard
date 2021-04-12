@@ -54,9 +54,12 @@ let marksFilled = new Promise(async resolve => {
             markInfo.appendChild(date);
         }
         if (mark.comment.length > 0) {
-            let commentElement = clonedMarkElement.querySelector('.mark_comment');
+            let commentElement = clonedMarkElement.querySelector('.comment_part');
             commentElement.textContent = mark.comment;
             commentElement.classList.add('visible');
+        }
+        if (!mark.is_read) {
+            clonedMarkElement.querySelector('.new_mark_mark').classList.add('visible')
         }
         let markCircleElement = clonedMarkElement.querySelector('.mark');
         let markElement = clonedMarkElement.querySelector('.mark > div');

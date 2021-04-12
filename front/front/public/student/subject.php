@@ -28,13 +28,17 @@
 
     <template id="mark_template">
         <div class="mark_wrapper">
-            <div class="mark-container">
-                <div class="mark_info"></div>
-                <div class="mark">
-                    <div></div>
+            <div class="mark_container">
+                <div class="mark_part">
+                    <div class="mark_info"></div>
+                    <div class="mark">
+                        <div></div>
+                    </div>
+                </div>
+                <div class="comment_part">
                 </div>
             </div>
-            <div class="mark_comment">
+            <div class="new_mark_mark">
             </div>
         </div>
     </template>
