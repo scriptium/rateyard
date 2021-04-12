@@ -253,7 +253,7 @@
 }
 
 @media only screen and (min-width: 800px) {
-    #sidebar_close_wrapper.stretchable {
+    #sidebar_close_wrapper {
         display: none;
     }
 }
