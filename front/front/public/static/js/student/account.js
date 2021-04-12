@@ -10,7 +10,14 @@ function fillUserInputs(myUser) {
 }
 
 myUserPromise.then((myUser) => {
-    fillUserInputs(myUser)
+    fillUserInputs(myUser);
+    if (window.innerWidth <= 800) {
+        const btn = document.querySelector('.appear_on_change');
+        btn.style.transform = `translateY(
+            ${document.querySelector('.input_grid').offsetHeight
+            + btn.offsetHeight}px
+        )`;
+    }
     hidePreloader();
 });
 
