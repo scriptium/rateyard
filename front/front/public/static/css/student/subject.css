@@ -63,6 +63,7 @@
     align-items: center;
     flex-shrink: 1;
     min-width: 0;
+    flex-wrap: wrap;
 }
 
 .mark_info > * {
