@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php'; ?>
     <div id="login_block">
         <div>
             <div class="logo_main">Rateyard</div>

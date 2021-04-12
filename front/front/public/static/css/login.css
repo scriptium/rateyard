@@ -29,6 +29,6 @@
     margin-left: 15px;
 }
 
-.forget_password.forget_password.forget_password {
+a.text.forget_password:not(:hover) {
     color: var(--link-color);
 }

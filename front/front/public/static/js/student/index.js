@@ -1,4 +1,4 @@
-const contentElement = document.querySelector('#content');
+const contentElement = document.querySelector('#content>div');
 
 myUserPromise.then(data => {
     console.table(data);

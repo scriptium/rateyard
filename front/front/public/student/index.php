@@ -20,7 +20,8 @@
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
     <div id="content">
-
+        <div>
+        </div>
     </div>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
     <script type="text/javascript" src="/static/js/base.js"></script>

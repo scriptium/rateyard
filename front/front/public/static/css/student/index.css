@@ -1,15 +1,28 @@
-#content {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-#content>* {
+#content>div>* {
     margin: 0 30px 30px 0;
 }
 
+@media only screen and (min-width: 800px) {
+    #content>div {
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 0px;
+    }
+}
+
 @media only screen and (max-width: 800px) {
-    #content>* {
-        flex-grow: 1;
+    #content>div {
+        display: grid;
+    }
+    #content>div>* {
         margin-right: 0px;
+        margin-bottom: 20px;
+        width: unset;
+    }
+    body {
+        min-width: 0;
+    }
+    #content {
+        margin: 20px;
     }
 }

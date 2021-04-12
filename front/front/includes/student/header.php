@@ -21,7 +21,7 @@
         </div>
     </div>
 </div>
-<div id="sidebar">
+<div id="sidebar" class="stretchable">
     <div id="sidebar_close_wrapper" onclick="closeSidebar()">
         <?php
         echo file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/static/images/delete.svg');

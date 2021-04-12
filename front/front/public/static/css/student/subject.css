@@ -17,7 +17,7 @@
 }
 
 #marks>* {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 #marks-header {
@@ -154,6 +154,9 @@ body {
     }
     #subjects>* {
         width: auto;
+    }
+    #marks {
+        margin: 20px;
     }
 }
 

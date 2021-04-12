@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: row;
     width: 260px;
+    min-width: 0;
     height: min-content;
     padding: 20px;
     border-radius: 15px;
@@ -15,6 +16,7 @@
     transition: color 0.3s;
     font-weight: 700;
     font-size: var(--big-font-size);
+    text-overflow: ellipsis;
 }
 
 .subject_box:hover, .subject_box.current {
@@ -57,5 +59,18 @@
 @media only screen and (max-width: 800px) {
     #header_teacher_full_name, .logo_main, .logo_caption {
         display: none;
+    }
+    .subject_box>*:first-child {
+        flex-shrink: 1;
+        min-width: 0;
+        overflow: hidden;
+        white-space: normal;
+        text-overflow: ellipsis;
+    }
+    .subject_box {
+        height: auto;
+    }
+    #content {
+        margin: 20px;
     }
 }

@@ -5,9 +5,16 @@ let rateyardApiClient = new RateyardApiClient(
 );
 
 rateyardApiClient.sendRequest('/admin/check_token', 'GET', {},  undefined, true)
-.then((xhr) => {
-    if (xhr.status === 200) document.location.replace('students.php')
-});
+.then(
+    (xhr) => {
+        if (xhr.status === 200) {
+            document.location.replace('students.php')
+        }
+    },
+    () => {
+        hidePreloader();
+    }
+);
 
 async function loginButton(button) {
     disableButton(button)

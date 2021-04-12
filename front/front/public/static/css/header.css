@@ -36,7 +36,7 @@
     align-self: stretch;
     padding: 0 10px;
     text-decoration: none;
-    transition: background 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 #admin_header>div:nth-child(2)>a:hover, #admin_header>div:nth-child(2)>a#current {
@@ -63,10 +63,16 @@
     cursor: pointer;
 }
 
-#exit_button.disabled {
+#admin_header #exit_button.disabled {
     box-shadow: none;
     background: var(--blue-color) !important;
     color: white !important;
+    cursor: default;
+}
+
+#teacher_header #exit_button.disabled {
+    box-shadow: none;
+    background: var(--lightest-blue-color) !important;
     cursor: default;
 }
 
@@ -236,17 +242,18 @@
 }
 
 @media only screen and (max-width: 800px) {
-    #sidebar {
+    #sidebar.stretchable {
         right: 0;
         width: auto;
+        min-width: 0;
     }
-    #sidebar>* {
+    #sidebar.stretchable>* {
         width: auto;
     }
 }
 
 @media only screen and (min-width: 800px) {
-    #sidebar_close_wrapper {
+    #sidebar_close_wrapper.stretchable {
         display: none;
     }
 }
