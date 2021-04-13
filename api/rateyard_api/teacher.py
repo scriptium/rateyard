@@ -323,7 +323,7 @@ def edit_mark():
     exec_args.append(request.json['id'])
     cursor.execute(f'''
     UPDATE marks
-    SET {set_exec_part_str}
+    SET {set_exec_part_str}, is_read=False
     WHERE id=%s;
     ''', exec_args)
     database.commit()
@@ -372,8 +372,8 @@ def edit_column():
 
     set_exec_part = ', '.join([f'{key}=%s' for key in changes.keys()])
     exec_args = []
-    for key, value in changes.items():
-        exec_args.append(value)
+    for key in changes.keys():
+        exec_args.append(changes[key])
 
     if len(set_exec_part) == 0:
         abort('No changes provided')
@@ -384,6 +384,9 @@ def edit_column():
     SET {set_exec_part} WHERE id = %s;
     '''
     cursor.execute(exec_str, exec_args)
+    cursor.execute(r'''
+    UPDATE marks SET is_read=False WHERE column_id=%s;
+    ''', (request.json['id'], ))
     database.commit()
     return jsonify(result='OK')
 

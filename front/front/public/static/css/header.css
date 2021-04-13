@@ -183,7 +183,8 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
-    overflow-y: scroll;
+    padding-right: 30px;
+    overflow: auto;
     visibility: hidden;
 }
 

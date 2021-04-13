@@ -99,7 +99,10 @@ async function openSidebar() {
     );
     sidebarElement.classList.add('visible');
     sidebarCloseAreaElement.classList.add('opened');
-    let animation = sidebarElement.animate([{transform: 'translateX(-100%)'}, {transform: 'none'}], {duration: 400});
+    let animation = sidebarElement.animate(
+        [{transform: 'translateX(-100%)'}, {transform: 'none'}],
+        {duration: 400, easing: 'ease'}
+    );
     await animation.finished;
     sidebarElement.classList.add('opened');
 }
@@ -110,7 +113,10 @@ async function closeSidebar() {
           .map(animation => animation.finished)
     );
     sidebarElement.classList.remove('opened');
-    let animation = sidebarElement.animate([{transform: 'none'}, {transform: 'translateX(-100%)'}], {duration: 400});
+    let animation = sidebarElement.animate(
+        [{transform: 'none'}, {transform: 'translateX(-100%)'}],
+        {duration: 400, easing: 'ease'}
+    );
     await animation.finished;
     sidebarElement.classList.remove('visible');
     sidebarCloseAreaElement.classList.remove('opened');

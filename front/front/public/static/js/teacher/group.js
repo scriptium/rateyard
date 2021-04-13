@@ -226,7 +226,9 @@ function changeTool(newTool) {
     let inputElement = newTool.querySelector('input');
     if (inputElement) {
         inputElement.focus();
-        inputElement.setSelectionRange(0, inputElement.value.length)
+        if (inputElement.getAttribute('type')!='date') {
+            inputElement.setSelectionRange(0, inputElement.value.length)
+        }
     }
 }
 
@@ -376,11 +378,12 @@ async function saveMarkButton() {
         if (marksArrayIndexStr) {
             let mark = column.marks[parseInt(marksArrayIndexStr)];
             markJSON.id = mark.id;
-            mark.comment = markJSON.comment;
-            mark.points = markJSON.points;
-            mark.edition_date = new Date();
-            let responseJSON = await editMark(markJSON);
-            console.log(responseJSON);
+            if (mark.comment != markJSON.comment || markJSON.points != mark.points) {
+                mark.comment = markJSON.comment;
+                mark.points = markJSON.points;
+                mark.edition_date = new Date();
+                await editMark(markJSON);
+            }
         } else {
             let group = await groupPromise;
             let studentIndex = parseInt(focusedCellElement.getAttribute('row_index'));
@@ -484,15 +487,17 @@ async function changeColumnButton() {
     }
     if (column.id) {
         let requestJSON = { id: column.id }
-        for (let change of changes) {
-            if (change === 'date') {
-                if (column.date) requestJSON.date = column.date.getTime() / 1000;
-                else requestJSON.date = null;
-            } else {
-                requestJSON[change] = column[change]
+        if (changes.length > 0) {
+            for (let change of changes) {
+                if (change === 'date') {
+                    if (column.date) requestJSON.date = column.date.getTime() / 1000;
+                    else requestJSON.date = null;
+                } else {
+                    requestJSON[change] = column[change]
+                }
             }
+            await editColumn(requestJSON);
         }
-        await editColumn(requestJSON);
     }
     fillMarksTable();
     changeTool(defaultToolElement);
@@ -512,7 +517,7 @@ document.addEventListener('keydown', (event) => {
                     focusCell(focusedCell.parentElement.nextElementSibling.children[columnIndex]);
                 } else {
                     saveMarkButton();
-                } 
+                }
             } else {
                 changeColumnButton();
             }
