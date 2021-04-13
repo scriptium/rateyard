@@ -41,7 +41,17 @@ const unreadMarksElements = new Set();
 let marksFilled = new Promise(async resolve => {
     let responseData = await getSubject(subjectId);
     document.querySelector('#marks-header').textContent = responseData.json.name;
+    responseData.json.marks.sort(
+        (mark1, mark2) => {
+            let date1 = mark1.date;
+            if (!date1) date1 = mark1.column_creation_date;
+            let date2 = mark2.date;
+            if (!date2) date2 = mark2.column_creation_date;
+            return date2 - date1;
+        }
+    )
     for (let mark of responseData.json.marks) {
+        console.log(mark)
         let clonedMarkElement = document.querySelector('#mark_template').content.children[0].cloneNode(true);
         let markInfo = clonedMarkElement.querySelector('.mark_info');
         if (mark.type_of_work) {
