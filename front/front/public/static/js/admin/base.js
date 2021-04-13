@@ -72,6 +72,7 @@ function insertGroupsData(groupsData, mainTbodyElement, isClass = false, isSubje
 
         let groupNameElement = newRowElement.appendChild(document.createElement('td'));
         groupNameElement.innerHTML = `<a class=\"text\" href=\"group.php?id=${group.id}\">${group.name}</a>`;
+        groupNameElement.id = group.id;
 
         if (isClass) {
             let groupClassElement = newRowElement.appendChild(document.createElement('td'));
