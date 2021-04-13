@@ -59,7 +59,8 @@ def get_group_full(id, marks_subject_id=None):
         SELECT students.id, students.username, students.full_name, students.email, True
         FROM students
         INNER JOIN classes ON students.class_id=classes.id
-        WHERE classes.id = %s;
+        WHERE classes.id = %s
+        ORDER BY students.full_name ASC;
         ''', (exec_result[2], ))
     else:
         cursor.execute('''
@@ -71,7 +72,8 @@ def get_group_full(id, marks_subject_id=None):
         )
         FROM students
         INNER JOIN classes ON students.class_id=classes.id
-        WHERE classes.id = %s;
+        WHERE classes.id = %s
+        ORDER BY students.full_name ASC;
         ''', (id, exec_result[2]))
 
     result["group_class_students"] = [
