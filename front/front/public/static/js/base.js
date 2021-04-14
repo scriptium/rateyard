@@ -31,7 +31,7 @@ function makeInputTextNotWrong(inputTextElement) {
 }
 
 function makeInputTextWrong(inputTextElement) {
-    if(!inputTextElement.classList.contains('wrong')) {
+    if (!inputTextElement.classList.contains('wrong')) {
         if (inputTextElement.hasAttribute('oninput')) {
             inputTextElement.setAttribute(
                 'default_oninput',
@@ -57,7 +57,7 @@ function makeDropDownSelectNotWrong(selectElement) {
 }
 
 function makeDropDownSelectWrong(selectElement) {
-    if(!selectElement.classList.contains('wrong')) {
+    if (!selectElement.classList.contains('wrong')) {
         if (selectElement.hasAttribute('onchange')) {
             selectElement.setAttribute(
                 'default_onchange',
@@ -81,10 +81,9 @@ function toggleCheckbox(checkboxElement, onclick) {
     checkboxElement.classList.toggle('checked');
 }
 
-async function hidePreloader()
-{
+async function hidePreloader() {
     let preloaderItem = document.getElementById('preloader');
-    let animation = preloaderItem.animate([{opacity: 1}, {opacity: 0}], 500);
+    let animation = preloaderItem.animate([{ opacity: 1 }, { opacity: 0 }], 500);
     await animation.finished;
     preloaderItem.classList.add('hidden');
 }
@@ -95,23 +94,26 @@ const sidebarCloseAreaElement = document.getElementById('sidebar_close_area');
 ``
 
 
-const sidebarAnimationFrames = [{transform: 'translateX(-100%)'}, {transform: 'none'}];
-const closeAreaAnimationFrames = [{opacity: '0'}, {opacity: '0.2'}];
+const sidebarAnimationFrames = [{ transform: 'translateX(-100%)' }, { transform: 'none' }];
+const closeAreaAnimationFrames = [{ opacity: '0' }, { opacity: '0.2' }];
 
 async function openSidebar() {
     await Promise.all(
         sidebarElement.getAnimations({ subtree: true })
-          .map(animation => animation.finished)
+            .map(animation => animation.finished).concat(
+                sidebarCloseAreaElement.getAnimations({ subtree: true })
+                .map(animation => animation.finished)
+            )
     );
     sidebarElement.classList.add('visible');
     sidebarCloseAreaElement.classList.add('opened');
     let sidebarAnimation = sidebarElement.animate(
         sidebarAnimationFrames,
-        {duration: 400, easing: 'ease'}
+        { duration: 400, easing: 'ease' }
     );
     sidebarCloseAreaElement.animate(
         closeAreaAnimationFrames,
-        {duration: 400, fill: 'forwards'}
+        { duration: 400, fill: 'forwards' }
     )
     await sidebarAnimation.finished;
     sidebarElement.classList.add('opened');
@@ -120,19 +122,26 @@ async function openSidebar() {
 async function closeSidebar() {
     await Promise.all(
         sidebarElement.getAnimations({ subtree: true })
-          .map(animation => animation.finished)
+            .map(animation => animation.finished).concat(
+                sidebarCloseAreaElement.getAnimations({ subtree: true })
+                .map(animation => animation.finished)
+            )
     );
     sidebarElement.classList.remove('opened');
     let sidebarAnimation = sidebarElement.animate(
         sidebarAnimationFrames,
-        {duration: 400, easing: 'ease', direction: 'reverse'}
+        { duration: 400, easing: 'ease', direction: 'reverse' }
     );
-    sidebarCloseAreaElement.animate(
-        closeAreaAnimationFrames,
-        {duration: 400, fill: 'forwards', direction: 'reverse'}
+    sidebarAnimation.finished.then(
+        async () => {
+            sidebarElement.classList.remove('visible');
+            let arerAnimation = sidebarCloseAreaElement.animate(
+                closeAreaAnimationFrames,
+                { duration: 200, fill: 'forwards', direction: 'reverse' }
+            )
+            await arerAnimation.finished
+            sidebarCloseAreaElement.classList.remove('opened');
+        }
     )
-    await sidebarAnimation.finished;
-    sidebarElement.classList.remove('visible');
-    sidebarCloseAreaElement.classList.remove('opened');
 }
 
