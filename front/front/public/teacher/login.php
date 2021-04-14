@@ -21,11 +21,12 @@
         <input class="default_input_text" placeholder="Пароль" autocomplete="off" id="password_input" type="password">
         <div id="account">
             <a class="a text forget_password" href="restore_password.php">Забули пароль?</a>
-            <div class="blue_button" onclick="loginButton(this)">Увійти</div>
+            <div id="login_button" class="blue_button" onclick="loginButton(this)">Увійти</div>
         </div>
     </div>
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
+    <script type="text/javascript" src="/static/js/login_page_adapter.js"></script>
     <script type="text/javascript" src="/static/js/teacher/login.js"></script>
 </body>
 

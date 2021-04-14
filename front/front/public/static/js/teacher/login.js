@@ -1,34 +1,8 @@
-let rateyardApiClient = new RateyardApiClient(
-    localStorage.getItem('teacher_access_token'),
-    localStorage.getItem('teacher_refresh_token'),
-    ''
-);
-
-rateyardApiClient.sendRequest('/teacher/check_token', 'GET', {},  undefined, true)
-.then(
-    (xhr) => {
-        if (xhr.status === 200) {
-            document.location.replace('index.php')
-        }
-    },
-    () => {
-        hidePreloader();
-    }
-);
-
-async function loginButton(button) {
-    disableButton(button)
-    rateyardApiClient.sendRequest(
-        '/auth/login_teacher', 'POST', {'Content-Type': 'application/json'}, JSON.stringify({
-            username: document.getElementById('username_input').value,
-            password: document.getElementById('password_input').value
-        })
-    ).then((xhr) => {
-        if (xhr.status == 403) enableButton(button)
-        else {
-            localStorage.setItem('teacher_access_token', xhr.getResponseHeader('Access-Token'));
-            localStorage.setItem('teacher_refresh_token', xhr.getResponseHeader('Refresh-Token'));
-            document.location.replace('index.php');
-        }
-    });
-}
+let adapter = new LoginPageAdapter(
+    'teacher_access_token',
+    'teacher_refresh_token',
+    '/teacher/check_token',
+    '/auth/login_teacher',
+    'index.php'
+)
+adapter.tryLoginByToken();
