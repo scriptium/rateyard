@@ -13,8 +13,8 @@
 <body>
     <?php require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php'; ?>
     <div id="login_block">
-        <div>
-            <div class="logo_main">Rateyard</div>
+    <div>
+            <a href="/" class="logo_main">Rateyard</a>
             <div class="logo_caption">Student</div>
         </div>
         <input class="default_input_text" placeholder="Логін" autocomplete="off" id="username_input" type="text">

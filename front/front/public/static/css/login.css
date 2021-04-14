@@ -32,3 +32,11 @@
 a.text.forget_password:not(:hover) {
     color: var(--link-color);
 }
+
+a.logo_main {
+    transition: text-shadow 0.4s;
+}
+
+a.logo_main:hover {
+    text-shadow: rgba(90, 173, 221, 0.6) 0 0 4px;
+}
