@@ -190,6 +190,7 @@
 
 #sidebar_close_area {
     display: none;
+    background: black;
 }
 
 #sidebar_close_area.opened {

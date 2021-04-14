@@ -51,7 +51,6 @@ let marksFilled = new Promise(async resolve => {
         }
     )
     for (let mark of responseData.json.marks) {
-        console.log(mark)
         let clonedMarkElement = document.querySelector('#mark_template').content.children[0].cloneNode(true);
         let markInfo = clonedMarkElement.querySelector('.mark_info');
         if (mark.type_of_work) {

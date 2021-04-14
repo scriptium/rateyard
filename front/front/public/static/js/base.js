@@ -92,6 +92,12 @@ async function hidePreloader()
 const sidebarElement = document.getElementById('sidebar');
 const sidebarCloseAreaElement = document.getElementById('sidebar_close_area');
 
+``
+
+
+const sidebarAnimationFrames = [{transform: 'translateX(-100%)'}, {transform: 'none'}];
+const closeAreaAnimationFrames = [{opacity: '0'}, {opacity: '0.2'}];
+
 async function openSidebar() {
     await Promise.all(
         sidebarElement.getAnimations({ subtree: true })
@@ -99,11 +105,15 @@ async function openSidebar() {
     );
     sidebarElement.classList.add('visible');
     sidebarCloseAreaElement.classList.add('opened');
-    let animation = sidebarElement.animate(
-        [{transform: 'translateX(-100%)'}, {transform: 'none'}],
+    let sidebarAnimation = sidebarElement.animate(
+        sidebarAnimationFrames,
         {duration: 400, easing: 'ease'}
     );
-    await animation.finished;
+    sidebarCloseAreaElement.animate(
+        closeAreaAnimationFrames,
+        {duration: 400, fill: 'forwards'}
+    )
+    await sidebarAnimation.finished;
     sidebarElement.classList.add('opened');
 }
 
@@ -113,11 +123,15 @@ async function closeSidebar() {
           .map(animation => animation.finished)
     );
     sidebarElement.classList.remove('opened');
-    let animation = sidebarElement.animate(
-        [{transform: 'none'}, {transform: 'translateX(-100%)'}],
-        {duration: 400, easing: 'ease'}
+    let sidebarAnimation = sidebarElement.animate(
+        sidebarAnimationFrames,
+        {duration: 400, easing: 'ease', direction: 'reverse'}
     );
-    await animation.finished;
+    sidebarCloseAreaElement.animate(
+        closeAreaAnimationFrames,
+        {duration: 400, fill: 'forwards', direction: 'reverse'}
+    )
+    await sidebarAnimation.finished;
     sidebarElement.classList.remove('visible');
     sidebarCloseAreaElement.classList.remove('opened');
 }
