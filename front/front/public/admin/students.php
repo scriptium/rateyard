@@ -33,7 +33,7 @@
             </div>
         </div>
         <input type="text" class="default_input_text" placeholder="Пошук учнів" oninput="searchStudents(this.value)">
-        <table class="default_table appear_transition" id="students_table">
+        <table class="default_table" id="students_table">
             <tbody>
                 <tr>
                     <th>№</th>
@@ -47,6 +47,30 @@
             </tbody>
         </table>
     </div>
+    <template id="imported_students_content">
+        <div id="content">
+            <div class="title">Імпорт учнів</div>
+            <table class="default_table" id="imported_students_table">
+                <thead>
+                    <tr>
+                        <th>ПІБ</th>
+                        <th>Клас</th>
+                        <th>Логін</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="title_block">
+                <div class="blue_button" onclick="saveImportedStudents()">
+                    <div class="button_icon save_icon"></div>
+                    <div>Зберегти</div>
+                </div>
+                <a class="blue_button" id="download_passwords">
+                    <div>Завантижити файл з паролями</div>
+                </a>
+            </div>
+        </div>
+    </template>
 
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/base.js"></script>

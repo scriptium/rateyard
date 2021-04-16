@@ -223,8 +223,10 @@ def edit_teacher(id, changes):
 
 
 def check_students_data(data, all_required=False):
+    student_data_errors = {}
     cursor = get_db().cursor()
     for student_index in range(len(data)):
+        print(data)
         '''
         Error codes for students:
         0: username not found or has already taken
@@ -244,8 +246,6 @@ def check_students_data(data, all_required=False):
         '''
 
         student = data[student_index]
-        student_data_errors = {}
-
         was_error = False
 
         if "username" not in student.keys():
@@ -323,8 +323,7 @@ def check_students_data(data, all_required=False):
         was_error = False
 
         if "email" not in student.keys():
-            if all_required:
-                was_error = True
+            pass
         elif (
             student["email"] == "" or
             type(student["email"]) != str or

@@ -1,7 +1,10 @@
 import base64
 from io import BytesIO
+import secrets
+import string
+import tempfile
 
-from flask import Blueprint, request, abort, jsonify
+from flask import Blueprint, request, abort, jsonify, send_file
 from slugify import slugify
 import openpyxl
 
@@ -18,9 +21,9 @@ def create_students():
 
     database = db.get_db()
     cursor = database.cursor()
-    student_data_errors = db.check_students_data(request.json, True)
+    students_data_errors = db.check_students_data(request.json, True)
     was_error = False
-    if student_data_errors == {}:
+    if students_data_errors == {}:
         for student in request.json:
             try:
                 cursor.execute('''
@@ -39,7 +42,7 @@ def create_students():
                     ''', (
                     student["username"],
                     student["full_name"],
-                    student["email"],
+                    student.get("email"),
                     student["password"],
                     student["class_id"]
                 ))
@@ -54,7 +57,7 @@ def create_students():
                 "result": "OK",
             })
     else:
-        return jsonify(student_data_errors), 400
+        return jsonify(students_data_errors), 400
 
 @admin_token_required
 def delete_students():
@@ -161,21 +164,54 @@ def import_from_excel():
         worksheet = workbook.active
     except Exception:
         abort(400, 'Invalid excel file')
-    else:
-        cursor = db.get_db().cursor()
-        cursor.execute(r'SELECT id, class_name FROM classes;')
-        classes_dict = {}
-        for class_ in cursor.fetchall():
-            classes_dict[class_[1]] = class_[0]
+    
+    cursor = db.get_db().cursor()
+    cursor.execute(r'SELECT id, class_name FROM classes;')
+    classes_dict = {}
+    for class_ in cursor.fetchall():
+        classes_dict[class_[1]] = class_[0]
 
-        students_json = {'students': []}
-        for row_values in worksheet.iter_rows(values_only=True, min_col=2, min_row=2):
-            if all((type(row_values[index]) == str and
-                    len(row_values[index]) > 0 for index in [*range(3)] + [4])):
-                students_json['students'].append({
-                    'username': slugify(row_values[0]),
-                    'full_name': row_values[0] + row_values[1] + row_values[2],
-                    'class_id': classes_dict[row_values[4].upper()]
-                })
+    cursor.execute(r'SELECT username FROM students;')
+    registered_usernames = set((row[0] for row in cursor.fetchall()))
+    students_json = {'students': []}
+    alphabet = string.ascii_letters + string.digits
+    for row_values in worksheet.iter_rows(values_only=True, min_col=2, min_row=2):
+        if len(row_values) >= 5 and all((type(row_values[index]) == str and
+                len(row_values[index]) > 0 for index in [*range(3)] + [4])):
+            username = slugify(row_values[0], separator='')
+            if username in registered_usernames:
+                username_number = 1
+                new_username = username + str(username_number)
+                while new_username in registered_usernames:
+                    username_number += 1
+                    new_username = username + str(username_number)
+
+                username = new_username
+
+            registered_usernames.add(username)
+            students_json['students'].append({
+                'username': username,
+                'full_name': ' '.join((row_values[0], row_values[1], row_values[2])),
+                'class': {
+                    'id': classes_dict[row_values[4].upper()],
+                    'name': row_values[4].upper()
+                },
+                'password': ''.join(secrets.choice(alphabet) for i in range(5))
+            })
+    
+    passwords_workbook = openpyxl.workbook.Workbook()
+    passwords_worksheet = passwords_workbook.active
+    passwords_worksheet.append(('ПІБ', 'Логін', 'Клас', 'Пароль'))
+    for student in students_json['students']:
+        passwords_worksheet.append((
+            student['full_name'],
+            student['username'],
+            student['class']['name'],
+            student['password']
+        ))
+
+    passwords_file = tempfile.NamedTemporaryFile()
+    passwords_workbook.save(passwords_file.name)
+    students_json['passwords_table_base64'] = base64.b64encode(passwords_file.read()).decode()
 
     return jsonify(students_json)
