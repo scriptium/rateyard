@@ -1,24 +1,10 @@
-@media only screen and (max-width: 800px) {
-    #content {
-        display: flex;
-        flex-wrap: wrap;
-    }
+@media only screen and (max-width: 1000px) {
     .title_block {
-        flex-direction: column;
-        min-width: unset;
-        flex-grow: 1;
-        margin-bottom: -40px;
+        min-width: 0;
     }
     .input_grid {
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-    }
-    .appear_on_change {
-        width: 100%;
-    }
-    .blue_button {
-        width: unset;
-        justify-content: center;
     }
 }

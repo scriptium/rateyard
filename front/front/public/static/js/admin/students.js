@@ -31,52 +31,26 @@ function searchStudents(text) {
     hidableChildrenStudentsTbody.update();
 }
 
-async function showDragNDropArea() {
-    let black_area = document.getElementsByClassName('drag_and_drop_file').item(0);
-    let drag_area = document.getElementById('drag_area');
-    let main = document.getElementById('content');
-
-    if (black_area.classList.contains('show'))
-    {
-        main.style.filter = 'none';
-        black_area.animate([{opacity: 1}, {opacity: 0}], 250);
-        await drag_area.animate([{opacity: 1}, {opacity: 0}], 250).finished;
-
-        black_area.classList.remove('show');
-        drag_area.classList.remove('show');
-    } else {
-        main.style.filter = 'blur(3px)';
-        black_area.classList.add('show');  
-        drag_area.classList.add('show');
+async function onFileInput(files) {
+    if (files[0]) {
+        let reader = new FileReader();
+        let b64 = await new Promise(resolve => {
+            reader.readAsDataURL(files[0]);
+            reader.onloadend = () => {
+                resolve(reader.result)
+            }
+        })
+        let result = await importStudentsFromExcel({
+            'table_base64': b64.substring(b64.search('base64,')+'base64,'.length)
+        });
+        console.log(result);
     }
 }
 
-let dragArea = document.getElementById('drag_area');
+const studentsDataInputElement = document.querySelector('#students_data_file');
 
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    dragArea.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-    });
-});
-
-['dragleave', 'drop'].forEach(eventName => {
-    dragArea.addEventListener(eventName, () => {
-        dragArea.classList.remove('drag_over');
-    });
-});
-
-dragArea.addEventListener('dragover', () => {
-    dragArea.classList.add('drag_over');
-});
-
-dragArea.addEventListener('drop', (e) => onFileInput(e.dataTransfer.files));
-
-function onFileInput(files) {
-    let formData = new FormData();
-    formData.append('file', files[0]);
-    console.log(files);
-    showDragNDropArea();
+function excelButton() {
+    studentsDataInputElement.click();
 }
 
 studentsResponseData.then((responseData) => {

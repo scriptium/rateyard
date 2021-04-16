@@ -1,4 +1,9 @@
+import base64
+from io import BytesIO
+
 from flask import Blueprint, request, abort, jsonify
+from slugify import slugify
+import openpyxl
 
 from . import admin_token_required, db
 
@@ -139,3 +144,38 @@ def get_students():
     } for data in exec_result
     ]
     return jsonify(result)
+
+@admin_token_required
+def import_from_excel():
+    if not (
+        request.is_json and
+        type(request.json.get('table_base64')) == str
+    ):
+        abort(400, 'Expected json with base64 string')
+
+    try:
+        table_file = BytesIO(
+            base64.b64decode(request.json['table_base64'].encode())
+        )
+        workbook = openpyxl.load_workbook(table_file)
+        worksheet = workbook.active
+    except Exception:
+        abort(400, 'Invalid excel file')
+    else:
+        cursor = db.get_db().cursor()
+        cursor.execute(r'SELECT id, class_name FROM classes;')
+        classes_dict = {}
+        for class_ in cursor.fetchall():
+            classes_dict[class_[1]] = class_[0]
+
+        students_json = {'students': []}
+        for row_values in worksheet.iter_rows(values_only=True, min_col=2, min_row=2):
+            if all((type(row_values[index]) == str and
+                    len(row_values[index]) > 0 for index in [*range(3)] + [4])):
+                students_json['students'].append({
+                    'username': slugify(row_values[0]),
+                    'full_name': row_values[0] + row_values[1] + row_values[2],
+                    'class_id': classes_dict[row_values[4].upper()]
+                })
+
+    return jsonify(students_json)

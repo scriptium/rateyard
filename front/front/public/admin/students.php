@@ -17,17 +17,7 @@
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/header.php';
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>
-
-    <div class="drag_and_drop_file" onclick='showDragNDropArea()'>
-    </div>
-    <div id="drag_area">
-        <input type="file" id="table_file" name="file" accept=".xlsx, .xls" onchange="onFileInput(this.files)">
-        <label for="table_file">
-                <div class="drag_icon"></div>
-                <p><strong>Виберіть файл</strong> або перетягніть його сюди.</p>
-        </label>
-    </div>
-
+    <input type="file" id="students_data_file" name="file" accept=".xlsx, .xls" onchange="onFileInput(this.files)">
     <div id="content">
         <div class="title_block">
             <div class="title">Наявні учні</div>
@@ -37,7 +27,7 @@
                     <div>Додати учня</div>
                 </div>
             </a>
-            <div class="excel_button" onclick="showDragNDropArea()">
+            <div class="excel_button" onclick="excelButton()">
                 <div class="button_icon excel_icon"></div>
                 <div>Імпорт з файлу Microsoft Excel</div>
             </div>

@@ -284,3 +284,14 @@ async function deleteSubjects(subjectsId) {
         json: JSON.parse(xhr.responseText)
     }
 }
+
+async function importStudentsFromExcel(students_table) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'import_from_excel', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(students_table), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}

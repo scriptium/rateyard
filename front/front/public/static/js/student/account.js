@@ -9,14 +9,14 @@ function fillUserInputs(myUser) {
     passwordInputElement.setAttribute('initial_value', '');
 }
 
+
 myUserPromise.then((myUser) => {
-    fillUserInputs(myUser);
-    if (window.innerWidth <= 800) {
-        const btn = document.querySelector('.appear_on_change');
-        btn.style.transform = `translateY(
-            ${document.querySelector('.input_grid').offsetHeight
-            + btn.offsetHeight}px
-        )`;
+	fillUserInputs(myUser);
+    if (window.innerWidth <= 1000) {
+        let saveButtonElement = document.querySelector('#save_button');
+        let contentElement = document.querySelector('#content');
+        saveButtonElement.parentElement.removeChild(saveButtonElement);
+        contentElement.appendChild(saveButtonElement);
     }
     hidePreloader();
 });

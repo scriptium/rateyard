@@ -21,7 +21,7 @@
     <div id="content">
         <div class="title_block">
             <div class="title">Налаштування облікового запису</div>
-            <div class="appear_on_change appear_transition">
+            <div class="appear_on_change appear_transition" id="save_button">
                 <div class="blue_button" onclick="saveAccountChangesButton(this)">
                     <div class="button_icon save_icon"></div>
                     <div>Зберегти зміни</div>
