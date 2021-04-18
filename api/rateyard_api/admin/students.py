@@ -199,6 +199,9 @@ def import_from_excel():
                 'password': ''.join(secrets.choice(alphabet) for i in range(5))
             })
     
+    if len(students_json['students']) == 0:
+        abort(400, 'No valide students found')
+    
     passwords_workbook = openpyxl.workbook.Workbook()
     passwords_worksheet = passwords_workbook.active
     passwords_worksheet.append(('ПІБ', 'Логін', 'Клас', 'Пароль'))

@@ -322,7 +322,7 @@ def check_students_data(data, all_required=False):
 
         was_error = False
 
-        if "email" not in student.keys():
+        if type(student["email"]) is type(None):
             pass
         elif (
             student["email"] == "" or

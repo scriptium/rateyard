@@ -29,7 +29,11 @@ function updateStudentData() {
             fullNameElement.value = student.full_name;
             fullNameElement.setAttribute('initial_value', student.full_name);
             emailElement.value = student.email;
-            emailElement.setAttribute('initial_value', student.email);
+            if (student.email) {
+                emailElement.setAttribute('initial_value', student.email);
+            } else {
+                emailElement.setAttribute('initial_value', '');
+            }
             await classesHasFilled;
             classElement.value = student.class.id;
             classElement.setAttribute('initial_value', student.class.id);
@@ -49,7 +53,9 @@ function saveStudentChangesButton(buttonElement) {
     changesSet.changedElements.forEach(
         (element) => {
             if (element.id == "class_id") requestJSON[0][element.id] = parseInt(element.value);
-            else requestJSON[0][element.id] = element.value;
+            else if (element.id == 'email' && email.value.length == 0) {
+                requestJSON[0][element.id] = null;
+            } else requestJSON[0][element.id] = element.value;
         }
     );
 

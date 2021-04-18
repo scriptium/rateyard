@@ -41,7 +41,6 @@ const importedStudentsTableTbodyElement = importedStudentsContent.querySelector(
 )
 let importedStudents = null;
 
-// application/vnd.ms-excel
 let downloadPasswordsAElement = importedStudentsContent.querySelector('#download_passwords')
 
 async function onFileInput(files) {
@@ -54,9 +53,15 @@ async function onFileInput(files) {
                 resolve(reader.result)
             }
         })
-        importedStudents = (await importStudentsFromExcel({
+        let responseData = await importStudentsFromExcel({
             'table_base64': b64.substring(b64.search('base64,') + 'base64,'.length)
-        })).json;
+        });
+        if (responseData.status != 200) {
+            alert('Помилка зчитування учнів. Перевірте формат файлу.');
+            hidePreloader();
+            return;
+        }
+        importedStudents = responseData.json;
         downloadPasswordsAElement.setAttribute(
             'href',
             'data:application/vnd.ms-excel;base64,' + importedStudents.passwords_table_base64);
