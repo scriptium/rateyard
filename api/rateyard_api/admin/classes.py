@@ -28,7 +28,7 @@ def get_classes_short():
     cursor = db.get_db().cursor()
     cursor.execute('''
         SELECT id, class_name
-        FROM classes;
+        FROM classes ORDER BY id;
         '''
                    )
     exec_result = cursor.fetchall()
@@ -66,7 +66,7 @@ def get_class_full():
     cursor.execute(
         '''
         SELECT id, username, full_name, email 
-        FROM students WHERE class_id=%s
+        FROM students WHERE class_id=%s ORDER BY full_name
         ''',
         (request.json["id"], )
     )
@@ -97,7 +97,7 @@ def move_students_to_class():
             type(request.json["class_id_to"]) != int
     ):
         abort(400, "Expected json with class_id_from and class_id_to as ints")
-    database = db.get_db();
+    database = db.get_db()
     cursor = database.cursor()
     try:
         cursor.execute('''
