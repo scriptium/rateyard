@@ -68,8 +68,8 @@ async function saveGroupChanges(buttonElement) {
     if (groupStudentsChanged) {
         groupChanges.students_ids = [];
         for (let studentTr of groupStudentsTbodyElement.children) {
-            if (studentTr.children[4].children[0].classList.contains('checked'))
-                groupChanges.students_ids.push(parseInt(studentTr.children[0].innerHTML));
+            if (studentTr.children[0].children[0].classList.contains('checked'))
+                groupChanges.students_ids.push(parseInt(studentTr.children[1].innerHTML));
         }
     }
     let responseData = await editGroup(groupChanges);

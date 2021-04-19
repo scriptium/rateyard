@@ -19,6 +19,20 @@ function insertStudentsData(studentsData, mainTbodyElement, isClass = false, isC
     studentsData.forEach(student => {
         let newRowElement = document.createElement('tr');
 
+        if (isCheckbox) {
+            let checkboxElement = newRowElement.appendChild(document.createElement('td'));
+            let checkbox = createCheckboxElement();
+            if (student.is_group_member) {
+                checkbox.classList.add('checked');
+                checkbox.setAttribute('initial_value', true);
+            }
+            else {
+                checkbox.setAttribute('initial_value', false);
+            }
+            checkbox.setAttribute('onclick', 'changesSet.updateChangedElements(this)');
+            checkboxElement.appendChild(checkbox);
+        }
+
         let idElement = newRowElement.appendChild(document.createElement('td'));
         idElement.innerHTML = student.id;
 
@@ -35,20 +49,6 @@ function insertStudentsData(studentsData, mainTbodyElement, isClass = false, isC
 
         let emailElement = newRowElement.appendChild(document.createElement('td'));
         emailElement.innerHTML = student.email;
-
-        if (isCheckbox) {
-            let checkboxElement = newRowElement.appendChild(document.createElement('td'));
-            let checkbox = createCheckboxElement();
-            if (student.is_group_member) {
-                checkbox.classList.add('checked');
-                checkbox.setAttribute('initial_value', true);
-            }
-            else {
-                checkbox.setAttribute('initial_value', false);
-            }
-            checkbox.setAttribute('onclick', 'changesSet.updateChangedElements(this)');
-            checkboxElement.appendChild(checkbox);
-        }
 
         if(searchIndex) {
             let pattern = `${student.id} ${student.username} ${student.full_name} ${student.email}`;

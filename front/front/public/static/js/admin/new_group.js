@@ -34,6 +34,8 @@ function updateGroupStudentData() {
             parsedResponse.students.forEach(student => {
                 let newRowElement = document.createElement('tr');
 
+                let checkboxElement = newRowElement.appendChild(document.createElement('td'));
+
                 let idElement = newRowElement.appendChild(document.createElement('td'));
                 idElement.innerHTML = student.id;
 
@@ -45,8 +47,6 @@ function updateGroupStudentData() {
 
                 let emailElement = newRowElement.appendChild(document.createElement('td'));
                 emailElement.innerHTML = student.email;
-
-                let checkboxElement = newRowElement.appendChild(document.createElement('td'));
 
                 checkboxElement.appendChild(createCheckboxElement());
 
@@ -68,8 +68,8 @@ function saveNewGroupButton(buttonElement) {
     for (let childIndex = 0; childIndex < groupStudentsTbodyElement.children.length; childIndex++) {
         let trowElement = groupStudentsTbodyElement.children[childIndex];
 
-        if (trowElement.children[4].children[0].classList.contains('checked'))
-            studentsIds.push(parseInt(trowElement.children[0].innerHTML));
+        if (trowElement.children[0].children[0].classList.contains('checked'))
+            studentsIds.push(parseInt(trowElement.children[1].innerHTML));
     }
 
     createGroup(name, classId, studentsIds).then(
@@ -82,6 +82,22 @@ function saveNewGroupButton(buttonElement) {
         }
     );
 }
+
+async function fillSessionStorageData() {
+    if(classData !== undefined) classData = JSON.parse(classData)
+    else classData = 'false';
+
+    if(classData !== 'false') {
+        classElement = createFakeReadonlyInput('class_name', classData.name);
+    }
+    else {
+        classElement = createDefaultSelect('class_select', 'updateGroups()');
+        await fillClassesData();
+    }
+    
+    
+}
+
 
 let groupStudentsHasFilled = updateGroupStudentData();
 

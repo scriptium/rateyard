@@ -33,25 +33,13 @@
         <table class="default_table" id="group_students">
             <thead>
                 <tr>
+                    <th style="width: 25px;"></th>
                     <th>№</th>
                     <th>ПІБ</th>
                     <th>Логін</th>
                     <th>Адреса електронної пошти</th>
-                    <th style="width: 25px;"></th>
                 </tr>
             </thead>
-            <tbody>
-            </tbody>
-        </table>
-        <div class="subtitle">Викладачі групи:</div>
-        <table class="default_table" id="group_teachers">
-            <tbody>
-                <tr>
-                    <th>№</th>
-                    <th>ПІБ</th>
-                    <th>Предмет</th>
-                </tr>
-            </tbody>
             <tbody>
             </tbody>
         </table>

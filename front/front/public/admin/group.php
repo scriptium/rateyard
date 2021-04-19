@@ -54,11 +54,11 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
         <table class="default_table" id="group_students">
             <thead>
                 <tr>
+                    <th style="width: 25px;" class="not_full_group"></th>
                     <th>№</th>
                     <th>ПІБ</th>
                     <th>Логін</th>
                     <th>Адреса електронної пошти</th>
-                    <th style="width: 25px;" class="not_full_group"></th>
                 </tr>
             </thead>
             <tbody>

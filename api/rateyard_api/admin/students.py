@@ -128,6 +128,7 @@ def get_students():
                 abort(400)
             exec_args.append(student_id)
             exec_str += " OR students.id=%s"
+    exec_args += " ORDER BY students.full_name"
 
     cursor = db.get_db().cursor()
     cursor.execute(exec_str, exec_args)
