@@ -105,6 +105,25 @@ def move_students_to_class():
             SET class_id=%s
             WHERE class_id=%s
         ''', (request.json["class_id_to"], request.json["class_id_from"]))
+        cursor.execute('''
+            UPDATE groups
+            SET class_id=%s
+            WHERE class_id=%s AND is_full_class_group=False
+        ''', (request.json["class_id_to"], request.json["class_id_from"]))
+        cursor.execute('''
+            DELETE FROM teachers_groups AS tg
+            WHERE tg.group_id=%s AND EXISTS(
+            SELECT 1 FROM teachers_groups AS tcgr
+            WHERE tcgr.group_id=%s AND
+            tcgr.teacher_id=tg.teacher_id AND
+            tcgr.subject_id=tg.subject_id
+            )
+        ''', (request.json["class_id_to"], request.json["class_id_from"]))
+        cursor.execute('''
+            UPDATE teachers_groups AS tg
+            SET group_id=%s
+            WHERE group_id=%s
+        ''', (request.json["class_id_to"], request.json["class_id_from"]))
     except db.psycopg2.errors.ForeignKeyViolation:
         abort(400, "Class with class_id_to doesn't exist")
     else:
