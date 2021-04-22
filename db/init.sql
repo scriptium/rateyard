@@ -8,6 +8,7 @@ CREATE TABLE students (
     username VARCHAR(256) UNIQUE NOT NULL,
     full_name VARCHAR(256) NOT NULL,
     email VARCHAR(320) UNIQUE,
+    email_verified BOOLEAN DEFAULT FALSE NOT NULL,
     password_hash TEXT NOT NULL,
     class_id INTEGER REFERENCES classes(id) ON DELETE CASCADE NOT NULL
 );
@@ -16,6 +17,7 @@ CREATE TABLE teachers (
     username VARCHAR(256) UNIQUE NOT NULL,
     full_name VARCHAR(256) NOT NULL,
     email VARCHAR(320) UNIQUE,
+    email_verified BOOLEAN DEFAULT FALSE NOT NULL,
     password_hash TEXT NOT NULL
 );
 CREATE TABLE subjects (

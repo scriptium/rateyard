@@ -87,3 +87,25 @@ async function readMarks(idsJSON) {
         json: JSON.parse(xhr.responseText)
     };
 }
+
+async function sendEmailVerificationCode() {
+    let xhr = await studentRateyardApiClient.sendRequest(
+        'send_email_verification_code', 'GET', {},
+        null, true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    };
+}
+
+async function verifyEmail(dataObject) {
+    let xhr = await studentRateyardApiClient.sendRequest(
+        'verify_email', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(dataObject), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    };
+}

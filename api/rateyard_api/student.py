@@ -29,7 +29,7 @@ def get_me():
     cursor = db.get_db().cursor()
     
     cursor.execute('''
-    SELECT st.id, st.username, st.full_name, st.email, cl.id, cl.class_name
+    SELECT st.id, st.username, st.full_name, st.email, cl.id, cl.class_name, st.email_verified
     FROM students AS st
     INNER JOIN classes AS cl ON cl.id=st.class_id
     WHERE st.id=%s;
@@ -41,10 +41,11 @@ def get_me():
         abort(400)
 
     response_json = {
-        'id': exec_result[0],
+        'id': exec_result[0],   
         'username': exec_result[1],
         'full_name': exec_result[2],
         'email': exec_result[3],
+        'email_verified': exec_result[6],
         'class': {
         	'id': exec_result[4],
         	'name': exec_result[5],
@@ -234,11 +235,11 @@ def reset_password():
         request.json['email'], request.json['code']
     )
     if verify_result is None:
-        abort(401, 'Failed to verify')
+        abort(402, 'Failed to verify')
 
     id_ = verify_result[1]
     if len(request.json['new_password']) == 0:
-        abort(402, 'Password must\'t be empty')
+        abort(403, 'Password must\'t be empty')
 
     db.edit_student(id_, {'password': request.json['new_password']})
     return jsonify(result='OK')  
@@ -247,4 +248,63 @@ def reset_password():
 @student_token_required
 def check_token():
     return jsonify(msg='ok')
+
+
+@bp.route('send_email_verification_code', methods=('GET',))
+@student_token_required
+def send_verification_email_code():
+    id_ = get_jwt_identity()['id']
+    cursor = db.get_db().cursor()
+    cursor.execute(r'''
+    SELECT email, email_verified, full_name FROM students WHERE id=%s;
+    ''', (id_, ))
+
+    exec_result = cursor.fetchone()
+    if exec_result[1]:
+        abort(400, 'Email has already verified')
+
+    if exec_result[0] is None:
+        abort(400, 'Set email before verifying')
+
+    current_app.extensions['student_email_verifier'].add_verifiable_user(
+        exec_result[0],
+        exec_result[2],
+    )
+
+    return jsonify(result='OK')
+
+@bp.route('verify_email', methods=('POST',))
+@student_token_required
+def verify_email():
+    if not (
+        request.is_json and
+        type(request.json['code']) is str
+    ):
+        abort(400, 'Invalid json data')
+
+    id_ = get_jwt_identity()['id']
+    database = db.get_db()
+    cursor = database.cursor()
+    cursor.execute(r'''
+    SELECT email, email_verified FROM students WHERE id=%s;
+    ''', (id_, ))
+
+    exec_result = cursor.fetchone()
+    if exec_result[1]:
+        abort(400, 'Email has already verified')
+
+    if exec_result[0] is None:
+        abort(400, 'Set email before verifying')
+
+    verify_result = current_app.extensions['student_email_verifier'].verify(exec_result[0], request.json['code'])
+    if verify_result is None:
+        abort(403, 'Wrong code')
+
+    cursor.execute(r'''
+    UPDATE students SET email_verified=true WHERE id=%s; 
+    ''', (id_, ))
+    database.commit()
+
+    return jsonify(result='OK')
+    
     

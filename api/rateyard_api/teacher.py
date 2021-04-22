@@ -29,7 +29,7 @@ def get_me():
     cursor = db.get_db().cursor()
 
     cursor.execute('''
-    SELECT id, username, full_name, email FROM teachers WHERE id=%s;
+    SELECT id, username, full_name, email, email_verified FROM teachers WHERE id=%s;
     ''', (identity['id'], )
     )
 
@@ -42,6 +42,7 @@ def get_me():
         'username': exec_result[1],
         'full_name': exec_result[2],
         'email': exec_result[3],
+        'email_verified': exec_result[4]
     }
     cursor.execute('''
     SELECT g.id, g.group_name, c.id, c.class_name, s.id, s.subject_name
@@ -366,7 +367,8 @@ def edit_column():
             changes['column_date'] = None
         else:
             try:
-                changes['column_date'] = datetime.fromtimestamp(request.json['date'])
+                changes['column_date'] = datetime.fromtimestamp(
+                    request.json['date'])
             except TypeError:
                 abort(400, 'Invalid date')
 
@@ -456,10 +458,70 @@ def reset_password():
         abort(402, 'Password must\'t be empty')
 
     db.edit_teacher(id_, {'password': request.json['new_password']})
-    return jsonify(result='OK')  
+    return jsonify(result='OK')
 
 
 @bp.route("/check_token", methods=("GET",))
 @teacher_token_required
 def check_token():
     return jsonify(msg='ok')
+
+
+@bp.route('send_email_verification_code', methods=('GET',))
+@teacher_token_required
+def send_verification_email_code():
+    id_ = get_jwt_identity()['id']
+    cursor = db.get_db().cursor()
+    cursor.execute(r'''
+    SELECT email, email_verified, full_name FROM teachers WHERE id=%s;
+    ''', (id_, ))
+
+    exec_result = cursor.fetchone()
+    if exec_result[1]:
+        abort(400, 'Email has already verified')
+
+    if exec_result[0] is None:
+        abort(400, 'Set email before verifying')
+
+    current_app.extensions['teacher_email_verifier'].add_verifiable_user(
+        exec_result[0],
+        exec_result[2],
+    )
+
+    return jsonify(result='OK')
+
+
+@bp.route('verify_email', methods=('POST',))
+@teacher_token_required
+def verify_email():
+    if not (
+        request.is_json and
+        type(request.json['code']) is str
+    ):
+        abort(400, 'Invalid json data')
+
+    id_ = get_jwt_identity()['id']
+    database = db.get_db()
+    cursor = database.cursor()
+    cursor.execute(r'''
+    SELECT email, email_verified FROM teachers WHERE id=%s;
+    ''', (id_, ))
+
+    exec_result = cursor.fetchone()
+    if exec_result[1]:
+        abort(400, 'Email has already verified')
+
+    if exec_result[0] is None:
+        abort(400, 'Set email before verifying')
+
+    verify_result = current_app.extensions['teacher_email_verifier'].verify(
+        exec_result[0], request.json['code'])
+    if verify_result is None:
+        abort(403, 'Wrong code')
+
+    cursor.execute(r'''
+    UPDATE teachers SET email_verified=true WHERE id=%s; 
+    ''', (id_, ))
+    database.commit()
+
+    return jsonify(result='OK')

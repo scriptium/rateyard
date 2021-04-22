@@ -37,11 +37,11 @@ class Verifier:
 
         print(verification_code)
 
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(current_app.config['EMAIL_NAME'], current_app.config['EMAIL_PASSWORD'])
-        server.sendmail(current_app.config['EMAIL_NAME'], email, msg.as_string())
-        server.quit()
+        # server = smtplib.SMTP('smtp.gmail.com', 587)
+        # server.starttls()
+        # server.login(current_app.config['EMAIL_NAME'], current_app.config['EMAIL_PASSWORD'])
+        # server.sendmail(current_app.config['EMAIL_NAME'], email, msg.as_string())
+        # server.quit()
 
 
     def get_users(self):
@@ -49,6 +49,7 @@ class Verifier:
 
 
     def verify(self, email, code):
+        print(self.__verifiable_users)
         self.__clear_users()
         user_data = self.__verifiable_users.get(email)
         if user_data is None or user_data[1]!=code: return None

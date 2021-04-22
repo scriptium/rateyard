@@ -1,7 +1,9 @@
-let changesSet = new ChangesSet(document.querySelectorAll('.appear_on_change'))
+const changesSet = new ChangesSet(document.querySelectorAll('.appear_on_change'))
 
-let emailInputElement = document.getElementById('email');
-let passwordInputElement = document.getElementById('password');
+const emailInputElement = document.getElementById('email');
+const passwordInputElement = document.getElementById('password');
+const verifyEmailButtonElement = document.querySelector('#verify_email_button');
+const bottomTitleBlockElement = document.querySelector('#bottom_title_block')
 
 function fillUserInputs(myUser) {
     emailInputElement.setAttribute('initial_value', myUser.email);
@@ -12,11 +14,15 @@ function fillUserInputs(myUser) {
 
 myUserPromise.then((myUser) => {
 	fillUserInputs(myUser);
-    if (window.innerWidth <= 1000) {
+    if (window.innerWidth <= 1250) {
         let saveButtonElement = document.querySelector('#save_button');
-        let contentElement = document.querySelector('#content');
         saveButtonElement.parentElement.removeChild(saveButtonElement);
-        contentElement.appendChild(saveButtonElement);
+        verifyEmailButtonElement.parentElement.removeChild(verifyEmailButtonElement);
+        bottomTitleBlockElement.appendChild(verifyEmailButtonElement);
+        bottomTitleBlockElement.appendChild(saveButtonElement);
+    }
+    if (myUser.email_verified || !myUser.email) {
+        verifyEmailButtonElement.parentElement.removeChild(verifyEmailButtonElement);
     }
     hidePreloader();
 });
@@ -42,3 +48,10 @@ function saveAccountChangesButton(buttonElement) {
         }
     });
 }
+
+verifyEmailButtonElement.onclick = async () => {
+    let responseData = await sendEmailVerificationCode();
+    if (responseData.status == 200) {
+        document.location.replace('verify_email.php');
+    }
+};

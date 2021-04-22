@@ -20,6 +20,9 @@
     <div id="content">
         <div class="title_block">
             <div class="title">Налаштування облікового запису</div>
+            <div class="blue_button" id="verify_email_button">
+                <div>Підтвердити пошту</div>
+            </div>
             <div class="appear_on_change appear_transition">
                 <div class="blue_button" onclick="saveAccountChangesButton(this)">
                     <div class="button_icon save_icon"></div>

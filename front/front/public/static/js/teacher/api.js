@@ -88,10 +88,10 @@ async function editColumn(columnJSON) {
     }
 }
 
-async function sendVerificationEmail(username) {
+async function sendEmailVerificationCode() {
     let xhr = await teacherRateyardApiClient.sendRequest(
-        'send_verification_email', 'POST', { 'Content-Type': 'application/json' },
-         JSON.stringify({username}), true
+        'send_email_verification_code', 'GET', {},
+        null, true
     );
     return {
         status: xhr.status,
@@ -99,21 +99,10 @@ async function sendVerificationEmail(username) {
     };
 }
 
-async function verifyCode(email, code) {
+async function verifyEmail(dataObject) {
     let xhr = await teacherRateyardApiClient.sendRequest(
-        'verify', 'POST', { 'Content-Type': 'application/json' },
-         JSON.stringify({email, code}), true
-    );
-    return {
-        status: xhr.status,
-        json: JSON.parse(xhr.responseText)
-    };
-}
-
-async function changePassword(id, password) {
-    let xhr = await teacherRateyardApiClient.sendRequest(
-        'change_password', 'POST', { 'Content-Type': 'application/json' },
-         JSON.stringify({id, password}), true
+        'verify_email', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(dataObject), true
     );
     return {
         status: xhr.status,

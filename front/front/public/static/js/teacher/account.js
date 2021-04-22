@@ -4,6 +4,7 @@ let fullNameInputElement = document.getElementById('full_name');
 let usernameInputElement = document.getElementById('username');
 let emailInputElement = document.getElementById('email');
 let passwordInputElement = document.getElementById('password');
+const verifyEmailButtonElement = document.querySelector('#verify_email_button');
 
 function fillUserInputs(myUser) {
     fullNameInputElement.value = myUser.full_name;
@@ -17,6 +18,9 @@ function fillUserInputs(myUser) {
 
 myUserPromise.then((myUser) => {
     fillUserInputs(myUser)
+    if (myUser.email_verified || !myUser.email) {
+        verifyEmailButtonElement.parentElement.removeChild(verifyEmailButtonElement);
+    }
     hidePreloader();
 });
 
@@ -43,3 +47,10 @@ function saveAccountChangesButton(buttonElement) {
         }
     });
 }
+
+verifyEmailButtonElement.onclick = async () => {
+    let responseData = await sendEmailVerificationCode();
+    if (responseData.status == 200) {
+        document.location.replace('verify_email.php');
+    }
+};
