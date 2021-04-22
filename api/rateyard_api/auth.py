@@ -1,6 +1,6 @@
-from flask import (Blueprint, request, jsonify, 
-    abort, Response, current_app
-)
+from flask import (Blueprint, request, jsonify,
+                   abort, Response, current_app
+                   )
 from flask_jwt_extended import (
     create_access_token, get_jwt_identity,
     jwt_refresh_token_required, create_refresh_token,
@@ -10,7 +10,8 @@ from db import get_db, close_db
 
 bp = Blueprint("auth", __name__)
 
-@bp.route("/login_student", methods = ("POST", ))
+
+@bp.route("/login_student", methods=("POST", ))
 def login_student():
     if not request.is_json:
         abort(400, "Request is not json")
@@ -20,15 +21,14 @@ def login_student():
         cursor = db.cursor()
         cursor.execute('''
             SELECT id
-            FROM students WHERE username=%s
-            AND password_hash=crypt(%s, password_hash);
-        ''', ( 
-            request.json.get("username"),
-            request.json.get("password")
-            )
-        )
+            FROM students WHERE username=%(username)s OR email=%(username)s
+            AND password_hash=crypt(%(password)s, password_hash);
+        ''', {
+            'username': request.json.get("username"),
+            'password': request.json.get("password")
+        })
         student_id = cursor.fetchone()
-    else: 
+    else:
         abort(400, "Wrong json")
     if student_id is None:
         abort(403, "Wrong login data")
@@ -38,12 +38,14 @@ def login_student():
             "id": student_id[0]
         }
         response = jsonify(result="ok")
-        response.headers["Access-Token"] = create_access_token(identity=identity)
-        response.headers["Refresh-Token"] = create_refresh_token(identity=identity)
+        response.headers["Access-Token"] = create_access_token(
+            identity=identity)
+        response.headers["Refresh-Token"] = create_refresh_token(
+            identity=identity)
         return response
 
 
-@bp.route("/login_teacher", methods = ("POST", ))
+@bp.route("/login_teacher", methods=("POST", ))
 def login_teacher():
     if not request.is_json:
         abort(400, "Request is not json")
@@ -54,15 +56,14 @@ def login_teacher():
         cursor = db.cursor()
         cursor.execute('''
             SELECT id
-            FROM teachers WHERE username=%s
-            AND password_hash=crypt(%s, password_hash);
-        ''', ( 
-            request.json.get("username"),
-            request.json.get("password")
-            )
-        )
+            FROM teachers WHERE username=%(username)s OR email=%(username)s
+            AND password_hash=crypt(%(password)s, password_hash);
+        ''', {
+            'username': request.json.get("username"),
+            'password': request.json.get("password")
+        })
         teacher_id = cursor.fetchone()
-    else: 
+    else:
         abort(400, "Wrong json")
     if teacher_id is None:
         abort(403, "Wrong login data")
@@ -72,12 +73,14 @@ def login_teacher():
             "id": teacher_id[0]
         }
         response = jsonify(result="ok")
-        response.headers["Access-Token"] = create_access_token(identity=identity)
-        response.headers["Refresh-Token"] = create_refresh_token(identity=identity)
+        response.headers["Access-Token"] = create_access_token(
+            identity=identity)
+        response.headers["Refresh-Token"] = create_refresh_token(
+            identity=identity)
         return response
 
 
-@bp.route("/login_admin", methods = ("POST", ))
+@bp.route("/login_admin", methods=("POST", ))
 def login_admin():
     if not request.is_json:
         abort(400, "Request is not json")
@@ -89,8 +92,10 @@ def login_admin():
                 "type": "admin",
             }
             response = jsonify(result="ok")
-            response.headers["Access-Token"] = create_access_token(identity=identity)
-            response.headers["Refresh-Token"] = create_refresh_token(identity=identity)
+            response.headers["Access-Token"] = create_access_token(
+                identity=identity)
+            response.headers["Refresh-Token"] = create_refresh_token(
+                identity=identity)
             return response
         else:
             abort(403, "Wrong login data")

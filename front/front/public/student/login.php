@@ -17,7 +17,7 @@
             <a href="/" class="logo_main">Rateyard</a>
             <div class="logo_caption">Student</div>
         </div>
-        <input class="default_input_text" placeholder="Логін" autocomplete="off" id="username_input" type="text">
+        <input class="default_input_text" placeholder="Логін або електронна адреса" autocomplete="off" id="username_input" type="text">
         <input class="default_input_text" placeholder="Пароль" autocomplete="off" id="password_input" type="password">
         <div id="account">
             <a class="a text forget_password" href="reset_password.php">Забули пароль?</a>
