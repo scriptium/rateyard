@@ -73,14 +73,4 @@ class RateyardApiClient {
             openAndSend();
         });
     }
-
-    async verifyPassword (userType, username, password) {
-        let response = await this.sendRequest(
-            `login_${userType}`,
-            'POST',
-            {'Content-type': 'application/json'},
-            JSON.stringify({username, password})
-        );
-        return response.status;
-    }
 }

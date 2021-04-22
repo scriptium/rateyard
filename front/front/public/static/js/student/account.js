@@ -1,11 +1,12 @@
 let changesSet = new ChangesSet(document.querySelectorAll('.appear_on_change'))
 
 let emailInputElement = document.getElementById('email');
-let changePasswordBtn = document.getElementById('change_password');
+let passwordInputElement = document.getElementById('password');
 
 function fillUserInputs(myUser) {
     emailInputElement.setAttribute('initial_value', myUser.email);
     emailInputElement.value = myUser.email;
+    passwordInputElement.setAttribute('initial_value', '');
 }
 
 
@@ -19,9 +20,6 @@ myUserPromise.then((myUser) => {
         contentElement.appendChild(changePasswordBtn);
         contentElement.appendChild(saveButtonElement);
     }
-    if (!myUser.email) {
-        changePasswordBtn.classList.add('disabled');
-    }
     hidePreloader();
 });
 
@@ -33,6 +31,7 @@ function saveAccountChangesButton(buttonElement) {
     buttonElement.classList.add('disabled');
     editMe(requestJSON).then((responseData) => {
         if (responseData.status === 400) {
+            if (responseData.json.includes(3)) makeInputTextWrong(passwordInputElement);
             if (responseData.json.includes(4)) makeInputTextWrong(emailInputElement);
             buttonElement.classList.remove('disabled');
         }
@@ -45,8 +44,3 @@ function saveAccountChangesButton(buttonElement) {
         }
     });
 }
-
-changePasswordBtn.addEventListener('click', () => {
-    if (changePasswordBtn.classList.contains('disabled')) return;
-    location.href = 'change_password.php';
-});
