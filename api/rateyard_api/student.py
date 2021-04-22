@@ -175,48 +175,73 @@ def read_marks():
     return jsonify(result='OK')
 
 
-@bp.route("/send_verification_email", methods=("POST", ))
-def send_verification_email():
-    if not (request.is_json and 'username' in request.json.keys()):
-        abort(400, 'Expected username in json.')
-    database = db.get_db()
-    cursor = database.cursor()
-    cursor.execute('''
-    SELECT email, full_name, password_hash, id 
-    FROM students WHERE username=%s;
-    ''', (request.json['username'], ))
+@bp.route('send_reset_password_code', methods=("POST", ))
+def send_reset_password_code():
+    if not (
+        request.is_json and
+        type(request.json.get('email')) is str
+    ):
+        abort(400, 'Invalid json data')
+
+    cursor = db.get_db().cursor()
+    print(request.json)
+    cursor.execute(r'''
+    SELECT id, full_name FROM students WHERE email=%s;
+    ''', (request.json['email'], ))
+
     exec_result = cursor.fetchone()
     if exec_result is None:
-        abort(400, description='This user does not exist.')
-    current_app.extensions['email_verifier'].add_verifiable_user(
-        exec_result[0], 
-        exec_result[1],
-        exec_result[2]
-    )
-    return jsonify({"email": exec_result[0], "id": exec_result[3]}), 200
+        abort(400, 'Wrong email')
 
-@bp.route("/verify", methods=("POST", ))
-def verify():
-    if not request.is_json: abort(400, 'Expected json')
-    if not 'code' in request.json.keys() or not 'email' in request.json.keys():
-        abort(400, 'Expected code and email json objects.')
-    verify_result = current_app.extensions['email_verifier'].verify(
+    current_app.extensions['student_reset_password_verifier'].add_verifiable_user(
         request.json['email'],
-        request.json['code']
+        exec_result[1],
+        exec_result[0]
+    )
+
+    return jsonify(result='OK')
+
+
+@bp.route('check_reset_password_code', methods=("POST", ))
+def check_reset_password_code():
+    if not (
+        request.is_json and
+        type(request.json['email']) is str and
+        type(request.json['code']) is str
+    ):
+        abort(400, 'Invalid json data')
+
+    check_result = current_app.extensions['student_reset_password_verifier'].check_code(
+        request.json['email'], request.json['code']
+    )
+    if check_result is None:
+        abort(400, 'Wrong email or code')
+
+    return jsonify(result='OK')
+
+
+@bp.route('reset_password', methods=("POST", ))
+def reset_password():
+    if not (
+        request.is_json and
+        type(request.json['email']) is str and
+        type(request.json['code']) is str and
+        type(request.json['new_password']) is str
+    ):
+        abort(400, 'Invalid json data')
+
+    verify_result = current_app.extensions['student_reset_password_verifier'].verify(
+        request.json['email'], request.json['code']
     )
     if verify_result is None:
-        return jsonify({"message": "Wrong code"}), 400
-    return jsonify({"verify_result": verify_result}), 200
+        abort(401, 'Failed to verify')
 
-@bp.route("/change_password", methods=("POST", ))
-def change_password():
-    if not request.is_json: abort(400, 'Expected json')
-    if not 'password' in request.json.keys() or not 'id' in request.json.keys():
-        abort(400, 'Expected password and id in json')
+    id_ = verify_result[1]
+    if len(request.json['new_password']) == 0:
+        abort(402, 'Password must\'t be empty')
 
-    db.edit_student(request.json['id'], {"password": request.json['password']})
-    return jsonify(result='ok')
-
+    db.edit_student(id_, {'password': request.json['new_password']})
+    return jsonify(result='OK')  
 
 @bp.route("/check_token", methods=("GET",))
 @student_token_required

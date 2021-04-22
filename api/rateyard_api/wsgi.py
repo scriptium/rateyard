@@ -21,7 +21,10 @@ def create_app():
     import teacher
     import admin
 
-    app.extensions['email_verifier'] = Verifier()
+    app.extensions['student_reset_password_verifier'] = Verifier()
+    app.extensions['teacher_reset_password_verifier'] = Verifier()
+    app.extensions['student_account_changes_verifier'] = Verifier()
+    app.extensions['teacher_account_changes_verifier'] = Verifier()
 
     @app.errorhandler(HTTPException)
     def handle_exception(e):

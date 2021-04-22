@@ -35,6 +35,8 @@ class Verifier:
         msg['From'] = 'Rateyard <%s>' % current_app.config['EMAIL_NAME']
         msg['To'] = email
 
+        print(verification_code)
+
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
         server.login(current_app.config['EMAIL_NAME'], current_app.config['EMAIL_PASSWORD'])
@@ -51,4 +53,12 @@ class Verifier:
         user_data = self.__verifiable_users.get(email)
         if user_data is None or user_data[1]!=code: return None
         del self.__verifiable_users[email]
+        return (user_data[2], user_data[3])
+
+    
+    def check_code(self, email, code):
+        print(self.__verifiable_users)
+        self.__clear_users()
+        user_data = self.__verifiable_users.get(email)
+        if user_data is None or user_data[1]!=code: return None
         return (user_data[2], user_data[3])

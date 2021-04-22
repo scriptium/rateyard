@@ -91,9 +91,6 @@ async function hidePreloader() {
 const sidebarElement = document.getElementById('sidebar');
 const sidebarCloseAreaElement = document.getElementById('sidebar_close_area');
 
-``
-
-
 const sidebarAnimationFrames = [{ transform: 'translateX(-100%)' }, { transform: 'none' }];
 const closeAreaAnimationFrames = [{ opacity: '0' }, { opacity: '0.2' }];
 

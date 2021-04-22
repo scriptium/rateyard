@@ -20,7 +20,7 @@
         <input class="default_input_text" placeholder="Логін" autocomplete="off" id="username_input" type="text">
         <input class="default_input_text" placeholder="Пароль" autocomplete="off" id="password_input" type="password">
         <div id="account">
-            <a class="a text forget_password" href="restore_password.php">Забули пароль?</a>
+            <a class="a text forget_password" href="reset_password.php">Забули пароль?</a>
             <div id="login_button" class="blue_button" onclick="loginButton(this)">Увійти</div>
         </div>
     </div>
