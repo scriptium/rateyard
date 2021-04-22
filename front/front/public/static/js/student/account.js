@@ -16,8 +16,6 @@ myUserPromise.then((myUser) => {
         let saveButtonElement = document.querySelector('#save_button');
         let contentElement = document.querySelector('#content');
         saveButtonElement.parentElement.removeChild(saveButtonElement);
-        changePasswordBtn.parentElement.removeChild(changePasswordBtn);
-        contentElement.appendChild(changePasswordBtn);
         contentElement.appendChild(saveButtonElement);
     }
     hidePreloader();
