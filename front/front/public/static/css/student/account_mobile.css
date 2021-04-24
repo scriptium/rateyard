@@ -7,4 +7,16 @@
         flex-direction: column;
         flex-grow: 1;
     }
+    #bottom_title_block {
+        flex-direction: column;
+    }
+    #bottom_title_block > * {
+        margin: 0;
+    }
+    #bottom_title_block .blue_button {
+        margin: 0;
+        margin-bottom: 15px;
+        width: auto;
+        justify-content: center;
+    }
 }
