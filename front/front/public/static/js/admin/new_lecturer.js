@@ -56,26 +56,7 @@ async function updateGroups() {
     await fillGroupsData(parseInt(classElement.value));
 }
 
-function createDefaultSelect(id, onChangeFunction = null) {
-    let selectElement = document.createElement('select');
-    selectElement.id = id;
-    selectElement.classList.add('default_select');
-    if(onChangeFunction) {
-        selectElement.setAttribute("onchange", onChangeFunction)
-    }
-    return selectElement;
-}
-
-function createFakeReadonlyInput(id, inner) {
-    let fakeReadonlyInputElement = document.createElement('div');
-    fakeReadonlyInputElement.id = id;
-    fakeReadonlyInputElement.classList.add('fake_readonly_input');
-    fakeReadonlyInputElement.innerHTML = inner;
-    return fakeReadonlyInputElement;
-}
-
 async function fillSessionStorageData() {
-
     if(classData !== undefined) classData = JSON.parse(classData)
     else classData = 'false';
     if(groupData !== undefined) groupData = JSON.parse(groupData)

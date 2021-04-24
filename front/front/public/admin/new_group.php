@@ -27,7 +27,7 @@
         </div>
         <div class="appear_after_classes input_grid">
             <div>Назва:</div><input id="name" type="text" class="default_input_text" placeholder="Введіть назву групи">
-            <div>Клас:</div><select id="class_id" class="default_select" onchange="updateGroupStudentData()"></select>
+            <div id="class_block">Клас:</div>
         </div>
         <div class="subtitle">Склад групи:</div>
         <table class="default_table" id="group_students">

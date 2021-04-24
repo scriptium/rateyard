@@ -1,23 +1,36 @@
-let classesHasFilled = new Promise (async (resolve, reject) => {
-    getClassesShort().then((responseData) => {
-        let classesSelectElement = document.getElementById('classes_select');
-        fillDropDownSelect(classesSelectElement, responseData.json);
-        let val = "<?php echo $_GET['class']; ?>";
-        console.log("Its");
-        console.log(val);
-        for (let i = 0 ; i < classesSelectElement.children.length; i++)
-        {
-            if (classesSelectElement.children[i].getAttribute("value") == val) children[i].setAttribute("selected", "selected");
-        } 
-        resolve();
-    }, reject);
-})
+function fillClassesData() {
+    return new Promise(async (resolve, reject) => {
+        getClassesShort().then(async (responseData) => {
+            fillDropDownSelect(classElement, responseData.json);
+            resolve();
+        }, reject);
+    })
+}
 
 let usernameElement = document.getElementById('username');
 let fullNameElement = document.getElementById('full_name');
-let classElement = document.getElementById('classes_select');
+let classElement;
 let passwordElement = document.getElementById('password');
 let emailElement = document.getElementById('email');
+
+async function fillSessionStorageData() {
+    let classData = sessionStorage['class'];
+    sessionStorage.clear();
+    
+    if(classData !== undefined) classData = JSON.parse(classData)
+    else classData = 'false';
+
+    if(classData !== 'false') {
+        classElement = createFakeReadonlyInput('classes_select', classData.name, classData.id);
+    }
+    else {
+        classElement = createDefaultSelect('classes_select');
+        await fillClassesData();
+    }
+    let classBlockElement = document.querySelector('#class_block');
+    classBlockElement.after(classElement);
+    
+}
 
 function saveNewStudentButton(buttonElement) {
     disableButton(buttonElement);
@@ -47,4 +60,4 @@ function saveNewStudentButton(buttonElement) {
     });
 }
 
-classesHasFilled.then(hidePreloader);
+fillSessionStorageData().then(hidePreloader);

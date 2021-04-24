@@ -107,6 +107,19 @@ async function moveAllStudents(buttonElement) {
     else enableButton(buttonElement);
 }
 
+
+function addGroup(buttonElement) {
+    disableButton(buttonElement);
+    sessionStorage.setItem('class', JSON.stringify({id: classId, name: className}));
+    window.location = 'new_group.php';
+}
+
+function addStudent(buttonElement) {
+    disableButton(buttonElement);
+    sessionStorage.setItem('class', JSON.stringify({id: classId, name: className}));
+    window.location = 'new_student.php';
+}
+
 let mainPromise = Promise.all([studentsHasFilled, groupsHasFilled, lectureresHasFilled]);
 mainPromise.then(() => {
     classNameElement.innerHTML = className;

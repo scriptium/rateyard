@@ -1,24 +1,45 @@
 let windowHasLoaded = new Promise((resolve) => { window.onload = resolve })
 
-let classesHasFilled = new Promise(async (resolve, reject) => {
-    getClassesShort().then(async (responseData) => {
-        let classesSelectElement = document.getElementById('class_id');
-        fillDropDownSelect(classesSelectElement, responseData.json);
-        await windowHasLoaded;
-        document.querySelectorAll('.appear_after_classes').forEach(
-            (element) => {
-                element.classList.add('visible')
-            }
-        )
-        resolve();
-    }, reject);
-})
+function fillClassesData() {
+    return new Promise(async (resolve, reject) => {
+        getClassesShort().then(async (responseData) => {
+            fillDropDownSelect(groupClassElement, responseData.json);
+            await windowHasLoaded;
+            document.querySelectorAll('.appear_after_classes').forEach(
+                (element) => {
+                    element.classList.add('visible')
+                }
+            )
+            resolve();
+        }, reject);
+    })
+}
 
 let groupNameElement = document.getElementById('name');
-let groupClassElement = document.getElementById('class_id');
+let groupClassElement;
 let groupStudentsTbodyElement = document.querySelector('#group_students tbody')
 
 let afterGroupStudentsElements = document.querySelectorAll('.appear_after_group_students');
+
+async function fillSessionStorageData() {
+    let classData = sessionStorage['class'];
+    sessionStorage.clear();
+    
+    if(classData !== undefined) classData = JSON.parse(classData)
+    else classData = 'false';
+
+    if(classData !== 'false') {
+        groupClassElement = createFakeReadonlyInput('class_id', classData.name, classData.id);
+    }
+    else {
+        groupClassElement = createDefaultSelect('class_id', 'updateGroupStudentData()');
+        await fillClassesData();
+    }
+    let classBlockElement = document.querySelector('#class_block');
+    classBlockElement.after(groupClassElement);
+    
+}
+
 
 function updateGroupStudentData() {
     return new Promise(async (resolve, reject) => {
@@ -27,7 +48,9 @@ function updateGroupStudentData() {
                 element.classList.remove('visible')
             }
         )
-        await classesHasFilled;
+        if(groupClassElement === undefined) {
+            await fillSessionStorageData();
+        }
         getClassFull(parseInt(groupClassElement.value)).then(async (responseData) => {
             let parsedResponse = responseData.json;
             groupStudentsTbodyElement.innerHTML = '';
@@ -60,7 +83,7 @@ function updateGroupStudentData() {
 
 function saveNewGroupButton(buttonElement) {
     buttonElement.classList.add('disabled');
-
+    console.log(groupClassElement);
     let name = groupNameElement.value;
     let classId = parseInt(groupClassElement.value);
     let studentsIds = []
@@ -83,23 +106,7 @@ function saveNewGroupButton(buttonElement) {
     );
 }
 
-async function fillSessionStorageData() {
-    if(classData !== undefined) classData = JSON.parse(classData)
-    else classData = 'false';
-
-    if(classData !== 'false') {
-        classElement = createFakeReadonlyInput('class_name', classData.name);
-    }
-    else {
-        classElement = createDefaultSelect('class_select', 'updateGroups()');
-        await fillClassesData();
-    }
-    
-    
-}
-
-
 let groupStudentsHasFilled = updateGroupStudentData();
 
-let mainPromise = Promise.all([groupStudentsHasFilled, classesHasFilled]);
+let mainPromise = Promise.all([groupStudentsHasFilled]);
 mainPromise.then(hidePreloader);

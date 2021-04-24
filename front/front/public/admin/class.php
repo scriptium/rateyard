@@ -30,12 +30,10 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
         </div>
         <div class="subtitle">Групи класу:</div>
         <div class="title_block">
-            <a href="new_group.php">
-                <div class="blue_button">
-                    <div class="button_icon add_icon"></div>
-                    <div>Додати групу</div>
-                </div>
-            </a>
+            <div class="blue_button" onclick="addGroup(this);">
+                <div class="button_icon add_icon"></div>
+                <div>Додати групу</div>
+            </div>
         </div>
         <table class="default_table" id="groups_table">
             <thead>
@@ -70,12 +68,10 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
 
         <div class="subtitle">Наявні учні:</div>
         <div class="title_block">
-            <a href="new_student.php?class=<?php echo $_GET['id']; ?>">
-                <div class="blue_button">
-                    <div class="button_icon add_icon"></div>
-                    <div>Додати учня</div>
-                </div>
-            </a>
+            <div class="blue_button" onclick="addStudent(this);">
+                <div class="button_icon add_icon"></div>
+                <div>Додати учня</div>
+            </div>
             <div class="delete_button" onclick="deleteAllStudents(this);">
                 <div class="button_icon delete_icon"></div>
                 <div>Видалити всіх учнів класу</div>

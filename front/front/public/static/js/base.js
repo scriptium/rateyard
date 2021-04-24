@@ -76,6 +76,27 @@ function createCheckboxElement() {
     return checkboxElement;
 }
 
+function createDefaultSelect(id, onChangeFunction = null) {
+    let selectElement = document.createElement('select');
+    selectElement.id = id;
+    selectElement.classList.add('default_select');
+    if(onChangeFunction) {
+        selectElement.setAttribute("onchange", onChangeFunction)
+    }
+    return selectElement;
+}
+
+function createFakeReadonlyInput(id, inner, value = false) {
+    let fakeReadonlyInputElement = document.createElement('div');
+    fakeReadonlyInputElement.id = id;
+    fakeReadonlyInputElement.classList.add('fake_readonly_input');
+    fakeReadonlyInputElement.innerHTML = inner;
+    if(value) {
+        fakeReadonlyInputElement.value = value;
+    }
+    return fakeReadonlyInputElement;
+}
+
 function toggleCheckbox(checkboxElement, onclick) {
     if (typeof onclick != 'undefined') onclick(checkboxElement);
     checkboxElement.classList.toggle('checked');
