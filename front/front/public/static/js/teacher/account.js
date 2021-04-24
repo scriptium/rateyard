@@ -39,11 +39,15 @@ function saveAccountChangesButton(buttonElement) {
             buttonElement.classList.remove('disabled');
         }
         else if (responseData.status === 200) {
-            getMe().then((responseData) => {
-                fillUserInputs(responseData.json);
-                changesSet.discardChanges();
-                buttonElement.classList.remove('disabled')
-            });
+            if (responseData.json.need_confirm) {
+                document.location.replace('confirm_changes.php')
+            } else {
+                getMe().then((responseData) => {
+                    fillUserInputs(responseData.json);
+                    changesSet.discardChanges();
+                    buttonElement.classList.remove('disabled')
+                });
+            }
         }
     });
 }

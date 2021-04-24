@@ -121,7 +121,7 @@ def get_group_full():
     return jsonify(result_json)
 
 
-@bp.route('/edit_me', methods=('POST', ))
+@bp.route("/edit_me", methods=("POST", ))
 @teacher_token_required
 def edit_me():
     if not request.is_json:
@@ -131,8 +131,41 @@ def edit_me():
     if teachers_data_errors:
         return jsonify(teachers_data_errors[0]), 400
 
-    db.edit_teacher(get_jwt_identity()['id'], request.json)
-    return jsonify(result='ok')
+    cursor = db.get_db().cursor()
+    cursor.execute(r'''
+    SELECT email, email_verified, full_name FROM teachers WHERE id=%s;
+    ''', (get_jwt_identity()['id'], ))
+    email, email_verified, full_name = cursor.fetchone()
+    if email_verified:
+        need_confirm = True
+        current_app.extensions['teacher_account_changes_verifier'].add_verifiable_user(
+            email, full_name, request.json)
+    else:
+        need_confirm = False
+        db.edit_teacher(get_jwt_identity()['id'], request.json)
+
+    return jsonify(result='OK', need_confirm=need_confirm)
+
+
+@bp.route("/confirm_changes", methods=("POST", ))
+@teacher_token_required
+def confirm_changes():
+    if not (
+        request.is_json and
+        type(request.json.get('code')) is str
+    ):
+        abort('Invalid json data')
+
+    cursor = db.get_db().cursor()
+    cursor.execute(r'''
+    SELECT email FROM teachers WHERE id=%s;
+    ''', (get_jwt_identity()['id'], ))
+    verify_result = current_app.extensions['teacher_account_changes_verifier'].verify(cursor.fetchone()[0], request.json['code'])
+    if verify_result is None:
+        abort(403, 'Wrong code')
+
+    db.edit_teacher(get_jwt_identity()['id'], verify_result[1])
+    return jsonify(result='OK')
 
 
 @bp.route('delete_mark', methods=('POST', ))
@@ -403,7 +436,7 @@ def send_reset_password_code():
 
     cursor = db.get_db().cursor()
     cursor.execute(r'''
-    SELECT id, full_name FROM teachers WHERE email=%s;
+    SELECT id, full_name FROM teachers WHERE email=%s AND email_verified;
     ''', (request.json['email'], ))
 
     exec_result = cursor.fetchone()

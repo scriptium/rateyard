@@ -155,7 +155,7 @@ def get_group_full(id, marks_subject_id=None):
 
 def edit_student(id, changes):
     student_mutable_attributes = (
-        "username", "full_name", "email", "class_id")
+        "username", "full_name", "class_id")
     exec_args = []
     exec_sets = []
 
@@ -167,6 +167,11 @@ def edit_student(id, changes):
     if "password" in changes.keys():
         exec_sets.append("password_hash=crypt(%s, gen_salt('md5'))")
         exec_args.append(changes["password"])
+
+    if 'email' in changes.keys():
+        exec_sets.append('email=%s')
+        exec_sets.append('email_verified=false')
+        exec_args.append(changes['email'])
 
     if len(exec_sets) == 0:
         return

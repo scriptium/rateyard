@@ -22,12 +22,16 @@
                 На вашу електронну пошту відправлено код підтвердження. 
             </div>
         </div>
-        <input class="default_input_text" placeholder="Адреса електронної пошти" autocomplete="off" id="input" type="text" oninput="updateButton(event)">
+        <input class="default_input_text" placeholder="Код підтвердження" autocomplete="off" id="input" type="text" oninput="updateButton(event)">
         <div class="blue_button disabled">Далі</div>
     </div>
-    
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>
+    <?php if ($page == 'student'): ?>
+    <script type="text/javascript" src="/static/js/student/api.js"></script>
+    <?php elseif ($page == 'teacher'): ?>
+    <script type="text/javascript" src="/static/js/teacher/api.js"></script>
+    <?php endif ?>
     <script type="text/javascript" src="/static/js/confirm_changes.js"></script>
 </body>
 

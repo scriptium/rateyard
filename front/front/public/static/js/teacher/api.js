@@ -109,3 +109,14 @@ async function verifyEmail(dataObject) {
         json: JSON.parse(xhr.responseText)
     };
 }
+
+async function confirmChanges(dataObject) {
+    let xhr = await teacherRateyardApiClient.sendRequest(
+        'confirm_changes', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(dataObject), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    };
+}

@@ -9,6 +9,7 @@ import db
 
 bp = Blueprint("student", __name__)
 
+
 def student_token_required(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
@@ -21,13 +22,12 @@ def student_token_required(fn):
     return wrapper
 
 
-
 @bp.route("/get_me", methods=("GET", ))
 @student_token_required
 def get_me():
     identity = get_jwt_identity()
     cursor = db.get_db().cursor()
-    
+
     cursor.execute('''
     SELECT st.id, st.username, st.full_name, st.email, cl.id, cl.class_name, st.email_verified
     FROM students AS st
@@ -41,15 +41,15 @@ def get_me():
         abort(400)
 
     response_json = {
-        'id': exec_result[0],   
+        'id': exec_result[0],
         'username': exec_result[1],
         'full_name': exec_result[2],
         'email': exec_result[3],
         'email_verified': exec_result[6],
         'class': {
-        	'id': exec_result[4],
-        	'name': exec_result[5],
-        	'type': 'ClassShort'
+            'id': exec_result[4],
+            'name': exec_result[5],
+            'type': 'ClassShort'
         }
     }
 
@@ -63,7 +63,7 @@ def get_me():
     INNER JOIN marks_columns AS mc ON mc.subject_id=s.id
     INNER JOIN marks AS m ON m.column_id=mc.id AND m.student_id=%s;
     ''', (identity['id'], ))
-    
+
     exec_result = cursor.fetchall()
 
     response_json['subjects'] = [{
@@ -73,8 +73,9 @@ def get_me():
         'type': 'Subject'
     } for data in exec_result
     ]
-    
+
     return jsonify(response_json)
+
 
 @bp.route("/edit_me", methods=("POST", ))
 @student_token_required
@@ -82,12 +83,51 @@ def edit_me():
     if not request.is_json:
         abort(400, "Expected json")
 
+    restricted_params = ['full_name', 'username', 'class_id']
+    for param in restricted_params:
+        if param in request.json.keys():
+            del request.json[param]
+
     students_data_errors = db.check_students_data([request.json])
     if students_data_errors:
         return jsonify(students_data_errors[0]), 400
 
-    db.edit_student(get_jwt_identity()['id'], request.json)
-    return jsonify(result='ok')
+    cursor = db.get_db().cursor()
+    cursor.execute(r'''
+    SELECT email, email_verified, full_name FROM students WHERE id=%s;
+    ''', (get_jwt_identity()['id'], ))
+    email, email_verified, full_name = cursor.fetchone()
+    if email_verified:
+        need_confirm = True
+        current_app.extensions['student_account_changes_verifier'].add_verifiable_user(
+            email, full_name, request.json)
+    else:
+        need_confirm = False
+        db.edit_student(get_jwt_identity()['id'], request.json)
+
+    return jsonify(result='OK', need_confirm=need_confirm)
+
+
+@bp.route("/confirm_changes", methods=("POST", ))
+@student_token_required
+def confirm_changes():
+    if not (
+        request.is_json and
+        type(request.json.get('code')) is str
+    ):
+        abort('Invalid json data')
+
+    cursor = db.get_db().cursor()
+    cursor.execute(r'''
+    SELECT email FROM students WHERE id=%s;
+    ''', (get_jwt_identity()['id'], ))
+    verify_result = current_app.extensions['student_account_changes_verifier'].verify(cursor.fetchone()[0], request.json['code'])
+    if verify_result is None:
+        abort(403, 'Wrong code')
+
+    db.edit_student(get_jwt_identity()['id'], verify_result[1])
+    return jsonify(result='OK')
+
 
 @bp.route("/get_subject", methods=("POST", ))
 @student_token_required
@@ -143,6 +183,7 @@ def get_marks():
 
     return jsonify(response_json)
 
+
 @bp.route("/read_marks", methods=("POST", ))
 @student_token_required
 def read_marks():
@@ -152,7 +193,7 @@ def read_marks():
         all(type(mark_id) == int for mark_id in request.json)
     ):
         abort(400, "Expected json with mark ids")
-    
+
     database = db.get_db()
     cursor = database.cursor()
 
@@ -167,7 +208,6 @@ def read_marks():
     for mark_id in request.json:
         exec_str += " OR id=%s"
         exec_args.append(mark_id)
-    
 
     exec_str += r') AND student_id=%s;'
     exec_args.append(get_jwt_identity()['id'])
@@ -187,7 +227,7 @@ def send_reset_password_code():
     cursor = db.get_db().cursor()
     print(request.json)
     cursor.execute(r'''
-    SELECT id, full_name FROM students WHERE email=%s;
+    SELECT id, full_name FROM students WHERE email=%s AND email_verified;
     ''', (request.json['email'], ))
 
     exec_result = cursor.fetchone()
@@ -242,7 +282,8 @@ def reset_password():
         abort(403, 'Password must\'t be empty')
 
     db.edit_student(id_, {'password': request.json['new_password']})
-    return jsonify(result='OK')  
+    return jsonify(result='OK')
+
 
 @bp.route("/check_token", methods=("GET",))
 @student_token_required
@@ -273,6 +314,7 @@ def send_verification_email_code():
 
     return jsonify(result='OK')
 
+
 @bp.route('verify_email', methods=('POST',))
 @student_token_required
 def verify_email():
@@ -296,7 +338,8 @@ def verify_email():
     if exec_result[0] is None:
         abort(400, 'Set email before verifying')
 
-    verify_result = current_app.extensions['student_email_verifier'].verify(exec_result[0], request.json['code'])
+    verify_result = current_app.extensions['student_email_verifier'].verify(
+        exec_result[0], request.json['code'])
     if verify_result is None:
         abort(403, 'Wrong code')
 
@@ -306,5 +349,3 @@ def verify_email():
     database.commit()
 
     return jsonify(result='OK')
-    
-    

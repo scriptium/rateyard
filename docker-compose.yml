@@ -4,7 +4,7 @@ services:
         build: ./api
         command: gunicorn -b 0.0.0.0:8000 wsgi:create_app()
         ports: 
-            - 8000:8000
+            - 9000:8000
         external_links: 
             - db:docker-postgresql
         depends_on:
@@ -17,7 +17,7 @@ services:
         external_links:
             - api:docker-api
         ports:
-            - 80:80
+            - 90:80
 
     db:
         image: postgres
