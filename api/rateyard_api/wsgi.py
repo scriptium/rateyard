@@ -21,12 +21,12 @@ def create_app():
     import teacher
     import admin
 
-    app.extensions['student_reset_password_verifier'] = Verifier()
-    app.extensions['teacher_reset_password_verifier'] = Verifier()
-    app.extensions['student_account_changes_verifier'] = Verifier()
-    app.extensions['teacher_account_changes_verifier'] = Verifier()
-    app.extensions['teacher_email_verifier'] = Verifier()
-    app.extensions['student_email_verifier'] = Verifier()
+    app.extensions['student_reset_password_verifier'] = Verifier('Ось код для відновлення паролю:')
+    app.extensions['teacher_reset_password_verifier'] = Verifier('Ось код для відновлення паролю:')
+    app.extensions['student_account_changes_verifier'] = Verifier('Ось код для підтвердження змін данних аккаунту:')
+    app.extensions['teacher_account_changes_verifier'] = Verifier('Ось код для підтвердження змін данних аккаунту:')
+    app.extensions['teacher_email_verifier'] = Verifier('Ось код для підтвердження електронної пошти:')
+    app.extensions['student_email_verifier'] = Verifier('Ось код для підтвердження електронної пошти:')
 
     @app.errorhandler(HTTPException)
     def handle_exception(e):

@@ -53,6 +53,7 @@ function saveAccountChangesButton(buttonElement) {
 }
 
 verifyEmailButtonElement.onclick = async () => {
+    verifyEmailButtonElement.classList.add('disabled');
     let responseData = await sendEmailVerificationCode();
     if (responseData.status == 200) {
         document.location.replace('verify_email.php');

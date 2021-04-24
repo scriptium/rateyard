@@ -9,8 +9,9 @@ import string
 from flask import current_app
 
 class Verifier:
-    def __init__(self):
+    def __init__(self, info=''):
         self.__verifiable_users = {}
+        self.info=info
 
     def __clear_users(self):
         deletable = []
@@ -27,8 +28,9 @@ class Verifier:
         self.__verifiable_users[email] = (datetime.now(), verification_code, username, data)
 
         body = open(os.path.join(os.path.dirname(__file__), 'email.html'), 'r').read()
-        body = body.replace('MY_SUPER_CODE', verification_code)
-        body = body.replace('MY_SUPER_USERNAME', username)
+        body = body.replace('CODE', verification_code)
+        body = body.replace('USERNAME', username)
+        body = body.replace('INFO', self.info)
         msg = MIMEText(body, 'html', 'utf-8')
 
         msg['Subject'] = Header('Код підтвердження зміни паролю', 'utf-8')
@@ -37,11 +39,11 @@ class Verifier:
 
         print(verification_code)
 
-        # server = smtplib.SMTP('smtp.gmail.com', 587)
-        # server.starttls()
-        # server.login(current_app.config['EMAIL_NAME'], current_app.config['EMAIL_PASSWORD'])
-        # server.sendmail(current_app.config['EMAIL_NAME'], email, msg.as_string())
-        # server.quit()
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(current_app.config['EMAIL_NAME'], current_app.config['EMAIL_PASSWORD'])
+        server.sendmail(current_app.config['EMAIL_NAME'], email, msg.as_string())
+        server.quit()
 
 
     def get_users(self):
