@@ -120,3 +120,17 @@ async function confirmChanges(dataObject) {
         json: JSON.parse(xhr.responseText)
     };
 }
+
+let rootRateyardApiClient = new RateyardApiClient();
+
+async function login(dataObject) {
+    let xhr = await rootRateyardApiClient.sendRequest(
+        '/auth/login_teacher', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(dataObject), false
+    );
+    return {
+        status: xhr.status,
+        accessToken: xhr.getResponseHeader('Access-Token'),
+        refreshToken: xhr.getResponseHeader('Refresh-Token')
+    };
+}

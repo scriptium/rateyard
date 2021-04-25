@@ -21,7 +21,7 @@ def login_student():
         cursor = db.cursor()
         cursor.execute('''
             SELECT id
-            FROM students WHERE username=%(username)s OR email=%(username)s
+            FROM students WHERE (username=%(username)s OR email=%(username)s)
             AND password_hash=crypt(%(password)s, password_hash);
         ''', {
             'username': request.json.get("username"),
@@ -56,7 +56,7 @@ def login_teacher():
         cursor = db.cursor()
         cursor.execute('''
             SELECT id
-            FROM teachers WHERE username=%(username)s OR email=%(username)s
+            FROM teachers WHERE (username=%(username)s OR email=%(username)s)
             AND password_hash=crypt(%(password)s, password_hash);
         ''', {
             'username': request.json.get("username"),

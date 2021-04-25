@@ -197,7 +197,7 @@ def edit_student(id, changes):
 
 def edit_teacher(id, changes):
     teacher_mutable_attributes = (
-        "username", "full_name", "email")
+        "username", "full_name", "email", 'block_after_minutes')
     exec_args = []
     exec_sets = []
 
@@ -361,6 +361,7 @@ def check_teachers_data(data, all_required=False):
         1: full_name not found or has already taken
         2: password not found
         3: email not found or is already taken
+        4: invalid block delay
 
         If something goes wrong this def will return json
         with error codes for each bad teacher index from request array.
@@ -461,6 +462,14 @@ def check_teachers_data(data, all_required=False):
             if type(teacher_data_errors.get(teacher_index)) != list:
                 teacher_data_errors[teacher_index] = []
             teacher_data_errors[teacher_index].append(3)
+
+        if 'block_after_minutes' in teacher.keys() and not (
+            type(teacher['block_after_minutes']) is int and
+            teacher['block_after_minutes'] >= 0
+        ):
+            if type(teacher_data_errors.get(teacher_index)) != list:
+                teacher_data_errors[teacher_index] = []
+            teacher_data_errors[teacher_index].append(4)
 
     return teacher_data_errors
 

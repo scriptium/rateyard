@@ -18,7 +18,8 @@ CREATE TABLE teachers (
     full_name VARCHAR(256) NOT NULL,
     email VARCHAR(320) UNIQUE,
     email_verified BOOLEAN DEFAULT FALSE NOT NULL,
-    password_hash TEXT NOT NULL
+    password_hash TEXT NOT NULL,
+    block_after_minutes INT DEFAULT 0 NOT NULL
 );
 CREATE TABLE subjects (
     id SERIAL PRIMARY KEY NOT NULL,

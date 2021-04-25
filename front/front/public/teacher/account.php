@@ -35,6 +35,20 @@
             <div>Логін:</div><input id="username" type="text" class="default_input_text" placeholder="Введіть логін" oninput="changesSet.updateChangedElements(this)">
             <div>Адреса електронної пошти:</div><input id="email" type="text" class="default_input_text" placeholder="Введіть адресу електронної пошти" oninput="changesSet.updateChangedElements(this)">
             <div>Новий пароль:</div><input id="password" type="password" class="default_input_text" placeholder="Введіть новий пароль" oninput="changesSet.updateChangedElements(this)">
+            <div>Блокувати сторінку:</div>
+            <select class="default_select" onchange="changesSet.updateChangedElements(this)" id="block_after_minutes">
+                <option value="0">Ніколи</option>
+                <option value="1">Через 1 хвилину</option>
+                <option value="2">Через 2 хвилини</option>
+                <option value="3">Через 3 хвилини</option>
+                <option value="5">Через 5 хвилин</option>
+                <option value="10">Через 10 хвилин</option>
+                <option value="15">Через 15 хвилин</option>
+                <option value="20">Через 20 хвилин</option>
+                <option value="25">Через 25 хвилин</option>
+                <option value="30">Через 30 хвилин</option>
+                <option value="45">Через 45 хвилин</option>
+            </select>
         </div>
     </div>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>

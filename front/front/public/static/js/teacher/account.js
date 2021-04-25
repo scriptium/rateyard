@@ -5,6 +5,7 @@ let usernameInputElement = document.getElementById('username');
 let emailInputElement = document.getElementById('email');
 let passwordInputElement = document.getElementById('password');
 const verifyEmailButtonElement = document.querySelector('#verify_email_button');
+const blockDelaySelect = document.querySelector('#block_after_minutes');
 
 function fillUserInputs(myUser) {
     fullNameInputElement.value = myUser.full_name;
@@ -14,6 +15,8 @@ function fillUserInputs(myUser) {
     emailInputElement.value = myUser.email;
     usernameInputElement.setAttribute('initial_value', myUser.username);
     passwordInputElement.setAttribute('initial_value', '');
+    blockDelaySelect.value = myUser.block_after_minutes;
+    blockDelaySelect.setAttribute('initial_value', blockDelaySelect.value);
 }
 
 myUserPromise.then((myUser) => {
@@ -27,7 +30,9 @@ myUserPromise.then((myUser) => {
 function saveAccountChangesButton(buttonElement) {
     let requestJSON = {}
     changesSet.changedElements.forEach(element => {
-        requestJSON[element.id] = element.value;
+        if (element.id == 'block_after_minutes') requestJSON[element.id] = parseInt(element.value);
+        else requestJSON[element.id] = element.value;
+        
     });
     buttonElement.classList.add('disabled');
     editMe(requestJSON).then((responseData) => {

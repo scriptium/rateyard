@@ -29,7 +29,7 @@ def get_me():
     cursor = db.get_db().cursor()
 
     cursor.execute('''
-    SELECT id, username, full_name, email, email_verified FROM teachers WHERE id=%s;
+    SELECT id, username, full_name, email, email_verified, block_after_minutes FROM teachers WHERE id=%s;
     ''', (identity['id'], )
     )
 
@@ -42,7 +42,8 @@ def get_me():
         'username': exec_result[1],
         'full_name': exec_result[2],
         'email': exec_result[3],
-        'email_verified': exec_result[4]
+        'email_verified': exec_result[4],
+        'block_after_minutes': exec_result[5]
     }
     cursor.execute('''
     SELECT g.id, g.group_name, c.id, c.class_name, s.id, s.subject_name
@@ -136,7 +137,7 @@ def edit_me():
     SELECT email, email_verified, full_name FROM teachers WHERE id=%s;
     ''', (get_jwt_identity()['id'], ))
     email, email_verified, full_name = cursor.fetchone()
-    if email_verified:
+    if email_verified and tuple(request.json) != ('block_after_minutes', ):
         need_confirm = True
         current_app.extensions['teacher_account_changes_verifier'].add_verifiable_user(
             email, full_name, request.json)
