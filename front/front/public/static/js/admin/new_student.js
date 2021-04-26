@@ -7,6 +7,8 @@ function fillClassesData() {
     })
 }
 
+let previousURL = 'students.php';
+
 let usernameElement = document.getElementById('username');
 let fullNameElement = document.getElementById('full_name');
 let classElement;
@@ -17,7 +19,10 @@ async function fillSessionStorageData() {
     let classData = sessionStorage['class'];
     sessionStorage.clear();
     
-    if(classData !== undefined) classData = JSON.parse(classData)
+    if(classData !== undefined) {
+        classData = JSON.parse(classData);
+        previousURL = `class.php?id=${classData.id}`;
+    }
     else classData = 'false';
 
     if(classData !== 'false') {
@@ -55,7 +60,7 @@ function saveNewStudentButton(buttonElement) {
             enableButton(buttonElement);
         }
         else if (responseData.status === 200) {
-            window.location.href = `${location.protocol}//${location.host}/admin/students.php`;
+            location.replace(previousURL);
         }
     });
 }

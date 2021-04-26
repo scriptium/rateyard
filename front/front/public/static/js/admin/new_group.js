@@ -15,6 +15,8 @@ function fillClassesData() {
     })
 }
 
+let previousURL = 'groups.php';
+
 let groupNameElement = document.getElementById('name');
 let groupClassElement;
 let groupStudentsTbodyElement = document.querySelector('#group_students tbody')
@@ -25,7 +27,10 @@ async function fillSessionStorageData() {
     let classData = sessionStorage['class'];
     sessionStorage.clear();
     
-    if(classData !== undefined) classData = JSON.parse(classData)
+    if(classData !== undefined) {
+        classData = JSON.parse(classData);
+        previousURL = `class.php?id=${classData.id}`;
+    }
     else classData = 'false';
 
     if(classData !== 'false') {
@@ -97,7 +102,7 @@ function saveNewGroupButton(buttonElement) {
 
     createGroup(name, classId, studentsIds).then(
         (requestData) => {
-            if (requestData.status == 200) window.location.href = `${location.protocol}//${location.host}/admin/groups.php`;
+            if (requestData.status == 200) location.replace(previousURL);
             else if (requestData.status == 400) {
                 if (requestData.json.includes(1)) makeInputTextWrong(groupNameElement);
                 buttonElement.classList.remove('disabled');
