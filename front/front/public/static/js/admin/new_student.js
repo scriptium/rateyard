@@ -17,7 +17,7 @@ let emailElement = document.getElementById('email');
 
 async function fillSessionStorageData() {
     let classData = sessionStorage['class'];
-    sessionStorage.clear();
+    sessionStorage.removeItem('class');
     
     if(classData !== undefined) {
         classData = JSON.parse(classData);
@@ -31,6 +31,10 @@ async function fillSessionStorageData() {
     else {
         classElement = createDefaultSelect('classes_select');
         await fillClassesData();
+        if(sessionStorage.previousClass !== undefined)
+            classElement.value = sessionStorage.previousClass;
+        if(sessionStorage.previousPassword !== undefined)
+            passwordElement.value = sessionStorage.previousPassword;
     }
     let classBlockElement = document.querySelector('#class_block');
     classBlockElement.after(classElement);
@@ -40,6 +44,9 @@ async function fillSessionStorageData() {
 function saveNewStudentButton(buttonElement) {
     disableButton(buttonElement);
     
+    sessionStorage.previousClass = classElement.value;
+    sessionStorage.previousPassword = passwordElement.value;
+
     let requestJSON = [{
         full_name: fullNameElement.value,
         class_id: classElement.value,
