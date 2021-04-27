@@ -50,6 +50,19 @@
     <template id="imported_students_content">
         <div id="content">
             <div class="title">Імпорт учнів</div>
+            <div class="input_grid">
+                <div>Випадковий пароль для кожного учня:</div>
+                <select class="default_select" id="use_random_password">
+                    <option value="true">Так</option>
+                    <option value="false" selected>Ні</option>
+                </select>
+                <div class="hide_on_random_password">Пароль учнів:</div>
+                <input id="students_password" type="text" class="default_input_text hide_on_random_password"
+                placeholder="Введіть новий пароль учнів">
+            </div>
+            <a class="blue_button" id="download_passwords">
+                <div>Завантижити файл з паролями</div>
+            </a>
             <table class="default_table" id="imported_students_table">
                 <thead>
                     <tr>
@@ -60,14 +73,9 @@
                 </thead>
                 <tbody></tbody>
             </table>
-            <div class="title_block">
-                <div class="blue_button" onclick="saveImportedStudents()">
-                    <div class="button_icon save_icon"></div>
-                    <div>Зберегти</div>
-                </div>
-                <a class="blue_button" id="download_passwords">
-                    <div>Завантижити файл з паролями</div>
-                </a>
+            <div class="blue_button" onclick="saveImportedStudents()">
+                <div class="button_icon save_icon"></div>
+                <div>Зберегти</div>
             </div>
         </div>
     </template>

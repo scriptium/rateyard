@@ -2,23 +2,29 @@
     border-collapse: collapse;
     height: min-content;
 }
-.default_table th, .default_table td{
+
+.default_table th, .default_table td {
     padding: 10px;
     text-align: left;
     font-weight: bold;
 }
+
 .default_table td a {
     font-weight: bold;
 }
-.default_table tbody:nth-child(2) tr:nth-child(2n+1)
-{
+
+.default_table tbody:nth-child(2) tr:nth-child(2n+1) {
     background: rgba(90, 173, 221, 0.15);
 }
-.default_table tbody:nth-child(2) tr:nth-child(2n)
-{
+
+.default_table tbody:nth-child(2) tr:nth-child(2n) {
     background: rgba(90, 173, 221, 0.05);
 }
 
 #students_data_file {
+    display: none;
+}
+
+.hide_on_random_password.hidden, #download_passwords.hidden {
     display: none;
 }

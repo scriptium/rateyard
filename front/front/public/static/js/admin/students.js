@@ -84,9 +84,16 @@ async function onFileInput(files) {
 
 async function saveImportedStudents() {
     let studentsJSON = importedStudents.students;
+    if (!useRandomPassword && !studentsPasswordInputElement.value) {
+        makeInputTextWrong(studentsPasswordInputElement);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+    }
+
     for (let student of studentsJSON) {
         student.class_id = student.class.id;
         delete student.class;
+        if (!useRandomPassword) student.password = studentsPasswordInputElement.value;
     }
     preloaderElement.classList.remove('hidden');
     await createStudents(studentsJSON);
@@ -103,3 +110,28 @@ studentsResponseData.then((responseData) => {
     fillStudentsTable(responseData.json);
     hidePreloader();
 });
+
+// Excel import
+let studentsPasswordInputElement = importedStudentsContent.querySelector('#students_password');
+if (sessionStorage.getItem('previousPassword')) {
+    studentsPasswordInputElement.value = sessionStorage.getItem('previousPassword');
+}
+let hideOnRandomPasswordElements = importedStudentsContent.querySelectorAll('.hide_on_random_password');
+let useRandomPasswordSelectElement = importedStudentsContent.querySelector('#use_random_password');
+useRandomPasswordSelectElement.onchange = updateUseRandomPassword;
+updateUseRandomPassword();
+
+function updateUseRandomPassword() {
+    useRandomPassword = useRandomPasswordSelectElement.value === 'true';
+    if (useRandomPassword) {
+        for (let element of hideOnRandomPasswordElements) {
+            element.classList.add('hidden');
+        }
+        downloadPasswordsAElement.classList.remove('hidden');
+    } else {
+        for (let element of hideOnRandomPasswordElements) {
+            element.classList.remove('hidden');
+        }
+        downloadPasswordsAElement.classList.add('hidden');
+    }
+}
