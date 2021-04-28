@@ -20,6 +20,12 @@
     <div id="content">
         <div class="title_block">
             <div class="title">Наявні класи</div>
+            <a href="new_class.php">
+                <div class="blue_button">
+                    <div class="button_icon add_icon"></div>
+                    <div>Додати клас</div>
+                </div>
+            </a>
         </div>
         <table class="default_table" id="classes_table">
             <tbody>

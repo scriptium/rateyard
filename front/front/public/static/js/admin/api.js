@@ -295,3 +295,14 @@ async function importStudentsFromExcel(students_table) {
         json: JSON.parse(xhr.responseText)
     }
 }
+
+async function createClass(name, students_ids) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'create_class', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify({name, students_ids}), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}

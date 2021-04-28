@@ -164,3 +164,35 @@ def move_students_to_class():
 #         "result": "OK"
 #     }), 201
 
+@admin_token_required
+def create_class():
+    if (not request.is_json 
+        or not "name" in request.json.keys()
+        or not "students_ids" in request.json.keys()
+        or not type(request.json["students_ids"]) == list
+    ): 
+        abort(400, "Expected json with name and students_ids")
+
+    database = db.get_db()
+    cursor = database.cursor()
+    class_id = None
+    try:
+        cursor.execute('''
+            INSERT INTO classes (class_name)
+            VALUES (%s) RETURNING id;
+        ''', (request.json["name"], ))
+        class_id = cursor.fetchone()[0]
+
+        cursor.execute('''
+            INSERT INTO groups (group_name, class_id, is_full_class_group)
+            VALUES ('Весь клас', %s, True); 
+        ''', (class_id, ))
+    except Exception:
+        abort(400, 'Class with this name already exists')
+    else:
+        database.commit()
+        if class_id is None:
+            abort(400, 'Error while creating new class')
+        for id in request.json["students_ids"]:
+            db.edit_student(id, {"class_id": class_id})
+    return jsonify({"result": "ok"}), 200
