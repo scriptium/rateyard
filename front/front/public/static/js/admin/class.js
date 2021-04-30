@@ -1,5 +1,6 @@
 let classId = parseInt(document.querySelector('#class_id').getAttribute('value'));
 let className;
+let fullClassGroupId;
 
 let classNameElement = document.querySelector('#class_id');
 let studentsTableElement = document.querySelector('#students_table');
@@ -11,6 +12,9 @@ let mainGroupsTbodyElement = document.querySelector('#groups_table tbody');
 let lecturersTableElement = document.querySelector('#lecturers_table');
 let mainLecturersTbodyElement = document.querySelector('#lecturers_table tbody');
 
+
+let fullClassPromise = getClassFull(classId);
+
 let classesHasFilled = new Promise (async (resolve, reject) => {
     getClassesShort().then((responseData) => {
         let classesSelectElement = document.getElementById('classes_select');
@@ -18,18 +22,16 @@ let classesHasFilled = new Promise (async (resolve, reject) => {
         fillDropDownSelect(classesSelectElement, responseData.json);
         resolve();
     }, reject);
-}) 
+});
 
 let studentsHasFilled = new Promise(async (resolve, reject) => {
-    getClassFull(classId).then((responseData) => {
-        let parsedResponse = responseData.json;
-        className = parsedResponse.name;
-        let students = parsedResponse.students;
-        if(students.length === 0)
-            disableButton(document.querySelector('#move_students_button'));
-        insertStudentsData(students, mainStudentsTbodyElement, false, false, null);
-        resolve();
-    }, reject)
+    let parsedResponse = (await fullClassPromise).json;
+    className = parsedResponse.name;
+    let students = parsedResponse.students;
+    if(students.length === 0)
+        disableButton(document.querySelector('#move_students_button'));
+    insertStudentsData(students, mainStudentsTbodyElement, false, false, null);
+    resolve();
 });
 
 let groupsHasFilled = new Promise(async (resolve, reject) => {
@@ -41,7 +43,8 @@ let groupsHasFilled = new Promise(async (resolve, reject) => {
 });
 
 let lectureresHasFilled = new Promise(async (resolve, reject) => {
-    getGroupFull(classId).then((responseData) => {
+    fullClassGroupId = (await fullClassPromise).json.full_class_group_id;
+    getGroupFull(fullClassGroupId).then((responseData) => {
         let parsedResponse = responseData.json;
         let groupInfo = {
             "id": parsedResponse.id,
@@ -67,7 +70,7 @@ async function deleteAllStudents(buttonElement) {
 function addNewLecturer(buttonElement) {
     disableButton(buttonElement);
     sessionStorage.setItem('class', JSON.stringify({id: classId, name: className}))
-    sessionStorage.setItem('group', JSON.stringify({id: classId, name: 'Весь клас'}));
+    sessionStorage.setItem('group', JSON.stringify({id: fullClassGroupId, name: 'Весь клас'}));
     sessionStorage.setItem('teacher', JSON.stringify('false')); 
     window.location = 'new_lecturer.php';
     enableButton(buttonElement);

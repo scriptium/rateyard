@@ -55,7 +55,12 @@ def get_class_full():
 
     cursor = db.get_db().cursor()
     cursor.execute(
-        "SELECT id, class_name FROM classes WHERE id=%s",
+        '''
+        SELECT classes.id, classes.class_name, groups.id AS full_class_group_id
+        FROM classes 
+        INNER JOIN groups ON groups.class_id=classes.id
+        WHERE classes.id=%s AND groups.is_full_class_group=True
+        ''',
         (request.json["id"], )
     )
     class_exec_result = cursor.fetchone()
@@ -76,6 +81,7 @@ def get_class_full():
         "type": "ClassFull",
         "id": class_exec_result[0],
         "name": class_exec_result[1],
+        "full_class_group_id": class_exec_result[2],
         "students": [
             {
                 "id": student_data[0],
