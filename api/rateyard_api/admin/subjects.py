@@ -78,7 +78,6 @@ def edit_subjects():
 
 @admin_token_required
 def delete_subjects():
-    print("something ", flush=True)
     if not request.is_json:
         abort(400, "Expected json")
     if type(request.json) != list:

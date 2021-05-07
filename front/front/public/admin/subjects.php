@@ -27,23 +27,13 @@
                     <div>Додати предмет</div>
                 </div>
             </a>
-            <div class="appear_on_change appear_transition title_block">
-                <div class="blue_button" onclick="saveChanges()">
-                    <div class="button_icon save_icon"></div>
-                    <div>Зберегти зміни</div>
-                </div>
-                <div class="blue_button" onclick="discardChanges()">
-                    <div class="button_icon back_icon"></div>
-                    <div>Прибрати зміни</div>
-                </div>
         </div>
-        </div>
-        <table class="default_table appear_transition" id="subjects_table">
+        <table class="default_table" id="subjects_table">
             <thead>
                 <tr>
                     <th>№</th>
                     <th>Назва</th>
-                </tr>   
+                </tr>
             </thead>
             <tbody>
             </tbody>
