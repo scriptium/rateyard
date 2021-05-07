@@ -13,7 +13,7 @@
 
 <body>
     <?php
-    $current = 'teachers';
+    $current = 'subjects';
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/admin/header.php';
     require $_SERVER['DOCUMENT_ROOT'] . '/../includes/preloader.php';
     ?>

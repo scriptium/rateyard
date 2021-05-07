@@ -41,6 +41,8 @@ deleteSubjectElement.onclick = async () => {
     await deleteSubjects([subjectId]);
     location.replace('subjects.php');
 }
+const subjectIdElement = document.querySelector('#subject_id');
+subjectIdElement.textContent = subjectId;
 window.onload = async () => {
     await subjectDataFilledPromise;
     hidePreloader();
