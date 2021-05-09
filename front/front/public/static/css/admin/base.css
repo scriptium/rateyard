@@ -1,3 +1,7 @@
+html {
+    overflow-y: scroll;
+}
+
 .default_table {
     border-collapse: collapse;
     height: min-content;
