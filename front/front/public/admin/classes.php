@@ -28,11 +28,12 @@
             </a>
         </div>
         <table class="default_table" id="classes_table">
-            <tbody>
+            <thead>
                 <tr>
+                    <th>№</th>
                     <th>Назва</th>
                 </tr>
-            </tbody>
+            </thead>
             <tbody>
             </tbody>
         </table>

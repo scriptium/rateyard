@@ -1,10 +1,3 @@
-<?php
-if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
-    http_response_code(404);
-    exit;
-}
-?>
-
 <!DOCTYPE html>
 <html lang="ua">
 
@@ -26,7 +19,25 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
     ?>
     <div id="content">
         <div class="title_block">
-            <div class="title">Налаштування <span id="class_id" value="<?php echo $_GET['id']; ?>"></span> класу </div>
+            <div class="title">Налаштування класу №<span id="class_id"><?php echo $_GET['id']; ?></span></div>
+            <div class="delete_button" id="delete_class">
+                <div class="button_icon delete_icon"></div>
+                <div>Видалити</div>
+            </div>
+            <div class="appear_transition appear_on_change title_block">
+                <div class="blue_button" id="save_changes">
+                    <div class="button_icon save_icon"></div>
+                    <div>Зберегти зміни</div>
+                </div>
+                <div class="blue_button" id="discard_changes">
+                    <div class="button_icon back_icon"></div>
+                    <div>Прибрати зміни</div>
+                </div>
+            </div>
+        </div>
+        <div class="input_grid">
+            <div>Назва:</div>
+            <input id="name" type="text" class="default_input_text" placeholder="Введіть назву класу" oninput="changesSet.updateChangedElements(this)" />
         </div>
         <div class="subtitle">Групи класу:</div>
         <div class="title_block">
@@ -96,7 +107,7 @@ if (!array_key_exists('id', $_GET) || !is_numeric($_GET['id'])) {
         </table>
 
     </div>
-    
+
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/base.js"></script>
     <script type="text/javascript" src="/static/js/rateyard_api_client.js"></script>

@@ -306,3 +306,25 @@ async function createClass(name, students_ids) {
         json: JSON.parse(xhr.responseText)
     }
 }
+
+async function editClass(dataObject) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'edit_class', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(dataObject), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}
+
+async function deleteClass(dataObject) {
+    let xhr = await adminRateyardApiClient.sendRequest(
+        'delete_class', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(dataObject), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    }
+}

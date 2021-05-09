@@ -130,45 +130,36 @@ def move_students_to_class():
             SET group_id=%s
             WHERE group_id=%s
         ''', (request.json["class_id_to"], request.json["class_id_from"]))
-    except db.psycopg2.errors.ForeignKeyViolation:
+    except db.psycopg2.errors.lookup(db.psycopg2.errorcodes.FOREIGN_KEY_VIOLATION):
         abort(400, "Class with class_id_to doesn't exist")
     else:
         database.commit()
     return jsonify(result="ok")
 
-# @bp.route("/edit_classes", methods=("POST", ))
-# @admin_token_required
-# def edit_classes():
-#     print(request.json, flush=True)
-#     if not request.is_json:
-#         abort(400, "Expected json")
-#         print("Expected json", flush=True)
-#     if type(request.json) != list:
-#         abort(400, "Expected array of classes id")
-#         print("Expected array of classes id", flush=True)
-#     for class_ in request.json:
-#         if ("id" in class_.keys() and
-#                 "name" in class_.keys()):
-#             db = db.get_db()
-#             cursor = db.cursor()
-#             cursor.execute('''
-#                 UPDATE classes
-#                 SET class_name=%s
-#                 WHERE id=%s RETURNING True;
-#                 ''', (
-#                 class_["name"],
-#                 class_["id"],
-#             ))
-#             if cursor.fetchone() is None:
-#                 abort(400, 'There are not classes with on of ids')
-#             db.commit()
-#             print("OK", flush=True)
-#         else:
-#             print("Wrong json", flush=True)
-#             abort(400, "Wrong json")
-#     return jsonify({
-#         "result": "OK"
-#     }), 201
+@admin_token_required
+def edit_class():
+    if not (
+        request.is_json and
+        type(request.json.get('id')) is int and
+        type(request.json.get('name')) is str and
+        len(request.json.get('name'))  in range(1, 256)
+    ):
+        abort(400, "Invalid data")
+
+    database = db.get_db()
+    cursor = database.cursor()
+    cursor.execute('''
+        UPDATE classes
+        SET class_name=%s
+        WHERE id=%s RETURNING True;
+        ''', (
+        request.json["name"],
+        request.json["id"]
+    ))
+    if cursor.fetchone() is None:
+        abort(400, 'Wrong class id')
+    database.commit()
+    return jsonify(result='ok')
 
 
 @admin_token_required
@@ -203,3 +194,22 @@ def create_class():
     
     database.commit()
     return jsonify({"result": "ok"}), 200
+
+
+def delete_class():
+    if not (
+        request.is_json and
+        type(request.json.get('id')) is int
+    ):
+        abort(400, 'Invalid data')
+
+    database = db.get_db()
+    cursor = database.cursor()
+    cursor.execute(r'''
+    DELETE FROM classes WHERE id=%s RETURNING 1;
+    ''', (request.json['id'], ));
+    if cursor.fetchone() is None:
+        abort(400, 'Wrong class id')
+
+    database.commit()
+    return jsonify(result='ok')
