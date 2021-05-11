@@ -30,6 +30,10 @@
                         <div class="button_icon add_icon"></div>
                         <div>Додати колонку</div>
                     </div>
+                    <a class="excel_button" id="excel_export">
+                        <div class="button_icon excel_icon"></div>
+                        <div>Експортувати у файл Microsoft Excel</div>
+                    </a>
                 </div>
                 <div id="column_tool" class="hidden">
                     <div class="input_container">

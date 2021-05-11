@@ -1,8 +1,11 @@
 from functools import wraps
 from datetime import datetime
+import tempfile
+import base64
 
 from flask import Blueprint, json, request, jsonify, abort, current_app
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
+import openpyxl
 
 import db
 
@@ -559,3 +562,28 @@ def verify_email():
     database.commit()
 
     return jsonify(result='OK')
+
+
+@bp.route('export_marks', methods=('POST',))
+@teacher_token_required
+def export_marks():
+    if not (     
+        request.is_json and
+        type(request.json.get('table_rows')) is list
+    ):
+        abort(400, 'Invalid data')
+
+    workbook = openpyxl.Workbook()
+    worksheet = workbook.active
+    worksheet.title = 'Оцінки'
+    for row in request.json.get('table_rows'):
+        worksheet.append(row)
+        
+    temp_file = tempfile.NamedTemporaryFile()
+    workbook.save(temp_file.name)
+
+    return jsonify({
+        'marks_table_base64': base64.b64encode(temp_file.read()).decode()
+    })
+
+    

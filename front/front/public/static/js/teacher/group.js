@@ -556,3 +556,27 @@ document.addEventListener('keydown', (event) => {
     if (newHoveredCell) hoverCell(newHoveredCell);
     cellHoveredByKeyboard = true;
 });
+
+const excelExportButton = document.querySelector('#excel_export');
+
+excelExportButton.onclick = async () => {
+    if (!excelExportButton.hasAttribute('href')) {
+        excelExportButton.classList.add('disabled');
+        let tableRows = [];
+        for (let tr of document.querySelectorAll('#marks_table>thead>tr, #marks_table>tbody>tr')) {
+            let row = [];
+            for (let td of tr.children) {
+                row.push(td.textContent);
+            }
+            tableRows.push(row);
+        }
+        let responseData = await exportMarks({
+            table_rows: tableRows
+        });
+        let group = await groupPromise;
+        excelExportButton.setAttribute('href', 'data:application/vnd.ms-excel;base64,' + responseData.json.marks_table_base64);
+        excelExportButton.setAttribute('download', `Оцінки ${group.subject.name} ${group.group.class.name} ${group.group.name}.xlsx`);
+        excelExportButton.click();
+        excelExportButton.classList.remove('disabled');
+    }
+}

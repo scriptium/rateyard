@@ -134,3 +134,14 @@ async function login(dataObject) {
         refreshToken: xhr.getResponseHeader('Refresh-Token')
     };
 }
+
+async function exportMarks(dataObject) {
+    let xhr = await teacherRateyardApiClient.sendRequest(
+        'export_marks', 'POST', { 'Content-Type': 'application/json' },
+        JSON.stringify(dataObject), true
+    );
+    return {
+        status: xhr.status,
+        json: JSON.parse(xhr.responseText)
+    };
+}

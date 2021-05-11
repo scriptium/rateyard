@@ -82,7 +82,7 @@ input[type='search'] {
     border-radius: 15px;
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
     cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s;
     width: max-content;
 }
 
@@ -112,7 +112,7 @@ input[type='search'] {
     border-radius: 15px;
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
     cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s;
     width: max-content;
 }
 
@@ -124,7 +124,7 @@ input[type='search'] {
     box-shadow: 2px 3px 11px 4px rgba(0, 0, 0, 0.35);
 }
 
-.delete_button.disabled {
+.delete_button.disabled, .excel_button.disabled {
     background: var(--blue-color);
     cursor: default;
     box-shadow: none;
@@ -193,7 +193,7 @@ input[type='search'] {
     border-radius: 15px;
     box-shadow: 2px 2px 9px 3px rgba(0, 0, 0, 0.25);
     cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s;
     width: max-content;
 }
 
@@ -365,7 +365,7 @@ a.text:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9;
+    z-index: 100;
 }
 
 #preloader.hidden {
