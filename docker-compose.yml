@@ -4,8 +4,6 @@ services:
         restart: always
         build: ./api
         command: gunicorn -b 0.0.0.0:8000 wsgi:create_app()
-        ports: 
-            - 9000:8000
         external_links: 
             - db:docker-postgresql
         depends_on:
@@ -18,9 +16,6 @@ services:
             - api
         external_links:
             - api:docker-api
-        ports:
-            - 90:80
-
     db:
         image: postgres
         restart: always
@@ -29,5 +24,11 @@ services:
             POSTGRES_DB: rateyard
         volumes:
             - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    webserver:
+        build: webserver
+        restart: unless-stopped
         ports:
-            - 5432:5432
+            - 80:80
+        external_links:
+            - api:docker-api
+            - front:docker-front

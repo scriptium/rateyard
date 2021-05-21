@@ -1,6 +1,6 @@
 class RateyardApiClient {
     constructor(accessToken='', refreshToken='', pathPrefix='', onTokensUpdate, onTokensAreWrong) {
-        this.baseApiUrl = `http://${window.location.hostname}:8000`;
+        this.baseApiUrl = `http://${window.location.hostname}/api`;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.pathPrefix = pathPrefix;

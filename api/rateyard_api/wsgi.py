@@ -36,9 +36,9 @@ def create_app():
             "description": e.description,
         }), e.code
 
-    app.register_blueprint(auth.bp, url_prefix="/auth")
-    app.register_blueprint(student.bp, url_prefix="/student")
-    app.register_blueprint(teacher.bp, url_prefix="/teacher")
-    app.register_blueprint(admin.bp, url_prefix="/admin")
+    app.register_blueprint(auth.bp, url_prefix="/api/auth")
+    app.register_blueprint(student.bp, url_prefix="/api/student")
+    app.register_blueprint(teacher.bp, url_prefix="/api/teacher")
+    app.register_blueprint(admin.bp, url_prefix="/api/admin")
 
     return app
