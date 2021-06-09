@@ -42,7 +42,7 @@
         </table>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/gh/nextapps-de/flexsearch@master/dist/flexsearch.light.js"></script>
+    <script type="text/javascript" src="/static/js/flexsearch.light.js"></script>
     <script type="text/javascript" src="/static/js/hidable_children_element.js"></script>
     <script type="text/javascript" src="/static/js/base.js"></script>
     <script type="text/javascript" src="/static/js/admin/base.js"></script>
