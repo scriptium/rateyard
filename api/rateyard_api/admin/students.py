@@ -190,6 +190,9 @@ def import_from_excel():
                 username = new_username
 
             registered_usernames.add(username)
+            if not row_values[4].upper() in classes_dict:
+                continue
+                
             students_json['students'].append({
                 'username': username,
                 'full_name': ' '.join((row_values[0], row_values[1], row_values[2])),

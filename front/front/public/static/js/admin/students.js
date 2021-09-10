@@ -11,7 +11,6 @@ let mainTbodyElement = studentsTableElement.getElementsByTagName('tbody')[1];
 let hidableChildrenStudentsTbody;
 
 function fillStudentsTable(parsedResponse) {
-    console.log(parsedResponse);
     insertStudentsData(parsedResponse, mainTbodyElement, true, false, searchIndex);
     hidableChildrenStudentsTbody = new HidableChildrenElement(mainTbodyElement);
     studentsTableElement.classList.add('visible');
@@ -57,6 +56,7 @@ async function onFileInput(files) {
             'table_base64': b64.substring(b64.search('base64,') + 'base64,'.length)
         });
         if (responseData.status != 200) {
+            studentsDataInputElement.value = null;
             alert('Помилка зчитування учнів. Перевірте формат файлу.');
             hidePreloader();
             return;
