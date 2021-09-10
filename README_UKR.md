@@ -11,9 +11,17 @@
 
 Перед запуском слід у файлі `api/rateyard_api/config.py` змінити змінні:
 
-- `EMAIL_NAME`, `EMAIL_PASSWORD`
-- `JWT_SECRET_KEY`
-- `ADMIN_USERNAME`, `ADMIN_PASSWORD`
+`Назва змінної (тип змінної)`
+
+- Дані для підключення до SMTP сервера:
+	
+	- `EMAIL_NAME (str)` - адреса пошти, яка буде використовуватись для відновлення паролів користувачів
+	- `EMAIL_PASSWORD (str)` - пароль до цієї пошти
+	- `SMTP_HOST (str)` - ім'я хосту серверу. Для gmail - це `smtp.gmail.com`
+	- `SMTP_PORT (int)` - порт, за яким сервер приймає запити. Для gmail - це `587`
+
+- `JWT_SECRET_KEY (str)` - ключ для підпису токенів. Може бути довільним, але чим складніше - тим краще.
+- `ADMIN_USERNAME (str)`, `ADMIN_PASSWORD (str)`- логін і пароль для доступу до сторінки адміністратора.
 
 ### Запуск
 

@@ -41,9 +41,7 @@ class Verifier:
         msg['From'] = 'Rateyard <%s>' % current_app.config['EMAIL_NAME']
         msg['To'] = email
 
-        print(verification_code)
-
-        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server = smtplib.SMTP(current_app.config['SMTP_HOST'], current_app.config['SMTP_PORT'])
         server.starttls()
         server.login(current_app.config['EMAIL_NAME'],
                      current_app.config['EMAIL_PASSWORD'])

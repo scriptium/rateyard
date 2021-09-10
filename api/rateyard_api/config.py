@@ -19,3 +19,5 @@ JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
 
 EMAIL_NAME = 'rateyard@gmail.com'
 EMAIL_PASSWORD = ''
+SMTP_HOST = 'smtp.gmail.com'
+SMTP_PORT = 587
