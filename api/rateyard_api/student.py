@@ -143,12 +143,9 @@ def get_marks():
 
     cursor.execute(r'''
     SELECT m.id, m.points, m.edition_date, mc.column_date,
-    m.comment, mc.column_name,
-    t.id, t.full_name, m.is_read,
-    mc.creation_date
+    m.comment, mc.column_name, m.is_read, mc.creation_date
     FROM marks AS m
     INNER JOIN marks_columns AS mc ON m.column_id=mc.id
-    INNER JOIN teachers as t ON m.teacher_id=t.id
     WHERE m.student_id=%s AND mc.subject_id=%s
     ''', (identity['id'], request.json['id']))
     marks_exec_result = cursor.fetchall()
@@ -170,13 +167,8 @@ def get_marks():
                 'comment': data[4],
                 'type_of_work': data[5] if not data[5] is None else '',
                 'type': 'MarkForStudent',
-                'is_read': data[8],
-                'column_creation_date': datetime.timestamp(data[9]),
-                'teacher': {
-                    'id': data[6],
-                    'full_name': data[7],
-                    'type': 'TeacherShort'
-                }
+                'is_read': data[6],
+                'column_creation_date': datetime.timestamp(data[7])
             } for data in marks_exec_result
         ]
     }

@@ -300,12 +300,11 @@ def crete_mark():
             abort(400, 'Mark already exists')
 
     cursor.execute('''
-    INSERT INTO marks (points, comment, teacher_id, column_id, student_id)
-    VALUES (%s, %s, %s, %s, %s) RETURNING id;
+    INSERT INTO marks (points, comment, column_id, student_id)
+    VALUES (%s, %s, %s, %s) RETURNING id;
     ''', (
         request.json['points'],
         request.json.get('comment'),
-        get_jwt_identity()['id'],
         column_id,
         request.json['student_id']
     ))
@@ -327,8 +326,8 @@ def edit_mark():
     SELECT 1 FROM marks AS m
     INNER JOIN marks_columns AS mc ON m.column_id=mc.id
     INNER JOIN teachers_groups AS tg ON tg.subject_id=mc.subject_id
-    WHERE m.id=%s AND tg.teacher_id=%s;
-    ''', (request.json['id'], get_jwt_identity()['id']))
+    WHERE m.id=%s;
+    ''', (request.json['id'], ))
     if cursor.fetchone() is None:
         abort(400, 'Wrong id')
 

@@ -1,6 +1,6 @@
 __pycache__/
 venv/
-/db/data
+/db/postgres-data
 .vscode
 
 # Swap

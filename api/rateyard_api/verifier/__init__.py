@@ -41,8 +41,7 @@ class Verifier:
         msg['From'] = 'Rateyard <%s>' % current_app.config['EMAIL_NAME']
         msg['To'] = email
 
-        server = smtplib.SMTP(current_app.config['SMTP_HOST'], current_app.config['SMTP_PORT'])
-        server.starttls()
+        server = smtplib.SMTP_SSL(current_app.config['SMTP_HOST'], current_app.config['SMTP_PORT'])
         server.login(current_app.config['EMAIL_NAME'],
                      current_app.config['EMAIL_PASSWORD'])
         sent = True

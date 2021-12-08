@@ -37,7 +37,6 @@ def get_teachers():
 
 @admin_token_required
 def create_teachers():
-    print(1)
     if not request.is_json:
         print("Expected json", flush=True)
         abort(400, "Expected json")
@@ -102,7 +101,6 @@ def delete_teachers():
 
 @admin_token_required
 def edit_teachers():
-    print(request.json, flush=True)
     if not request.is_json:
         print("Expected json", flush=True)
         abort(400, "Expected json")
